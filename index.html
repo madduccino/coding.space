@@ -5,24 +5,43 @@
 	<meta name="viewport" content="width=device-width">
 	<title>The Coding Space Projects</title>
 	<style>
-	   html, bod {
-	   	height: 100%;
+	   html {
+	       height: 100%;
+	   } 
+	   body {
+	   	 text-align: center;
+	   	 font-family: sans-serif;
+	   	 background-image: url('./images/background.jpg');
+	   	 background-repeat: no-repeat;
+	   	 background-size: cover;
 	   }
-		img {
-			width: 50%;
-		}
+	   div {
+	       margin-left: auto;
+	   	   margin-right: auto;
+	   	   width: 40%;
+	   	   height: 30%;
+	   }
+	   img {
+		  width: 100%;
+	   }
+	   h1 {
+	       font-size: 80px;
+	       color: white;
+	       background-color: rgba(183, 58, 98, 0.89);
+	   }
 	</style>
 </head>
 
 <body>
+    <h1>The Coding Space Projects</h1>
 	<div>
-		<a href="./scratch"><img id="banner1" src="http://i.imgur.com/PrIQRHx.png" /></a>
+		<a href="./scratch"><img id="banner1" src="./images/scratch.png" onmouseover="this.src='./images/scratch-2.png'" onmouseout="this.src='./images/scratch.png'" /></a>
 	</div>
 	<div>
-		<a href="http://woofjs.com/create"><img id="banner3" src="http://i.imgur.com/exXCzv3.png" /></a>
+		<a href="http://woofjs.com/create"><img id="banner3" src="./images/javascript.png" onmouseover="this.src='./images/javascript-2.png'" onmouseout="this.src='./images/javascript.png'"/></a>
 	</div>
 	<div>
-	<a href="./web"><img id="banner2" src="http://i.imgur.com/iQqiXQz.png" /></a>
+	<a href="./web"><img id="banner2" src="./images/web.png" onmouseover="this.src='./images/web-2.png'" onmouseout="this.src='./images/web.png'"/></a>
 	</div>
 </body>
 
