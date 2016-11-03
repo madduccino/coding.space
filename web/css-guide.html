@@ -1,99 +1,173 @@
-﻿
-      <div class="container">
-        <div class="content-wrap"><div id="wsite-content" class="wsite-elements wsite-not-footer">
-	<h2 class="wsite-content-title" style="text-align:center;">Intro to CSS<br><em><font size="3">​Begin to learn about how the web works</font></em></h2>
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<style>
+	body {
+		width: 600px;
+		margin-left: auto;
+		margin-right: auto;
+	}
+</style>
 
-<div><div style="height: 0px; overflow: hidden; width: 50%;"></div>
-<hr class="styled-hr" style="width:50%;">
-<div style="height: 10px; overflow: hidden; width: 50%;"></div></div>
+<body>
+<h1>Intro to CSS</h1>
+<p>
+	When you're building a house, the first things you think about is the structure.  
+	You need the frame, the rooms, the floors, and the roof to make the house liveable.  
+	But if you stopped working on your house right after the last nail was hammered in, 
+	you would have a pretty lame home, right?  If there was no painting on the walls, 
+	no carpets, no pictures, no chairs or tables, you may as well not live in the house at all. 
+</p>
+<p>
+	CSS is like the decoration of the house: it's not a "necessary" part to a web page, but it's still important.
+	CSS allows you to add color, format, and styling to your HTML page, 
+	just like the interior design of a house adds to the frame.
+</p>
+<h2>What CSS Can Do</h2>
+<p>
+	CSS can be used to modify the existing HTML elements on the page. 
+	Here are some specific examples of what it can do:
+</p>
+<ul>
+	<li>Change font</li>
+	<li>Change font size</li>
+	<li>Change text color</li>
+	<li>Change background color</li>
+	<li>Change shapes of things</li>
+	<li>Change borders </li>
+	<li>Change layouts of pages</li>
+	<li>Hide or show elements</li>
+</ul>
+<p>
+	CSS is written in property and value pairs. 
+	The property is the thing that you're trying to change, like the font size or the background color.  
+	The value is what you want to change it to, like 5px or 10px or blue or green.
+	Properties and values are written like this:
+</p>
+<pre><code>property: value;</code></pre>
+<p>
+	Here are some examples of property value pairs. 
+	The property is in red and the value is blue.
+</p>
+<ul>
+	<li><font color="#c23b3b">font-family</font>: <font color="#3a96b8">"Times New Roman", Georgia, Serif</font>;</li>
+	<li><font color="#a82e2e">font-size</font>: <font color="#3a96b8">30px</font>;</li>
+	<li><font color="#a82e2e">text-color</font>: <font color="#3a96b8">blue</font>;</li>
+	<li><font color="#a82e2e">background-color</font>: <font color="#3a96b8">green</font>;</li>
+	<li><font color="#a82e2e">border-radius</font>: <font color="#3a96b8">3px</font></li>
+	<li><font color="#a82e2e">border</font>: <font color="#3a96b8">1px solid black</font>;</li>
+	<li><font color="#a82e2e">display</font>: <font color="#3a96b8">inline-block</font>; </li>
+	<li><font color="#a82e2e">display</font>: <font color="#3a96b8">none</font>;</li>
+</ul>
+<h2>Formatting CSS</h2>
+<p>
+	Now that you know about property/value pairs, which will tell the computer how you want to change an element, 
+	you need to tell it which element you're trying to change.  
+	Here is a picture of a little bit of full CSS code:
+</p>
+<img src="https://weebly.com/uploads/6/0/5/0/60503695/5854199.png?340" alt="Picture" style="width:340;max-width:100%">
+<p>
+	You probably recognize the pink part, which are the property/value pairs.
+	The yellow part is called the <font color="#626262">selector</font>.
+	The selector tells the browser which HTML parts to style.  
+	There are three main ways to identify them: 
+</p>
+<p>
+	By tag: If you want the CSS changes to apply to every element of a certain tag
+	(like all of the p tags on a page) you can simply use the name of the tag like in the example above.
+	To do this, just use the letters that make up the HTML tag.  
+	So, if you want to make every button on a page the same color, you would make
+	the selector "button"
+</p>
+<p>
+	By ID: if you only want to style certain elements within a tag
+	(say you want one button to be red but another button to be blue) you can identify them by ID. 
+	When you're using an ID for the selector, you'll need to put a # and then the name of the element 
+	(if the element's name was elementName, you would identify it using #elementName)
+</p>
+<p>
+	By Class: Class is similar to ID, except that many different elements can have the same class.  
+	To style elements of a class, write a period and then the class name.  
+	If the class name was greenButtons, the selector would be .greenButtons
+	If you ever want to apply the same CSS using multiple selectors, 
+	you can simply make a list separated by commas, like this: 
+		#button1, #button3, p {
+			color: red;
+		}
+	"color: red" will apply to the element with ID button1, the element with ID button3, and all p tags. 
+</p>
+<p>
+	The last important part of CSS is the <strong>open and close curly brackets</strong>.  
+	All of the style change you want to make need to go between an open and close bracket.  
+	Look at this sample of CSS: 
+</p>
+<pre><code>#myElement {
+color: red;
+background-color: blue;</code></pre>
+<p>
+	The open and close brackets tell the browser which CSS code is for which elements.  
+	By putting "color:red;" and "background-color: blue" between a { bracket and a } bracket, 
+	you're telling it that that is the CSS that should be applied to #myElement.
+</p>
+<img src="http://weebly.com/uploads/6/0/5/0/60503695/1462461376.png" alt="Picture" style="width:auto;max-width:100%">
 
-<div><div class="wsite-multicol"><div class="wsite-multicol-table-wrap" style="margin:0 -15px;">
-	<table class="wsite-multicol-table">
-		<tbody class="wsite-multicol-tbody">
-			<tr class="wsite-multicol-tr">
-				<td class="wsite-multicol-col" style="width:11.918737216753%; padding:0 15px;">
-					
-						
+<h2>Googling CSS</h2>
 
-<div class="wsite-spacer" style="height:155px;"></div>
+<p>
+	The good thing about CSS is that it's pretty intuitive, meaning it's not too difficult to understand. 
+	However, there are some things that you'll have to look up using google.
+	Remember: if there's anything that you want to do in CSS but you don't know how, google it!!!
+</p>
+<p>	
+	I want to make a button with rounded edges, but I don't know how do do rounded edges.
+	I would start by making a button tag in HTML, like this: 
+</p>
+<pre><code>&lt;button&gt;Click Me!!!!!!!!!&lt;/button&gt;</pre></code>
+<p>	
+	Copy and paste that into the JSBin HTML window.
+	The corners aren't rounded, are they?  
+	I don't know how to make them rounded... 
+	but I do know that I'll use CSS to make that change, 
+	because rounding the edges is modifying an existing element.  
+	So, I'm going to google it.
+	I start by searching using important keywords.  
+	The search I'll use for this is:  "rounded edges css"
+</p>
+<img src="https://weebly.com/uploads/6/0/5/0/60503695/61692.png?1462470286" alt="Picture" style="width:auto;max-width:100%">
 
+<p>
+	The first two both seem promising, because they are both W3Schools websites.  
+	W3Schools has tons of easy to understand tutorials on HTML, CSS, and JavaScript.  
+</p>
+<p>
+	***W3Schools should always be your first click when you're googling!***
+</p>
+<p>	
+	Since I know that W3Schools is a great resource, I'm going to choose one of those.
+</p>
+<p>	
+	I ended up choosing the second, because it says "border-radius
+	property" and I know that I'm looking for a property (do you remember what that is?)  
+	I'm assuming that this will be the most straightforward response. 
+	This is the page that comes up:
+</p>
+<img src="https://weebly.com/uploads/6/0/5/0/60503695/7141128_orig.png" alt="Picture" style="width:auto;max-width:100%">
+<p>
+	W3Schools always has examples of what they're teaching, which is very helpful! 
+	If you read the first example, it says "Add rounded borders to a &lt;div&gt; element:"  which is what I'm looking for.  
+	I decided to click the "Try It Yourself" button, to see how it worked before I used it in my code.
+	This is what comes up:
+</p>
+<img src="https://weebly.com/uploads/6/0/5/0/60503695/3503967_orig.png" alt="Picture" style="width:auto;max-width:100%">
+<p>To make sure that the border-radius is the property that does the rounded edges, I'm going to try changing it to 10px:</p>
 
-					
-				</td>				<td class="wsite-multicol-col" style="width:75.48622997344%; padding:0 15px;">
-					
-						
+<img src="https://weebly.com/uploads/6/0/5/0/60503695/3763862_orig.png" alt="Picture" style="width:auto;max-width:100%">
 
-<div class="paragraph" style="text-align:left;"><span><span>When you’re building a house, the first things you think about is the structure. &nbsp;You need the frame, the rooms, the floors, and the roof to make the house liveable. &nbsp;But if you stopped working on your house right after the last nail was hammered in, you would have a pretty lame home, right? &nbsp;If there was no painting on the walls, no carpets, no pictures, no chairs or tables, you may as well not live in the house at all. </span></span><br><br><span><span>CSS is like the decoration of the house: it’s not a “necessary” part to a web page, but it’s still pretty important. &nbsp;CSS allows you to add color, format, and styling to your HTML page, just like the interior design of a house adds to the frame.</span></span><br><br><span><span><font size="5">What CSS Can Do<br>​</font></span></span><span>CSS can be used to modify the existing HTML elements on the page. Here are some specific examples of what it can do:</span><br><br><ul><li><span><span>Change font</span></span></li></ul><ul><li><span><span>Change font size</span></span></li><li><span><span>Change text color</span></span></li><li><span><span>Change background color</span></span></li><li><span><span>Change shapes of things</span></span></li><li><span><span>Change borders </span></span></li><li><span><span>Change layouts of pages</span></span></li><li><span><span>Hide or show elements</span></span></li></ul><br><span><span>CSS is written in </span><span style="font-weight:700">property and value pairs</span><span>. &nbsp;The </span><span style="font-weight:700">property</span><span> is the thing that you’re trying to change, like the font size or the background color. &nbsp;The </span><span style="font-weight:700">value</span><span> is what you want to change it to, like 5px or 10px or blue or green.</span></span><br><br><span><span>Properties and values are written like this: &nbsp;</span><span style="font-weight:700">property: value;</span></span><br><br><span><span>Here are some examples of property value pairs. &nbsp;The property is in red and the value is blue.</span></span><br><br><ul><li><span><span><font color="#c23b3b">font-family</font>: </span><span><font color="#3a96b8">"Times New Roman", Georgia, Serif</font>;</span></span></li><li><span><span><font color="#a82e2e">font-size</font>: <font color="#3a96b8">30px</font>;</span></span></li><li><span><span><font color="#a82e2e">text-color</font>: <font color="#3a96b8">blue</font>;</span></span></li><li><span><span><font color="#a82e2e">background-color</font>: <font color="#3a96b8">green</font>;</span></span></li><li><span><font color="#a82e2e">border-radius</font>: <font color="#3a96b8">3px</font>;</span></li><li><span><span><font color="#a82e2e">border</font>: <font color="#3a96b8">1px solid black</font>;</span></span></li><li><span><span><font color="#a82e2e">display</font>: <font color="#3a96b8">inline-block</font>; </span></span></li><li><span><span><font color="#a82e2e">display</font>: <font color="#3a96b8">none</font>;</span></span></li></ul><br><span><span><font size="5">Formatting CSS</font></span></span><br>N<span>ow that you know about property/value pairs, which will tell the computer how you want to change an element, you need to tell it which element you’re trying to change. &nbsp;</span><br><br><span><span>Here is a picture of a little bit of full CSS code:</span></span></div>
-
-<div><div class="wsite-image wsite-image-border-none " style="padding-top:10px;padding-bottom:10px;margin-left:0px;margin-right:0px;text-align:center">
-<a>
-<img src="/uploads/6/0/5/0/60503695/5854199.png?340" alt="Picture" style="width:340;max-width:100%">
-</a>
-<div style="display:block;font-size:90%"></div>
-</div></div>
-
-<div class="paragraph" style="text-align:left;">​​<span><span>You probably recognize the pink part, which are the property/value pairs.<br></span></span><br><span><span>The yellow part is called the </span><strong><span><font color="#626262">selector</font></span></strong><span>. &nbsp;The selector </span><span style="font-weight:700">tells the browser which HTML parts to style</span><span>. &nbsp;There are three main ways to identify them:</span></span><br><br><span><span><font size="4">​<u>By tag</u></font>:&nbsp;</span></span>If you want the CSS changes to apply to <span style="font-weight:700">every element of a certain tag</span> (like all of the p tags on a page) you can simply use the name of the tag like in the example above. &nbsp;To do this, just use the letters that make up the HTML tag. &nbsp;So, if you want to make every button on a page the same color, you would make the selector “button"​<br><br><span><span><u>By ID</u>:&nbsp;</span></span><span><span>If you only want to style </span><span style="font-weight:700">certain elements within a tag</span><span> (say you want one button to be red but another button to be blue) you can identify them by ID. &nbsp;When you’re using an ID for the selector, you’ll need to put a # and then the name of the element (if the element’s name was elementName, you would identify it using #elementName)</span></span><br><br><span><span><u><font size="4">By Class</font></u>: &nbsp;</span></span><span><span>Class is similar to ID, except that many different elements can have the same class. &nbsp;To style elements of a class, write a period and then the class name. &nbsp;If the class name was greenButtons, the selector would be .greenButtons</span></span><br><br><span><span>If you ever want to apply the same CSS using multiple selectors, you can simply make a list separated by commas, like this: </span></span><br><br><span><span>#button1, #button3, p {</span></span><br><span><span>&nbsp;&nbsp; &nbsp;</span><span>color: red;</span></span><br><span><span>}</span></span><br><br><span><span>“Color: red” will apply to the element with ID button1, the element with ID button3, and all p tags. </span></span><br><br><span><span>The last important part of CSS is </span><span>the <strong>open and close curly brackets</strong>.</span><span> &nbsp;All of the style change you want to make need to go between an open and close bracket. &nbsp;Look at this sample of CSS: </span></span><br><br><span><span>#myElement <strong><font color="#81c94c">{</font></strong></span></span><br><span><span>&nbsp;&nbsp; &nbsp;</span><span>color: red;</span></span><br><span><span>&nbsp;&nbsp; &nbsp;</span><span>background-color: blue;</span></span><br><strong><span><span><font color="#81c94c">}</font></span></span></strong><br><br><span><span>The open and close brackets tell the browser which CSS code is for which elements. &nbsp;By putting “color:red;” and “background-color: blue” between a { bracket and a } bracket, you’re telling it that that is the CSS that should be applied to #myElement.</span></span><br><br></div>
-
-<div><div class="wsite-image wsite-image-border-border-width:0 " style="padding-top:10px;padding-bottom:10px;margin-left:0;margin-right:0;text-align:center">
-<a>
-<img src="/uploads/6/0/5/0/60503695/1462461376.png" alt="Picture" style="width:auto;max-width:100%">
-</a>
-<div style="display:block;font-size:90%"></div>
-</div></div>
-
-<div class="paragraph" style="text-align:left;"><span><span><font size="5">Googling CSS</font></span></span><br><span>The good thing about CSS is that it’s pretty intuitive, meaning it’s not too difficult to understand. &nbsp;However, there are some things that you’ll have to look up using google. &nbsp;</span><br><br>Remember: if there’s anything that you want to do in CSS but you don’t know how, <span style="font-weight:700">google it</span>!!!<br><br><span>I want to make a button with rounded edges, but I don't know how do do rounded edges. &nbsp;I would start by making a button tag in HTML, like this:</span><br><br><span>&lt;button&gt;Click Me!!!!!!!!!&lt;/button&gt;</span><br><br><span><u>Copy and paste that into the JSBin HTML window</u>. &nbsp;The corners aren’t rounded, are they? &nbsp;I don’t know how to make them rounded... but I do know that I’ll use CSS to make that change, because rounding the edges is modifying an existing element. &nbsp;So, I’m going to google it.<br><br>I start by searching using important keywords. &nbsp;The search I'll use for this is: &nbsp;"rounded edges css"</span></div>
-
-<div><div class="wsite-image wsite-image-border-none " style="padding-top:10px;padding-bottom:10px;margin-left:0px;margin-right:10px;text-align:left">
-<a>
-<img src="/uploads/6/0/5/0/60503695/61692.png?1462470286" alt="Picture" style="width:auto;max-width:100%">
-</a>
-<div style="display:block;font-size:90%"></div>
-</div></div>
-
-<div class="paragraph" style="text-align:left;">The first two both seem promising, because they are both W3Schools websites. &nbsp;W3Schools has tons of easy to understand tutorials on HTML, CSS, and JavaScript. &nbsp;<font color="#c23b3b"><strong>***W3Schools should always be your first click when you're googling!***</strong></font> &nbsp;Since I know that W3Schools is a great resource, I'm going to choose one of those. &nbsp;<br><br>I ended up choosing the second, because it says "border-radius property" and I know that I'm looking for a property (do you remember what that is?) &nbsp;I'm assuming that this will be the most straightforward response. &nbsp;<br><br>​This is the page that comes up:<br></div>
-
-<div><div class="wsite-image wsite-image-border-none " style="padding-top:10px;padding-bottom:10px;margin-left:0;margin-right:0;text-align:center">
-<a>
-<img src="/uploads/6/0/5/0/60503695/7141128_orig.png" alt="Picture" style="width:auto;max-width:100%">
-</a>
-<div style="display:block;font-size:90%"></div>
-</div></div>
-
-<div class="paragraph" style="text-align:left;">W3Schools always has examples of what they're teaching, which is very helpful! &nbsp;If you read the first example, it says "Add rounded borders to a &lt;div&gt; element:" &nbsp;which is what I'm looking for. &nbsp;I decided to click the "Try It Yourself" button, to see how it worked before I used it in my code.<br><br>​This is what comes up:</div>
-
-<div><div class="wsite-image wsite-image-border-none " style="padding-top:10px;padding-bottom:10px;margin-left:0;margin-right:0;text-align:center">
-<a>
-<img src="/uploads/6/0/5/0/60503695/3503967_orig.png" alt="Picture" style="width:auto;max-width:100%">
-</a>
-<div style="display:block;font-size:90%"></div>
-</div></div>
-
-<div class="paragraph" style="text-align:left;">To make sure that the border-radius is the property that does the rounded edges, I'm going to try changing it to 10px:</div>
-
-<div><div class="wsite-image wsite-image-border-none " style="padding-top:10px;padding-bottom:10px;margin-left:0;margin-right:0;text-align:center">
-<a>
-<img src="/uploads/6/0/5/0/60503695/3763862_orig.png" alt="Picture" style="width:auto;max-width:100%">
-</a>
-<div style="display:block;font-size:90%"></div>
-</div></div>
-
-<div class="paragraph" style="text-align:left;">Do you see the difference? &nbsp;When I changed the border-radius to 10px the corners got less rounded! &nbsp;<br><br>Now, go back to your bin where you pasted the &lt;button&gt; tag. &nbsp;<u>In the CSS pane, change the border-radius for the button</u>. &nbsp;<br><br>This is an example of how you should google when you're trying to do something in CSS. &nbsp;Here's are a few things to remember:<ol><li>Use direct and relevant keywords</li><li>Choose a link to click (W3Schools is your often your best bet)</li><li>Read the page. &nbsp;If it isn't what you wanted, go back and find a different page. &nbsp;</li><li>Try the W3 examples if they're there. &nbsp;Play around until you totally understand the solution to you problem.&nbsp;</li><li>Read the page, don't just copy and paste the first thing you see!</li></ol></div>
-
-
-					
-				</td>				<td class="wsite-multicol-col" style="width:12.595032809806%; padding:0 15px;">
-					
-						
-
-<div class="wsite-spacer" style="height:50px;"></div>
-
-
-					
-				</td>			</tr>
-		</tbody>
-	</table>
-</div></div></div>
+<div>Do you see the difference?  When I changed the border-radius to 10px the corners got less rounded!  <br><br>Now, go back to your bin where you pasted the &lt;button&gt; tag.  <u>In the CSS pane, change the border-radius for the button</u>.
+	 <br><br>This is an example of how you should google when you're trying to do something in CSS.  Here's are a few things to remember:
+	<ol>
+		<li>Use direct and relevant keywords</li>
+		<li>Choose a link to click (W3Schools is your often your best bet)</li>
+		<li>Read the page.  If it isn't what you wanted, go back and find a different page.  </li>
+		<li>Try the W3 examples if they're there.  Play around until you totally understand the solution to you problem. </li>
+		<li>Read the page, don't just copy and paste the first thing you see!</li>
+	</ol>
 </div>
-</div>
-      </div>
-    
