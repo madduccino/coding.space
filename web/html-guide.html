@@ -1,18 +1,32 @@
 <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 <style>
 	body {
-		width: 600px;
+		max-width: 700px;
 		margin-left: auto;
 		margin-right: auto;
+		padding: 10px;
+		line-height: 25px;
+		font-size: 18px;
+	}
+	
+	iframe {
+		width: 100%;
+		height: 300px;
+	}
+	
+	p {
+		padding-top: 10px;
+		padding-bottom: 10px;
+		
 	}
 </style>
 
 <body>
-	<h1>Intro to HTML</h1>
+	<h1>Introduction to HTML</h1>
 
 	<div class="paragraph" style="text-align:left;"><span><span>As you learned in the </span><a href="https://docs.google.com/document/d/1bIxgsGalgXsdVvGX-RubHqpvp-0iBkV5dIPmAkQmoIQ/edit?usp=sharing"><span>Intro to Web</span></a><span>, HTML is </span><span style="font-weight:700">everything on the page you can </span>
-		<span style="font-weight:700">see</span><span>, including headings, paragraphs, images, or buttons.</span></span><br><br><span><span>There are actually a lot of similarities between a HTML page and a google doc. &nbsp;Just like in a google doc, HTML allows you to add elements to the page like text, buttons, headings, paragraphs, links, and photos.</span></span><br><br><span><span>The big difference between the two is in </span>
-		<span style="font-weight:700">how </span><span>you do it. &nbsp;In google docs, to add a picture to your page you click "insert" and then "image" and then you upload a picture from your computer. &nbsp;In HTML, instead of clicking to add a photo you have to use the html tag for photo by typing it using HTML code.</span></span><br><br><span><span>Similarly, if you want to make a Heading in google docs, you highlight the text you want for the heading and click "Normal text" and then switch it to "Heading 1." &nbsp;In HTML, you have to use the HTML tag for Heading 1 by typing it onto the page in HTML code.</span></span><br><br><span><span>So now you are beginning to get what HTML can do... but how do you do it?</span></span><br><br><span><span>Writing HTML code</span></span><span><span>Writing an HTML tag is kind of like making a sandwich. &nbsp;That sounds pretty weird, but bear with me. &nbsp;There are three main things you need for a sandwich: </span></span>
+		<span style="font-weight:700">see</span><span>, including headings, paragraphs, images, or buttons.</span></span><br><br><span><span>There are actually a lot of similarities between a HTML page and a google doc.  Just like in a google doc, HTML allows you to add elements to the page like text, buttons, headings, paragraphs, links, and photos.</span></span><br><br><span><span>The big difference between the two is in </span>
+		<span style="font-weight:700">how </span><span>you do it.  In google docs, to add a picture to your page you click "insert" and then "image" and then you upload a picture from your computer.  In HTML, instead of clicking to add a photo you have to use the html tag for photo by typing it using HTML code.</span></span><br><br><span><span>Similarly, if you want to make a Heading in google docs, you highlight the text you want for the heading and click "Normal text" and then switch it to "Heading 1."  In HTML, you have to use the HTML tag for Heading 1 by typing it onto the page in HTML code.</span></span><br><br><span><span>So now you are beginning to get what HTML can do... but how do you do it?</span></span><br><br><span><span>Writing HTML code</span></span><span><span>Writing an HTML tag is kind of like making a sandwich.  That sounds pretty weird, but bear with me.  There are three main things you need for a sandwich: </span></span>
 		<ul>
 			<li><span><span>Top piece of bread</span></span>
 			</li>
@@ -20,7 +34,7 @@
 			</li>
 			<li><span><span>Bottom piece of bread</span></span>
 			</li>
-		</ul><span><span>You need the same things in HTML! &nbsp;But instead of food, you'll need:</span></span>
+		</ul><span><span>You need the same things in HTML!  But instead of food, you'll need:</span></span>
 		<ul>
 			<li><span><span>An open tag</span></span>
 			</li>
@@ -40,10 +54,10 @@
 		</div>
 	</div>
 
-	<div class="paragraph" style="text-align:left;"><span>HTML is made of lots of different&nbsp;<span style="font-weight:700">tags</span>. &nbsp;You combine tags to make a webpage. &nbsp;Different kinds of tags include text, headings, images, buttons, etc. &nbsp;</span><br><br><span>To put a tag on your page, you'll need to start with an&nbsp;<span style="font-weight:700">open tag</span>.
-		(That's the top layer of bread.) Each tag has a specific letter/name, which is represented by the letter between the &lt; and &gt;. &nbsp;The element for normal text is a p tag, and so its open tag it looks like this:&nbsp;<span style="font-weight:700">&lt;p&gt;</span>.
-		The close tag that matches&nbsp;&lt;p&gt;&nbsp;is&nbsp;<span style="font-weight:700">&lt;/p&gt;</span>. &nbsp;(Notice how the open and close tag are different? &nbsp;<span style="font-weight:700">The close tag has a / right after the first &lt;</span>.)</span><br><br><span>A full p-tag looks like this:&nbsp;</span><br><span>&lt;p&gt;&lt;/p&gt;</span><br><br><span>Okay. &nbsp;How about you try it out? &nbsp;To start, you're going to need to go to&nbsp;<a href="http://jsbin.com">jsbin.com</a>&nbsp;and make an account if you don't have one. After you've created an account:&nbsp;</span><br><br><span><span style="font-weight:700">1) Copy and paste the above p-tag into JSBin between the&nbsp;</span>
-		<span style="font-weight:700">&lt;body&gt;</span><span style="font-weight:700">&nbsp;and&nbsp;</span><span style="font-weight:700">&lt;/body&gt;</span><span style="font-weight:700">&nbsp;tags. &nbsp;</span></span>
+	<div class="paragraph" style="text-align:left;"><span>HTML is made of lots of different <span style="font-weight:700">tags</span>.  You combine tags to make a webpage.  Different kinds of tags include text, headings, images, buttons, etc.  </span><br><br><span>To put a tag on your page, you'll need to start with an <span style="font-weight:700">open tag</span>.
+		(That's the top layer of bread.) Each tag has a specific letter/name, which is represented by the letter between the &lt; and &gt;.  The element for normal text is a p tag, and so its open tag it looks like this: <span style="font-weight:700">&lt;p&gt;</span>.
+		The close tag that matches &lt;p&gt; is <span style="font-weight:700">&lt;/p&gt;</span>.  (Notice how the open and close tag are different?  <span style="font-weight:700">The close tag has a / right after the first &lt;</span>.)</span><br><br><span>A full p-tag looks like this: </span><br><span>&lt;p&gt;&lt;/p&gt;</span><br><br><span>Okay.  How about you try it out?  To start, you're going to need to go to <a href="http://jsbin.com">jsbin.com</a> and make an account if you don't have one. After you've created an account: </span><br><br><span><span style="font-weight:700">1) Copy and paste the above p-tag into JSBin between the </span>
+		<span style="font-weight:700">&lt;body&gt;</span><span style="font-weight:700"> and </span><span style="font-weight:700">&lt;/body&gt;</span><span style="font-weight:700"> tags.  </span></span>
 	</div>
 
 	<div>
@@ -55,10 +69,10 @@
 		</div>
 	</div>
 
-	<div class="paragraph" style="text-align:left;"><span style="font-weight:700">What do you see in the output? &nbsp;Nothing, right? &nbsp;That's because we have the p-tag on the page, &nbsp;but it's empty. &nbsp;(It's a bread sandwich -- there's nothing inside to make it interesting!)</span><br><br>The
-		words that you want to write on the page go&nbsp;<span style="font-weight:700">between the open and close tag</span>: &nbsp;<br><br>&lt;p&gt;This is a p tag.&lt;/p&gt;&nbsp;&nbsp;<br><br><span style="font-weight:700">2) Go back to JS bin and add text to your &lt;p&gt; tag.</span><br><br>Most
-		other elements will work the same way as the &lt;p&gt; tag. &nbsp;For example, if you want to make a button that says click me, the code will look like this:&nbsp;<br><br>&lt;button&gt;Click Me!&lt;/button&gt;<br><br><span style="font-weight:700">3) Try making a button in JsBin! (Clicking the button won't do anything yet. &nbsp;We'll work on that once we're using JavaScript.)</span><br><br>If
-		you want to make a heading for your page with your name, it will look like this:&nbsp;<br><br>&lt;h1&gt;Your Name&lt;/h1&gt;<br><br>You notice that in every example, there is the open tag, close tag, and content in the middle, right? &nbsp;Great. &nbsp;Let's
+	<div class="paragraph" style="text-align:left;"><span style="font-weight:700">What do you see in the output?  Nothing, right?  That's because we have the p-tag on the page,  but it's empty.  (It's a bread sandwich -- there's nothing inside to make it interesting!)</span><br><br>The
+		words that you want to write on the page go <span style="font-weight:700">between the open and close tag</span>:  <br><br>&lt;p&gt;This is a p tag.&lt;/p&gt;  <br><br><span style="font-weight:700">2) Go back to JS bin and add text to your &lt;p&gt; tag.</span><br><br>Most
+		other elements will work the same way as the &lt;p&gt; tag.  For example, if you want to make a button that says click me, the code will look like this: <br><br>&lt;button&gt;Click Me!&lt;/button&gt;<br><br><span style="font-weight:700">3) Try making a button in JsBin! (Clicking the button won't do anything yet.  We'll work on that once we're using JavaScript.)</span><br><br>If
+		you want to make a heading for your page with your name, it will look like this: <br><br>&lt;h1&gt;Your Name&lt;/h1&gt;<br><br>You notice that in every example, there is the open tag, close tag, and content in the middle, right?  Great.  Let's
 		look at this picture of HTML code:<br></div>
 
 	<div>
@@ -70,26 +84,67 @@
 		</div>
 	</div>
 
-	<div class="paragraph" style="text-align:left;"><span>Does it make a little more sense now? &nbsp;Now that you've mastered the format let's move on to attributes, which will allow you to provide more specific information about an element.<br></span><br><span><font size="5">Attributes<br></font><br>So, we're going to stop talking about sandwiches now. &nbsp;Let's pretend that a single HTML tag is like a person. &nbsp;Attributes are just ways to describe the person in more detail, like their name, their hair color, their eye color, etc.</span><br><br><span>Attributes provide&nbsp;</span>
-		<span style="font-weight:700">additional information</span><span>&nbsp;about an element. &nbsp;</span><span style="font-weight:700">They must be written in</span><span>&nbsp;</span><span style="font-weight:700">the open tag</span><span>. &nbsp;Attributes are formatted like this:&nbsp;</span>
-		<span style="font-weight:700">attribute="value"</span><span>. So if your name was Jake, we could use&nbsp;</span><span style="font-weight:700">name="Jake"</span><span>&nbsp;as an attribute to describe you.</span><br><br><span>One attribute that you'll use a lot is the&nbsp;</span>
-		<span style="font-weight:700">id attribute</span><span>. &nbsp;It allows you to give your element a name that can be used to identify it in CSS and JavaScript. &nbsp;So if you were an HTML element named Jake, we'd actually say id="Jake" because id's are the names of HTML elements.</span><br><br><span>To set the id of a &lt;p&gt; tag, use the code highlighted in yellow:&nbsp;</span><br><br><span>&lt;p&nbsp;</span>
-		<span style="font-weight:700">id=</span><span>"</span><span style="font-weight:700">elementName</span><span>"&gt;This is a p tag with an id of elementName!&lt;/p&gt;</span><br><br><span>To have an&nbsp;</span><span style="font-weight:700">image</span><span>&nbsp;on your page, you'll need to use an&nbsp;&lt;img&gt;&nbsp;tag. &nbsp;To specify which picture shows up, use the&nbsp;</span>
-		<span style="font-weight:700">src&nbsp;</span><span>attribute (src stands for source of the image.) &nbsp;&nbsp;</span>​</div>
-
-	<span class="imgPusher" style="float:left;height:0px"></span><span style="display: table;width:387px;position:relative;float:left;max-width:100%;;clear:left;margin-top:0px;*margin-top:0px"><a><img src="https://weebly.com/uploads/6/0/5/0/60503695/3441896.png?377" style="margin-top: 10px; margin-bottom: 10px; margin-left: 0px; margin-right: 10px; border-width:0; max-width:100%" alt="Picture" class="galleryImageBorder wsite-image"></a><span style="display: table-caption; caption-side: bottom; font-size: 90%; margin-top: -10px; margin-bottom: 10px; text-align: center;" class="wsite-caption"></span></span>
-	<div class="paragraph" style="text-align:left;display:block;">To choose a picture, choose an image in google images right-click it and copy the photo's address. Paste that address as the image's source as we do below:<br><br>&lt;img id="cuteDog"&nbsp;<span style="font-weight:700">src="http://cdn.petpictures.xyz/2015/07/20/cute-dog-pics-with-words.jpg"</span>&gt;&lt;/img&gt;<br><br><br>
-		<span style="font-weight:700"><br>1) Copy and paste the above img tag into JSBin.&nbsp;</span><br><br><span style="font-weight:700">2) &nbsp;Can you find an image on google (using the instructions above) and put it onto your page below this image?</span><br><br>There
-		are hundreds of different attributes. &nbsp;Some attributes only work with specific elements (like&nbsp;<span style="font-weight:700">src</span>), and some (like&nbsp;<span style="font-weight:700">id</span>) work for all elements. &nbsp;</div>
-	<hr style="width:100%;clear:both;visibility:hidden;">
+	<p>
+		Does it make a little more sense now?
+		Now that you've mastered the format let's move on to attributes, 
+		which will allow you to provide more specific information about an element.
+	</p>
+	<h2>Attributes</h2>
+	<p>
+		So, we're going to stop talking about sandwiches now.
+		Let's pretend that a single HTML tag is like a person.  
+		Attributes are just ways to describe the person in more detail, 
+		like their name, their hair color, their eye color, etc.
+	</p>
+	<p>
+		Attributes provide additional information about an element. 
+		They must be written in the open tag. Attributes are formatted like this: attribute="value". 
+		So if your name was Jake, we could use name="Jake" as an attribute to describe you. 
+	</p>
+	<p>	
+		One attribute that you'll use a lot is the id attribute.  
+		It allows you to give your element a name that can be used to identify it in CSS and JavaScript. 
+		So if you were an HTML element named Jake, we'd actually say id="Jake" because id's are the names of HTML elements.
+		This is a p tag with an id of elementName: 
+	</p>
+	<pre>&lt;p id="elementName"&gt;</pre>
+	<p>
+		To have an image on your page, you'll need to use an &lt;img&gt; tag.  
+		To specify which picture shows up, use the src attribute (src stands for source of the image.) 
+	</p>
+	<img src="https://weebly.com/uploads/6/0/5/0/60503695/3441896.png?377"></img>
+	<p>
+		To choose a picture, choose an image in google images right-click it and copy the photo's address. 
+		Paste that address as the image's source as we do below:
+	</p>
+	<pre>&lt;img id="cuteDog" src="http://cdn.petpictures.xyz/2015/07/20/cute-dog-pics-with-words.jpg"&gt;&lt;/img&gt;</pre>
+	<ol>
+		<li>
+			Copy and paste the above img tag into JSBin.
+		</li>
+		<li>
+			Can you find an image on google (using the instructions above) and put it onto your page below this image?
+		</li>
+	</ol>
+	<p>
+		There are hundreds of different attributes.  
+		Some attributes only work with specific elements, like src.
+		Some, like id, work for all elements.
+	</p>
 	<script>
-	  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-	  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-	  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-	  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-	
-	  ga('create', 'UA-86847686-1', 'auto');
-	  ga('send', 'pageview');
-	
+		(function(i, s, o, g, r, a, m) {
+			i['GoogleAnalyticsObject'] = r;
+			i[r] = i[r] || function() {
+				(i[r].q = i[r].q || []).push(arguments)
+			}, i[r].l = 1 * new Date();
+			a = s.createElement(o),
+				m = s.getElementsByTagName(o)[0];
+			a.async = 1;
+			a.src = g;
+			m.parentNode.insertBefore(a, m)
+		})(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+		ga('create', 'UA-86847686-1', 'auto');
+		ga('send', 'pageview');
 	</script>
 </body>

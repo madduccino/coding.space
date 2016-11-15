@@ -1,20 +1,31 @@
 <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 <style>
 	body {
-		width: 600px;
+		max-width: 700px;
 		margin-left: auto;
 		margin-right: auto;
 	}
+	iframe {
+		width: 100%;
+		height: 300px;
+		
+	}
+	p {
+		padding-top: 10px;
+		padding-bottom: 10px;
+		line-height: 25px;
+		font-size: 18px;
+	}
 </style>
-<h1>Intro to Web</h1>
+<h1>Introduction to Web</h1>
 <p>
 	You probably already know what a webpage is... 
 	when you type a URL and press enter, a bunch of content shows up. 
 	That's a webpage. 
-	ut how is a webpage made?
+	But how is a webpage made?
 </p>
 <p>
-	A Web page is just code written in JavaScript, HTML, and CSS. 
+	A Web page is code written in JavaScript, HTML, and CSS. 
 	Let's think about that code like a document written in a foreign language. 
 	If you were looking at a document written in German, you wouldn't know what 
 	it said in English... just like when you
@@ -36,19 +47,20 @@
 </p>
 <h2>So what are HTML, CSS, and JavaScript?</h2>
 <p>
-	CSS, and JS are three different coding languages that do different things. They are the three, and only three, different programming languages that our browser knows how to turn into a web page. Most web pages that you see online use all three of them.
+	HTML, CSS, and JS are three different coding languages that do different things. They are the three, and only three, different programming languages that our browser knows how to turn into a web page. Most web pages that you see online use all three of them.
 	Let's break it down:
 </p>
 <h3>HTML</h3>
 <p>
 	HTML is everything on the page that you see, including words, images, links, and embedded content. The following page uses only HTML: 
-	<a href="http://output.jsbin.com/zovayu">http://output.jsbin.com/zovayu</a>
 </p>
+<iframe src="https://stevekrouse.github.io/embed-jsbin/?id=zovayu"></iframe>
 <h3>CSS</h3>
 <p>
 	CSS controls how the HTML looks by changing the fonts, the text or background color, 
 	the alignment, etc. Here is the same webpage as before with CSS to make it prettier: 
-	<a href="http://output.jsbin.com/jekedu/2">http://output.jsbin.com/jekedu/</a>
+</p>
+<iframe src="https://stevekrouse.github.io/embed-jsbin/?id=jekedu/2"></iframe>
 <p>
 	Did you notice anything different? 
 	(Hint: background color, content was centered, text color, font.) 
@@ -60,8 +72,8 @@
 	A webpage will remain exactly the same unless you use JavaScript. JavaScript also allows the user to interact with the webpage, 
 	by allowing you to trigger events. 
 	Here is the same page that has JS added: 
-	<a href="http://output.jsbin.com/mujuza">http://output.jsbin.com/mujuza</a> 
 </p>
+<iframe src="https://stevekrouse.github.io/embed-jsbin/?id=mujuza"></iframe> 
 <p>
     Do you see how the background of the page is changing colors? 
 	That wouldn't be possible without JavaScript, because HTML/CSS can't change 
