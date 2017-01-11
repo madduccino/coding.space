@@ -1,6 +1,7 @@
 <head>
     <script src="https://cdn.rawgit.com/stevekrouse/WoofJS/1e9b9a5e25ec87307efbe17924a09c4e0865fe6e/woof.js"></script>
     <script>
+    
     //Rocket Race
     
     // Creates a variable "rocket"
@@ -52,7 +53,8 @@
     forever(() => {
         stars.forEach(star => {
             if (star.touching(rocket)) {
-                star.delete(), score++
+                star.delete()
+                score++
             }
         })
     })
@@ -109,7 +111,7 @@
             width: 100,
             x: randomX(),              // Creates new variable "planet" every 10 seconds
             y: randomY()
-        }, )
+        } )
         planets.push(planet)     // Pushes every "planet" to the "planets" array
     })
     
@@ -117,7 +119,8 @@
     forever(() => {
         planets.forEach(planet => {planet.width = planet.height;
             if (planet.touching(rocket)) {
-                rocket.showing = false, gameover.showing = true
+                rocket.showing = false
+                gameover.showing = true
             }
         })
     })
@@ -125,6 +128,7 @@
     instruction_text.sendToFront()
     instruction_text2.sendToFront()
     rocket.sendToFront()              // Sends the "instruction_text"s, "rocket", and "gameover" to the front layer
-    gameover.sentToFront()
+    gameover.sendToFront()
+  
     </script>
 </head>
