@@ -1,0 +1,29 @@
+html body {
+    font-family: sans-serif;
+    background-color: #E8F1F2;
+}
+
+h1, h3 {
+    margin-top: 20px;
+    text-align: center;
+}
+
+iframe {
+    border: 1px solid #000;
+	border-radius: 2px;
+	overflow: hidden;
+}
+
+.steps {
+    width: 485px;
+    margin: 15px auto;
+    text-align: center;
+    background-color: #7EA9C9;
+    border-radius: 2px;
+    padding: 15px;
+}
+
+#submit {
+    width: 485px;
+    margin: auto;
+}
