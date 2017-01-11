@@ -80,15 +80,15 @@
     });
     
     // This is a reset key, if the key "space" is pressed, the game resets: the timer resets, the array "objects" is cleared, and sprite "game_over" hides
-    forever(() => {
-      if(keysDown.includes("SPACE")){
-        gameOver.showing = false;
-        objects.forEach(object => object.delete())
-        objects = []
-        timer = 0
-        defrost();     // Unfreezes the game screen
-      }
-    })
+  onKeyDown(key => {
+  if (key == 'SPACE') {
+    gameOver.showing = false;
+    objectFolder.forEach(object => object.delete())
+    objectFolder = []
+    timer = 0
+    defrost();
+  }
+  })
     
     // Makes it so that the character sprite cannot move off-screen
     forever(() => {
