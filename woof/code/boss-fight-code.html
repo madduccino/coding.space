@@ -2,7 +2,7 @@
     <script src="https://cdn.rawgit.com/stevekrouse/WoofJS/1e9b9a5e25ec87307efbe17924a09c4e0865fe6e/woof.js"></script>
     <script>
     // Boss Fight
-    setBackdropColor("red") // Sets the backdrop color to red
+    setBackdropURL("http://i.imgur.com/dsVWsfI.jpg") // Sets the backdrop to an image
    
     // Creates the ship sprite
     var ship = new Image({url: "https://i.imgur.com/yiWKW9l.png?1", x: 0, y: minY + 30, height: 40, width: 35});
@@ -79,11 +79,11 @@
   
     // Creates a variable "health", that is displayed through the text variable "shipHealth" (displays the player ship's health)
     var health = 20;  
-    var shipHealth = new Text({x: minX + 50, y: minY + 10, size: 30, color: "black", text: () => `HP: ${health}`});
+    var shipHealth = new Text({x: minX + 50, y: minY + 10, size: 30, color: "white", text: () => `HP: ${health}`});
     
     // Creates a variable "bossHealth", that is displayed through the text variable "bbossHealth" (displays the boss's health)
     var bossHealth = 10000;
-    var bbossHealth = new Text ({x: minX + 100, y: maxY -30, size: 30, color: "black", text: () => `BOSS: ${bossHealth}`});
+    var bbossHealth = new Text ({x: minX + 100, y: maxY -30, size: 30, color: "white", text: () => `BOSS: ${bossHealth}`});
     
     //Boss Bomb
     var bombs = []
@@ -187,7 +187,7 @@
   
     // Code that lets the player wipe the screen of all enemy projectiles 
     var screenWipes = 3;        // Sets the amount of screen wipes to 3
-    var wipeText = new Text({x: maxX - 70, y: minY + 10, size: 30, color: "black", text: () => `Bombs: ${screenWipes}`})  //Displays the amount of screen wipes the player has
+    var wipeText = new Text({x: maxX - 70, y: minY + 10, size: 30, color: "white", text: () => `Bombs: ${screenWipes}`})  //Displays the amount of screen wipes the player has
     onKeyDown(() => {
       if (screenWipes > 0 && keysDown.includes("S")) {  // Makes it so that the screen can be wiped if the "s" key is pressed and the player has at least 1 screen wipes
         screenWipes -= 1;
@@ -199,9 +199,9 @@
         bombs = []   // Deletes all "bomb" in the "bombs" array, resets the "bombs" array
         blaser.showing = false;
         timer = 0    // Hides sprite "blaser", and resets variable "timer"
-        setBackdropColor("yellow")  
+        setBackdropColor("white")  
         after(0.2, "seconds", () => {
-          setBackdropColor("red")     // Flashes the screen yellow for effect, then returns to the color red
+          setBackdropURL("http://i.imgur.com/dsVWsfI.jpg")     // Flashes the screen yellow for effect, then returns to the color red
       })
     }
   });
