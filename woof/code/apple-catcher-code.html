@@ -20,6 +20,19 @@
     }
     });
     
+    // Creates movement that works on mobile
+    
+    forever(() => {
+      if(mouseDown && mouseX < 0) {
+        catcher.x -= 10;
+      }
+      if(mouseDown && mouseX > 0) {
+        catcher.x += 10;
+      }
+      
+    })
+    
+    
     // Makes the apple fall 
     ready(() => {
       apple.x = random(minX, maxX);
