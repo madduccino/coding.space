@@ -7,14 +7,33 @@ h1 {
     text-align: center;
 }
 
+iframe {
+    border: 1px solid #000;
+	border-radius: 2px;
+	overflow: hidden;
+}
+
+ul {
+    list-style-type: none;
+}
+
 .description {
     width: 500px;
     margin-left: auto;
     margin-right: auto;
     text-align: center;
     background-color: lightblue;
-    border-radius: 5px;
-    padding: 5px;
+    border-radius: 2px;
+    padding: 15px;
+}
+
+.steps {
+    width: 485px;
+    margin: 15px auto;
+    text-align: center;
+    background-color: lightblue;
+    border-radius: 2px;
+    padding: 15px;
 }
 
 .instructions {
@@ -33,7 +52,6 @@ h1 {
 }
 
 #submit {
-    width: 500px;
-    margin-left: auto;
-    margin-right: auto;
+    width: 485px;
+    margin: auto;
 }

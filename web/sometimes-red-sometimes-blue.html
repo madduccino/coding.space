@@ -1,113 +1,57 @@
-<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<html>
+<head>
+	<title>Sometimes Red, Sometimes Blue</title>
+	<link rel="stylesheet" type="text/css" href="./styles-2.css">
+	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+</head>
 
-<style>
-	body {
-		font-family: sans-serif;
-	}
-	
-	h1 {
-		text-align: center;
-	}
-	
-	p {
-		color: white !important;
-		font-weight: bold !important;
-	}
-	
-	.block {
-		margin: 20px;
-		padding: 15px;
-		box-shadow: 2px 1px 1px gray;
-		background-color: #5794DE;
-		color: white;
-		max-width: 500px;
-		text-align: center;
-	}
-	
-	.container {
-		display: flex;
-		flex-direction: column;
-		flex-wrap: nowrap;
-		justify-content: center;
-		align-content: center;
-		align-items: center;
-	}
-	
-	h2 {
-		text-align: center;
-	}
-	
-	.description {
-		width: 500px;
-		margin-left: auto;
-		margin-right: auto;
-		text-align: center;
-		background-color: lightblue;
-		border-radius: 5px;
-		padding: 5px;
-	}
-	
-	#submit {
-		width: 500px;
-		margin-left: auto;
-		margin-right: auto;
-	}
-</style>
 
-<h2> Sometimes Red, Sometimes Blue</h2>
-<div class="description">
-	In this project, we'll be making our own version of <a href="http://sometimesredsometimesblue.com/">Sometimes Red, Sometimes Blue</a>.
-	<br><br> First, we'll build the project in Scratch and then convert it into JavaScript. You'll see how concepts translate from Scratch to JavaScript. For example, you'll learn how Scratch's if-statement is very similar to JavaScript's if-statement.
-</div>
+<body>
 
-<div class="container">
-
-	<h3>In Scratch</h3>
-	<ol>
-		<li>
-			Create a blue backdrop and a red backdrop.
-		</li>
-		<li>
-			On flag click, change the backdrop to red.
-		</li>
-		<li>
-			Edit the code so that on flag click the backdrop randomly changes to red or blue.
-		</li>
-	</ol>
-	<div class="block">
-		<iframe width="485" height="402" src="//scratch.mit.edu/projects/embed/123894796/?autostart=false"></iframe>
+	<h1>Sometimes Red, Sometimes Blue</h1>
+	<div class="steps">
+		<p>In this project, we'll be making our own version of <a href="http://sometimesredsometimesblue.com/">Sometimes Red, Sometimes Blue</a>.</p>
+		<p>First, we'll build the project in Scratch and then convert it into JavaScript. You'll see how concepts translate from Scratch to JavaScript. For example, you'll learn how Scratch's if-statement is very similar to JavaScript's if-statement.</p>
 	</div>
-</div>
+
+	<div class="steps">
+	
+		<h3>In Scratch</h3>
+			<p>1. Create a blue backdrop and a red backdrop.</p>
+			<p>2. On flag click, change the backdrop to red.</p>
+			<p>3. Edit the code so that on flag click the backdrop randomly changes to red or blue.</p>
+			<iframe width="380" height="322" src="//scratch.mit.edu/projects/embed/139351364/?autostart=false"></iframe>
+	</div>
 
 
-<div class="container">
+
 	<h3>In JSBin</h3>
-	<div class="block">
-		<p> Use JavaScript (not CSS) to make the backgroun-color of the page red. </p>
+	<div class="steps">
+		<p>1. Use JavaScript (not CSS) to make the background color of the page red. </p>
 		<iframe width="400" height="300" src="https://stevekrouse.github.io/embed-jsbin/?id=puropel/"></iframe>
 		<br><a target="_blank" href="https://stevekrouse.github.io/embed-jsbin/?id=puropel">Play this demo in full screen.</a>
 	</div>
 
-	<div class="block">
-		<p> Use JavaScript to generate a random number. Store its value in a variable. </p>
+	<div class="steps">
+		<p>2. Use JavaScript to generate a random number. Store its value in a variable. </p>
 		<iframe width="400" height="300" src="https://stevekrouse.github.io/embed-jsbin/?id=nanesi/"></iframe>
 		<br><a target="_blank" href="https://stevekrouse.github.io/embed-jsbin/?id=nanesi/">Play this demo in full screen.</a>
 	</div>
 
-	<div class="block">
-		<p> Depending on the value of your random variable, set the background color to red or blue. </p>
+	<div class="steps">
+		<p>3. Depending on the value of your random variable, set the background color to red or blue. </p>
 		<iframe width="400" height="300" src="https://stevekrouse.github.io/embed-jsbin/?id=ridezul/3/"></iframe>
 		<br><a target="_blank" href="https://stevekrouse.github.io/embed-jsbin/?id=ridezul/3/">Play this demo in full screen.</a>
 	</div>
 
-	<div class="block">
-		<p> Try adding a third color! Keep working on the project until you are happy with it.</p>
+	<div class="steps">
+		<p>4. Try adding a third color! Keep working on the project until you are happy with it.</p>
 		<iframe width="400" height="300" src="https://stevekrouse.github.io/embed-jsbin/?id=bicoduj/"></iframe>
 		<br><a target="_blank" href="https://stevekrouse.github.io/embed-jsbin/?id=bicoduj">Play this demo in full screen.</a>
 	</div>
-</div>
+
 <div id="submit">
-	<iframe width="485" height="1050" src="//tinyurl.com/tcs-submit" allowfullscreen=""></iframe>
+	<iframe width="485" height="1100" src="//tinyurl.com/tcs-submit" allowfullscreen=""></iframe>
 </div>
 <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -119,3 +63,6 @@
   ga('send', 'pageview');
 
 </script>
+
+</body>
+</html>
