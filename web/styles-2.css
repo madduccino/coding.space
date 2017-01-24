@@ -44,6 +44,15 @@ pre > code {
     color: white;
 }
 
+.navbar-inverse .navbar-brand {
+    color: black;   
+}
+
+.navbar-inverse .navbar-brand:hover, 
+.navbar-inverse .navbar-brand:focus {
+    color: black;
+}
+
 .navbar .nav > li > a {
     color:  white;
 }
@@ -76,4 +85,10 @@ pre > code {
 #submit {
     width: 485px;
     margin: auto;
+}
+
+#g-input {
+    margin-top: 25px;
+    margin-left: 5px;
+    width: 100%;
 }
