@@ -2,7 +2,7 @@
     <script src="https://cdn.rawgit.com/stevekrouse/WoofJS/1e9b9a5e25ec87307efbe17924a09c4e0865fe6e/woof.js"></script>
     <script>
      // Snake Game | Full Game
-    
+
     // Sets the backdrop to an image
     setBackdropURL("http://i.imgur.com/l5GbxpA.png?1")
     
@@ -79,7 +79,7 @@
         }
         if(piece.distanceTo(following) > 27) {  // Sets up code for the situation when a "piece"s distance to whatever "following" is is greater than 27
           piece.pointTowards(following);  // Makes the "piece" point towards whatever "following" currently is
-          piece.move(difficulty)     // Makes each piece move at the rate of "difficulty"
+          piece.move(2.5)     // Makes each piece move at the rate of "difficulty"
         }
       })
     })  
@@ -89,21 +89,13 @@
     
     forever(() => {
       bodyArray.forEach(body => {
-       if(snakeHead.touching(body)) {
-         after(1, "seconds", () => { 
-          touchable_bodyArray.push(body)  // after 1 second, pushes "body" from array "bodyArray" into "touchable_bodyArray"
+         after(1, "seconds", () => {
+          if (snakeHead.touching(body)) {
+          gameover.showing = true
+          freeze()            // after 1 second, if anything in "bodyArray" is touching "snakeHead", the game ends
+          }
          })
-       }
       })
-    })
-    
-    forever(() => {
-      touchable_bodyArray.forEach(body => {
-        if (snakeHead.touching(body)) {
-         gameover.showing = true         // If the "snakeHead" touches any "body" in the "touchable_bodyArray", then "gameover" shows, and the game freezes
-         freeze()
-      }
-    })
     })
     
     // Creates obstacles for the snake to avoid
@@ -148,7 +140,7 @@
       if (gamestart === false){   // If "gamestart" is false, then "snakeHead"s movement is set to 0
         snakeHead.move(0)
       } else if (gamestart === true) {
-        snakeHead.move(difficulty)    // If "gamestart" is true, then "snakeHead"s movement is set to "difficulty"
+        snakeHead.move(2.5)    // If "gamestart" is true, then "snakeHead"s movement is set to "difficulty"
       }
     })
       
@@ -234,6 +226,7 @@
     
     // // Creates text variable "difficulty_text" which displays variable "diff"
     // var difficulty_text = new Text({text: () => "Difficulty: " + diff, x: 0, y: minY + 40, size: 30, color: "black"})
+    
     </script>
 </head>
 <body>
