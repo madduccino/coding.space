@@ -1,39 +1,47 @@
-<html>
-<head>
-<title>Adding HighScore to Woof With Firebase</title>
-</head>
-<body>
-<h2>Adding High Score to Your Woof Project with Google FireBase </h2>
-1) Before you get started, take a look at our basic instruction for working with Woof and  Firebase. <br>
-Look through <a href = "https://firebase.google.com/docs/web/setup">  Google’s Firebase Setup Guide</a> 
-and <a href = "https://firebase.google.com/docs/database/web/read-and-write">instructions for working with the Firebase database.</a>
-<br><br>
+<link href="./projects.css" rel="stylesheet">
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<h1><a href="./index.html"><span class="glyphicon glyphicon-arrow-left"></span></a> Adding High Score to Your Woof Project with Google FireBase</h1>
+<div class="container">
+
+
+	<div class="block">
+1) Before you get started, take a look at our basic instruction for working with Woof and  Firebase.
+Look through <a href = "https://firebase.google.com/docs/web/setup"> Google’s Firebase Setup Guide</a> and <a href = "https://firebase.google.com/docs/database/web/read-and-write">Instructions for working with the Firebase database.</a>
+</div>
+<div class="block">
 2) Write your game and test it to make sure it works well without the High Score first.
-<br><br>
+</div>
+<div class="block">
 3) Wrap all your game code in a function, called runGame(). <br>
-Below runGame(), call <font color='blue' face="courier">runGame()</font> to run the game. Make sure that your game works as before.
-<br><br>
-4) Replace the call to runGame, with the following code:<br>
-   <p class="tab"><font color='blue' face="courier"> 
+Below the runGame() function, call <font color='blue' face="courier">runGame()</font> to run the game. <br>
+Make sure that your game works as before.
+</div>
+<div class="block">
+4) Replace the call to runGame with the following code:<br><br>
+   <font color='blue' face="courier"> 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;importCodeURL("https://www.gstatic.com/firebasejs/3.4.0/firebase.js",  runGame)
-   </font></p>
-This will let you run Firebase code. Make sure your game still works as before.
-<br><br>
+   </font><br><br>
+This loads the Firebase libraries before running your game. <br>
+Make sure your game still works as before.
+</div>
+<div class="block">
 5) Create an account on Google Firebase and open a new project.
-<br><br>
+</div>
+<div class="block">
 6) Change the Rules on the database by clicking on “Database” then “RULES”, then “LEARN MORE”  in the Console.<br>
 <br><br>
 <img width = "800" src ="http://www.learncodecraft.com/images/Rules_learnmore.png">
 <br><br>
 <br>
-Then choose “PUBLIC” from the example rule sets.<br>
-
+Then choose “PUBLIC” from the example rule sets.
+<br><br>
 <img width = "600"  src ="http://www.learncodecraft.com/images/public_rules_fb.png">
 <br><br>
 
-Replace the rules for your project with PUBLIC rules. This will allow your game code to read and write freely to the database.
-<br><br>
-7) Go to the Firebase console, choose “Add Firebase To Your Web App.”
+Replace the rules for your project with the PUBLIC rules. This will allow your game code to read and write freely to the database.
+</div>
+<div class="block">
+7) Go to the Firebase console, choose “Add Firebase to your web app.”
 <br><br>
 
 <img width = "600" src ="http://www.learncodecraft.com/images/Add_FB_Button.png">
@@ -44,21 +52,25 @@ Firebase will generate the config code for your project.
 <img width = "600" src ="http://www.learncodecraft.com/images/Firebase_config_Copy.png">
 <br><br>
 Highlight the config code between the second set of < script> tags (starting with “// Initialize Firebase”),  copy and paste it into your project.
-<br><br>
-8) Create score and highScore variables. Inside a forever loop in your game code, check to see if score is higher than highScore, and if so, write the score value to the sharedHighScore location in the database using this line of code:
- <p class="tab"><font color='blue' face="courier"> 
+</div>
+<div class="block">
+8) Create score and highScore variables. Inside a forever loop in your game code, check to see if score is higher than highScore, and if so, write the score value to the sharedHighScore location in the database using this line of code:<br><br>
+<p class="tab" align = "left">  <font color='blue' face="courier"> 
 &nbsp;&nbsp;&nbsp; firebase.database().ref(“sharedHighScore”).set(score);
 </font></p>
-<br>           
-9) In the initialization section of your game,  setup the highScore variable to read from the database sharedHighScore location using the following code:
+</div>
+<div class="block">          
+9) In the initialization section of your game,  setup the highScore variable to read from the database sharedHighScore location using the following code: <br><br>
 
-<p class="tab"><font color='blue' face="courier"> 
+<p class="tab" align = "left"><font color='blue' face="courier"> 
 &nbsp;&nbsp;&nbsp;firebase.database().ref("sharedHighScore").on("value", function (snapshot) {<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;highScore = snapshot.val();<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;highScore = snapshot.val();<br>
 &nbsp;&nbsp;&nbsp;});<br>
 </font></p>
-
+</div>
+<div class="block">
 10) Add a text label to display the high score in the game.
-<br><br>
+</div>
+<div class="block">
 11) Test your game and fix any bugs. Then play your game and get the high score to see if the high score is showing properly. Enjoy!
-<br><br>
+</div>
