@@ -1,6 +1,11 @@
 <link href="./projects.css" rel="stylesheet">
 <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-<h1><a href="./index.html"><span class="glyphicon glyphicon-arrow-left"></span></a> Adding High Score to Your Woof Project with Google FireBase</h1>
+<h1><a href="./index.html"><span class="glyphicon glyphicon-arrow-left"></span></a> Adding High Score with FireBase</h1>
+<style>
+    img {
+      max-width: 400px;
+    }
+</style>
 <div class="container">
     <div class="block">
         1) Before you get started, take a look at our basic instruction for working with Woof and Firebase. Look through <a href="https://firebase.google.com/docs/web/setup"> Google’s Firebase Setup Guide</a> and <a href="https://firebase.google.com/docs/database/web/read-and-write">Instructions for working with the Firebase database.</a>
@@ -22,22 +27,22 @@
     <div class="block">
         6) Change the Rules on the database by clicking on “Database” then “RULES”, then “LEARN MORE” in the Console.<br>
         <br><br>
-        <img width="400" src="http://www.learncodecraft.com/images/Rules_learnmore.png">
+        <img src="http://www.learncodecraft.com/images/Rules_learnmore.png">
         <br><br>
         <br> Then choose “PUBLIC” from the example rule sets.
         <br><br>
-        <img width="400" src="http://www.learncodecraft.com/images/public_rules_fb.png">
+        <img src="http://www.learncodecraft.com/images/public_rules_fb.png">
         <br><br> Replace the rules for your project with the PUBLIC rules. This will allow your game code to read and write freely to the database.
     </div>
     <div class="block">
         7) Go to the Firebase console, choose “Add Firebase to your web app.”
         <br><br>
 
-        <img width="400" src="http://www.learncodecraft.com/images/Add_FB_Button.png">
+        <img src="http://www.learncodecraft.com/images/Add_FB_Button.png">
 
         <br><br> Firebase will generate the config code for your project.
         <br><br>
-        <img width="400" src="http://www.learncodecraft.com/images/Firebase_config_Copy.png">
+        <img src="http://www.learncodecraft.com/images/Firebase_config_Copy.png">
         <br><br> Highlight the config code between the second set of
         < script> tags (starting with “// Initialize Firebase”), copy and paste it into your project.
     </div>
