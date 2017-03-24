@@ -1,58 +1,200 @@
 <!DOCTYPE html>
 <html>
+
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
 	<title>The Coding Space Projects</title>
 	<style>
-	 
-	   body {
-	   	 text-align: center;
-	   	 font-family: 'Lato', sans-serif;
-	   	 background-image: url('./images/galaxy.jpg')  ;
-	   	 background-repeat: no-repeat;
-	   	 background-size: cover;
-	   }
-
-    
-	   
-	   #container {
-	       display:flex;
-   flex-flow:wrap;
-      flex-wrap:wrap;
-      align-content:center;
-      justify-content:center;
-    flex-direction:row;
-    margin: 0 !important;
-      flex-basis:auto;
-	   }
-	   img {
-		  width: 100%;
-		  margin: 20px;
-	   }
-	   h1 {
-	       font-size: 3em;
-	       color: white;
-	       padding-top:80px;
-	       /*background-color: rgba(183, 58, 98, 0.89);*/
-	   }
+		body {
+			text-align: center;
+			font-family: 'Lato', sans-serif;
+			background-image: url('./images/galaxy.jpg');
+			background-repeat: no-repeat;
+			background-size: cover;
+		}
+		
+		a {
+			color: white;
+		}
+		
+		.black-opaque {
+			background-color: rgba(0, 0, 0, 0.6);
+			color: white;
+			font-weight: lighter;
+			line-height: 1.5em;
+			padding: 10px;
+			border-radius: 4px;
+		}
+		
+		.textbox {
+			width: 310px;
+			height: 120px;
+			color: white;
+			margin: 0px 10px;
+		}
+		
+		.textbox-holder {
+			width: 335px;
+		}
+		
+		.moreinfo {
+			width: 1010px;
+			height: 70px;
+			margin-top: 10px;
+		}
+		
+		#container {
+			display: flex;
+			flex-flow: wrap;
+			flex-wrap: wrap;
+			align-content: center;
+			justify-content: center;
+			flex-direction: row;
+			margin: 0 !important;
+			flex-basis: auto;
+		}
+		
+		#info-container {
+			display: flex;
+			flex-direction: column;
+		}
+		
+		#platform-info {
+			width: 1200px;
+			height: 170px;
+			display: flex;
+			flex-direction: row;
+			justify-content: center;
+		}
+		
+		#learn-more {
+			width: 100px;
+			height: 30px;
+			margin-bottom: 10px;
+			display: flex;
+			align-content: center;
+			justify-content: center;
+			align-items: center;
+			align-self: center;
+		}
+		
+		#learn-more:hover {
+			cursor: pointer;
+		}
+		
+		#infobox {
+			align-self: center;
+			height: 100px;
+		}
+		
+		#scratch-box, #woof-box, #web-box {
+			display: none;
+		}
+		
+		#scratch-box {
+			align-self: flex-start;
+		}
+		
+		#tcs {
+			width: 600px;
+			height: 20px;
+			align-self: center;
+		}
+		
+		img {
+			width: 100%;
+			margin: 20px;
+		}
+		
+		h1 {
+			font-size: 3em;
+			color: white;
+			padding-top: 40px;
+		}
 	</style>
+	<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
 </head>
 
 <body>
 	<!--<img style ="width: 80px; height: 80px; margin-top:10px" src ="./images/logo.png">-->
-    <h1 >The Coding Space Projects</h1>
-   <div id="container">
-	<div>
-		<a href="./scratch"><img style ="width:300px; height: 300px" id="banner1" src="./images/scratch2.png" onmouseover="this.src='./images/scratchhover.png'" onmouseout="this.src='./images/scratch2.png'" /></a>
+	<h1>The Coding Space Projects</h1>
+	<div id="container">
+		<div>
+			<a id="scratch-img" href="./scratch"><img style="width:300px; height: 300px" id="banner1" src="./images/scratch2.png" onmouseover="this.src='./images/scratchhover.png'" onmouseout="this.src='./images/scratch2.png'" /></a>
+		</div>
+		<div>
+			<a id="woof-img" href="http://woofjs.com/create"><img style="width:300px; height: 300px" id="banner3" src="./images/woof2.png" onmouseover="this.src='./images/woofhover.png'" onmouseout="this.src='./images/woof2.png'" /></a>
+		</div>
+		<div>
+			<a id="web-img" href="./web"><img style="width:300px; height: 300px" id="banner2" src="./images/web2.png" onmouseover="this.src='./images/webhover.png'" onmouseout="this.src='./images/web2.png'" /></a>
+		</div>
+		<div id="info-container">
+			
+			<div id="platform-info">
+				<div class="textbox-holder">
+					<div id="scratch-box" class="black-opaque textbox">Scratch lets you program your own games, animations and stories. You can design your own characters and scenes, and you get to share your games with the Scratch community!</div>
+				</div>	
+				<div class="textbox-holder">	
+					<div id="woof-box" class="black-opaque textbox">WoofJS lets you code animations and games that can be used on computers, phones, and tablets. The "JS" stands for JavaScript, the coding language of the web.</div>
+				</div>	
+				<div class="textbox-holder">	
+					<div id="web-box" class="black-opaque textbox">These Web projects let you create web pages, interactive web apps, and games. They use HTML, CSS, and JavaScript - the three main ingredients in web design.</div>
+				</div>
+				
+				
+			</div>
+			<div id="learn-more" class="black-opaque">Learn More</div>
+			
+			<div id="tcs" class="black-opaque">Created by <a href="http://www.thecodingspace.com">The Coding Space</a></div>
+		</div>
 	</div>
-	<div>
-		<a href="http://woofjs.com/create"><img  style ="width:300px; height: 300px" id="banner3" src="./images/woof2.png" onmouseover="this.src='./images/woofhover.png'" onmouseout="this.src='./images/woof2.png'"/></a>
-	</div>
-	<div>
-	<a href="./web"><img  style ="width:300px; height: 300px" id="banner2" src="./images/web2.png" onmouseover="this.src='./images/webhover.png'" onmouseout="this.src='./images/web2.png'"/></a>
-	</div>
-</div>
+	
+	<script>
+		
+		$(document).ready(function() {
+			
+			// scratch info hide/show
+			$("#scratch-img").mouseenter(function() {
+				$("#scratch-box").fadeIn(250);
+			})
+			$("#scratch-img").mouseleave(function() {
+				$("#scratch-box").fadeOut(400);
+			})
+			
+			// woof info hide/show
+			$("#woof-img").mouseenter(function() {
+				$("#woof-box").fadeIn(250);
+			})
+			$("#woof-img").mouseleave(function() {
+				$("#woof-box").fadeOut(400);
+			})
+			
+			// web info hide/show
+			$("#web-img").mouseenter(function() {
+				$("#web-box").fadeIn(250);
+			})
+			$("#web-img").mouseleave(function() {
+				$("#web-box").fadeOut(400);
+			})
+			
+			// learn-more button behavior
+			$("#learn-more").click(function() {
+				var toggleHtml = $(this).html() == "Learn More" ? "We think that the best way for you to learn to code is by building things, so this website has a collection of guided projects that you should try building! You can choose your own projects and your own pace - it's all up to you. Feel free to explore these projects in whichever order you choose. We've organized them into a series of levels so you can find the level that's right for you." : "Learn More";
+				$(this).html("")
+				var toggleWidth = $(this).width() == 100 ? "1100px" : "100px";
+				var toggleHeight = $(this).height() == 30 ? "80px" : "30px";
+				$(this).animate({
+					width: toggleWidth,
+					height: toggleHeight
+				}, function() {
+						$(this).html(toggleHtml);
+				});
+			})
+		})
+		
+	</script>
+	
 </body>
 
 </html>
