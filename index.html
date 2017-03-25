@@ -18,6 +18,36 @@
 			color: white;
 		}
 		
+		h1 {
+			font-size: 3em;
+			color: white;
+			padding-top: 10px;
+		}
+		
+		footer {
+		  position: absolute;
+		  bottom: 0;
+		  width: 100%;
+		  height: 25px;
+		  background-color: rgba(0, 0, 0, 0.6);
+		  color: white;
+		  font-weight: lighter;
+		  font-size: 14px;
+		  line-height: 1.5em;
+		  display: flex;
+		  justify-content: space-between;
+		}
+		
+		footer a {
+			text-decoration: none;
+		}
+		
+		.image {
+			width: 300px;
+			height: 300px;
+			margin: 0px 20px;
+		}
+		
 		.black-opaque {
 			background-color: rgba(0, 0, 0, 0.6);
 			color: white;
@@ -69,7 +99,7 @@
 		}
 		
 		#learn-more {
-			width: 100px;
+			width: 200px;
 			height: 30px;
 			margin-bottom: 10px;
 			display: flex;
@@ -77,6 +107,9 @@
 			justify-content: center;
 			align-items: center;
 			align-self: center;
+			background-color: rgba(211, 67, 23, 0.9);
+			font-size: 24px;
+			border: 2px solid #D3A117;
 		}
 		
 		#learn-more:hover {
@@ -96,22 +129,12 @@
 			align-self: flex-start;
 		}
 		
-		#tcs {
-			width: 600px;
-			height: 20px;
-			align-self: center;
+		#contact {
+			width: 150px;
 		}
 		
-		img {
-			width: 100%;
-			margin: 20px;
-		}
 		
-		h1 {
-			font-size: 3em;
-			color: white;
-			padding-top: 40px;
-		}
+		
 	</style>
 	<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
 </head>
@@ -121,13 +144,13 @@
 	<h1>The Coding Space Projects</h1>
 	<div id="container">
 		<div>
-			<a id="scratch-img" href="./scratch"><img style="width:300px; height: 300px" id="banner1" src="./images/scratch2.png" onmouseover="this.src='./images/scratchhover.png'" onmouseout="this.src='./images/scratch2.png'" /></a>
+			<a id="scratch-img" href="./scratch"><img class="image" id="banner1" src="./images/scratch2.png" /></a>
 		</div>
 		<div>
-			<a id="woof-img" href="http://woofjs.com/create"><img style="width:300px; height: 300px" id="banner3" src="./images/woof2.png" onmouseover="this.src='./images/woofhover.png'" onmouseout="this.src='./images/woof2.png'" /></a>
+			<a id="woof-img" href="http://woofjs.com/create"><img class="image" id="banner3" src="./images/woof2.png" /></a>
 		</div>
 		<div>
-			<a id="web-img" href="./web"><img style="width:300px; height: 300px" id="banner2" src="./images/web2.png" onmouseover="this.src='./images/webhover.png'" onmouseout="this.src='./images/web2.png'" /></a>
+			<a id="web-img" href="./web"><img class="image" id="banner2" src="./images/web2.png" /></a>
 		</div>
 		<div id="info-container">
 			
@@ -145,10 +168,15 @@
 				
 			</div>
 			<div id="learn-more" class="black-opaque">Learn More</div>
-			
-			<div id="tcs" class="black-opaque">Created by <a href="http://www.thecodingspace.com">The Coding Space</a></div>
 		</div>
 	</div>
+	
+	<footer>
+		<div id="copyright">&copy; 2017 <a style="color:white" href="http://www.thecodingspace.com" target="_blank">The Coding Space</a></div>
+		
+		<div id="contact"><a href="http://www.thecodingspace.com/contact-us-929-352--1272.html" target="_blank">Contact Us</a></div>
+		
+	</footer>
 	
 	<script>
 		
@@ -182,12 +210,14 @@
 			$("#learn-more").click(function() {
 				var toggleHtml = $(this).html() == "Learn More" ? "We think that the best way for you to learn to code is by building things, so this website has a collection of guided projects that you should try building! You can choose your own projects and your own pace - it's all up to you. Feel free to explore these projects in whichever order you choose. We've organized them into a series of levels so you can find the level that's right for you." : "Learn More";
 				$(this).html("")
-				var toggleWidth = $(this).width() == 100 ? "1100px" : "100px";
+				var toggleWidth = $(this).width() == 200 ? "1100px" : "200px";
 				var toggleHeight = $(this).height() == 30 ? "80px" : "30px";
+				var toggleFontSize = $(this).css("fontSize") == "24px" ? "18px" : "24px"
 				$(this).animate({
 					width: toggleWidth,
 					height: toggleHeight
 				}, function() {
+						$(this).css("fontSize", toggleFontSize)
 						$(this).html(toggleHtml);
 				});
 			})
