@@ -1,356 +1,379 @@
 <head>
-    <script src="https://cdn.rawgit.com/stevekrouse/WoofJS/1e9b9a5e25ec87307efbe17924a09c4e0865fe6e/woof.js"></script>
-    <script>
+  <script src="https://cdn.rawgit.com/stevekrouse/WoofJS/1e9b9a5e25ec87307efbe17924a09c4e0865fe6e/woof.js"></script>
+  <script>
+    // Sets backdrop to image
     setBackdropURL('https://img.clipartfest.com/20a3f7fedd37d6244dad5185ded8e943_playgrounds-backgrounds-and-background-playground-fun-kids-clipart_900-636.jpeg')
 
-// text introduction
-var intro = new Text({
-  text: () => "It's bubble time!",
-  x: 0,
-  y: maxY - 100,
-  size: 30,
-  color: "black"
-})
-
-var instrux1
-after(2, 'second', () => {
-  intro.hide()
-  instrux1 = new Text({
-    text: () => "Blow bubbles with the 'W' key and pop them with your mouse.",
-    x: 0,
-    y: maxY - 100,
-    size: 30,
-    color: "black"
-  })
-})
-
-var instrux2
-after(6, 'second', () => {
-  instrux1.hide()
-  instrux2 = new Text({
-    text: () => "Use the 'A' and 'D' keys to move around.",
-    x: 0,
-    y: maxY - 100,
-    size: 30,
-    color: "black"
-  })
-})
-
-var instrux3
-after(9, 'second', () => {
-  instrux2.hide()
-  instrux3 = new Text({
-    text: () => "Catch the candy and put it in the bowl with the down arrow.",
-    x: 0,
-    y: maxY - 100,
-    size: 30,
-    color: "black"
-  })
-})
-
-var instrux4
-after(12, 'second', () => {
-  instrux3.hide()
-  instrux4 = new Text({
-    text: () => "Watch out for hot tamales!",
-    color: "black",
-    x: 0,
-    y: maxY - 100,
-    size: 30
-  })
-})
-
-
-// Player Key
-var legend = new Rectangle({
-  width: 400,
-  height: 250,
-  show: false,
-  y: maxY,
-  x: 0,
-  color: "#F57DA5",
-  showing: false
-
-})
-
-var legendText1 = new Text({
-  color: "white",
-  x: legend.x - 180,
-  y: maxY - 25,
-  text: () => "A => Left",
-  textAlign: "left",
-  showing: false,
-  size: 14
-})
-
-var legendText2 = new Text({
-  color: "white",
-  x: legend.x - 180,
-  y: maxY - 45,
-  text: () => "D => Right",
-  textAlign: "left",
-  showing: false,
-  size: 14
-
-})
-var legendText3 = new Text({
-  color: "white",
-  x: legend.x - 180,
-  y: maxY - 65,
-  text: () => "W => Blow Bubbles",
-  textAlign: "left",
-  showing: false,
-  size: 14
-
-})
-var legendText4 = new Text({
-  color: "white",
-  x: legend.x - 180,
-  y: maxY - 85,
-  text: () => "Mouse Click => Pop Bubbles for Candy (Avoid Tamales!)",
-  textAlign: "left",
-  showing: false,
-  size: 14
-})
-var legendText5 = new Text({
-  color: "white",
-  x: legend.x - 180,
-  y: maxY - 105,
-  text: () => "Down Arrow => Put Candy in Bowl",
-  textAlign: "left",
-  showing: false,
-  size: 14
-})
-after(15, 'second', () => {
-  instrux4.hide()
-  legend.show()
-  legendText1.show()
-  legendText2.show()
-  legendText3.show()
-  legendText4.show()
-  legendText5.show()
-  candycountText.show()
-  candycountCircle.show()
-})
-
-// Blow bubbles
-var blower = new Image({
-  url: 'http://content.mycutegraphics.com/graphics/fun/blue-bubble-wand-angled.png',
-  width: 100,
-  height: 100,
-  x: minX + 100,
-  y: legend.y - 200
-})
-
-var hand = new Image({
-  url: 'http://www.iconsdb.com/icons/preview/orange/finger-and-thumb-xxl.png',
-  width: 25,
-  height: 25
-})
-
-forever(() => {
-  hand.x = mouseX
-  hand.y = mouseY
-})
-
-var bubbles = []
-every(0.1, 'second', () => {
-  if (keysDown.includes('W')) {
-    var bubble = new Image({
-      url: 'https://img.clipartfest.com/dea2bf71ebd834248e611186e122dd5b_-bubble-shiny-free-image-water-bubbles-shiny-clipart_640-627.png',
-      width: random(50, 200),
-      height: random(50, 200),
-      x: blower.x + 60,
-      y: blower.y + 60,
-      angle: random(300, 360)
-    })
-    bubbles.push(bubble)
-  }
-})
-
-var glass = new Audio('https://www.freespecialeffects.co.uk/soundfx/glass/breaking_glass_01.wav')
-
-var tamales = []
-var candies = []
-
-forever(() => {
-  bubbles.forEach(bubble => {
-    var randomInt = random(1, 2)
-    bubble.move(5)
-    if (bubble.mouseOver && mouseDown) {
-      bubble.delete()
-      glass.play()
-      if (randomInt === 1) {
-        var candy = new Image({
-          url: 'https://img.clipartfest.com/eb8743b6a3efad66bac93bb9b1b7eb6e_pink-hard-candy-cute-bubble-gum-wrapper-clipart_300-189.png',
-          width: 50,
-          height: 25,
-          x: bubble.x,
-          y: bubble.y
-        })
-        candies.push(candy)
-      }
-      if (randomInt === 2) {
-        var tamale = new Image({
-          url: 'http://economycan-economycandy.netdna-ssl.com/wp-content/uploads/2010/11/Hot-Tamale.png',
-          width: 25,
-          height: 25,
-          x: bubble.x,
-          y: bubble.y
-        })
-        tamales.push(tamale)
-      }
-    }
-  })
-})
-
-forever(() => {
-  candies.forEach(candy => {
-    candy.y -= 3
-  })
-  tamales.forEach(candy => {
-    candy.y -= 3
-  })
-})
-
-var girl = new Image({
-  url: 'http://vignette4.wikia.nocookie.net/gravityfalls/images/4/41/Candy_appearance.png/revision/latest?cb=20141119020338',
-  width: 100,
-  height: 100,
-  y: minY + 100
-})
-
-forever(() => {
-  if (girl.x > maxX) {
-    girl.x = maxX
-  }
-    if (girl.x < minX) {
-    girl.x = minX
-  }
-})
-
-var bowl = new Image({
-  url: 'https://img.clipartfest.com/33aef436575c276eb05a2a8d32c1c116_candy-box-candy-clipart_516-513.gif',
-  width: 60,
-  height: 60,
-  x: maxX - 150,
-  y: minY + 60
-})
-
-girl.setRotationStyle("ROTATE LEFT RIGHT")
-
-var bowlcandies = []
-forever(() => {
-  if (keysDown.includes('D') && girl.touching(newBubble) === false) {
-    girl.angle = 0
-    girl.x += 10
-  }
-  if (keysDown.includes('A') && girl.touching(newBubble) === false) {
-    girl.angle =  180
-    girl.x -= 10
-  }
-  candies.forEach(candy => {
-    if (candy.touching(girl)) {
-      candy.x = girl.x
-      candy.y = girl.y
-      candy.pointTowards(girl)
-      if (keysDown.includes('DOWN') && girl.distanceTo(bowl) < 150) {
-        candy.x = maxX - 50
-        candy.y = minY + 50
-        candy.delete()
-        score++
-        var candyinbowl = new Image({
-          url: 'https://img.clipartfest.com/eb8743b6a3efad66bac93bb9b1b7eb6e_pink-hard-candy-cute-bubble-gum-wrapper-clipart_300-189.png',
-          width: 25,
-          height: 25,
-          x: bowl.x,
-          y: bowl.y + score * 5
-        })
-        bowlcandies.push(candyinbowl)
-      }
-    }
-  })
-})
-
-forever(() => {
-  tamales.forEach(candy => {
-    if (candy.touching(girl)) {
-      candy.delete()
-      score = 0
-      bowl.setImageURL('http://www.clipartbest.com/cliparts/pT5/o9K/pT5o9Kd6c.gif')
-      after(0.2, 'second', () => {
-        bowl.setImageURL('https://img.clipartfest.com/33aef436575c276eb05a2a8d32c1c116_candy-box-candy-clipart_516-513.gif')
-      })
-      bowlcandies.forEach(candy => {
-        candy.delete()
-      })
-      candies.forEach(candy => {
-        candy.delete()
-      })
-    }
-  })
-})
-
-var score = 0
-
-var candycountCircle = new Circle({
-  color: "yellow",
-  radius: 70,
-  x: maxX - 100,
-  y: maxY - 100,
-  showing: false
-})
-
-var candycountText = new Text({
-  text: () => "Candy Count: " + score,
-  color: "black",
-  size: 16,
-  x: candycountCircle.x,
-  y: candycountCircle.y,
-  showing: false
-})
-
-var newBubble = new Image({
-  url: 'https://img.clipartfest.com/dea2bf71ebd834248e611186e122dd5b_-bubble-shiny-free-image-water-bubbles-shiny-clipart_640-627.png',
-  width: 120,
-  height: 120
-})
-newBubble.hide()
-
-
-forever(() => {
-  if (score > 10) {
-    candies.forEach(candy => {
-      candy.delete()
-    })
-    tamales.forEach(candy => {
-      candy.delete()
-    })
-    newBubble.x = girl.x
-    newBubble.y = girl.y
-    newBubble.show()
-    girl.y += 5
-    new Text({
-      text: () => "YOU WIN!!!",
-      color: "#F57DA5",
-      size: 80,
+    // Displays introductory text explaining how to play the game
+    var intro1 = new Text({
+      text: () => "It's bubble time!",
+      x: 0,
       y: maxY - 100,
+      size: 30,
+      color: "black"
     })
-    candycountText.hide()
-    candycountCircle.hide()
-    legend.hide()
-    legendText1.hide()
-    legendText1.hide()
-    legendText2.hide()
-    legendText3.hide()
-    legendText4.hide()
-    legendText5.hide()
-    if (girl.y > maxY + 100) {
-      freeze()
-    }
-  }
-})   
-    </script>
+
+    // Hides first text variable after 3 seconds and shows second
+    var intro2
+      after(3, 'second', () => {
+        intro1.hide()
+        intro2 = new Text({
+        text: () => "Blow bubbles with the 'W' key and pop them with your mouse.",
+        x: 0,
+        y: maxY - 100,
+        size: 30,
+        color: "black"
+     })
+   })
+
+    // Hides second text variable 3 seconds later and shows third
+    var intro3
+     after(6, 'second', () => {
+       intro2.hide()
+       intro3 = new Text({
+         text: () => "Use the 'A' and 'D' keys to move around.",
+         x: 0,
+         y: maxY - 100,
+        size: 30,
+        color: "black"
+      })
+    })
+
+    // Hides third text variable 3 seconds later and shows fourth
+    var intro4
+    after(9, 'second', () => {
+      intro3.hide()
+      intro4 = new Text({
+        text: () => "Catch the candy and put it in the bowl with the down arrow.",
+        x: 0,
+        y: maxY - 100,
+        size: 30,
+        color: "black"
+      })
+    })
+
+    // Hides fourth text variable 3 seconds later and shows fifth
+    var intro5
+      after(12, 'second', () => {
+        intro4.hide()
+        intro5 = new Text({
+        text: () => "Watch out for hot tamales!",
+        color: "black",
+        x: 0,
+        y: maxY - 100,
+        size: 30
+      })
+    })
+
+    // Creates rectangular background to display instructions on during play
+    var instruxBox = new Rectangle({
+      width: 400,
+      height: 250,
+      show: false,
+      y: maxY,
+      x: 0,
+      color: "#F57DA5",
+      showing: false
+    })
+    
+    // Creates text variables to display instructions
+    var instrux1 = new Text({
+      color: "white",
+      x: instruxBox.x - 180,
+      y: maxY - 25,
+      text: () => "A => Move Left",
+      textAlign: "left",
+      showing: false,
+      size: 14
+    })
+
+    var instrux2 = new Text({
+      color: "white",
+      x: instruxBox.x - 180,
+      y: maxY - 45,
+      text: () => "D => Move Right",
+      textAlign: "left",
+      showing: false,
+      size: 14
+    })
+
+    var instrux3 = new Text({
+      color: "white",
+      x: instruxBox.x - 180,
+      y: maxY - 65,
+      text: () => "W => Blow Bubbles",
+      textAlign: "left",
+      showing: false,
+      size: 14
+    })
+
+    var instrux4 = new Text({
+      color: "white",
+      x: instruxBox.x - 180,
+      y: maxY - 85,
+      text: () => "Mouse Click => Pop Bubbles for Candy (Avoid Tamales!)",
+      textAlign: "left",
+      showing: false,
+      size: 14
+    })
+
+    var instrux5 = new Text({
+      color: "white",
+      x: instruxBox.x - 180,
+      y: maxY - 105,
+      text: () => "Down Arrow => Put Candy in Bowl",
+      textAlign: "left",
+      showing: false,
+      size: 14
+    })
+    
+    // Creates circular background to display score on
+    var scoreCircle = new Circle({
+      color: "yellow",
+      radius: 70,
+      x: maxX - 100,
+      y: maxY - 100,
+      showing: false
+    })
+    
+    // Creates score variable
+    var score = 0
+    
+    // Creates text variable to display score
+    var scoreText = new Text({
+      text: () => "Candy Count: " + score,
+      color: "black",
+      size: 16,
+      x: scoreCircle.x,
+      y: scoreCircle.y,
+      showing: false
+    })
+
+
+    // Hides final introductory text, displays instructions that will stay on screen, and shows scoreboard
+    after(15, 'second', () => {
+      intro5.hide()
+      instrux1.show()
+      instrux2.show()
+      instrux3.show()
+      instrux4.show()
+      instrux5.show()
+      instruxBox.show()
+      scoreText.show()
+      scoreCircle.show()
+    })
+
+    // Creates bubble blower sprite
+    var blower = new Image({
+      url: 'http://content.mycutegraphics.com/graphics/fun/blue-bubble-wand-angled.png',
+      width: 100,
+      height: 100,
+      x: minX + 100,
+      y: instruxBox.y - 200
+    })
+
+    // Creates bubble popper sprite
+    var hand = new Image({
+      url: 'http://www.iconsdb.com/icons/preview/orange/finger-and-thumb-xxl.png',
+      width: 25,
+      height: 25
+    })
+
+    // Makes bubble popper sprite follow mouse
+    forever(() => {
+      hand.x = mouseX
+      hand.y = mouseY
+    })
+
+   // Creates randomly sized bubble clones every 100 milliseconds that blow in random directions when W key is pressed
+    var bubbles = []
+    every(0.1, 'second', () => {
+      if (keysDown.includes('W')) {
+        var bubble = new Image({
+          url: 'https://img.clipartfest.com/dea2bf71ebd834248e611186e122dd5b_-bubble-shiny-free-image-water-bubbles-shiny-clipart_640-627.png',
+          width: random(50, 200), 
+          height: random(50, 200), 
+          x: blower.x + 60, 
+          y: blower.y + 60,
+          angle: random(300, 360) 
+        })
+        bubbles.push(bubble)
+      }
+    })
+
+    // Creates sound variable to play when bubbles pop
+    var bubblePop = new Audio('https://www.freespecialeffects.co.uk/soundfx/glass/breaking_glass_01.wav')
+
+    // Creates empty arrays to push candy and hot tamale clones into
+    var tamales = []
+    var candies = []
+
+    // Loops through bubble clones
+    forever(() => {
+      bubbles.forEach(bubble => {
+        bubble.move(5) // Makes each bubble clone move continuously
+        if (bubble.mouseOver && mouseDown) { 
+          bubble.delete() // Deletes bubble clone if clicked by mouse
+          bubblePop.play() // Plays bubble pop sound
+          var randomInt = random(1, 2) // Picks random integer between 1 and 2 
+          // Creates candy clone if random integer is 1
+          if (randomInt === 1) { 
+            var candy = new Image({
+              url: 'https://img.clipartfest.com/eb8743b6a3efad66bac93bb9b1b7eb6e_pink-hard-candy-cute-bubble-gum-wrapper-clipart_300-189.png',
+              width: 50,
+              height: 25,
+              x: bubble.x,
+              y: bubble.y
+            })
+            candies.push(candy)
+          }
+          // Creates hot tamale clone if random integer is 2
+          if (randomInt === 2) { 
+            var tamale = new Image({
+              url: 'http://economycan-economycandy.netdna-ssl.com/wp-content/uploads/2010/11/Hot-Tamale.png',
+              width: 25,
+              height: 25,
+              x: bubble.x,
+              y: bubble.y
+            })
+            tamales.push(tamale)
+          }
+        }
+      })
+    })
+
+    // Makes candy and tamale clones fall continuously
+    forever(() => {
+      candies.forEach(candy => {
+        candy.y -= 3
+      })
+      tamales.forEach(candy => {
+        candy.y -= 3
+      })
+    })
+
+    // Creates character sprite
+    var girl = new Image({
+      url: 'http://vignette4.wikia.nocookie.net/gravityfalls/images/4/41/Candy_appearance.png/revision/latest?cb=20141119020338',
+      width: 100,
+      height: 100,
+      y: minY + 100
+    })
+
+
+    // Gives character left and right movement when A and D keys are pressed and sets character rotation style. (Also doesn't allow character to move after winning game)
+    forever(() => {
+      girl.setRotationStyle("ROTATE LEFT RIGHT")
+      if (keysDown.includes('D') && !girl.touching(newBubble)) {
+        girl.angle = 0
+        girl.x += 10
+      }
+      if (keysDown.includes('A') && !girl.touching(newBubble)) {
+        girl.angle =  180
+        girl.x -= 10
+      }  
+      // Keeps the character on the screen
+      if (girl.x > maxX) {
+        girl.x = maxX
+      }
+      if (girl.x < minX) {
+        girl.x = minX
+      }
+    })
+
+
+    // Creates container sprite
+    var bowl = new Image({
+      url: 'https://img.clipartfest.com/33aef436575c276eb05a2a8d32c1c116_candy-box-candy-clipart_516-513.gif',
+      width: 60,
+      height: 60,
+      x: maxX - 150,
+      y: minY + 60
+    })
+
+    // Creates empty array to push new set of candies into
+    var bowlCandies = []
+    
+    // Loops through candy clones
+    forever(() => {
+      candies.forEach(candy => {
+        // Makes  character "catch" the candy if they are touching
+        if (candy.touching(girl)) {
+          candy.x = girl.x
+          candy.y = girl.y
+          candy.pointTowards(girl)
+          // "Releases" candy into container when down arrow pressed if character is close to container
+          if (keysDown.includes('DOWN') && girl.distanceTo(bowl) < 150) {
+            candy.x = maxX - 50
+            candy.y = minY + 50
+            score++ // Increases score when candy is dropped into container
+            candy.delete() // Deletes candy
+            // Creates new candy clone to stack in container
+            var candyInBowl = new Image({ 
+              url: 'https://img.clipartfest.com/eb8743b6a3efad66bac93bb9b1b7eb6e_pink-hard-candy-cute-bubble-gum-wrapper-clipart_300-189.png',
+              width: 25,
+              height: 25,
+              x: bowl.x,
+              y: bowl.y + score * 5
+            })
+              bowlCandies.push(candyInBowl)
+          }
+        }
+      })
+    })
+
+    // Loops through each tamale clone
+    forever(() => {
+      tamales.forEach(candy => {
+        if (candy.touching(girl)) { 
+          candy.delete() // Deletes tamale clone if touching character
+          score = 0 // Sets score to zero
+          // Changes container costume, then switches back
+          bowl.setImageURL('http://www.clipartbest.com/cliparts/pT5/o9K/pT5o9Kd6c.gif') 
+            after(0.2, 'second', () => {
+              bowl.setImageURL('https://img.clipartfest.com/33aef436575c276eb05a2a8d32c1c116_candy-box-candy-clipart_516-513.gif')
+            })
+          bowlCandies.forEach(candy => {candy.delete()}) // Deletes all candy clones in container
+         candies.forEach(candy => {candy.delete()}) // Deletes other set of candy clones on screen
+        }
+      })
+    })
+
+
+    // Creates new bubble sprite
+    var newBubble = new Image({
+      url: 'https://img.clipartfest.com/dea2bf71ebd834248e611186e122dd5b_-bubble-shiny-free-image-water-bubbles-shiny-clipart_640-627.png',
+      width: 120,
+      height: 120,
+      showing: false
+    })
+
+    forever(() => {
+      if (score > 10) {
+        candies.forEach(candy => {candy.delete()}) // Deletes candy clones if score greater than 10
+        tamales.forEach(candy => {candy.delete()}) // Deletes tamale clones
+        // Shows new bubble sprite and makes it move upward with character
+        newBubble.x = girl.x
+        newBubble.y = girl.y
+        newBubble.show()
+        girl.y += 5
+        // Hides score and instructions
+        scoreText.hide()
+        scoreCircle.hide()
+        instruxBox.hide()
+        instrux1.hide()
+        instrux2.hide()
+        instrux3.hide()
+        instrux4.hide()
+        instrux5.hide()
+        hand.hide()
+        new Text({ text: () => "YOU WIN!!!", color: "#F57DA5", size: 80, y: maxY - 100}) // Displays "You Win" message
+        if (girl.y > maxY + 100) { 
+          freeze() // Freezes game once character moves beyond top of screen
+        }
+      }
+    })   
+  </script>
 </head>
 <body>
     
