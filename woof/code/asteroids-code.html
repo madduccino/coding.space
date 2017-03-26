@@ -40,7 +40,7 @@
     }
   })
 
-  // If invisible goes past one side of screen, have it appear on opposite side.
+  // If invisible sprite goes past one side of screen, have it appear on opposite side.
   forever(() => {
     if (invisShip.y > maxY) {
       invisShip.y = minY
@@ -58,7 +58,7 @@
 
   // Allows ship to rotate while moving forward
   forever(() => {
-    // Always make ship's position that of invisible ship
+    // Makes ship's position that of invisible sprite
     ship.x = invisShip.x
     ship.y = invisShip.y
     // Rotates ship right and left when right and left arrow keys are pressed  
@@ -68,7 +68,7 @@
     if (keysDown.includes('LEFT')) {
       ship.turnLeft(10)
     }
-    // When up arrow pressed, points ship in same direction as invisible ship
+    // When up arrow pressed, points ship in same direction as invisible sprite
     if (keysDown.includes('UP')) {
       invisShip.angle = ship.angle
     }
@@ -498,7 +498,7 @@
     }
   })
 
-  // Makes saucerShow variable true after 1 second of play. Makes if false every 5 seconds, and makes it true again 5 seconds later.
+  // Makes saucerShow variable true every 5 seconds after 1 second of play. Makes if false every 10 seconds.
   var saucerShow = false
   after(1, 'second', () => {
     every(5, 'second', () => {
