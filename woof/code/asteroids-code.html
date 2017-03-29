@@ -3,6 +3,20 @@
   <script src="https://cdn.rawgit.com/stevekrouse/WoofJS/1e9b9a5e25ec87307efbe17924a09c4e0865fe6e/woof.js"></script>
   
   <script>
+  
+  // Creates instructions for how to play the game
+  var instructions = new Text({
+    text: () => "Use the up arrow to move forward and the right and left arrows to rotate. Press the spacebar to shoot.",
+    color: "#ff6600",
+    x: 0,
+    y: 100,
+    size: 20
+  })
+  
+  after(5, 'second', () => {
+    instructions.hide()
+  })
+  
 
   // Sets backdrop to color
   setBackdropColor('black')
@@ -184,33 +198,35 @@
   
   // Creates asteroid clones every 2 seconds
   var asteroids = []
-  every(2, 'second', () => {
-    var asteroid = new Text({
-      text: () => "O",
-      color: "#0033FF",
-      size: 70,
-      angle: random(0, 360)
+   after(6, 'second', () => {
+     every(2, 'second', () => {
+       var asteroid = new Text({
+        text: () => "O",
+        color: "#0033FF",
+        size: 70,
+        angle: random(0, 360)
+      })
+      asteroids.push(asteroid)
+      // Creates variable with random integer value of 1 to 4. 
+      var wall = random(1, 4)
+      // Makes asteroids appear on particular wall depending on variable value.
+      if (wall === 1) {
+        asteroid.x = randomX()
+        asteroid.y = maxY
+      }
+      if (wall === 2) {
+        asteroid.x = randomX()
+        asteroid.y = minY
+      }
+      if (wall === 3) {
+        asteroid.x = minX
+        asteroid.y = randomY()
+      }
+      if (wall === 4) {
+        asteroid.x = maxX
+        asteroid.y = randomY()
+      }
     })
-    asteroids.push(asteroid)
-    // Creates variable with random integer value of 1 to 4. 
-    var wall = random(1, 4)
-    // Makes asteroids appear on particular wall depending on variable value.
-    if (wall === 1) {
-      asteroid.x = randomX()
-      asteroid.y = maxY
-    }
-    if (wall === 2) {
-      asteroid.x = randomX()
-      asteroid.y = minY
-    }
-    if (wall === 3) {
-      asteroid.x = minX
-      asteroid.y = randomY()
-    }
-    if (wall === 4) {
-      asteroid.x = maxX
-      asteroid.y = randomY()
-    }
   })
   
   // Loops through asteroid clones
@@ -522,9 +538,9 @@
   // Sets random direction for saucer
   saucer.pointTowards(randomX(), randomY())
 
-  // Makes saucerShow variable true every 5 seconds after 1 second of play. Makes if false every 10 seconds.
+  // Makes saucerShow variable true every 5 seconds after 10 seconds of play. Makes if false every 10 seconds.
   var saucerShow = false
-  after(1, 'second', () => {
+  after(10, 'second', () => {
     every(5, 'second', () => {
       if (lifecount > 0) {
         saucerShow = true
