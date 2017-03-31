@@ -1,181 +1,83 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
 
-<head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width">
-	<title>The Coding Space Projects</title>
-	<style>
-		body {
-			text-align: center;
-			font-family: 'Lato', sans-serif;
-			background-image: url('./images/galaxy.jpg');
-			background-repeat: no-repeat;
-			background-size: cover;
-		}
-		
-		a {
-			color: white;
-		}
-		
-		footer {
-		  position: absolute;
-		  bottom: 0;
-		  width: 100%;
-		  height: 25px;
-		  background-color: rgba(0, 0, 0, 0.6);
-		  color: white;
-		  font-weight: lighter;
-		  font-size: 14px;
-		  line-height: 1.5em;
-		  display: flex;
-		  justify-content: space-between;
-		}
-		
-		footer a {
-			text-decoration: none;
-		}
-		
-		.black-opaque {
-			background-color: rgba(0, 0, 0, 0.6);
-			color: white;
-			font-weight: lighter;
-			line-height: 1.5em;
-			padding: 10px;
-			border-radius: 4px;
-		}
-		
-		.textbox {
-			width: 310px;
-			height: 120px;
-			color: white;
-			margin: 0px 10px;
-		}
-		
-		.textbox-holder {
-			width: 335px;
-		}
-		
-		.moreinfo {
-			width: 1010px;
-			height: 70px;
-			margin-top: 10px;
-		}
-		
-		#container {
-			display: flex;
-			flex-flow: wrap;
-			flex-wrap: wrap;
-			align-content: center;
-			justify-content: center;
-			flex-direction: row;
-			margin: 0 !important;
-			flex-basis: auto;
-		}
-		
-		#info-container {
-			display: flex;
-			flex-direction: column;
-		}
-		
-		#platform-info {
-			width: 1200px;
-			height: 170px;
-			display: flex;
-			flex-direction: row;
-			justify-content: center;
-		}
-		
-		#learn-more {
-			width: 100px;
-			height: 30px;
-			margin-bottom: 10px;
-			display: flex;
-			align-content: center;
-			justify-content: center;
-			align-items: center;
-			align-self: center;
-		}
-		
-		#learn-more:hover {
-			cursor: pointer;
-		}
-		
-		#infobox {
-			align-self: center;
-			height: 100px;
-		}
-		
-		#scratch-box, #woof-box, #web-box {
-			display: none;
-		}
-		
-		#scratch-box {
-			align-self: flex-start;
-		}
-		
-		#tcs {
-			width: 600px;
-			height: 20px;
-			align-self: center;
-		}
-		
-		#contact {
-			width: 100px;
-		}
-		
-		img {
-			width: 100%;
-			margin: 20px;
-		}
-		
-		h1 {
-			font-size: 3em;
-			color: white;
-			padding-top: 40px;
-		}
-	</style>
-	<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
-</head>
+	<head>
+		<meta charset="utf-8">
+		<meta name="description" content="">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>The Coding Space Projects</title>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+		<link rel="stylesheet" href="index.css">
+		<link rel="icon" type="favicon/x-icon" href="images/favicon.ico">
+		<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+   </head>
 
-<body>
-	<!--<img style ="width: 80px; height: 80px; margin-top:10px" src ="./images/logo.png">-->
-	<h1>The Coding Space Projects</h1>
-	<div id="container">
-		<div>
-			<a id="scratch-img" href="./scratch"><img style="width:300px; height: 300px" id="banner1" src="./images/scratch2.png" /></a>
-		</div>
-		<div>
-			<a id="woof-img" href="http://woofjs.com/create"><img style="width:300px; height: 300px" id="banner3" src="./images/woof2.png" /></a>
-		</div>
-		<div>
-			<a id="web-img" href="./web"><img style="width:300px; height: 300px" id="banner2" src="./images/web2.png" /></a>
-		</div>
-		<div id="info-container">
-			
-			<div id="platform-info">
-				<div class="textbox-holder">
-					<div id="scratch-box" class="black-opaque textbox">Scratch lets you program your own games, animations and stories. You can design your own characters and scenes, and you get to share your games with the Scratch community!</div>
-				</div>	
-				<div class="textbox-holder">	
-					<div id="woof-box" class="black-opaque textbox">WoofJS lets you code animations and games that can be used on computers, phones, and tablets. The "JS" stands for JavaScript, the coding language of the web.</div>
-				</div>	
-				<div class="textbox-holder">	
-					<div id="web-box" class="black-opaque textbox">These Web projects let you create web pages, interactive web apps, and games. They use HTML, CSS, and JavaScript - the three main ingredients in web design.</div>
-				</div>
-				
-				
-			</div>
-			<div id="learn-more" class="black-opaque">Learn More</div>
-		</div>
+   <body>
+
+   	<h1>The Coding Space Projects</h1>
+   	<div class="container">
+
+	   	<div class="row tcs-row">
+	   		<div class="col-sm-1"></div>
+		   		<div class="col-sm-10 holder">
+		   			<a id="scratch-img" href="./scratch"><img class="img-responsive" src="./images/scratch2.png" alt="Scratch" /></a>
+		   			<a id="woof-img" href="http://woofjs.com/create"><img class="img-responsive" src="./images/woof2.png" alt="Woof" /></a>
+		   			<a id="web-img" href="./web"><img class="img-responsive" src="./images/web2.png" alt="Scratch" /></a>
+		   		</div>
+		   	<div class="col-sm-1"></div>
+	   	</div>
+
+	   	<div class="row tcs-row hidden-xs">
+	   		<div class="col-sm-1"></div>
+		   		<div class="col-sm-10" id="platform-holder">
+		   			<div class="textbox-holder">
+		   				<div id="scratch-box" class="black-opaque infobox">Program your own interactive stories, games, and animations with Scratch -- and share your creations with others in the online community. <p class="info-para">We recommend starting here if you're new to coding.</p>  </div>
+		   			</div>
+		   			<div class="textbox-holder">
+		   				<div id="woof-box" class="black-opaque infobox">Build complex games, animations, and apps with WoofJS. It uses JavaScript, the language of the web, so you can build for mobile and integrate with APIs and databases. <p class="info-para">We recommend completing two Level 4 Scratch projects before starting with WoofJS.</p></div>
+		   			</div>
+		   			<div class="textbox-holder">
+		   				<div id="web-box" class="black-opaque infobox">Create websites and web apps using HTML, CSS, and JavaScript. <p class="info-para">We recommend completing two Level 3+ WoofJS projects before you start with Web projects.</p></div>
+		   			</div>
+		   		</div>
+		   	<div class="col-sm-1"></div>
+	   	</div>
+	   		
+	   	<div class="row" style="width: 100%">
+	   		<div class="col-sm-1"></div>
+	   		<div class="col-sm-10" id="learn-col">
+	   			<div id="start" class="black-opaque" style="margin-right: 7px">Where do I start?</div>
+	   			<a href="./about.html" target="_blank"><div class="black-opaque" id="about">About this site</div></a>
+	   		</div>
+	   		<div class="col-sm-1"></div>
+	   	</div>
+   		
+	   	<div class="row tcs-row" style="margin: 0">
+	   		<div class="col-sm-1"></div>
+	   		<div class="col-sm-10 holder" style="min-height: 100px">
+	   			<div id="start-box" class="black-opaque" style="font-size: 14px; height: 50%">If you’re new to coding, we recommend starting with a Level 1 Scratch project, like Ghost Busters. If you’re a more experienced coder, we recommend clicking around to find a project that seems challenging for you.</div>
+	   		</div>
+	   		<div class="col-sm-1"></div>
+	   	</div>
 		
-		<div id="tcs" class="black-opaque">Created by <a href="http://www.thecodingspace.com">The Coding Space</a></div>
+	   	<div class="row tcs-row">
+	   		<div class="col-sm-2"></div>
+	   		<div class="col-sm-8 bottom-holder">
+	   			<div id="tcs-text" class="black-opaque">Created by <a href="http://www.thecodingspace.com" target="_blank">The Coding Space</a></div>
+	   		</div>
+	   		<div class="col-sm-2"></div>
+	   	</div>
+
+
 		
-	</div>
-	
-	
-	
-	<script>
+   	</div>
+
+
+   	<script>
+   	
+   		function isMobileDevice() {
+    		return (typeof window.orientation !== "undefined") || (navigator.userAgent.indexOf('IEMobile') !== -1);
+		};
 		
 		$(document).ready(function() {
 			
@@ -202,25 +104,30 @@
 			$("#web-img").mouseleave(function() {
 				$("#web-box").fadeOut(400);
 			})
-			
-			// learn-more button behavior
-			$("#learn-more").click(function() {
-				var toggleHtml = $(this).html() == "Learn More" ? "We think that the best way for you to learn to code is by building things, so this website has a collection of guided projects that you should try building! You can choose your own projects and your own pace - it's all up to you. Feel free to explore these projects in whichever order you choose. We've organized them into a series of levels so you can find the level that's right for you." : "Learn More";
-				$(this).html("")
-				var toggleWidth = $(this).width() == 100 ? "1100px" : "100px";
-				var toggleHeight = $(this).height() == 30 ? "80px" : "30px";
-				$(this).animate({
-					width: toggleWidth,
-					height: toggleHeight
-				}, function() {
-						$(this).html(toggleHtml);
-				});
-			})
-		})
-		
-	</script>
-	
-</body>
 
+			// learn more hide/show
+			
+			if(isMobileDevice()) {
+				$("#start").mousedown(function() {
+					$("#start-box").toggle();
+				})
+			}
+			
+			else {
+				$("#start").mouseenter(function() {
+					$("#start-box").fadeIn(250);
+				})
+				$("#start").mouseleave(function() {
+					$("#start-box").fadeOut(400);
+				})	
+			}
+			
+			
+		
+		})
+
+		</script>
+        
+	</body>
+	
 </html>
-</div>
