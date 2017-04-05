@@ -25,8 +25,11 @@ h1 {
 }
 
 img {
-	width: 300px;
 	flex: 1 1 auto;
+}
+
+.large-img {
+	max-height: 28vh
 }
 
 a {
@@ -81,6 +84,18 @@ a:hover {
 	font-weight: bold;
 }
 
+.green {
+	color: #A3FFA3;
+}
+
+.yellow {
+	color: #FFFF7F;
+}
+
+.red {
+	color: #FF6666;
+}
+
 .infobox {
 	width: 95%;
 	height: 100%;
@@ -124,6 +139,10 @@ a:hover {
 	justify-content: center;
 	max-width: 700px;
 	display: none;
+}
+
+#start-box a {
+	text-decoration: underline;
 }
 
 #tcs-text {

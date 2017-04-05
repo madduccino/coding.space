@@ -20,9 +20,9 @@
 	   	<div class="row tcs-row">
 	   		<div class="col-sm-1"></div>
 		   		<div class="col-sm-10 holder">
-		   			<a id="scratch-img" href="./scratch"><img class="img-responsive" src="./images/scratch2.png" alt="Scratch" /></a>
-		   			<a id="woof-img" href="http://woofjs.com/create"><img class="img-responsive" src="./images/woof2.png" alt="Woof" /></a>
-		   			<a id="web-img" href="./web"><img class="img-responsive" src="./images/web2.png" alt="Scratch" /></a>
+		   			<a id="scratch-img" href="./scratch"><img class="img-responsive large-img" src="./images/scratch2.png" alt="Scratch" /></a>
+		   			<a id="woof-img" href="http://woofjs.com/create"><img class="img-responsive large-img" src="./images/woof2.png" alt="Woof" /></a>
+		   			<a id="web-img" href="./web"><img class="img-responsive large-img" src="./images/web2.png" alt="Scratch" /></a>
 		   		</div>
 		   	<div class="col-sm-1"></div>
 	   	</div>
@@ -31,13 +31,13 @@
 	   		<div class="col-sm-1"></div>
 		   		<div class="col-sm-10" id="platform-holder">
 		   			<div class="textbox-holder">
-		   				<div id="scratch-box" class="black-opaque infobox">Program your own interactive stories, games, and animations with Scratch -- and share your creations with others in the online community. <p class="info-para">We recommend starting here if you're new to coding.</p>  </div>
+		   				<div id="scratch-box" class="black-opaque infobox">Program your own interactive stories, games, and animations with Scratch -- and share your creations with others in the online community. <p class="info-para green">We recommend starting here.</p>  </div>
 		   			</div>
 		   			<div class="textbox-holder">
-		   				<div id="woof-box" class="black-opaque infobox">Build complex games, animations, and apps with WoofJS. It uses JavaScript, the language of the web, so you can build for mobile and integrate with APIs and databases. <p class="info-para">We recommend completing two Level 4 Scratch projects before starting with WoofJS.</p></div>
+		   				<div id="woof-box" class="black-opaque infobox">Build complex games, animations, and apps with WoofJS. It uses JavaScript, the language of the web, so you can build for mobile and integrate with APIs and databases. <p class="info-para yellow">We recommend completing two Level 4 Scratch projects before starting with WoofJS.</p></div>
 		   			</div>
 		   			<div class="textbox-holder">
-		   				<div id="web-box" class="black-opaque infobox">Create websites and web apps using HTML, CSS, and JavaScript. <p class="info-para">We recommend completing two Level 3+ WoofJS projects before you start with Web projects.</p></div>
+		   				<div id="web-box" class="black-opaque infobox">Create websites and web apps using HTML, CSS, and JavaScript. <p class="info-para red">We recommend completing two Level 3+ WoofJS projects before you start with Web projects.</p></div>
 		   			</div>
 		   		</div>
 		   	<div class="col-sm-1"></div>
@@ -54,8 +54,11 @@
    		
 	   	<div class="row tcs-row" style="margin: 0">
 	   		<div class="col-sm-1"></div>
-	   		<div class="col-sm-10 holder" style="min-height: 100px">
-	   			<div id="start-box" class="black-opaque" style="font-size: 14px; height: 50%">If you’re new to coding, we recommend starting with a Level 1 Scratch project, like Ghost Busters. If you’re a more experienced coder, we recommend clicking around to find a project that seems challenging for you.</div>
+	   		<div class="col-sm-10 holder" style="min-height: 80px">
+	   			<div id="start-box" class="black-opaque" style="font-size: 14px; height: 50%">
+	   				<p>We recommend starting with a Level 1 Scratch project, like <a href="./scratch/ghost-busters.html" target="_blank">Ghost Busters</a>.</p>
+	   				<p style="margin-bottom: 0px">If you’re a experienced coder, browse the levels to find a project that's challenging for you.</p>
+	   			</div>
 	   		</div>
 	   		<div class="col-sm-1"></div>
 	   	</div>
@@ -107,18 +110,24 @@
 
 			// learn more hide/show
 			
+			// tappable on mobile
 			if(isMobileDevice()) {
 				$("#start").mousedown(function() {
 					$("#start-box").toggle();
 				})
 			}
 			
+			// hoverable not on mobile
 			else {
 				$("#start").mouseenter(function() {
-					$("#start-box").fadeIn(250);
+					// make the box stay showing for a longer period of time so you can click the Ghost Busters link
+					// only fade in if it's hidden -- prevents it from queuing up too many fade-ins during the delay()
+					if ($('#start-box').is(':hidden')) {
+						$("#start-box").fadeIn(250).delay(5000);
+					}
 				})
 				$("#start").mouseleave(function() {
-					$("#start-box").fadeOut(400);
+					$("#start-box").fadeOut(600);
 				})	
 			}
 			
