@@ -1,11 +1,11 @@
 <head>
-    <script src="https://cdn.rawgit.com/stevekrouse/WoofJS/1e9b9a5e25ec87307efbe17924a09c4e0865fe6e/woof.js"></script>
+    <script src="https://cdn.rawgit.com/stevekrouse/WoofJS/cb6d0621/dist/woof.js"></script>
     <script>
     // Boss Fight
-    setBackdropURL("http://i.imgur.com/dsVWsfI.jpg") // Sets the backdrop to an image
+    setBackdropURL("../images/boss-backdrop.jpg") // Sets the backdrop to an image
    
     // Creates the ship sprite
-    var ship = new Image({url: "https://i.imgur.com/yiWKW9l.png?1", x: 0, y: minY + 30, height: 40, width: 35});
+    var ship = new Image({url: "../images/boss-ship.png", x: 0, y: minY + 30, height: 40, width: 35});
     
     // Makes the ship move when the arrow keys are pressed
     forever(() => {
@@ -42,7 +42,7 @@
     var lasers = []
     forever (() => {
       if (keysDown.includes('SPACE')){   // Creates a sprite "laser" every time the space key is pressed 
-        var laser = new Image({url: "https://i.imgur.com/VAyenN5.png?1", x: ship.x, y: ship.y, height: 50, rotationStyle: "NO ROTATE"})
+        var laser = new Image({url: "../images/boss-laser.png", x: ship.x, y: ship.y, height: 50, rotationStyle: "NO ROTATE"})
         laser.showing = false;
         lasers.push(laser);  // Pushes sprite "laser" to the "lasers" array
     }
@@ -55,7 +55,7 @@
           laser.showing = false;
           }
         if (laser.touching(boss)) {
-          laser.setImageURL("http://i.imgur.com/80uvTuh.png?1")  // Changes the laser's costume when it touches the boss (for effect)
+          laser.setImageURL("../images/boss-explosion.png")  // Changes the laser's costume when it touches the boss (for effect)
           laser.height = 30
           laser.width = 30
           bossHealth -= 1;     // subtracts 1 from the variable "bossHealth" each time a laser touches the boss
@@ -65,7 +65,7 @@
   });
   
     // Creates the boss sprite
-    var boss = new Image({url:"https://imgur.com/2qP6ehu.png?1", x: 0, y: maxY - 120, height: 150, width: 150, rotationStyle: "NO ROTATE"});
+    var boss = new Image({url:"../images/boss-boss.png", x: 0, y: maxY - 120, height: 150, width: 150, rotationStyle: "NO ROTATE"});
     // Makes the boss back and forth along the x-axis
     forever (() => {
       boss.move(1)
@@ -88,7 +88,7 @@
     //Boss Bomb
     var bombs = []
     every(4, "seconds", () => {  // Creates a variable "bomb" every 4 seconds, and pushes these to the "bombs" array
-      var bomb = new Image({url: "https://i.imgur.com/65RZqnD.png?1", x: boss.x, y: boss.y, height: 35, width: 30});
+      var bomb = new Image({url: "../images/boss-bomb.png", x: boss.x, y: boss.y, height: 35, width: 30});
       bombs.push(bomb);
   });
   
@@ -108,7 +108,7 @@
     //Boss Missiles
     var missiles = []
     every (4, "seconds", () => {  // Creates a variable "missile" every 4 seconds, and pushes these to the "missiles" array
-      var missile = new Image({url: "http://i.imgur.com/YL7GriA.png?1", x: boss.x, y: boss.y, });
+      var missile = new Image({url: "../images/boss-missile.png", x: boss.x, y: boss.y, });
       missile.pointTowards(ship.x, ship.y);   // Makes the "missile" sprites point towards the variable "ship"
       missiles.push(missile);
   });
@@ -127,7 +127,7 @@
   });
   
     //Boss Laser
-    var blaser = new Image({url: "http://i.imgur.com/8JyP7GO.png", height: 500})
+    var blaser = new Image({url: "../images/boss-blaser.png", height: 500})
     blaser.showing = false;       
     forever(() => {              // Creats a sprite "blaser" that is hidden, and constantly follows the boss's pathing
       blaser.x = boss.x;         
@@ -141,7 +141,7 @@
   })
   
   //Creates variable "warning", and hides it
-    var warning = new Image ({url: "http://i.imgur.com/D14klJD.jpg?1", x: 0, y: 0});
+    var warning = new Image ({url: "../images/boss-warning.jpg", x: 0, y: 0});
     warning.showing = false; 
     
     forever(() => {
@@ -164,7 +164,7 @@
     //Boss shot
     var shots = []      
     every(1, "seconds", () => {        // Creats a variable "shot" every 1 seconds, and pushes these to the "shots" array
-      var shot = new Image({url: "https://i.imgur.com/70tstu9.png?1", x: boss.x, y: boss.y, height: 30, width: 25})
+      var shot = new Image({url: "../images/boss-shots.png", x: boss.x, y: boss.y, height: 30, width: 25})
     shots.push(shot);
   });
   
@@ -201,13 +201,13 @@
         timer = 0    // Hides sprite "blaser", and resets variable "timer"
         setBackdropColor("white")  
         after(0.2, "seconds", () => {
-          setBackdropURL("http://i.imgur.com/dsVWsfI.jpg")     // Flashes the screen yellow for effect, then returns to the color red
+          setBackdropURL("../images/boss-backdrop.jpg")     // Flashes the screen white for effect, then returns to image backdrop
       })
     }
   });
   
     // Makes the game over condition, and displays game over when that condition is met
-    var gameOver= new Image({url:"http://i.imgur.com/wsqTdGn.jpg?1", x: 0, y:0})
+    var gameOver= new Image({url:"../images/boss-gameover.jpg", x: 0, y:0})
     gameOver.showing = false;
     forever(() => {
       if (health <= 0) {
@@ -217,12 +217,12 @@
   });
   
     // Makes the win condition, and displays the win screen when that condition is met
-    var youWin = new Image({url:"http://i.imgur.com/IFYEM3W.png?1", height: 100, width: 500})
+    var youWin = new Image({url:"../images/boss-youwin.png", height: 100, width: 500})
     youWin.showing = false;  
     forever (() => {
       if (bossHealth <= 0) {
       youWin.showing = true;   // Shows the previously hidden "youWin" sprite if the variable "bossHealth" is equal to or less than 0
-      boss.setImageURL("http://i.imgur.com/80uvTuh.png?1")   // Changes the bosses costume to an explosion when variable "bossHealth" is equal to or less than 0
+      boss.setImageURL("../images/boss-explosion.png")   // Changes the bosses costume to an explosion when variable "bossHealth" is equal to or less than 0
       freeze();
     }
   });    

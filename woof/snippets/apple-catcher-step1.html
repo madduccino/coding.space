@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="https://cdn.rawgit.com/stevekrouse/WoofJS/cb6d0621/dist/woof.js"></script>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Apple Catcher Step 1</title>
+</head>
+<body>
+
+<script>
+// Woof Apple Catcher (remake) #1
+setBackdropColor("white");
+
+//Apple
+new Circle({ radius: 15, color: "red", y: maxY - 30, x: 0 });
+
+//Catcher
+new Rectangle({ height: 35, width: 45, color: "green", y: minY + 30, x: 0 });
+</script>
+</body>
+</html>

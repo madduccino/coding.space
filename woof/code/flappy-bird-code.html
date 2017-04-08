@@ -1,13 +1,13 @@
 <head>
-    <script src="https://cdn.rawgit.com/stevekrouse/WoofJS/1e9b9a5e25ec87307efbe17924a09c4e0865fe6e/woof.js"></script>
+    <script src="https://cdn.rawgit.com/stevekrouse/WoofJS/cb6d0621/dist/woof.js"></script>
     <script>
     // Flappy Bird
     
     // Sets backdrop to the flappy bird background
-    setBackdropURL("http://i.imgur.com/UZKEjzG.png")
+    setBackdropURL("../images/flappybird-backdrop.png")
     
     // Creates the sprite "bird"
-    var bird = new Image({url: "http://i.imgur.com/VnRkpf1.png", height: 30, width: 45, x: 0, y: 0, setRotationStyle: "NO ROTATE"});
+    var bird = new Image({url: "../images/flappybird-bird.png", height: 30, width: 45, x: 0, y: 0, setRotationStyle: "NO ROTATE"});
     
     // Creates the text sprite "game_over"
     var game_over = new Text({x: 0, y: 0, size: 50, text: "GAME OVER", color: "red", showing: false});
@@ -36,8 +36,8 @@
     //Pipe cloning
     pipes = []
     every(2, "seconds", () => {  // Creates a new pipe_1 and pipe_2 every 2 seconds
-      var pipe_1 = new Image({url: "http://i.imgur.com/3DOusVo.png?1", height: 500, width: 100, y: random (minY, -50), x: maxX});
-      var pipe_2 = new Image({url: "http://i.imgur.com/cOO9MvC.png?1", height: 500, width: 100, y: pipe_1.y + 650, x: maxX});
+      var pipe_1 = new Image({url: "../images/flappybird-pipe1.png", height: 500, width: 100, y: random (minY, -50), x: maxX});
+      var pipe_2 = new Image({url: "../images/flappybird-pipe2.png", height: 500, width: 100, y: pipe_1.y + 650, x: maxX});
       pipes.push(pipe_1);
       pipes.push(pipe_2);  // Pushes "pipe_" sprites to the "pipes" array
     });

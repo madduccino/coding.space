@@ -1,10 +1,10 @@
 <head>
-    <script src="https://cdn.rawgit.com/stevekrouse/WoofJS/1e9b9a5e25ec87307efbe17924a09c4e0865fe6e/woof.js"></script>
+  <script src="https://cdn.rawgit.com/stevekrouse/WoofJS/cb6d0621/dist/woof.js"></script>
     <script>
      // Snake Game | Full Game
 
     // Sets the backdrop to an image
-    setBackdropURL("http://i.imgur.com/l5GbxpA.png?1")
+    setBackdropURL("../images/snake-backdrop.png")
     
     // Creates a character "snakeHead"
     var snakeHead = new Circle({radius: 10, x: 0, y: 0, color: "green"});
@@ -115,7 +115,7 @@
     var branchRight = new Rectangle({height: 25, width: 130, x: 500, y: 0, color:"brown"})
     
     // Creates variable "gameover" and sets it to an image
-    var gameover = new Image({url:"http://i.imgur.com/wawly3s.png", width: 500, height: 250, showing: false})
+    var gameover = new Image({url:"../images/gameover.png", width: 500, height: 250, showing: false})
     
     // Makes it so that if "snakeHead" touches any of the obstacles, "gamover" shows, and the game freezes
     forever(() => {
@@ -145,7 +145,7 @@
     })
       
     // Creates the text variable "gameStartText"
-    var gameStartText = new Text ({y: 115, size: 30, color: "blue", text: "Press space to start, 'r' to restart if you lose, and the up and down keys to change the difficulty"})
+    var gameStartText = new Text ({y: 115, size: 30, color: "blue", text: "Press space to start and 'r' to restart if you lose"})
     
     // Game starting commands
     onKeyDown(key => {

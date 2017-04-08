@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="https://cdn.rawgit.com/stevekrouse/WoofJS/cb6d0621/dist/woof.js"></script>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Flappy Bird Step 3</title>
+</head>
+<body>
+
+<script>
+    // Flappy Bird
+    
+    // Sets backdrop to the flappy bird background
+    setBackdropURL("../images/flappybird-backdrop.png")
+    
+    // Creates the sprite "bird"
+    var bird = new Image({url: "../images/flappybird-bird.png", height: 30, width: 45, x: 0, y: 0, setRotationStyle: "NO ROTATE"});
+    
+    // // Creates the text sprite "game_over"
+    // var game_over = new Text({x: 0, y: 0, size: 50, text: "GAME OVER", color: "red", showing: false});
+    // game_over.sendToFront()  // Sends sprite "game_over" to the front layer so it shows above the "pipe_" sprites
+    
+    // Makes the sprite "bird" fall along the y-axis at constant unit 2
+    forever(() => {
+      bird.y -= 4;
+    });
+    
+    // Makes the sprite "bird" move up 70 units each time the mouse is clicked
+    onMouseDown(() => {
+      bird.setRotationStyle("NO ROTATE")
+      bird.angle = UP;
+      bird.move(70);
+    });
+
+</script>
+</body>
+</html>

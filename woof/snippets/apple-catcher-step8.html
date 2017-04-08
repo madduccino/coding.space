@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="https://cdn.rawgit.com/stevekrouse/WoofJS/cb6d0621/dist/woof.js"></script>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Apple Catcher Step 8</title>
+</head>
+<body>
+
+<script>
+// Woof Apple Catcher (remake) #7
+
+setBackdropColor("white");
+
+//Apple
+var apple = new Circle({ radius: 15, color: "red", y: maxY - 30, x: 0 });
+
+//Catcher
+var catcher = new Rectangle({ height: 35, width: 45, color: "green", y: minY + 30, x: 0 });
+
+//Motion
+forever(function () {
+  if (keysDown.includes("RIGHT")) {
+    catcher.x += 10;
+  }
+  if (keysDown.includes("LEFT")) {
+    catcher.x -= 10;
+  }
+});
+
+//Apple Falling
+ready(function () {
+  apple.x = random(minX, maxX);
+  apple.y = maxY - 30;
+  forever(function () {
+    apple.y -= 5;
+  });
+});
+
+forever(function () {
+  if (catcher.x > maxX) {
+    catcher.x = maxX;
+  }
+  if (catcher.x < minX) {
+    catcher.x = minX;
+  }
+});
+
+//Touching
+forever(function () {
+  if (apple.touching(catcher)) {
+    apple.x = random(minX, maxX);
+    apple.y = maxY - 30;
+    score += 1;
+  }
+});
+
+//Game Over
+forever(function () {
+  if (apple.y < minY) {
+    new Text({ x: 0, X: 0, color: "red", size: 50, text: "GAME OVER" });
+  }
+});
+
+//Scoreboard
+var score = 0;
+var scoreText = new Text({ y: maxY - 60, x: minX + 100, size: 30, text: function text() {
+    return "SCORE: " + score;
+  } });
+
+//Level
+var level = 1;
+var levelText = new Text({ y: maxY - 120, x: minX + 95, size: 30, text: function text() {
+    return "LEVEL: " + level;
+  } });
+
+forever(function () {
+  if (score == 5) {
+    score = 0;
+    level++;
+  }
+});
+</script>
+
+
+</body>
+</html>

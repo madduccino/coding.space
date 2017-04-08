@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="https://cdn.rawgit.com/stevekrouse/WoofJS/cb6d0621/dist/woof.js"></script>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Squid Chase Step 2</title>
+</head>
+<body>
+
+<script>
+    // Squid Chase
+    
+    // Sets the backdrop to a new image 
+    setBackdropURL("../images/squidchase-backdrop.jpg")
+    
+    // Creats variables "squid" and "fish"
+    var squid = new Image({url:"../images/squidchase-squid.png", height:140,width:140, x:-400})
+    var fish = new Image({url: "../images/squidchase-fish.png", height:50, width:50})
+    
+
+     forever (() => {
+    //squid.pointTowards(mouseX, mouseY);
+    //   squid.move(0 +(timer));
+    // // Makes the variable "fish" follow the mouse pointer's xy coordinate
+       fish.x = mouseX;
+       fish.y = mouseY;
+       fish.pointTowards(mouseX, mouseY)
+     })
+    
+
+</script>
+</body>
+</html>
