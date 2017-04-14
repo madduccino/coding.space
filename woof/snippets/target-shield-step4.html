@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="https://cdn.rawgit.com/stevekrouse/WoofJS/cb6d0621/dist/woof.js"></script>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Target Shield Step 4</title>
+</head>
+<body>
+
+<script>
+  // Set backdrop to color white
+  setBackdropColor('white')
+  
+  // Create base sprite
+  var baise = new Image({
+    url: "../images/target-base.png",
+    width: 45,
+    height: 45,
+    x: 0,
+    y: 0
+  })
+  
+    // Create blocker sprite
+  var bloacker = new Rectangle({
+    height: 37,
+    width: 37,
+    color: "orange"
+  })
+  
+  // Make blocker sprite follow mouse
+  forever(() => {
+    bloacker.x = mouseX
+    bloacker.y = mouseY
+  })
+  
+    
+  // Create shield
+  var shieald = new Rectangle({
+    x: 50,
+    y: 5,
+    length: 10,
+    height: 120
+  })
+  shieald.hide()
+  
+  var shieald2 = new Rectangle({
+    x: -50,
+    y: 5,
+    length: 10,
+    height: 115
+  })
+  shieald2.hide()
+  
+    // Show shield if S is pressed. Delete after 4 seconds.
+  forever(() => {
+    if (keysDown.includes('S')) {
+      shieald.show()
+      shieald2.show()
+      after(4, 'seconds', () => {
+        shieald.delete()
+        shieald2.delete()
+      })
+    }
+  })
+  
+    
+  // Create text variable to display shield instructions
+  
+  var shiealdText = new Text({
+    text: "Press 'S' for shield - 1 time use",
+    x: 137,
+    y: 230,
+    color: "green"
+  })
+  
+  
+</script>
+</body>
+</html>
