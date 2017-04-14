@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <script src="https://cdn.rawgit.com/stevekrouse/WoofJS/cb6d0621/dist/woof.js"></script>
+
+  <title>Alphabet Asteroids Step 4</title>
+</head>
+<body>
+<script>
+
+setBackdropColor('black')
+
+var ship = new Text ({
+  text: () => ">",
+  size: 50,
+  color: "white",
+  angle: 90,
+  showing: false
+})
+
+var newship = new Text ({
+  text: () => ">",
+  size: 50,
+  color: "white",
+  angle: 90
+})
+
+
+forever(() => {
+  if (keysDown.includes('RIGHT')) {
+    newship.turnRight(10)
+  }
+  if (keysDown.includes('LEFT')) {
+    newship.turnLeft(10)
+  }
+})
+
+var speed = 0
+forever(() => {
+  if (keysDown.includes('UP')) {
+    speed += 0.1
+  }
+  if (!keysDown.includes('UP') && speed > 0) {
+    speed -= 0.02
+  }
+  if (speed > 20) {
+    speed = 20
+  }
+  if (speed > 0) {
+    ship.move(speed)
+  }
+  
+})
+
+
+forever(() => {
+  if (ship.y > maxY) {
+    ship.y = minY
+  }
+  if (ship.y < minY) {
+    ship.y = maxY
+  }
+  if (ship.x > maxX) {
+    ship.x = minX
+  }
+  if (ship.x < minX) {
+    ship.x = maxX
+  }
+})
+
+forever(() => {
+  if (keysDown.includes('UP')) {
+    newship.text = "->"
+    after(0.2, 'second', () => {
+      newship.text = ">"
+    })
+  }
+})
+
+forever(() => {
+  newship.x = ship.x
+  newship.y = ship.y
+    if (keysDown.includes('UP')) {
+      ship.angle = newship.angle
+    }
+})
+</script>
+</body>
+</html>

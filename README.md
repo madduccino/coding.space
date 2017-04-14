@@ -10,9 +10,9 @@
 
 3. Create a GitHub account 
 
-4. Fork the [coding.space repo](github.com/stevekrouse/coding.space) to your github account by clicking the Fork button
+4. Fork the [coding.space repo](https://github.com/stevekrouse/coding.space) to your github account by clicking the Fork button
 
-4. Clone the your forked repo with this command in the Cloud9 terminal:
+4. Clone your forked repo with this command in the Cloud9 terminal:
 
     ```
     git clone https://github.com/YourGithubUsername/coding.space.git
@@ -46,34 +46,18 @@
 7. Submit a pull request to the main `stevekrouse/coding.space` repo and await approval or feedback.
 
 
-    If you want to get quick feedback before pushing your branch and making a pull request, you can send Steve a link to your project/changes on c9.io
+If you want to get quick feedback before pushing your branch and making a pull request, you can send Steve a link to your project/changes on c9.io
 
-#### Embedding Scratch projects and JSBin pages
+#### Embedding Scratch projects
 
 * For Scratch projects, to embed step-by-step examples, go to the project page on Scratch, and click "embed" -- you can copy/paste the iframe from there.
 
-* For anything on JSBin, to embed step-by-step examples, using an iframe pointing directly to JSBin won't work. Instead, complete the following url with the project id (and snapshot number if necessary:
+#### Adding Woof projects
 
-    ```
-    https://stevekrouse.github.io/embed-jsbin/?id=[project-id]/[snapshot-number]
-    ```
-    so, this url: 
-    
-    ```
-    http://output.jsbin.com/lohoze
-    ```
-    would become:
-    ```
-    https://stevekrouse.github.io/embed-jsbin/?id=lohoze
-    ```
-    and this one, with a snapshot number:
-    ```
-    http://output.jsbin.com/lohoze/2/
-    ```
-    would become:
-    ```
-    https://stevekrouse.github.io/embed-jsbin/?id=lohoze/2/
-    ```
-* For Woof projects, please include the code for each sub-step in the `coding.space/woof/code/` directory so that can serve as the answer key for our teachers.
+* For Woof projects, please include the code for the full project in the `coding.space/woof/code/` directory so that it can serve as the answer key for our teachers.
 
-* Please don't embed step-by-step examples for Woof projects as iframes -- they tend to slow things down on woofjs.com. Just include a link instead.
+* Save all images in the`coding.space/woof/images` directory and all audio in the `coding.space/woof/audio` directory. Do not hard link.
+
+* Step-by-step examples of the project should be included in the `coding.space/woof/snippets` directory and linked to from your untutorial. 
+
+* Please don't embed examples for Woof projects as iframes -- they tend to slow things down on woofjs.com. Just include a link instead.

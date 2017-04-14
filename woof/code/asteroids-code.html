@@ -1,8 +1,7 @@
 <head>
   
-  <script src="https://cdn.rawgit.com/stevekrouse/WoofJS/1e9b9a5e25ec87307efbe17924a09c4e0865fe6e/woof.js"></script>
-  
-  <script>
+  <script src="https://cdn.rawgit.com/stevekrouse/WoofJS/cb6d0621/dist/woof.js"></script>
+   <script>
   
   // Creates instructions for how to play the game
   var instructions = new Text({
@@ -100,7 +99,7 @@
   })
   
   // Adds sound variable to play when ship fires weapon
-  var firesound = new Audio('https://dl.dropboxusercontent.com/s/12kr23diq8v993j/fire.wav?dl=0')
+  var firesound = new Audio('../audio/asteroids-shoot.wav')
   
   // Make degrees always between -360 and 360. This helps align fire to ship.
   forever(() => {
@@ -262,7 +261,7 @@
   })
  
   // Adds sound variable to play when asteroids are hit
-  var bang = new Audio('https://dl.dropboxusercontent.com/s/r8jkvgmtk68iysu/bangLarge.wav?dl=0')
+  var bang = new Audio('../audio/asteroids-bang.wav')
  
   // Creates two smaller asteroid clones when asteroid hit by fireball
   var asteroidDouble = []
@@ -524,7 +523,7 @@
   })
  
   // Adds sound variable for flying saucer
-  var saucerSound = new Audio('https://dl.dropboxusercontent.com/s/a4424mwmqure4ds/saucerBig.wav?dl=0')
+  var saucerSound = new Audio('../audio/asteroids-saucer.wav')
   
   // Creates flying saucer sprite
   var saucer = new Text({
@@ -668,12 +667,27 @@
   forever(() => {
     if (lifecount <= 0) {
       ship.hide() // Hides ship
-      // Deletes all asteroids
-      asteroids.forEach(asteroid => {asteroid.delete()})
-      asteroidDouble.forEach(asteroid => {asteroid.delete()}) 
-      asteroidDoubleDouble.forEach(asteroid => {asteroid.delete()})
-      saucerFiring.forEach(fire => fire.delete()) // Deletes saucer fire
-      explosion.forEach(flame => flame.delete()) // Deletes explosion flames
+      // Deletes all clones and removes them from associated arrays
+      asteroids.forEach(asteroid => {
+        asteroid.delete()
+        asteroids.remove(asteroid)
+      })
+      asteroidDouble.forEach(asteroid => {
+        asteroid.delete()
+        asteroidDouble.remove(asteroid)
+      }) 
+      asteroidDoubleDouble.forEach(asteroid => {
+        asteroid.delete()
+        asteroidDoubleDouble.remove(asteroid)
+      })
+      saucerFiring.forEach(fire => {
+        fire.delete()
+        saucerFiring.remove(fire)
+      })
+      explosion.forEach(flame => {
+        flame.delete()
+        explosion.remove(flame)
+      })
       saucerShow = false // Hides saucer
       new Text({text: () => "Game Over", size: 50, color: "#ff6600", x: 0, y: 0}) // Displays Game Over message
       after(0.5, 'second', () => {

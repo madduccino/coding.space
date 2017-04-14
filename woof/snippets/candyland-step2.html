@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="https://cdn.rawgit.com/stevekrouse/WoofJS/cb6d0621/dist/woof.js"></script>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Candyland Step 2</title>
+</head>
+<body>
+
+<script>
+//Candy Jump
+//1. create a character and a background for your game 
+var dino = new Image({
+    url: "../images/candyland-mint.png",
+    height: 200,
+    width: 200,
+    y: 0,
+    x: -400
+})
+setBackdropURL("../images/candyland-backdrop.jpg")
+
+//2. Create a score that will increase with time. 
+var timer = 0;
+var timer_text = new Text({
+    text: () => "Score: " + timer,
+    y: 300,
+    fontFamily: "Arial Black",
+    size: 50,
+    color: "#e04386"
+})
+every(.1, "seconds", () => {
+    timer++
+})
+ 
+
+</script>
+</body>
+</html>

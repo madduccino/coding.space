@@ -8,7 +8,7 @@
 </style>
 <div class="container">
     <div class="block">
-        1) Before you get started, take a look at our basic instruction for working with Woof and Firebase. Look through <a href="https://firebase.google.com/docs/web/setup"> Google’s Firebase Setup Guide</a> and <a href="https://firebase.google.com/docs/database/web/read-and-write">Instructions for working with the Firebase database.</a>
+        1) Before you get started, take a look at our basic instruction for working with Woof and Firebase. Look through  Google's <a  target="_blank" href="https://firebase.google.com/docs/web/setup">Firebase Setup Guide</a> and <a target="_blank" href="https://firebase.google.com/docs/database/web/read-and-write">Instructions for working with the Firebase database.</a>
     </div>
     <div class="block">
         2) Write your game and test it to make sure it works well without the High Score first.
@@ -25,26 +25,26 @@
         5) Create an account on Google Firebase and open a new project.
     </div>
     <div class="block">
-        6) Change the Rules on the database by clicking on “Database” then “RULES”, then “LEARN MORE” in the Console.<br>
+        6) Change the Rules on the database by clicking on "Database" then "RULES", then "LEARN MORE" in the Console.<br>
         <br><br>
-        <img src="http://www.learncodecraft.com/images/Rules_learnmore.png">
+        <img src="./images/Rules_learnmore.png">
         <br><br>
-        <br> Then choose “PUBLIC” from the example rule sets.
+        <br> Then choose "PUBLIC" from the example rule sets.
         <br><br>
-        <img src="http://www.learncodecraft.com/images/public_rules_fb.png">
+        <img src="./images/public_rules_fb.png">
         <br><br> Replace the rules for your project with the PUBLIC rules. This will allow your game code to read and write freely to the database.
     </div>
     <div class="block">
-        7) Go to the Firebase console, choose “Add Firebase to your web app.”
+        7) Go to the Firebase console, choose "Add Firebase to your web app."
         <br><br>
 
-        <img src="http://www.learncodecraft.com/images/Add_FB_Button.png">
+        <img src="./images/Add_FB_Button.png">
 
         <br><br> Firebase will generate the config code for your project.
         <br><br>
-        <img src="http://www.learncodecraft.com/images/Firebase_config_Copy.png">
+        <img src="./images/Firebase_config_Copy.png">
         <br><br> Highlight the config code between the second set of
-        < script> tags (starting with “// Initialize Firebase”), copy and paste it into your project.
+        < script> tags (starting with "// Initialize Firebase"), copy and paste it into your project.
     </div>
     <div class="block">
         8) Create score and highScore variables. Inside a forever loop in your game code, check to see if score is higher than highScore, and if so, write the score value to the sharedHighScore location in the database using this line of code:<br><br>

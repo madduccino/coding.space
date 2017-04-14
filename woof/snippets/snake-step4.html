@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="https://cdn.rawgit.com/stevekrouse/WoofJS/cb6d0621/dist/woof.js"></script>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Snake Step 4</title>
+</head>
+<body>
+
+<script>
+// Sets the backdrop to an image
+setBackdropURL("../images/snake-backdrop.png")
+
+// Creates a character "snakeHead"
+var snakeHead = new Circle({radius: 10, x: 0, y: 0, color: "green"});
+forever(() => {
+  snakeHead.move(3)
+})
+
+// Makes it so that if the left and right arrow keys are pressed, "snakeHead" turns left and right
+forever(() => {
+  if (keysDown.includes("LEFT")) {
+    snakeHead.turnLeft(5);
+  }
+  if (keysDown.includes("RIGHT")) {
+    snakeHead.turnRight(5);
+  }
+});
+
+// Makes it so that if the left side of the screen or right side of the screen is clicked, "snakeHead" turns left and right
+forever(() => {
+ if(mouseDown === true && mouseX > 0) {
+   snakeHead.turnRight(5);
+ }
+ if (mouseDown === true && mouseX < 0) {
+   snakeHead.turnLeft(5);
+ }
+})
+
+//Food Cloning
+var foodArray = []  // Creates array "foodArray" to store clones
+every(2, "seconds", () => {  // Creates a new clone every 2 seconds
+  var food = new Circle({radius: 5, color: "purple"})   // Creates variable "food" that will be cloned
+  food.x = randomX()
+  food.y = randomY()            // Sets the clone's xy coordinates to a random spot along the screen 
+  foodArray.push(food)     // Pushes each "food" clone into the array "foodArray"
+});
+
+// Creates variable "score" (set to 0), which is then displayed through text variable "scoreText"
+var score = 0;
+var scoreText = new Text({text: () => "Score: " + score, x: 0, y: maxY - 50, size: 30})
+
+//Increases "score" by one if "snakeHead" touches anything in the "foodArray" array
+forever(() => {
+  foodArray.forEach(food => {
+    if (food.touching(snakeHead)) {
+      score++
+    }
+  })
+})
+
+//Body creation
+var bodyArray = []  // Creates array "bodyArray" to store clones
+forever(() => {
+  foodArray.forEach(food => {
+    if(food.touching(snakeHead)) {
+      var body = new Circle({radius: 5, x: snakeHead.x, y: snakeHead.y, color: "green"}); // Creates a new "body" clone each time "snakeHead" touches a "food" clone
+      bodyArray.push(body);  // Pushes "body" to array "bodyArray"
+      food.delete()  // Deletes "food" clones when "snakeHead" touches them
+    }
+  }) 
+})
+
+//Index for body following the previously made piece
+var follow_distance  // Creates variable "follow_distance"
+
+forever(() => {
+  bodyArray.forEach((piece, index) => {  // Creates an index for the array "bodyArray"
+    var following;  // Creates variable "following" 
+    if (index === 0){
+      following = snakeHead  // Makes it so that if "index" equals 0, then "following" equals "snakeHead" (the pieces follow "snakeHead")
+      
+    } else {
+      following = bodyArray[index - 1] // Makes it so that if "index" is at anything else, then "following" equals "bodyArray"s current "index" minus 1 (the pieces follow the previous piece)
+    }
+    if(piece.distanceTo(following) > 27) {  // Sets up code for the situation when a "piece"s distance to whatever "following" is is greater than 27
+      piece.pointTowards(following);  // Makes the "piece" point towards whatever "following" currently is
+      piece.move(3)     // Makes each piece move at the rate of "difficulty"
+    }
+  })
+})  
+
+    
+
+</script>
+</body>
+</html>
