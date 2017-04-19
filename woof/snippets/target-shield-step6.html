@@ -14,7 +14,7 @@
   setBackdropColor('white')
   
   // Create base sprite
-  var baise = new Image({
+  var base = new Image({
     url: "../images/target-base.png",
     width: 45,
     height: 45,
@@ -23,7 +23,7 @@
   })
   
     // Create blocker sprite
-  var bloacker = new Rectangle({
+  var blocker = new Rectangle({
     height: 37,
     width: 37,
     color: "orange"
@@ -31,36 +31,37 @@
   
   // Make blocker sprite follow mouse
   forever(() => {
-    bloacker.x = mouseX
-    bloacker.y = mouseY
+    blocker.x = mouseX
+    blocker.y = mouseY
   })
   
     
   // Create shield
-  var shieald = new Rectangle({
+  var shield = new Rectangle({
     x: 50,
     y: 5,
     length: 10,
     height: 120
   })
-  shieald.hide()
+  shield.hide()
   
-  var shieald2 = new Rectangle({
+  var shield2 = new Rectangle({
     x: -50,
     y: 5,
     length: 10,
     height: 115
   })
-  shieald2.hide()
+  shield2.hide()
   
-    // Show shield if S is pressed. Delete after 4 seconds.
+   // Show shield if S is pressed. Delete after 4 seconds.
   forever(() => {
     if (keysDown.includes('S')) {
-      shieald.show()
-      shieald2.show()
+      shield.show()
+      shield2.show()
       after(4, 'seconds', () => {
-        shieald.delete()
-        shieald2.delete()
+        shield.delete()
+        shield2.delete()
+        shieldText.text = "shield time used up" // Change shield instructions
       })
     }
   })
@@ -68,7 +69,7 @@
     
   // Create text variable to display shield instructions
   
-  var shiealdText = new Text({
+  var shieldText = new Text({
     text: "Press 'S' for shield - 1 time use",
     x: 137,
     y: 230,
@@ -77,9 +78,9 @@
   
      
   // Create health variable, start at 100, and display on screen
-  var haelth = 100
+  var health = 100
   new Text({
-    text: () => "health: " + haelth,
+    text: () => "health: " + health,
     x: 0,
     y: 200,
     size: 20
@@ -97,19 +98,13 @@
         x: 0,
         y: 0
       })
-      // Movement & Damage
-    baellspawn(clone) // Call baellspawn function
+    // Movement & Damage
+    clonespawn(clone) // Call clonespawn function
     clones.push(clone) // Push clones into clones array
     forever(() => {
       clone.move(1) // Set initial speed to 1
-      //   if (timer > 100) {
-      //     clone.move(1.6) // Increase speed if timer greater than 100
-      //   }
-      //   if (timer > 200) {
-      //     clone.move(1.9) // Increase speed again if timer greater than 200
-      //   }
-      if (clone.touching(baise)) {
-        haelth -= 5 // Decrease health by 5 if clones touches base
+      if (clone.touching(base)) {
+        health -= 5 // Decrease health by 5 if clones touches base
         clone.delete() // Delete clone
       }
     })
@@ -119,13 +114,12 @@
   forever(() => {
     clones.forEach(clone => {
       // Point clone towards base
-      clone.pointTowards(baise)
+      clone.pointTowards(base)
     })
   })
-  // 
   
   // Start clones at random spots along edge of screen
-  function baellspawn(clone) {
+  function clonespawn(clone) {
     var edge = random(1, 4)
     if (edge == 1) {
       clone.y = maxY

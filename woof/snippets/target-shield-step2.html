@@ -14,7 +14,7 @@
   setBackdropColor('white')
   
   // Create base sprite
-  var baise = new Image({
+  var base = new Image({
     url: "../images/target-base.png",
     width: 45,
     height: 45,
@@ -23,7 +23,7 @@
   })
   
     // Create blocker sprite
-  var bloacker = new Rectangle({
+  var blocker = new Rectangle({
     height: 37,
     width: 37,
     color: "orange"
@@ -31,8 +31,8 @@
   
   // Make blocker sprite follow mouse
   forever(() => {
-    bloacker.x = mouseX
-    bloacker.y = mouseY
+    blocker.x = mouseX
+    blocker.y = mouseY
   })
   
 </script>
