@@ -73,18 +73,18 @@ var timer = new Text({
 forever(() => {
   if (keysDown.includes('left') && cannon.angle > 180) {
     cannon.turnRight(5);
-    moveToShoot = 0;
   }
   if (keysDown.includes('right') && cannon.angle < 360) {
     cannon.turnLeft(5);
-    moveToShoot = 0;
   }
   
   playerBullets.forEach(bullet => {
     bullet.move(3);
     enemies.forEach(enemy => {
       if (bullet.touching(enemy)) {
+        enemies.remove(enemy);
         enemy.delete();
+        playerBullets.remove(bullet);
         bullet.delete();
       }
     });
@@ -93,14 +93,15 @@ forever(() => {
   enemies.forEach(enemy => {
     enemy.move(-1);
     if (enemy.x < minX) {
+      enemies.remove(enemy);
       enemy.delete();
-      enemies.splice(enemies.indexOf(enemy), 1);
     }
   });
   
   enemyWeapons.forEach(weapon => {
     weapon.move(4);
     if (weapon.touching(baseWall)) {
+      enemyWeapons.remove(weapon);
       weapon.delete();
       if (baseWall.height > baseMain.height) {
         baseWall.height -= 2;

@@ -50,19 +50,19 @@ var timer = new Text({
 forever(() => {
   if (keysDown.includes('left') && cannon.angle > 180) {
     cannon.turnRight(5)
-    moveToShoot = 0
   }
   if (keysDown.includes('right') && cannon.angle < 360) {
     cannon.turnLeft(5)
-    moveToShoot = 0
   }
   
   playerBullets.forEach(bullet => {
     bullet.move(3)
     enemies.forEach(enemy => {
       if (bullet.touching(enemy)) {
-        enemy.delete()
-        bullet.delete()
+        enemies.remove(enemy);
+        enemy.delete();
+        playerBullets.remove(bullet);
+        bullet.delete();
       }
     })
   })
@@ -70,8 +70,8 @@ forever(() => {
   enemies.forEach(enemy => {
     enemy.move(-1)
     if (enemy.x < minX) {
-      enemy.delete()
-      enemies.splice(enemies.indexOf(enemy), 1)
+      enemies.remove(enemy);
+      enemy.delete();
     }
   })
   

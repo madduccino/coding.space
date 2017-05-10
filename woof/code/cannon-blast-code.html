@@ -81,13 +81,16 @@ forever(() => {
   playerBullets.forEach(bullet => {
     bullet.move(3);
     if (bullet.y < minY) {
+    	playerBullets.remove(bullet);
       bullet.delete();
     }
     
     // check if the bullets are touching any enemies and delete both
     enemies.forEach(enemy => {
       if (bullet.touching(enemy)) {
+      	enemies.remove(enemy);
         enemy.delete();
+        playerBullets.remove(bullet);
         bullet.delete();
       }
     });
@@ -96,31 +99,23 @@ forever(() => {
     // delete bullet and delete tank if necessary
     tanks.forEach(tank => {
       if (bullet.touching(tank)) {
+      	playerBullets.remove(bullet);
         bullet.delete();
         tank.health -= 1;
         if (tank.health <= 0) {
+        	tanks.remove(tank);
           tank.delete();
         }
       }
-    })
+    });
   });
   
   // move enemies across the screen and delete them if they go too far
   enemies.forEach(enemy => {
     enemy.move(-2);
     if (enemy.x < minX) {
+    	enemies.remove(enemy);
       enemy.delete();
-      // remove the enemy from the enemies array
-      // sometimes just deleting a clone isn't enough, as it is still contained in the array
-      enemies.splice(enemies.indexOf(enemy), 1);
-    }
-    
-    // allow the enemies to shoot only if they're close enough to the base
-    if (enemy.distanceTo(baseMain) < 150) {
-      enemy.shoot = true;
-    }
-    else {
-      enemy.shoot = false;
     }
   });
   
@@ -128,14 +123,8 @@ forever(() => {
   tanks.forEach(tank => {
     tank.move(-3);
     if (tank.x < minX) {
+    	tanks.remove(tank);
       tank.delete();
-      tanks.splice(tanks.indexOf(tank), 1);
-    }
-    if (tank.distanceTo(baseMain) < 300) {
-      tank.shoot = true;
-    }
-    else {
-      tank.shoot = false;
     }
   });
   
@@ -143,12 +132,14 @@ forever(() => {
   enemyWeapons.forEach(weapon => {
     weapon.move(4);
     if (weapon.y > maxY) {
+    	enemyWeapons.remove(weapon);
       weapon.delete();
     }
     
     // if the weapon hits the wall, make the wall smaller
     // once the wall is the same size as the base itself, start making the health bar smaller
     if (weapon.touching(baseWall)) {
+    	enemyWeapons.remove(weapon);
       weapon.delete();
       if (baseWall.height > baseMain.height) {
         baseWall.height -= 2;
@@ -196,59 +187,58 @@ onKeyDown(() => {
   }
 });
 
+
+// function to determine how often to spawn enemies -- as time increases, create them faster
+var enemySpawnTime = () => {
+	if (time < 60) 
+    return random(1.5, 2.8);
+  else if (time < 90)
+    return random(0.3, 1.5);
+  else if (time < 130)
+    return random(0.1, 0.7);
+};
+
 var enemies = [];
-// pass a function to every() to create enemies more quickly as the time goes up
-every(
-  () => {
-    if (time < 60) 
-      return random(1.5, 2.8);
-    else if (time < 90)
-      return random(0.3, 1.5);
-    else if (time < 130)
-      return random(0.1, 0.7);
-  }, 
-  "second", 
-  () => {
-    var enemy = new Rectangle({
-      width: 15,
-      height: 15,
-      color: "#AF4042",
-      x: maxX,
-      y: -100
-    });
-    enemies.push(enemy);
-  }
-);
+
+every(enemySpawnTime, "second", () => {
+  var enemy = new Rectangle({
+    width: 15,
+    height: 15,
+    color: "#AF4042",
+    x: maxX,
+    y: -100
+  });
+  enemies.push(enemy);
+});
+
+// function to determine how often to spawn tanks - as the time increases, create them faster
+var tankSpawnTime = () => {
+	if (time < 75)
+    return random(4.55, 6.01);
+  else if (time < 105)
+    return random(2.55, 4.55);
+  else if (time < 120)
+    return random(1.5, 2.5);
+  else if (time < 150)
+    return random(0.75, 1.5);
+};
+
+var tanks = [];
 
 // create tanks after 30 seconds
-// as the time increases, create them faster
-var tanks = [];
-every(
-  () => {
-    if (time < 75)
-      return random(4.55, 6.01);
-    else if (time < 105)
-      return random(2.55, 4.55);
-    else if (time < 120)
-      return random(1.5, 2.5);
-    else if (time < 150)
-      return random(0.75, 1.5);
-  }, 
-  "second", 
-  () => {
-    if (time >= 30) {
-  		var tank = new Rectangle({
-  			width: 25,
-        height: 25,
-        color: "#40AFAD",
-        x: maxX,
-        y: -100
-  		});
-  		tank.health = 3;
-  		tanks.push(tank);
-  	}
-  }
-);
+every(tankSpawnTime, "second", () => {
+  if (time >= 30) {
+		var tank = new Rectangle({
+			width: 25,
+      height: 25,
+      color: "#40AFAD",
+      x: maxX,
+      y: -100
+		});
+		tank.health = 3;
+		tanks.push(tank);
+	}
+});
 
 // another way to have the enemies spawn randomly and increase frequency
 // would be to follow a pattern like this:
@@ -285,7 +275,7 @@ every(
 var enemyWeapons = [];
 every(2, 'second', () => {
   enemies.forEach(enemy => {
-    if (enemy.showing && enemy.shoot) {
+    if (enemy.distanceTo(baseMain) < 150) {
       var wpn = new Circle({
         radius: 3,
         color: "#DBD15D",
@@ -301,7 +291,7 @@ every(2, 'second', () => {
 // tank weapons shoot faster and look bigger
 every(0.5, 'second', () => {
   tanks.forEach(tank => {
-    if (tank.shoot && tank.showing) {
+    if (tank.distanceTo(baseMain) < 300) {
       var wpn = new Circle({
         radius: 5,
         color: "#DBD15D",

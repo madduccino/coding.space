@@ -41,11 +41,9 @@ var cannon = new Image({
 forever(() => {
   if (keysDown.includes('left') && cannon.angle > 180) {
     cannon.turnRight(5)
-    moveToShoot = 0
   }
   if (keysDown.includes('right') && cannon.angle < 360) {
     cannon.turnLeft(5)
-    moveToShoot = 0
   }
   
   playerBullets.forEach(bullet => {
@@ -55,6 +53,7 @@ forever(() => {
   enemies.forEach(enemy => {
     enemy.move(-1)
     if (enemy.x < minX) {
+      enemies.remove(enemy);
       enemy.delete()
     }
   })
