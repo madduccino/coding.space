@@ -1,4 +1,30 @@
 <style type="text/css">
+  .level-container {
+    border-radius: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    font-family: helvetica, sans-serif;
+    justify-content: center;
+    padding: 20px;
+    margin: 10px;
+  }
+  #level1 {
+    background-color: #00449F;
+    color: white;
+  }
+  #level2 {
+    background-color: #00857C;
+    color: white;
+   }
+  #level3 {
+    background-color: #EA540D;
+    color: white;
+  }
+  #level4 {
+    background-color: #640BCD;
+    color: white;
+  }
+
   .project-block {
       flex: 0 1 150px;
       margin: 10px;
@@ -8,92 +34,104 @@
       width: 100%;
       height: 150px;
       border-radius: 10px;
+      padding-bottom: 5px;
   }
 
   .project-block > a:hover, .project-block > a {
       text-decoration: none;
       cursor: pointer;
-      color: #404040;
+      color: white;
   }
 </style>
-<div id="projects"  style="width: 100%; flex-direction: row; flex-wrap: wrap; display:flex; margin:auto; text-align:center;">
-  <div class="project-block">
-      <a href="./star-catcher.html">
-          <img class="project-image" src="./images/KJTZg29.png">
-          <div><b>Star Catcher</b></div>
-          <div>Difficulty: &#9733;</div>
-      </a>
-  </div>
-  <div class="project-block">
-      <a href="./apple-catcher.html">
-          <img class="project-image" src="./images/Screen_Shot_2016_09_26_at_12_00_58_PM.png">
-          <div><b>Apple Catcher</b></div>
-          <div>Difficulty: &#9733;</div>
-      </a>
-  </div>
-  <div class="project-block">
-      <a href="./hungry-crab.html">
-          <img class="project-image" src="./images/Screen_Shot_2016_09_26_at_12_01_31_PM.png">
-          <div><b>Hungry Crab</b></div>
-          <div>Difficulty: &#9733;</div>
-      </a>
-  </div>
-  <div class="project-block">
-      <a href="./squid-chase.html">
-          <img class="project-image" src="./images/Screen_Shot_2016_10_05_at_2_39_22_PM.png">
-          <div><b>Squid Chase</b></div>
-          <div>Difficulty: &#9733;</div>
-      </a>
-  </div>
-  <div class="project-block">
-      <a href="./fly-trap.html">
-          <img class="project-image" src="./images/flytrap_screenshot.png">
-          <div><b>Fly Trap</b></div>
-          <div>Difficulty: &#9733;</div>
-      </a>
-  </div>
-  <div class="project-block">
-      <a href="./rocket-race.html">
-          <img class="project-image" src="./images/Screen_Shot_2016_10_05_at_2_42_20_PM.png">
-          <div><b>Rocket Race</b></div>
-          <div>Difficulty: &#9733; &#9733;</div>
-      </a>
-  </div>
-  <div class="project-block">
-      <a href="./block-dodger.html">
-          <img class="project-image" src="./images/Screen_Shot_2016_09_26_at_12_05_21_PM.png">
-          <div><b>Obstacle Dodger</b></div>
-          <div>Difficulty: &#9733; &#9733;</div>
-      </a>
-  </div>
-  <div class="project-block">
-      <a href="./flappy-bird.html">
-          <img class="project-image" src="./images/Screen_Shot_2016_09_26_at_12_07_31_PM.png">
-          <div><b>Flappy Bird</b></div>
-          <div>Difficulty: &#9733; &#9733;</div>
-      </a>
-  </div>
-  <div class="project-block">
-      <a href="./candyland-escape.html">
-          <img class="project-image" src="./images/Screen_Shot_2016_10_05_at_2_44_16_PM.png">
-          <div><b>Candyland Escape</b></div>
-          <div>Difficulty: &#9733; &#9733;</div>
-      </a>
-  </div>
+<div id="projects"  style="width: 100%; flex-direction: column; display:flex; margin:auto; text-align:center;">
+  
+  <div class="level-container" id="level1">
+  
     <div class="project-block">
-      <a href="./bubble-time.html">
-          <img class="project-image" src="./images/bubbletime_screenshot.png">
-          <div><b>Bubble Time</b></div>
-          <div>Difficulty: &#9733; &#9733;</div>
-      </a>
+        <a href="./star-catcher.html">
+            <img class="project-image" src="./images/KJTZg29.png">
+            <div><b>Star Catcher</b></div>
+            <div>Difficulty: &#9733;</div>
+        </a>
+    </div>
+    <div class="project-block">
+        <a href="./apple-catcher.html">
+            <img class="project-image" src="./images/Screen_Shot_2016_09_26_at_12_00_58_PM.png">
+            <div><b>Apple Catcher</b></div>
+            <div>Difficulty: &#9733;</div>
+        </a>
+    </div>
+    <div class="project-block">
+        <a href="./hungry-crab.html">
+            <img class="project-image" src="./images/Screen_Shot_2016_09_26_at_12_01_31_PM.png">
+            <div><b>Hungry Crab</b></div>
+            <div>Difficulty: &#9733;</div>
+        </a>
+    </div>
+    <div class="project-block">
+        <a href="./squid-chase.html">
+            <img class="project-image" src="./images/Screen_Shot_2016_10_05_at_2_39_22_PM.png">
+            <div><b>Squid Chase</b></div>
+            <div>Difficulty: &#9733;</div>
+        </a>
+    </div>
+    <div class="project-block">
+        <a href="./fly-trap.html">
+            <img class="project-image" src="./images/flytrap_screenshot.png">
+            <div><b>Fly Trap</b></div>
+            <div>Difficulty: &#9733;</div>
+        </a>
+    </div>
+  
   </div>
-  <div class="project-block">
-      <a href="./target-shield.html">
-          <img class="project-image" src="./images/target_screenshot.png">
-          <div><b>Target Shield</b></div>
-          <div>Difficulty: &#9733; &#9733;</div>
-      </a>
+  
+  <div class="level-container" id="level2">
+  
+    <div class="project-block">
+        <a href="./rocket-race.html">
+            <img class="project-image" src="./images/Screen_Shot_2016_10_05_at_2_42_20_PM.png">
+            <div><b>Rocket Race</b></div>
+            <div>Difficulty: &#9733; &#9733;</div>
+        </a>
+    </div>
+    <div class="project-block">
+        <a href="./block-dodger.html">
+            <img class="project-image" src="./images/Screen_Shot_2016_09_26_at_12_05_21_PM.png">
+            <div><b>Obstacle Dodger</b></div>
+            <div>Difficulty: &#9733; &#9733;</div>
+        </a>
+    </div>
+    <div class="project-block">
+        <a href="./flappy-bird.html">
+            <img class="project-image" src="./images/Screen_Shot_2016_09_26_at_12_07_31_PM.png">
+            <div><b>Flappy Bird</b></div>
+            <div>Difficulty: &#9733; &#9733;</div>
+        </a>
+    </div>
+    <div class="project-block">
+        <a href="./candyland-escape.html">
+            <img class="project-image" src="./images/Screen_Shot_2016_10_05_at_2_44_16_PM.png">
+            <div><b>Candyland Escape</b></div>
+            <div>Difficulty: &#9733; &#9733;</div>
+        </a>
+    </div>
+      <div class="project-block">
+        <a href="./bubble-time.html">
+            <img class="project-image" src="./images/bubbletime_screenshot.png">
+            <div><b>Bubble Time</b></div>
+            <div>Difficulty: &#9733; &#9733;</div>
+        </a>
+    </div>
+    <div class="project-block">
+        <a href="./target-shield.html">
+            <img class="project-image" src="./images/target_screenshot.png">
+            <div><b>Target Shield</b></div>
+            <div>Difficulty: &#9733; &#9733;</div>
+        </a>
+    </div>
   </div>
+  
+  <div class="level-container" id="level3">
   <div class="project-block">
       <a href="./boss-fight.html">
           <img class="project-image" src="./images/Screen_Shot_2016_09_26_at_12_08_44_PM.png">
@@ -101,40 +139,44 @@
           <div>Difficulty: &#9733; &#9733; &#9733;</div>
       </a>
   </div>
-  <div class="project-block">
-      <a href="./golf.html">
-          <img class="project-image" src="./images/Screen_Shot_2016_09_26_at_12_13_31_PM.png">
-          <div><b>Woof Golf</b></div>
-          <div>Difficulty: &#9733; &#9733; &#9733;</div>
-      </a>
-  </div>
-  <div class="project-block">
-      <a href="./asteroids.html">
-          <img class="project-image" src="./images/asteroids_screenshot.png">
-          <div><b>Alphabet Asteroids</b></div>
-          <div>Difficulty: &#9733; &#9733; &#9733;</div>
-      </a>
-  </div>
     <div class="project-block">
-      <a href="./river-ride.html">
-          <img class="project-image" src="./images/riverride_screenshot.png">
-          <div><b>River Ride</b></div>
-          <div>Difficulty: &#9733; &#9733; &#9733;</div>
-      </a>
+        <a href="./golf.html">
+            <img class="project-image" src="./images/Screen_Shot_2016_09_26_at_12_13_31_PM.png">
+            <div><b>Woof Golf</b></div>
+            <div>Difficulty: &#9733; &#9733; &#9733;</div>
+        </a>
+    </div>
+    <div class="project-block">
+        <a href="./asteroids.html">
+            <img class="project-image" src="./images/asteroids_screenshot.png">
+            <div><b>Alphabet Asteroids</b></div>
+            <div>Difficulty: &#9733; &#9733; &#9733;</div>
+        </a>
+    </div>
+      <div class="project-block">
+        <a href="./river-ride.html">
+            <img class="project-image" src="./images/riverride_screenshot.png">
+            <div><b>River Ride</b></div>
+            <div>Difficulty: &#9733; &#9733; &#9733;</div>
+        </a>
+    </div>
   </div>
-  <div class="project-block">
-      <a href="./snake.html">
-          <img class="project-image" src="./images/Screen_Shot_for_Snake.jpg">
-          <div><b>Snake</b></div>
-          <div>Difficulty: &#9733; &#9733; &#9733; &#9733;</div>
-      </a>
-  </div>
-  <div class="project-block">
-      <a href="./high_score.html">
-          <img class="project-image" src="./images/Hi_score_untutorial_img.png">
-          <div><b>Adding high score</b></div>
-          <div>Difficulty: &#9733; &#9733; &#9733; &#9733;</div>
-      </a>
+  
+  <div class="level-container" id="level4">
+    <div class="project-block">
+        <a href="./snake.html">
+            <img class="project-image" src="./images/Screen_Shot_for_Snake.jpg">
+            <div><b>Snake</b></div>
+            <div>Difficulty: &#9733; &#9733; &#9733; &#9733;</div>
+        </a>
+    </div>
+    <div class="project-block">
+        <a href="./high_score.html">
+            <img class="project-image" src="./images/Hi_score_untutorial_img.png">
+            <div><b>Adding high score</b></div>
+            <div>Difficulty: &#9733; &#9733; &#9733; &#9733;</div>
+        </a>
+    </div>
   </div>
 
 
