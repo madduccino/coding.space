@@ -1,8 +1,8 @@
-<head>
-  <script src="https://cdn.rawgit.com/stevekrouse/WoofJS/1e9b9a5e25ec87307efbe17924a09c4e0865fe6e/woof.js"></script>
+<head>    
+  <script src="https://cdn.rawgit.com/stevekrouse/WoofJS/cb6d0621/dist/woof.js"></script>
   <script>
     // Sets backdrop to image
-    setBackdropURL('https://img.clipartfest.com/20a3f7fedd37d6244dad5185ded8e943_playgrounds-backgrounds-and-background-playground-fun-kids-clipart_900-636.jpeg')
+    setBackdropURL('../images/bubbles-backdrop.jpeg')
 
     // Displays introductory text explaining how to play the game
     var intro1 = new Text({
@@ -165,7 +165,7 @@
 
     // Creates bubble blower sprite
     var blower = new Image({
-      url: 'http://content.mycutegraphics.com/graphics/fun/blue-bubble-wand-angled.png',
+      url: '../images/bubbles-wand.png',
       width: 100,
       height: 100,
       x: minX + 100,
@@ -174,7 +174,7 @@
 
     // Creates bubble popper sprite
     var hand = new Image({
-      url: 'http://www.iconsdb.com/icons/preview/orange/finger-and-thumb-xxl.png',
+      url: '../images/bubbles-hand.png',
       width: 25,
       height: 25
     })
@@ -190,7 +190,7 @@
     every(0.1, 'second', () => {
       if (keysDown.includes('W')) {
         var bubble = new Image({
-          url: 'https://img.clipartfest.com/dea2bf71ebd834248e611186e122dd5b_-bubble-shiny-free-image-water-bubbles-shiny-clipart_640-627.png',
+          url: '../images/bubbles-bubble.png',
           width: random(50, 200), 
           height: random(50, 200), 
           x: blower.x + 60, 
@@ -202,7 +202,7 @@
     })
 
     // Creates sound variable to play when bubbles pop
-    var bubblePop = new Audio('https://www.freespecialeffects.co.uk/soundfx/glass/breaking_glass_01.wav')
+    var bubblePop = new Audio('../audio/bubbles-pop.wav')
 
     // Creates empty arrays to push candy and hot tamale clones into
     var tamales = []
@@ -219,7 +219,7 @@
           // Creates candy clone if random integer is 1
           if (randomInt === 1) { 
             var candy = new Image({
-              url: 'https://img.clipartfest.com/eb8743b6a3efad66bac93bb9b1b7eb6e_pink-hard-candy-cute-bubble-gum-wrapper-clipart_300-189.png',
+              url: '../images/bubbles-candy.png',
               width: 50,
               height: 25,
               x: bubble.x,
@@ -230,7 +230,7 @@
           // Creates hot tamale clone if random integer is 2
           if (randomInt === 2) { 
             var tamale = new Image({
-              url: 'http://economycan-economycandy.netdna-ssl.com/wp-content/uploads/2010/11/Hot-Tamale.png',
+              url: '../images/bubbles-tamale.png',
               width: 25,
               height: 25,
               x: bubble.x,
@@ -254,21 +254,21 @@
 
     // Creates character sprite
     var girl = new Image({
-      url: 'http://vignette4.wikia.nocookie.net/gravityfalls/images/4/41/Candy_appearance.png/revision/latest?cb=20141119020338',
+      url: '../images/bubbles-character.png',
       width: 100,
       height: 100,
       y: minY + 100
     })
 
 
-    // Gives character left and right movement when A and D keys are pressed and sets character rotation style. (Also doesn't allow character to move after winning game)
+    // Gives character left and right movement when A and D keys are pressed and sets character rotation style. 
     forever(() => {
       girl.setRotationStyle("ROTATE LEFT RIGHT")
-      if (keysDown.includes('D') && !girl.touching(newBubble)) {
+      if (keysDown.includes('D')) {
         girl.angle = 0
         girl.x += 10
       }
-      if (keysDown.includes('A') && !girl.touching(newBubble)) {
+      if (keysDown.includes('A')) {
         girl.angle =  180
         girl.x -= 10
       }  
@@ -284,7 +284,7 @@
 
     // Creates container sprite
     var bowl = new Image({
-      url: 'https://img.clipartfest.com/33aef436575c276eb05a2a8d32c1c116_candy-box-candy-clipart_516-513.gif',
+      url: '../images/bubbles-bowl.gif',
       width: 60,
       height: 60,
       x: maxX - 150,
@@ -310,7 +310,7 @@
             candy.delete() // Deletes candy
             // Creates new candy clone to stack in container
             var candyInBowl = new Image({ 
-              url: 'https://img.clipartfest.com/eb8743b6a3efad66bac93bb9b1b7eb6e_pink-hard-candy-cute-bubble-gum-wrapper-clipart_300-189.png',
+              url: '../images/bubbles-candy.png',
               width: 25,
               height: 25,
               x: bowl.x,
@@ -329,9 +329,9 @@
           candy.delete() // Deletes tamale clone if touching character
           score = 0 // Sets score to zero
           // Changes container costume, then switches back
-          bowl.setImageURL('http://www.clipartbest.com/cliparts/pT5/o9K/pT5o9Kd6c.gif') 
+          bowl.setImageURL('../images/bubbles-explosion.gif') 
             after(0.2, 'second', () => {
-              bowl.setImageURL('https://img.clipartfest.com/33aef436575c276eb05a2a8d32c1c116_candy-box-candy-clipart_516-513.gif')
+              bowl.setImageURL('../images/bubbles-bowl.gif')
             })
           bowlCandies.forEach(candy => {candy.delete()}) // Deletes all candy clones in container
          candies.forEach(candy => {candy.delete()}) // Deletes other set of candy clones on screen
@@ -342,7 +342,7 @@
 
     // Creates new bubble sprite
     var newBubble = new Image({
-      url: 'https://img.clipartfest.com/dea2bf71ebd834248e611186e122dd5b_-bubble-shiny-free-image-water-bubbles-shiny-clipart_640-627.png',
+      url: '../images/bubbles-bubble.png',
       width: 120,
       height: 120,
       showing: false

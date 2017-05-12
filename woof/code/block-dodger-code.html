@@ -1,5 +1,5 @@
 <head>
-    <script src="https://cdn.rawgit.com/stevekrouse/WoofJS/1e9b9a5e25ec87307efbe17924a09c4e0865fe6e/woof.js"></script>
+    <script src="https://cdn.rawgit.com/stevekrouse/WoofJS/cb6d0621/dist/woof.js"></script>
     <script>
     // Obstacle dodger
     setBackdropColor("white")
@@ -82,9 +82,9 @@
     // This is a reset key, if the key "space" is pressed, the game resets: the timer resets, the array "objects" is cleared, and sprite "game_over" hides
   onKeyDown(key => {
   if (key == 'SPACE') {
-    gameOver.showing = false;
-    objectFolder.forEach(object => object.delete())
-    objectFolder = []
+    game_over.showing = false;
+    objects.forEach(object => object.delete())
+    objects = []
     timer = 0
     defrost();
   }
@@ -106,5 +106,5 @@
       }
     });    
 
-    </script></script>
+    </script>
 </head>

@@ -1,13 +1,13 @@
 <head>
-    <script src="https://cdn.rawgit.com/stevekrouse/WoofJS/1e9b9a5e25ec87307efbe17924a09c4e0865fe6e/woof.js"></script>
+    <script src="https://cdn.rawgit.com/stevekrouse/WoofJS/cb6d0621/dist/woof.js"></script>
     <script>
     // Hungry Crab
     
     // Sets the backdrop to an image
-    setBackdropURL("http://i.imgur.com/zYCoZWQ.jpg")
+    setBackdropURL("../images/hungrycrab-backdrop.jpg")
     
     // Creates variable "crab"
-      var crab = new Image({url: "http://i.imgur.com/PJg7s70.png?1", height: 100, width: 150})
+      var crab = new Image({url: "../images/hungrycrab-crab.png", height: 100, width: 150})
     // Makes it so that variable "crab" moves when the arrow keys are pressed 
       forever(() => {
         if (keysDown.includes("UP")){
@@ -57,7 +57,7 @@
     });
     
     // Creates variable "fish", and starts it at a random xy coordinate
-      var fish = new Image({url:"http://i.imgur.com/9Wbhy5H.png?1", height: 30, width: 70});
+      var fish = new Image({url:"../images/hungrycrab-fish.png", height: 30, width: 70});
       fish.x = randomX();
       fish.y = randomY();
       

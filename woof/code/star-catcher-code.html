@@ -1,5 +1,5 @@
 <head>
-    <script src="https://cdn.rawgit.com/stevekrouse/WoofJS/1e9b9a5e25ec87307efbe17924a09c4e0865fe6e/woof.js"> </script>
+  <script src="https://cdn.rawgit.com/stevekrouse/WoofJS/cb6d0621/dist/woof.js"></script>
     <script>
      //Star Spotter - Final 
 
@@ -12,10 +12,10 @@
     });
     
     // Sets backdrop to an image
-    setBackdropURL("https://s16.postimg.org/48ab2zy0l/0ff1f4dd37aed24a2daa3064dcc6c0fe.jpg");
+    setBackdropURL("../images/starcatcher-backdrop.jpg");
     
     // Creates audio variable "pop"
-    var pop = new Audio('http://www.emstechlab.com/library/sound/SFX/POP%202.mp3')
+    var pop = new Audio('../audio/starcatcher-pop.wav')
     ball.onMouseDown(() => {
         ball.x = randomX();          // Makes it so that if variable "ball" is clicked, its color, radius and xy coordinates change randomly
         ball.color = randomColor();

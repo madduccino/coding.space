@@ -1,12 +1,12 @@
 <head>
-    <script src="https://cdn.rawgit.com/stevekrouse/WoofJS/1e9b9a5e25ec87307efbe17924a09c4e0865fe6e/woof.js"></script>
+  <script src="https://cdn.rawgit.com/stevekrouse/WoofJS/cb6d0621/dist/woof.js"></script>
     <script>
     
-    //Rocket Race
+     //Rocket Race
     
     // Creates a variable "rocket"
     var rocket = new Image({
-        url: "http://i.imgur.com/5iL7vPL.png",
+        url: "../images/rr-rocket.png",
         height: 60,
         width: 120,
         y: -150
@@ -14,7 +14,7 @@
     rocket.turnLeft(90)
     
     // Sets the backrop to an image
-    setBackdropURL("https://upload.wikimedia.org/wikipedia/commons/8/80/Hyades.jpg ")
+    setBackdropURL("../images/rr-backdrop.jpg")
     
     
     // Changes the "rocket" when the left and right arrow keys are pressed 
@@ -41,7 +41,7 @@
     var stars = []
     every(2, "seconds", () => {
         var star = new Image({
-            url: "http://www.drodd.com/images15/star24.png",
+            url: "../images/rr-star.png",
             height: 50,
             width: 50,             // Creates a new variable "star" every 2 seconds that start at a random xy coordinate
             x: randomX(),
@@ -94,7 +94,7 @@
     
     // Creates variable "gameover"
     var gameover = new Image({
-            url: "https://66.media.tumblr.com/8fb3696ce6b48f9445dc6b0de1867ab6/tumblr_numr0h4msw1uddskco1_500.png",
+            url: "../images/rr-gameover.png",
             height: 300,
             width: 500, 
             x: 0,
@@ -107,7 +107,7 @@
     var planets = []
     every(10, "seconds", () => {
         var planet = new Image({
-            url: "http://static2.wikia.nocookie.net/__cb20130108132618/clubpenguin/images/8/85/Beta_Team_Solar_System_Neptune.png",
+            url: "../images/rr-planet.png",
             height: random(50,200),
             width: 100,
             x: randomX(),              // Creates new variable "planet" every 10 seconds
@@ -125,7 +125,6 @@
             }
         })
     })
-
     instruction_text.sendToFront()
     instruction_text2.sendToFront()
     rocket.sendToFront()              // Sends the "instruction_text"s, "rocket", and "gameover" to the front layer

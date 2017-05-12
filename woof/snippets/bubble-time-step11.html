@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="https://cdn.rawgit.com/stevekrouse/WoofJS/cb6d0621/dist/woof.js"></script>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Bubble Time Step 11</title>
+</head>
+<body>
+
+<script>
+setBackdropURL('../images/bubbles-backdrop.jpeg')
+
+var girl = new Image({
+  url: '../images/bubbles-character.png',
+  width: 100,
+  height: 100,
+  y: minY + 100
+})
+
+forever(() => {
+  if (keysDown.includes('D')) {
+    girl.angle = 0
+    girl.x += 10
+  }
+  if (keysDown.includes('A')) {
+    girl.angle = 180
+    girl.x -= 10
+  }
+})
+
+girl.setRotationStyle("ROTATE LEFT RIGHT")
+
+forever(() => {
+  if (girl.x > maxX) {
+    girl.x = maxX
+  }
+    if (girl.x < minX) {
+    girl.x = minX
+  }
+})
+
+girl.setRotationStyle("ROTATE LEFT RIGHT")
+
+forever(() => {
+  if (girl.x > maxX) {
+    girl.x = maxX
+  }
+    if (girl.x < minX) {
+    girl.x = minX
+  }
+})
+
+// Blow bubbles
+var blower = new Image({
+  url: '../images/bubbles-wand.png',
+  width: 100,
+  height: 100,
+  x: minX + 100,
+  y: maxY - 200
+})
+
+var bubbles = []
+every(0.1, 'second', () => {
+  if (keysDown.includes('W')) {
+ var bubble = new Image({
+      url: '../images/bubbles-bubble.png',
+      width: random(50, 200),
+      height: random(50, 200),
+      x: blower.x + 60,
+      y: blower.y + 60,
+      angle: random(300, 360)
+    })
+     bubbles.push(bubble)
+  }
+})
+
+forever(() => {
+  bubbles.forEach(bubble => {
+       bubble.move(5)
+  })
+})
+
+var hand = new Image({
+  url: '../images/bubbles-hand.png',
+  width: 25,
+  height: 25
+})
+
+forever(() => {
+  hand.x = mouseX
+  hand.y = mouseY
+})
+
+var glass = new Audio('../audio/bubbles-pop.wav')
+
+
+var candies = []
+var tamales = []
+
+forever(() => {
+  bubbles.forEach(bubble => {
+    var randomInt = random(1, 2)
+    if (bubble.mouseOver && mouseDown) {
+      bubble.delete()
+      if (randomInt === 1) {
+        glass.play()
+        var candy = new Image({
+          url: '../images/bubbles-candy.png',
+          width: 50,
+          height: 25,
+          x: bubble.x,
+          y: bubble.y
+         })
+        candies.push(candy)
+       }
+      if (randomInt === 2) {
+        var tamale = new Image({
+          url: '../images/bubbles-tamale.png',
+          width: 25,
+          height: 25,
+          x: bubble.x,
+          y: bubble.y
+        })
+        tamales.push(tamale)
+      }
+    }
+  })
+})
+
+forever(() => {
+  candies.forEach(candy => {
+    candy.y -= 3
+      if (candy.touching(girl)) {
+    candy.x = girl.x
+    candy.y = girl.y
+    candy.pointTowards(girl)
+  }
+  })
+    tamales.forEach(candy => {
+    candy.y -= 3
+    //if (candy.touching(girl)) {
+      //candy.delete()
+    //}
+  })
+})
+
+var score = 0
+var bowl = new Image({
+  url: '../images/bubbles-bowl.gif',
+  width: 60,
+  height: 60,
+  x: maxX - 150,
+  y: minY + 60
+})
+
+var bowlcandies = []
+forever(() => {
+  candies.forEach(candy => {
+  if (candy.touching(girl)) {
+  if (keysDown.includes('DOWN') && girl.distanceTo(bowl) < 150) {
+    candy.x = maxX - 50
+    candy.y = minY + 50
+    candy.delete()
+    score++
+    var candyinbowl = new Image({
+          url: '../images/bubbles-candy.png',
+          width: 25,
+          height: 25,
+          x: bowl.x,
+          y: bowl.y + score * 5
+    })
+    bowlcandies.push(candyinbowl)
+    }
+  }
+  })
+})
+
+
+var candycountCircle = new Circle({
+  color: "yellow",
+  radius: 70,
+  x: maxX - 100,
+  y: maxY - 100,
+  //showing: false
+})
+
+var candycountText = new Text({
+  text: () => "Candy Count: " + score,
+  color: "black",
+  size: 16,
+  x: candycountCircle.x,
+  y: candycountCircle.y,
+  //showing: false
+})
+
+
+
+forever(() => {
+  tamales.forEach(candy => {
+    if (candy.touching(girl)) {
+      candy.delete()
+      score = 0
+      bowl.setImageURL('../images/bubbles-explosion.gif')
+      after(0.2, 'second', () => {
+        bowl.setImageURL('../images/bubbles-bowl.gif')
+      })
+      bowlcandies.forEach(candy => {
+        candy.delete()
+      })
+      candies.forEach(candy => {
+        candy.delete()
+      })
+    }
+  })
+ })
+
+
+
+</script>
+</body>
+</html>

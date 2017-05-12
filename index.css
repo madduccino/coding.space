@@ -1,0 +1,152 @@
+html {
+	height: 100%;
+}
+
+
+body {
+	text-align: center;
+	font-family: 'Lato', sans-serif;
+	color: white;
+	background: url(./images/galaxy.jpg) no-repeat center center fixed; 
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+	max-height: 100%;
+}
+
+h1 {
+	font-size: 3.5em;
+	color: white;
+	padding-top: 20px;
+	margin-bottom: 20px;
+	font-family: 'Lato', sans-serif;
+	font-weight: bold;
+}
+
+img {
+	flex: 1 1 auto;
+}
+
+.large-img {
+	max-height: 28vh
+}
+
+a {
+	color: white;
+	text-decoration: none;
+}
+
+a:hover {
+	color: white;
+}
+
+.container {
+	width: 100%;
+	display: flex;
+	flex-flow: row wrap;
+	align-content: center;
+	justify-content: center;
+	margin: 0 !important;
+}
+
+.tcs-row {
+	width: 100%;
+	margin-top: 7px;
+}
+
+.holder {
+	display: flex;
+	justify-content: space-around;
+	min-height: 140px;
+}
+
+.img-responsive {
+	margin: 0px 5px;
+}
+
+.black-opaque {
+	background-color: rgba(0, 0, 0, 0.6);
+	color: white;
+	font-weight: lighter;
+	line-height: 1.4em;
+	padding: 8px;
+	border-radius: 4px;
+}
+
+.textbox-holder {
+	width: 340px;
+	height: 100%;
+}
+
+.info-para {
+	margin: 5px 0px 0px 0px;
+	font-weight: bold;
+}
+
+.green {
+	color: #A3FFA3;
+}
+
+.yellow {
+	color: #FFFF7F;
+}
+
+.red {
+	color: #FF6666;
+}
+
+.infobox {
+	width: 95%;
+	height: 100%;
+	margin: 0px 5px;
+	display: none;
+	font-size: 13px;
+}
+
+.bottom-holder {
+	display: flex;
+	justify-content: center;
+}
+
+#platform-holder {
+	display: flex;
+	justify-content: space-around;
+	min-height: 220px;
+}
+
+#learn-col {
+	display: flex;
+	justify-content: center;
+}
+
+#about, #start {
+	width: 170px;
+	height: 45px;
+	margin-bottom: 10px;
+	display: flex;
+	align-content: center;
+	justify-content: center;
+	align-items: center;
+	font-size: 18px;
+}
+
+#start:hover {
+	cursor: pointer;
+}
+
+#start-box {
+	justify-content: center;
+	max-width: 700px;
+	display: none;
+}
+
+#start-box a {
+	text-decoration: underline;
+}
+
+#tcs-text {
+	width: 300px;
+	height: 25px;
+	line-height: 0.6em;
+}
