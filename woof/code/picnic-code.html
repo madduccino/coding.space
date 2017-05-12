@@ -4,7 +4,7 @@
   
   // Create blue rectangle for sky
   var sky = new Rectangle({
-    color: "#7ec0ee",
+    color: "#1AEDED",
     width: maxX - minX,
     height: maxY - minY,
     y: maxY - 200
@@ -13,7 +13,7 @@
 
   // Create green rectangle for grass
   var grass = new Rectangle({
-    color: "green",
+    color: "#66CD00",
     width: maxX - minX,
     height: maxY - minY,
     y: minY + 200
@@ -88,31 +88,32 @@
     size: 26
   })
 
-  // When sprites clicked, move them to basket. 
-  // Create empty items array. Push names of picnic items into items array as strings when sprite clicked. 
+  // Create empty items array. 
   var items = []
   forever(() => {
-    if (watermelon.mouseOver && mouseDown) {
+    // When sprites clicked, move them to basket if names not already in items array
+    // Push names to items array
+    if (watermelon.mouseOver && mouseDown && items.indexOf("watermelon") == -1) {
       watermelon.x = basket.x - 60
       watermelon.y = basket.y + 50
       items.push("watermelon")
     }
-    if (cupcake.mouseOver && mouseDown) {
+    if (cupcake.mouseOver && mouseDown && items.indexOf("a cupcake") == -1) {
       cupcake.x = basket.x
       cupcake.y = basket.y + 50
       items.push("a cupcake")
     }
-    if (cheese.mouseOver && mouseDown) {
+    if (cheese.mouseOver && mouseDown && items.indexOf("cheese") == -1) {
       cheese.x = basket.x + 75
       cheese.y = basket.y + 50
       items.push("cheese")
     }
-    if (sandwich.mouseOver && mouseDown) {
+    if (sandwich.mouseOver && mouseDown && items.indexOf("a sandwich") == -1) {
       sandwich.x = basket.x + 150
       sandwich.y = basket.y + 50
       items.push("a sandwich")
     }
-    if (milk.mouseOver && mouseDown) {
+    if (milk.mouseOver && mouseDown && items.indexOf("milk") == -1) {
       milk.x = basket.x - 130
       milk.y = basket.y + 50
       items.push("milk")
@@ -121,14 +122,13 @@
   
   // Create text variable to display the items array 
   var packedList = new Text({
-    text: () => items.join(', '), // Separate each object with a space and comma
+    text: () => items.join(', '), // Separate each item with a space and comma
     y: maxY - 100,
-    color: "yellow",
+    color: "#00008B",
     size: 26
   })
-
   
-  // Check if all sprites have been added to items array. If so, changes intro text.
+  // Check if all sprite names have been added to items array. If so, change intro text.
   forever(() => {
     if (items.length == 5) {
       packedList.text = "Uh oh, the rain is coming! Hurry up and unpack. Make sure you take everything out in the same order you put it in."
@@ -140,30 +140,42 @@
   // Create empty unpacked array. Push names of unpacked items into unpacked array as strings when sprite clicked. 
   var unpacked = []
   forever(() => {
-    if (milk.mouseOver && mouseDown && milk.touching(basket)) {
+    if (items.length == 5) {
+    if (milk.mouseOver && mouseDown && milk.touching(basket) ) {
       milk.x = randomX()
       milk.y = random(-200, minY)
-      unpacked.push("milk")
+      if (!unpacked.includes("milk")) {
+        unpacked.push("milk")
+      }
     }
     if (sandwich.mouseOver && mouseDown && sandwich.touching(basket)) {
       sandwich.x = randomX()
       sandwich.y = random(-200, minY)
-      unpacked.push("a sandwich")
+      if (!unpacked.includes("a sandwich")) {
+        unpacked.push("a sandwich")
+      }
     }
     if (watermelon.mouseOver && mouseDown && watermelon.touching(basket)) {
       watermelon.x = randomX()
       watermelon.y = random(-200, minY)
-      unpacked.push("watermelon")
+      if (!unpacked.includes("watermelon")) {
+        unpacked.push("watermelon")
+      }
     }
     if (cheese.mouseOver && mouseDown && cheese.touching(basket)) {
       cheese.x = randomX()
       cheese.y = random(-200, minY)
-      unpacked.push("cheese")
-    }
+      if (!unpacked.includes("cheese")) {
+        unpacked.push("cheese")
+      }
+    }  
     if (cupcake.mouseOver && mouseDown && cupcake.touching(basket)) {
       cupcake.x = randomX()
       cupcake.y = random(-200, minY)
-      unpacked.push("a cupcake")
+      if (!unpacked.includes("a cupcake")) {
+        unpacked.push("a cupcake")
+      }
+    }
     }
   })
 
@@ -171,51 +183,43 @@
   var unpackedList = new Text({
     text: () => unpacked.join(', '), // Separate object with comma and space
     y: maxY - 100,
-    color: "yellow",
+    color: "#00008B",
     size: 26,
     showing: false
   })
 
-  // Show the unpacked array when first item unpacked and hide the items array
+  // // Show the unpacked array when first item unpacked and hide the items array
   forever(() => {
     if (unpacked.length > 0) {
       packedList.hide()
       unpackedList.show()
     }
   })
-
-  // Check whether each object in items array matches each object in unpacked array
+  
+  // Check whether each name in items array matches each name in unpacked array
   var match = true
   forever(() => {
-    if (unpacked.length == 1 && unpacked[0] != items[0]) {
-      match = false
-    }
-    if (unpacked.length == 2 && unpacked[1] != items[1]) {
-      match = false
-    }
-    if (unpacked.length == 3 && unpacked[2] != items[2]) {
-      match = false
-    }
-    if (unpacked.length == 4 && unpacked[3] != items[3]) {
-      match = false
-    }
-    if (unpacked.length == 5 && unpacked[4] != items[4]) {
-      match = false
-    }
+     items.forEach((item, index) => {
+      unpacked.forEach((item, index) => {
+        if (items[index] != unpacked[index]) {
+          match = false
+        }
+       })
+     })
   })
 
-  // Create text to display if objects in arrays don't match
+  // Create text to display if names in arrays don't match
   var oops = new Text({
     text: "oops! try again!",
-    y: maxY - 150,
+    y: maxY - 100,
     color: "red",
     size: 26,
     showing: false
   })
   
-  // If an object doesn't match, display oops text, empty  unpacked array, move all items back to basket..
+  // If names aren't a match, display oops text, empty  unpacked array, move all sprites back to basket.
   forever(() => {
-    if (match === false) {
+    if (!match) {
       unpackedList.hide()
       oops.show()
       unpacked = []
@@ -241,9 +245,9 @@
   // Create text to display when arrays match
   var win = new Text({
     text: () => "Let's eat!",
-    color: "yellow",
-    size: 40,
-    y: maxY - 50,
+    color: "#00008B",
+    size: 50,
+    y: maxY - 100,
     showing: false
   })
   
@@ -267,7 +271,7 @@
       packed.hide()
       win.show() // Show win text
       picnic.show() // Show picnic image
-      // Have each food item be separated by a distance of n
+      // Have each food item be separated by a distance of n to create a spread
       repeatUntil(() => n > 225, () => {
         food.forEach(food => {
           food.x = -150 + n
@@ -277,6 +281,7 @@
       })
     }
   })
+  
   </script>
 </head>
 <body>
