@@ -1,0 +1,301 @@
+<head>
+<script src="https://cdn.rawgit.com/stevekrouse/WoofJS/d17fa61c/dist/woof.js"></script>
+
+</head>
+<body>
+<script>
+
+var goToGround = (sprite) => {
+  if (sprite.radius)
+    sprite.y = groundLine + sprite.radius;
+  else
+    sprite.y = groundLine + sprite.height / 2;
+};
+
+var setBall = (player) => {
+  player.ball.forEach(ball => {
+    ball.x = player.shooter.x;
+    ball.y = player.shooter.y;
+    ball.angle = player.shooter.angle;
+    ball.move(35);
+    ball.show();
+  });
+};
+
+var setYTarget = () => {
+  if (mouseY > pMouseY) 
+    yTarget -= (mouseY - pMouseY) * 5;
+  else if (mouseY < pMouseY) 
+    yTarget += (pMouseY - mouseY) * 5;
+  if (power > 400) 
+    power = 400;
+  powerCircle.radius = power / 3;
+};
+
+var makeContact = (player) => {
+  return player.ball[0].x > maxX || player.ball[0].y > maxY || player.ball[0].x < minX || player.ball[0].y <= groundLine + 5 || player.ball[0].touching(middle) || player.ball[0].touching(player.enemy.shield) || player.ball[0].touching(player.enemy.shooter);
+};
+
+var shoot = (player) => {
+  player.ball.forEach(ball => {
+    ball.move(power / 20);
+    ball.y -= gravity;
+  });
+  gravity += 0.15;
+};
+
+var finishTurn = (player) => {
+  if (player.ball[0].touching(player.enemy.shield)) {
+    player.enemy.shield.radius -= 10;
+    if (player.enemy.shield.radius <= 30)
+      player.enemy.shield.hide();
+  }
+  else if (player.ball[0].touching(player.enemy.shooter)) {
+    gameOver = true;
+    player.enemy.shooter.hide();
+    text.text = player.winText;
+    text.size = 40;
+    text.show();
+    instructions.text = "Press space to play again!";
+    instructions.show();
+  }
+  player.ball.forEach(ball => {
+    ball.hide();
+  });
+  if (!gameOver) {
+    power = 0;
+    gravity = 0.15;
+    shooting = false;
+    player1.turn = !player1.turn;
+    player2.turn = !player2.turn;
+    after(0.5, "second", () => {
+      text.text = player.enemy.turnText;
+      text.show();
+      player.enemy.shield.brightness = 50;
+      player.shield.brightness = 30;
+      powerCircle.x = player.enemy.shield.x;
+      powerCircle.radius = 0;
+    });
+  }
+};
+
+var restart = () => {
+  shooterP1.show();
+  shooterP2.show();
+  shieldP1.radius = 100;
+  shieldP1.brightness = 50;
+  shieldP1.show();
+  shieldP2.radius = 100;
+  shieldP2.brightness = 30;
+  shieldP2.show();
+  text.size = 24;
+  text.text = player1.turnText;
+  instructions.text = "Click and drag to aim. Release the mouse to shoot.";
+  player1.turn = true;
+  player2.turn = false;
+  gravity = 0.15;
+  power = 0;
+  shooting = false;
+  gameOver = false;
+};
+
+var gameOver = false;
+
+var gravity = 0.15;
+
+setBackdropURL("../images/war-backdrop.png");
+
+var groundLine = (minY + height / 10) + height / 10;
+
+var middle = new Rectangle({
+  color: "#223388",
+  width: width / 3,
+  height: height / 4,
+  y: (groundLine + height / 8) - 1
+});
+
+var outerCircleP1 = new Circle({
+  color: "#DD3513",
+  radius: 10,
+  x: minX + 50,
+  showing: false
+});
+
+goToGround(outerCircleP1);
+
+var innerCircleP1 = new Circle({
+  color: "#FF5F49",
+  radius: 8,
+  showing: false,
+  x: outerCircleP1.x,
+  y: outerCircleP1.y
+});
+
+var ballP1 = [outerCircleP1, innerCircleP1];
+
+var shooterP1 = new Image({
+  url: "../images/war-cannon1.png",
+  width: 50,
+  height: 20,
+  x: minX + 40
+});
+goToGround(shooterP1);
+
+var shieldP1 = new Circle({
+  brightness: 50,
+  color: "#DD3513",
+  radius: 100,
+  x: shooterP1.x,
+  y: shooterP1.y - 20
+});
+
+var player1 = {
+  shooter: shooterP1,
+  ball: ballP1,
+  shield: shieldP1,
+  turn: true,
+  turnText: "Player One's Turn",
+  winText: "Player One Wins!"
+};
+
+var outerCircleP2 = new Circle({
+  color: "#009940",
+  radius: 10,
+  showing: false
+});
+
+goToGround(outerCircleP2);
+
+var innerCircleP2 = new Circle({
+  color: "#4BFFA5",
+  radius: 8,
+  showing: false,
+  x: outerCircleP2.x,
+  y: outerCircleP2.y
+});
+
+var ballP2 = [outerCircleP2, innerCircleP2];
+
+var shooterP2 = new Image({
+  url: "../images/war-cannon2.png",
+  width: 50,
+  height: 20,
+  x: maxX - 40,
+  angle: LEFT
+});
+goToGround(shooterP2);
+
+var shieldP2 = new Circle({
+  brightness: 30,
+  color: "#3CCC3C",
+  radius: 100,
+  x: shooterP2.x,
+  y: shooterP2.y - 20
+});
+
+var player2 = {
+  shooter: shooterP2,
+  ball: ballP2,
+  shield: shieldP2,
+  turn: false,
+  turnText: "Player Two's Turn",
+  winText: "Player Two Wins!"
+};
+
+player1.enemy = player2;
+player2.enemy = player1;
+
+var bottom = new Rectangle({
+  color: "#223388",
+  width: width,
+  height: height / 5,
+  y: minY + height / 10
+});
+
+var powerCircle = new Circle({
+  color: "yellow",
+  radius: 0,
+  x: shooterP1.x,
+  y: shooterP1.y,
+  brightness: 10
+});
+
+var text = new Text({
+  text: "Player One's Turn",
+  font: "helvetica",
+  color: "white",
+  size: 24,
+  y: maxY - 200
+});
+
+var instructions = new Text({
+  text: "Click and drag to aim. Release the mouse to shoot.",
+  font: "helvetica",
+  color: "#E6FFA2",
+  size: 18,
+  y: maxY - 300
+});
+
+var power = 0;
+var xStart = 0;
+var yTarget = groundLine + 100;
+var mouseDown = false;
+
+onMouseDown(() => {
+  if (!gameOver) {
+    text.hide();
+    if (instructions.showing)
+      instructions.hide();
+    mouseDown = true;
+    yTarget = groundLine + 100;
+    xStart = mouseX;
+  }
+});
+
+onMouseMove(() => {
+  if (mouseDown && !shooting && !gameOver) {
+    if (player1.turn) {
+      setYTarget();
+      shooterP1.pointTowards(maxX, yTarget);
+    }
+    else if (player2.turn) {
+      setYTarget();
+      shooterP2.pointTowards(minX, yTarget);
+    }
+    if (yTarget < groundLine + 100)
+      yTarget = groundLine + 100;
+    power = Math.abs(xStart - mouseX);
+  }
+});
+
+var shooting = false;
+onMouseUp(() => {
+  mouseDown = false;
+  if (power && !shooting && !gameOver) {
+    if (player1.turn) {
+      setBall(player1);
+      repeatUntil(() => makeContact(player1), () => {
+        shoot(player1);
+      }, () => {
+        finishTurn(player1);
+      });
+    }
+    else if (player2.turn) {
+      setBall(player2);
+      repeatUntil(() => makeContact(player2), () => {
+        shoot(player2);
+      }, () => {
+        finishTurn(player2);
+      });
+    }
+    shooting = true;
+  }
+});
+
+onKeyDown(() => {
+  if (keysDown.includes("space") && gameOver)
+    restart();
+});
+
+</script>  
+</body>
