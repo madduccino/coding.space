@@ -1,0 +1,131 @@
+<head>
+<script src="https://cdn.rawgit.com/stevekrouse/WoofJS/a1a059a9/dist/woof.js"></script>
+<title>War Step 13</title>
+</head>
+<body>
+<script>
+
+var goToGround = (sprite) => {
+  if (sprite.radius)
+    sprite.y = groundLine + sprite.radius;
+  else
+    sprite.y = groundLine + sprite.height / 2;
+};
+
+var setYTarget = () => {
+  if (mouseY > pMouseY) 
+    yTarget -= (mouseY - pMouseY) * 5;
+  else if (mouseY < pMouseY) 
+    yTarget += (pMouseY - mouseY) * 5;
+};
+
+var setBall = (player) => {
+  player.ball.x = player.shooter.x;
+  player.ball.y = player.shooter.y;
+  player.ball.angle = player.shooter.angle;
+  player.ball.move(35);
+  player.ball.show();
+};
+
+var shoot = (player) => {
+  player.ball.move(power / 20);
+  player.ball.y -= gravity;
+  gravity += 0.15;
+};
+
+setBackdropURL("../images/war-backdrop.png");
+
+var groundLine = (minY + height / 5);
+
+var middle = new Rectangle({
+  color: "#223388",
+  width: width / 3,
+  height: height / 4,
+  y: (groundLine + height / 8) - 1
+});
+
+var shooterP1 = new Image({
+  url: "../images/war-cannon1.png",
+  width: 50,
+  height: 20,
+  x: minX + 40
+});
+goToGround(shooterP1);
+
+var shieldP1 = new Circle({
+  brightness: 50,
+  color: "#DD3513",
+  radius: 100,
+  x: shooterP1.x,
+  y: shooterP1.y - 20
+});
+
+var ballP1 = new Circle({
+  color: "#DD3513",
+  radius: 10,
+  x: minX + 50,
+  showing: false
+});
+
+var player1 = {
+  shooter: shooterP1,
+  shield: shieldP1,
+  ball: ballP1
+};
+
+var bottom = new Rectangle({
+  color: "#223388",
+  width: width,
+  height: height / 5,
+  y: groundLine - height / 10
+});
+
+var powerCircle = new Circle({
+  color: "yellow",
+  radius: 0,
+  x: shooterP1.x,
+  y: shooterP1.y,
+  brightness: 10
+});
+
+var xStart = 0;
+var power = 0;
+var yTarget = groundLine + 100;
+var gravity = 0.15;
+
+onMouseDown(() => {
+  xStart = mouseX;
+});
+
+onMouseMove(() => {
+  if (mouseDown) {
+    setYTarget();
+    shooterP1.pointTowards(maxX, yTarget);
+    power = Math.abs(xStart - mouseX);
+    if (power > 400) 
+      power = 400;
+    powerCircle.radius = power / 3;
+  }
+});
+
+onMouseUp(() => {
+  setBall(player1);
+  repeatUntil(() => player1.ball.x > maxX, () => {
+    shoot(player1);
+  }, () => {
+    player1.ball.hide();
+    gravity = 0.15;
+  });
+});
+
+var powerText = new Text({
+  text: () => "Power: " + power
+});
+
+var targetText = new Text({
+  text: () => "Y Target: " + yTarget,
+  y: - 20
+});
+
+</script>  
+</body>
