@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="https://cdn.rawgit.com/stevekrouse/WoofJS/cb6d0621/dist/woof.js"></script>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Magic Trick Step 11</title>
+</head>
+<body>
+
+<script>
+  
+  // Set backdrop to image
+  setBackdropURL('../images/magic-stage.jpg')
+  
+  // Create wand sprite.
+  var wand = new Image({
+    url: '../images/magic-wand.gif',
+    width: 100,
+    height: 100,
+    angle: 0,
+  })
+  
+  // Make wand follow mouse and make it top layer. 
+  forever(() => {
+    wand.x = mouseX
+    wand.y = mouseY
+    // Send wand to front
+    wand.sendToFront()
+  })
+  
+  // Create hat sprite.
+  var hat = new Image({
+    url: "../images/magic-hat.png",
+    width: 250,
+    height: 150,
+    y: minY + 80,
+  })
+  
+    
+  // Create variable to store score
+  var doveCount = 0
+  
+  // Create text sprite to display score.
+  var doveCountText = new Text({
+    text: () => "Doves: " + doveCount,
+    color: "white",
+    size: 30,
+    y: maxY - 30
+  })
+  
+  
+  // Create empty array called doves
+  var doves = []
+  
+  // Create dove sprites every 0.6 secs. 
+  every(0.6, 'second', () => {
+    var dove = new Image({
+      url: '../images/magic-dove.jpg',
+      width: 100,
+      height: 100,
+      x: hat.x,
+      y: hat.y + 115,
+      angle: random(45, 170) // Make dove's direction random
+    })
+      doves.push(dove) // Push dove sprite into doves array
+    })
+  
+ // Loop through doves array
+  forever(() => {
+    doves.forEach(dove => {
+      // Only allow dove to rotate left and right
+      dove.setRotationStyle('ROTATE LEFT RIGHT')
+      // Give dove movement
+      dove.move(8)
+      if (dove.mouseOver && mouseDown) {
+        dove.delete()
+        doves.remove(dove)
+        doveCount++
+      }
+    })
+  })
+  
+  // Make doves change direction every 0.5 seconds
+  every(0.5, 'second', () => {
+    doves.forEach(dove => {
+      dove.angle = random(45, 170)
+    })
+  })
+
+  
+</script>
+</body>
+</html>
