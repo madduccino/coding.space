@@ -23,106 +23,106 @@
 		
 	</div>
 
-	<script>
-		var app = new Vue({
-			el: "#app",
-			data: {
-				project: "Two Player War",
-				header: {
-					text: "Shoot your opponent with your cannon!",
-					url: "./code/war-code.html"
-				},
-				steps: [
-					{
-						text: "1) Set your background to a color or image, create a sprite for the ground, and create a sprite for the middle barrier.",
-						url: "./snippets/war-step1.html"
-					},
-					{
-						text: "2) Create a sprite for the cannon for player one and make it appear on the left side on the ground.",
-						url: "./snippets/war-step2.html"
-					},
-					{
-						text: "3) Create a circle for the shield for player one. Make it see-through, and make the ground cover the bottom half of it.",
-						url: "./snippets/war-step3.html"
-					},
-					{
-						text: "4) Make a sprite for the cannonball for player one. Make it hide.",
-						url: "./snippets/war-step4.html"
-					},
-					{
-						text: "5) Now let's control the power of the cannonball by moving left and right. When you click, store the X position of the mouse in a variable. Tip: it can help to display the variable on the screen to test if it's working.",
-						url: "./snippets/war-step5.html"
-					},
-					{
-						text: "6) Create a power variable. When you click and drag, change power based on the difference between the starting X position and the current X position of the mouse.",
-						url: "./snippets/war-step6.html"
-					},
-					{
-						text: "7) Make a sprite for your power circle. Make it see-through and make it grow and shrink depending on the power variable.",
-						url: "./snippets/war-step7.html"
-					},
-					{
-						text: "8) When you release the mouse, make the cannonball move until it goes off the screen. Make its speed depend on the power.",
-						url: "./snippets/war-step8.html"
-					},
-					{
-						text: "9) Now let's work on aiming. Make a variable for the Y coordinate we're going to aim at.",
-						url: "./snippets/war-step9.html"
-					},
-					{
-						text: "10) When you click and drag, make your Y target variable go up when you move the mouse down, and make it go down when you move the mouse up.",
-						url: "./snippets/war-step10.html"
-					},
-					{
-						text: "11) When you click and drag, make your cannon point to the Y target on the right edge.",
-						url: "./snippets/war-step14.html"
-					},
-					{
-						text: "12) When you release the mouse, make the ball point in the same direction as the cannon.",
-						url: "./snippets/war-step12.html"
-					},
-					{
-						text: "13) When the ball is moving, make gravity always pull it down.",
-						url: "./snippets/war-step13.html"
-					},
-					{
-						text: "14) When you click to shoot again, reset the cannon so it's pointing straight ahead.",
-						url: "./snippets/war-step14.html"
-					},
-					{
-						text: "15) Now create Player Two, who is on the right side. Make the cannon, shield, and cannonball.",
-						url: "./snippets/war-step15.html"
-					},
-					{
-						text: "16) Create a variable (or variables) to keep track of whose turn it is. Start the game with Player One's turn, but after Player One shoots, make it Player Two's turn.",
-						url: "./snippets/war-step16.html"
-					},
-					{
-						text: "17) For Player Two's turn, move the power circle to Player Two and let Player Two shoot. You can re-use your Player One code for Player Two -- try using functions.",
-						url: "./snippets/war-step20.html"
-					},
-					{
-						text: "18) In step 11, you made the ball move until it went off-screen. Now make it also stop moving when it hits the ground, the obstacle, the enemy shield, or the enemy cannon.",
-						url: "./snippets/war-step18.html"
-					},
-					{
-						text: "19) When the ball hits the enemy's shield, make the shield shrink. Once the shield gets to a certain size, make it disappear.",
-						url: "./snippets/war-step19.html"
-					},
-					{
-						text: "20) Once the shield is gone, if the ball hits the enemy cannon, make the cannon disappear and end the game.",
-						url: "./snippets/war-step20.html"
-					},
-					{
-						text: "21) Now it's time to polish the game. Make sure you can't shoot while the ball is moving, get rid of any variables you don't need on the screen, add some instructions, and add something to indicate whose turn it is.",
-						url: "./code/war-code.html"
-					},
-				]
-			}
-		});
-		
-		
-	</script>
+<script>
+var app = new Vue({
+	el: "#app",
+	data: {
+		project: "Two Player War",
+		header: {
+			text: "Shoot your opponent with your cannon!",
+			url: "./code/war-code.html"
+		},
+		steps: [
+			{
+				text: "1) Set your background to a color or image, create a sprite for the ground, and create a sprite for the middle barrier.",
+				url: "./snippets/war-step1.html"
+			},
+			{
+				text: "2) Create a sprite for the cannon for player one and make it appear on the left side on the ground.",
+				url: "./snippets/war-step2.html"
+			},
+			{
+				text: "3) Create a circle for the shield for player one. Make it see-through, and make the ground cover the bottom half of it.",
+				url: "./snippets/war-step3.html"
+			},
+			{
+				text: "4) Make a sprite for the cannonball for player one. Make it hide.",
+				url: "./snippets/war-step4.html"
+			},
+			{
+				text: "5) Now let's start to work on aiming. First, create a line sprite (you will make it hide later, but for now, keep it showing).",
+				url: "./snippets/war-step5.html"
+			},
+			{
+				text: "6) When you click the mouse, set one end of the line to the position of the mouse.",
+				url: "./snippets/war-step6.html"
+			},
+			{
+				text: "7) When you click and drag the mouse, set the other end of the line to the position of the mouse. The line should change as you drag the mouse.",
+				url: "./snippets/war-step7.html"
+			},
+			{
+				text: "8) Make the angle of the cannon match the angle of the line whenever you click and drag.",
+				url: "./snippets/war-step8.html"
+			},
+			{
+				text: "9) Make a variable called power and make it get bigger or smaller as the line gets longer or shorter.",
+				url: "./snippets/war-step9.html"
+			},
+			{
+				text: "10) Make a sprite for your power circle. Make it see-through and make it grow and shrink depending on the power variable.",
+				url: "./snippets/war-step10.html"
+			},
+			{
+				text: "11) Now let's work on actually shooting the ball. First, when you release the mouse, make the ball move across the screen until it gets to the other side.",
+				url: "./snippets/war-step11.html"
+			},
+			{
+				text: "12) Now, instead, make the ball point in the same direction as the cannon, and make it move according to the power variable (higher power = faster movement).",
+				url: "./snippets/war-step12.html"
+			},
+			{
+				text: "13) When the ball is moving, make gravity always pull it down.",
+				url: "./snippets/war-step13.html"
+			},
+			{
+				text: "14) When you click to shoot again, reset the cannon so it's pointing straight ahead.",
+				url: "./snippets/war-step14.html"
+			},
+			{
+				text: "15) Now create Player Two, who is on the right side. Make the cannon, shield, and cannonball.",
+				url: "./snippets/war-step15.html"
+			},
+			{
+				text: "16) Create a variable (or variables) to keep track of whose turn it is. Start the game with Player One's turn, but after Player One shoots, make it Player Two's turn.",
+				url: "./snippets/war-step16.html"
+			},
+			{
+				text: "17) For Player Two's turn, move the power circle to Player Two and let Player Two shoot. You can re-use your Player One code for Player Two -- try using functions.",
+				url: "./snippets/war-step20.html"
+			},
+			{
+				text: "18) In step 11, you made the ball move until it went off-screen. Now make it also stop moving when it hits the ground, the obstacle, the enemy shield, or the enemy cannon.",
+				url: "./snippets/war-step18.html"
+			},
+			{
+				text: "19) When the ball hits the enemy's shield, make the shield shrink. Once the shield gets to a certain size, make it disappear.",
+				url: "./snippets/war-step19.html"
+			},
+			{
+				text: "20) Once the shield is gone, if the ball hits the enemy cannon, make the cannon disappear and end the game.",
+				url: "./snippets/war-step20.html"
+			},
+			{
+				text: "21) Now it's time to polish the game. Make sure you can't shoot while the ball is moving, hide the line, get rid of any variables you don't need on the screen, add some instructions, and add something to indicate whose turn it is.",
+				url: "./code/war-code.html"
+			},
+		]
+	}
+});
+
+
+</script>
 
 </body>
 </html>
