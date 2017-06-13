@@ -26,9 +26,12 @@
 		user-select: none;
 	}
 	.highlight {
-		background: #FFEE55;
+		background: #93C14C;
 		color: #333;
 		font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+	}
+	#attention {
+		font-size: 1.3em;
 	}
 </style>
 <body>
@@ -39,6 +42,11 @@
 		<div class="block">
 			<p>{{ header.text }}</p>
 			<br><a target="_blank" :href="header.url">Play this demo in full screen.</a>
+		</div>
+		
+		<div class="block">
+			<p id="attention">Attention!</p>
+			<p>{{ warning }}</p>
 		</div>
 		
 		<div class="block" v-for="step in steps">
@@ -63,6 +71,7 @@ var app = new Vue({
 			text: "Level 2 in WoofJS is all about making copies of sprites, so this project is designed to introduce you to cloning in WoofJS. Try the game first -- touch the circles with the mouse to get points:",
 			url: "./code/cloning-tutorial-code.html"
 		},
+		warning: "This tutorial displays some of the code you need to use, but you won't be able to copy and paste it!",
 		steps: [
 			{
 				text: "1) Set your backdrop to a color and create a variable for your score.",

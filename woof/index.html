@@ -56,19 +56,31 @@
     cursor: pointer;
     color: white;
   }
+  
+  .start-here {
+    color: yellow;
+    margin-top: 5px;
+    display: block;
+  }
+  
+  .first-project {
+    border-right: 10px solid rgb(255, 255, 255);
+    border-right: 10px solid rgba(255, 255, 255, 0.3);
+    padding-right: 20px;
+  }
 </style>
 <div id="projects" style="width: 100%; flex-direction: column; display:flex; margin:auto; text-align:center;">
 
   <div class="level-container" id="level1">
     <h1>Level 1</h1>
     <div class="project-list">
-      <div class="project-block">
+      <div class="project-block first-project">
         <a href="./star-catcher.html">
           <img class="project-image" src="./images/star-catcher-screenshot.png">
           <div>
             Star Catcher 
             <br>
-            (Start Here)
+            <span class="start-here">&#9733; Start Here</span>
           </div>
         </a>
       </div>
@@ -102,13 +114,13 @@
   <div class="level-container" id="level2">
     <h1>Level 2</h1>
     <div class="project-list">
-      <div class="project-block">
+      <div class="project-block first-project">
         <a href="./cloning-tutorial.html">
           <img class="project-image" src="./images/cloning-tutorial-screenshot.png">
           <div>
             Cloning Tutorial
             <br>
-            (Start Here)
+            <span class="start-here">&#9733; Start Here</span>
           </div>
         </a>
       </div>
