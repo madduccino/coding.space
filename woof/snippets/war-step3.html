@@ -1,0 +1,50 @@
+<head>
+<script src="https://cdn.rawgit.com/stevekrouse/WoofJS/703b2ce1/dist/woof.js"></script>
+<title>War Step 3</title>
+</head>
+<body>
+<script>
+
+var goToGround = (sprite) => {
+  if (sprite.radius)
+    sprite.y = groundLine + sprite.radius;
+  else
+    sprite.y = groundLine + sprite.height / 2;
+};
+
+setBackdropURL("../images/war-backdrop.png");
+
+var groundLine = (minY + height / 5);
+
+var middle = new Rectangle({
+  color: "#223388",
+  width: width / 3,
+  height: height / 4,
+  y: (groundLine + height / 8) - 1
+});
+
+var shooterP1 = new Image({
+  url: "../images/war-cannon1.png",
+  width: 50,
+  height: 20,
+  x: minX + 40
+});
+goToGround(shooterP1);
+
+var shieldP1 = new Circle({
+  brightness: 50,
+  color: "#DD3513",
+  radius: 100,
+  x: shooterP1.x,
+  y: shooterP1.y - 20
+});
+
+var bottom = new Rectangle({
+  color: "#223388",
+  width: width,
+  height: height / 5,
+  y: groundLine - height / 10
+});
+
+</script>  
+</body>

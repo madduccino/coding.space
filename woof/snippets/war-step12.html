@@ -1,0 +1,118 @@
+<head>
+<script src="https://cdn.rawgit.com/stevekrouse/WoofJS/703b2ce1/dist/woof.js"></script>
+<title>War Step 12</title>
+</head>
+<body>
+<script>
+
+var goToGround = (sprite) => {
+  if (sprite.radius)
+    sprite.y = groundLine + sprite.radius;
+  else
+    sprite.y = groundLine + sprite.height / 2;
+};
+
+var setBall = (player) => {
+  player.ball.x = player.shooter.x;
+  player.ball.y = player.shooter.y;
+  player.ball.angle = player.shooter.angle;
+  player.ball.move(35);
+  player.ball.show();
+};
+
+var makeContact = (player) => {
+  return player.ball.x > maxX
+};
+
+var shoot = (player) => {
+  player.ball.move(power / 20);
+};
+
+setBackdropURL("../images/war-backdrop.png");
+
+var groundLine = (minY + height / 5);
+
+var middle = new Rectangle({
+  color: "#223388",
+  width: width / 3,
+  height: height / 4,
+  y: (groundLine + height / 8) - 1
+});
+
+var shooterP1 = new Image({
+  url: "../images/war-cannon1.png",
+  width: 50,
+  height: 20,
+  x: minX + 40
+});
+goToGround(shooterP1);
+
+var shieldP1 = new Circle({
+  brightness: 50,
+  color: "#DD3513",
+  radius: 100,
+  x: shooterP1.x,
+  y: shooterP1.y - 20
+});
+
+var ballP1 = new Circle({
+  color: "#DD3513",
+  radius: 10,
+  x: minX + 50,
+  showing: false
+});
+
+var player1 = {
+  shooter: shooterP1,
+  ball: ballP1,
+  shield: shieldP1,
+};
+
+var bottom = new Rectangle({
+  color: "#223388",
+  width: width,
+  height: height / 5,
+  y: groundLine - height / 10
+});
+
+var aimLine = new Line({});
+
+var power = 0;
+var powerText = new Text({
+  text: () => "power: " + power
+});
+
+var powerCircle = new Circle({
+  color: "yellow",
+  radius: 0,
+  x: shooterP1.x,
+  y: shooterP1.y,
+  brightness: 10
+});
+
+onMouseDown(() => {
+  aimLine.x1 = mouseX;
+  aimLine.y1 = mouseY;
+});
+
+onMouseMove(() => {
+  if (mouseDown) {
+    aimLine.x = mouseX;
+    aimLine.y = mouseY;
+    shooterP1.angle = aimLine.angle;
+    power = aimLine.height;
+    if (power > 400)
+      power = 400;
+    powerCircle.radius = power / 3;
+  }
+});
+
+onMouseUp(() => {
+  setBall(player1);
+  repeatUntil(() => makeContact(player1), () => {
+    shoot(player1);
+  });
+});
+
+</script>  
+</body>
