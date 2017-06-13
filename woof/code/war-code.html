@@ -1,5 +1,5 @@
 <head>
-<script src="https://cdn.rawgit.com/stevekrouse/WoofJS/8b9d5d75/dist/woof.js"></script>
+<script src="https://cdn.rawgit.com/stevekrouse/WoofJS/703b2ce1/dist/woof.js"></script>
 <title>War!</title>
 </head>
 <body>
@@ -86,9 +86,12 @@ var restart = () => {
   shieldP2.radius = 100;
   shieldP2.brightness = 30;
   shieldP2.show();
+  powerCircle.radius = 0;
+  powerCircle.x = shooterP1.x;
+  powerCircle.y = shooterP1.y;
   text.size = 24;
   text.text = player1.turnText;
-  instructions.text = "Click and drag -- move left and right to adjust power; move up and down to aim. Release the mouse to shoot.";
+  instructions.text = "Shoot the other player! Click and drag to aim. Release the mouse to shoot! (just like Angry Birds...)";
   player1.turn = true;
   player2.turn = false;
   gravity = 0.15;
@@ -221,7 +224,7 @@ var text = new Text({
 });
 
 var instructions = new Text({
-  text: "Shoot the other player! Click and drag to aim. Release the mouse to shoot!",
+  text: "Shoot the other player! Click and drag to aim. Release the mouse to shoot! (just like Angry Birds...)",
   font: "helvetica",
   color: "#E6FFA2",
   size: 18,
@@ -240,8 +243,8 @@ onMouseDown(() => {
     text.hide();
     if (instructions.showing)
       instructions.hide();
-    aimLine.x = mouseX;
-    aimLine.y = mouseY;
+    aimLine.x1 = mouseX;
+    aimLine.y1 = mouseY;
     if (player1.turn)
       shooterP1.angle = 0;
     else if (player2.turn)
@@ -252,25 +255,12 @@ onMouseDown(() => {
 // when you move the mouse, aim the cannon with Y movement, and adjust the power with X movement
 onMouseMove(() => {
   if (mouseDown && !shooting && !gameOver) {
-    
-    // console.log(aimLine.angle);
-    
-    aimLine.x1 = mouseX;
-    aimLine.y1 = mouseY;
-    if (player1.turn) {
-      shooterP1.angle = aimLine.angle - 90;
-      // if (shooterP1.angle < 0)
-      //   shooterP1.angle = 0;
-      // if (shooterP1.angle > 90)
-      //   shooterP1.angle = 90;
-    }
-    else if (player2.turn) {
-      shooterP2.angle = aimLine.angle - 90;
-      // if (shooterP2.angle > -180 && shooterP2.angle < 0)
-      //   shooterP2.angle = -180;
-      // if (shooterP2.angle < 90)
-      //   shooterP2.angle = 90;
-    }
+    aimLine.x = mouseX;
+    aimLine.y = mouseY;
+    if (player1.turn)
+      shooterP1.angle = aimLine.angle;
+    else if (player2.turn)
+      shooterP2.angle = aimLine.angle;
     power = aimLine.height;
     if (power > 400)
       power = 400;
