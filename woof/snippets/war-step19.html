@@ -1,5 +1,5 @@
 <head>
-<script src="https://cdn.rawgit.com/stevekrouse/WoofJS/a1a059a9/dist/woof.js"></script>
+<script src="https://cdn.rawgit.com/stevekrouse/WoofJS/8b9d5d75/dist/woof.js"></script>
 <title>War Step 19</title>
 </head>
 <body>
@@ -12,23 +12,16 @@ var goToGround = (sprite) => {
     sprite.y = groundLine + sprite.height / 2;
 };
 
-var setYTarget = () => {
-  if (mouseY > pMouseY) 
-    yTarget -= (mouseY - pMouseY) * 5;
-  else if (mouseY < pMouseY) 
-    yTarget += (pMouseY - mouseY) * 5;
-};
-
-var makeContact = (player) => {
-  return player.ball.x > maxX || player.ball.y > maxY || player.ball.x < minX || player.ball.y <= groundLine + 5 || player.ball.touching(middle) || player.ball.touching(player.enemy.shield) || player.ball.touching(player.enemy.shooter);
-};
-
 var setBall = (player) => {
   player.ball.x = player.shooter.x;
   player.ball.y = player.shooter.y;
   player.ball.angle = player.shooter.angle;
   player.ball.move(35);
   player.ball.show();
+};
+
+var makeContact = (player) => {
+  return player.ball.x > maxX || player.ball.y > maxY || player.ball.x < minX || player.ball.y <= groundLine + 5 || player.ball.touching(middle) || player.ball.touching(player.enemy.shield) || player.ball.touching(player.enemy.shooter);
 };
 
 var shoot = (player) => {
@@ -47,9 +40,13 @@ var finishTurn = (player) => {
   gravity = 0.15;
   player1.turn = !player1.turn;
   player2.turn = !player2.turn;
+  powerCircle.x = player.enemy.shield.x;
+  powerCircle.radius = 0;
 };
 
 setBackdropURL("../images/war-backdrop.png");
+
+var gravity = 0.15;
 
 var groundLine = (minY + height / 5);
 
@@ -85,8 +82,8 @@ var ballP1 = new Circle({
 
 var player1 = {
   shooter: shooterP1,
-  shield: shieldP1,
   ball: ballP1,
+  shield: shieldP1,
   turn: true
 };
 
@@ -130,6 +127,23 @@ var bottom = new Rectangle({
   y: groundLine - height / 10
 });
 
+var aimLine = new Line({});
+
+var power = 0;
+var powerText = new Text({
+  text: () => "power: " + power
+});
+
+var turnText = new Text({
+  y: 100,
+  text: () => {
+    if (player1.turn)
+      return "Turn: player 1"
+    else if (player2.turn)
+      return "Turn: player 2"
+  }
+})
+
 var powerCircle = new Circle({
   color: "yellow",
   radius: 0,
@@ -138,33 +152,25 @@ var powerCircle = new Circle({
   brightness: 10
 });
 
-var xStart = 0;
-var power = 0;
-var yTarget = groundLine + 100;
-var gravity = 0.15;
-
 onMouseDown(() => {
-  xStart = mouseX;
-  yTarget = groundLine + 50;
   if (player1.turn)
-    player1.shooter.pointTowards(maxX, yTarget);
+    shooterP1.angle = 0;
   else if (player2.turn)
-    player2.shooter.pointTowards(minX, yTarget);
+    shooterP2.angle = 180;
+  aimLine.x1 = mouseX;
+  aimLine.y1 = mouseY;
 });
 
 onMouseMove(() => {
   if (mouseDown) {
-    setYTarget();
-    if (player1.turn) {
-      shooterP1.pointTowards(maxX, yTarget);
-      powerCircle.x = player1.shooter.x;
-    }
-    else if (player2.turn) {
-      shooterP2.pointTowards(minX, yTarget);
-      powerCircle.x = player2.shooter.x;
-    }
-    power = Math.abs(xStart - mouseX);
-    if (power > 400) 
+    aimLine.x = mouseX;
+    aimLine.y = mouseY;
+    if (player1.turn)
+      shooterP1.angle = aimLine.angle;
+    else if (player2.turn)
+      shooterP2.angle = aimLine.angle;
+    power = aimLine.height;
+    if (power > 400)
       power = 400;
     powerCircle.radius = power / 3;
   }
@@ -187,15 +193,6 @@ onMouseUp(() => {
       finishTurn(player2);
     });
   }
-});
-
-var powerText = new Text({
-  text: () => "Power: " + power
-});
-
-var targetText = new Text({
-  text: () => "Y Target: " + yTarget,
-  y: - 20
 });
 
 </script>  

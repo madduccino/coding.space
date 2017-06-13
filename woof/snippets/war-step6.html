@@ -53,22 +53,12 @@ var bottom = new Rectangle({
   y: groundLine - height / 10
 });
 
-var xStart = 0;
-var power = 0;
+var aimLine = new Line({});
 
 onMouseDown(() => {
-  xStart = mouseX;
+  aimLine.x1 = mouseX;
+  aimLine.y1 = mouseY;
 });
-
-onMouseMove(() => {
-  if (mouseDown) {
-    power = Math.abs(xStart - mouseX);
-  }
-});
-
-var powerText = new Text({
-  text: () => "Power: " + power
-})
 
 </script>  
 </body>

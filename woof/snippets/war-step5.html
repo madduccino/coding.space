@@ -53,15 +53,8 @@ var bottom = new Rectangle({
   y: groundLine - height / 10
 });
 
-var xStart = 0;
+var aimLine = new Line({});
 
-onMouseDown(() => {
-  xStart = mouseX;
-});
-
-var startXText = new Text({
-  text: () => "Mouse X on click: " + xStart
-});
 
 </script>  
 </body>

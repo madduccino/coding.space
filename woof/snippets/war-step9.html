@@ -1,5 +1,5 @@
 <head>
-<script src="https://cdn.rawgit.com/stevekrouse/WoofJS/a1a059a9/dist/woof.js"></script>
+<script src="https://cdn.rawgit.com/stevekrouse/WoofJS/8b9d5d75/dist/woof.js"></script>
 <title>War Step 9</title>
 </head>
 <body>
@@ -10,17 +10,6 @@ var goToGround = (sprite) => {
     sprite.y = groundLine + sprite.radius;
   else
     sprite.y = groundLine + sprite.height / 2;
-};
-
-var setBall = (player) => {
-  player.ball.x = player.shooter.x;
-  player.ball.y = player.shooter.y;
-  player.ball.move(35);
-  player.ball.show();
-};
-
-var shoot = (player) => {
-  player.ball.move(power / 20);
 };
 
 setBackdropURL("../images/war-backdrop.png");
@@ -57,12 +46,6 @@ var ballP1 = new Circle({
   showing: false
 });
 
-var player1 = {
-  shooter: shooterP1,
-  shield: shieldP1,
-  ball: ballP1
-};
-
 var bottom = new Rectangle({
   color: "#223388",
   width: width,
@@ -70,47 +53,25 @@ var bottom = new Rectangle({
   y: groundLine - height / 10
 });
 
-var powerCircle = new Circle({
-  color: "yellow",
-  radius: 0,
-  x: shooterP1.x,
-  y: shooterP1.y,
-  brightness: 10
-});
+var aimLine = new Line({});
 
-var xStart = 0;
 var power = 0;
-var yTarget = groundLine + 100;
+var powerText = new Text({
+  text: () => "power: " + power
+})
 
 onMouseDown(() => {
-  xStart = mouseX;
+  aimLine.x1 = mouseX;
+  aimLine.y1 = mouseY;
 });
 
 onMouseMove(() => {
   if (mouseDown) {
-    power = Math.abs(xStart - mouseX);
-    if (power > 400) 
-      power = 400;
-    powerCircle.radius = power / 3;
+    aimLine.x = mouseX;
+    aimLine.y = mouseY;
+    shooterP1.angle = aimLine.angle;
+    power = aimLine.height;
   }
-});
-
-onMouseUp(() => {
-  setBall(player1);
-  repeatUntil(() => player1.ball.x > maxX, () => {
-    shoot(player1);
-  }, () => {
-    player1.ball.hide();
-  });
-});
-
-var powerText = new Text({
-  text: () => "Power: " + power
-});
-
-var targetText = new Text({
-  text: () => "Y Target: " + yTarget,
-  y: - 20
 });
 
 </script>  

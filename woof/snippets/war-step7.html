@@ -53,33 +53,19 @@ var bottom = new Rectangle({
   y: groundLine - height / 10
 });
 
-var powerCircle = new Circle({
-  color: "yellow",
-  radius: 0,
-  x: shooterP1.x,
-  y: shooterP1.y,
-  brightness: 10
-});
-
-var xStart = 0;
-var power = 0;
+var aimLine = new Line({});
 
 onMouseDown(() => {
-  xStart = mouseX;
+  aimLine.x1 = mouseX;
+  aimLine.y1 = mouseY;
 });
 
 onMouseMove(() => {
   if (mouseDown) {
-    power = Math.abs(xStart - mouseX);
-    if (power > 400) 
-      power = 400;
-    powerCircle.radius = power / 3;
+    aimLine.x = mouseX;
+    aimLine.y = mouseY;
   }
 });
-
-var powerText = new Text({
-  text: () => "Power: " + power
-})
 
 </script>  
 </body>
