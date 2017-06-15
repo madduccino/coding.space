@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="https://cdn.rawgit.com/stevekrouse/WoofJS/8b9d5d75/dist/woof.js"></script>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Tomato Attack Step 12</title>
+</head>
+<body>
+
+<script>
+  
+  // Set background to image
+  setBackdropURL('../images/tomato-attack-backdrop.jpg')
+  
+  // Create can sprite
+  var can = new Image({
+    url: '../images/tomato-attack-can.png',
+    angle: 30,
+    y: minY + 50,
+    width: 175,
+    height: 175,
+  })
+  
+  // Create tomato sprite. Hide for now.
+  var tomato = new Image({
+    url: '../images/tomato-attack-tomato.png',
+    width: 65,
+    height: 65,
+    y: can.y + 100,
+    showing: false
+  })
+  
+    // Make can move with arrow keys
+  forever(() => {
+    if (keysDown.includes("LEFT")) {
+      can.x -= 10
+    }
+    if (keysDown.includes("RIGHT")) {
+      can.x += 10
+    }
+  })
+  
+   // Show tomato when up arrow pressed and tomato is at can
+  onKeyDown(() => {
+    if (keysDown.includes('UP') && tomato.y == can.y + 100) {
+      tomato.x = can.x 
+      tomato.show()
+    }
+  })
+      
+  // Create text sprite to display "You missed" message. Hide for now.
+  var missed = new Text({
+    text: () => "You missed!",
+    size: 30,
+    color: "#FF0000",
+    y: 100,
+    showing: false
+  })
+  
+  forever(() => {
+    // Make tomatoes move up when showing
+    if (tomato.showing) {
+      tomato.y += 15
+    }
+    // If tomato goes past top edge, bring it back to can and hide it
+    if (tomato.y > maxY) {
+      tomato.hide()
+      tomato.y = can.y + 100
+      lives--
+      // Show you missed message
+      missed.show()
+        after(1, 'second', () => {
+          missed.hide()
+        })
+      }
+  })
+  
+   // Declare variable that will store random number
+  var randomNum
+  
+  // Create empty veggies array
+  var veggies = []
+  
+  every(() => random(0.5, 1.5), 'second', () => {        
+    randomNum = random(1, 4)
+    var veggie = new Image({
+      x: randomX(),
+      y: random(can.y + 150, maxY),
+      width: 100,
+      height: 100
+    })
+    // Randomly select veggie costume
+    if (randomNum == 1) {
+      veggie.setImageURL('../images/tomato-attack-eggplant.png')
+    }
+    if (randomNum == 2) {
+      veggie.setImageURL('../images/tomato-attack-carrot.jpg')
+    }
+    if (randomNum == 3) {
+      veggie.setImageURL('../images/tomato-attack-cucumber.jpg')
+    }
+    if (randomNum == 4) {
+      veggie.setImageURL('../images/tomato-attack-onion.jpg')
+    }
+    // Push veggie sprite into veggies array
+    veggies.push(veggie)
+    // Delete veggie sprite after 2 seconds
+    after(2, 'seconds', () => {
+      veggie.delete()
+      veggies.remove(veggie)
+    })
+  }) 
+  
+  forever(() => {
+    veggies.forEach(veggie => {
+      if (tomato.touching(veggie)) {
+        tomato.hide() // Hide tomato if veggie hit
+        veggie.delete()
+        veggies.remove(veggie)
+        // Send tomato back to can
+        tomato.x = can.x
+        tomato.y = can.y + 100
+        score++
+      }
+    })
+  })
+  
+  // Create score variable and show on screen
+  var score = 0
+  var scoreText = new Text({
+    text: () => "Veggies: " + score,
+    x: maxX - 100,
+    y: maxY - 25,
+    size: 30,
+    color: "#FF0000"
+  })
+
+  // Create lives variable and show on screen
+  var lives = 3
+  var livesText = new Text({
+    text: () => "Lives: " + lives,
+    x: maxX - 100,
+    y: maxY - 55,
+    size: 30,
+    color: "#FF0000"
+  })
+
+  
+</script>
+</body>
+</html>
