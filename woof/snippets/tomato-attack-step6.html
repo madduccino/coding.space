@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="https://cdn.rawgit.com/stevekrouse/WoofJS/8b9d5d75/dist/woof.js"></script>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Tomato Attack Step 6</title>
+</head>
+<body>
+
+<script>
+  
+  // Set background to image
+  setBackdropURL('../images/tomato-attack-backdrop.jpg')
+  
+  // Create can sprite
+  var can = new Image({
+    url: '../images/tomato-attack-can.png',
+    angle: 30,
+    y: minY + 50,
+    width: 175,
+    height: 175,
+  })
+  
+  // Create tomato sprite. Hide for now.
+  var tomato = new Image({
+    url: '../images/tomato-attack-tomato.png',
+    width: 65,
+    height: 65,
+    y: can.y + 100,
+    showing: false
+  })
+  
+    // Make can move with arrow keys
+  forever(() => {
+    if (keysDown.includes("LEFT")) {
+      can.x -= 10
+    }
+    if (keysDown.includes("RIGHT")) {
+      can.x += 10
+    }
+  })
+  
+   // Show tomato when up arrow pressed and tomato is at can
+  onKeyDown(() => {
+    if (keysDown.includes('UP') && tomato.y == can.y + 100) {
+      tomato.x = can.x 
+      tomato.show()
+    }
+  })
+  
+  forever(() => {
+    // Make tomatoes move up when showing
+    if (tomato.showing) {
+      tomato.y += 15
+    }
+    // If tomato goes past top edge, bring it back to can and hide it
+    if (tomato.y > maxY) {
+      tomato.hide()
+      tomato.y = can.y + 100
+    }
+  })
+  
+  // Create empty veggies array
+  var veggies = []
+  
+  every(() => random(0.5, 1.5), 'second', () => {
+    var veggie = new Image({
+      url: '../images/tomato-attack-eggplant.png',
+      x: randomX(),
+      y: random(can.y + 150, maxY),
+      width: 100,
+      height: 100
+    })
+    // Push veggie sprite into veggies array
+    veggies.push(veggie)
+    // Delete veggie sprite after 2 seconds
+    after(2, 'seconds', () => {
+      veggie.delete()
+      veggies.remove(veggie)
+    })
+  }) 
+    
+</script>
+</body>
+</html>
