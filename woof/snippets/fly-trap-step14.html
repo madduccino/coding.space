@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <script src="https://cdn.rawgit.com/stevekrouse/WoofJS/cb6d0621/dist/woof.js"></script>
+    <script src="https://cdn.rawgit.com/stevekrouse/WoofJS/e0c90249/dist/woof.js"></script>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
     <title>Fly Trap Step 14</title>
@@ -85,13 +85,11 @@
   })
   
   forever(() => {
-    if (tongue.y1 >= fly.y - 10 &&
-      tongue.x >= fly.x - 10 &&
-      tongue.x <= fly.x + 10 &&
-      !fly.touching(frog)) {
-      score++
-      fly.y = random(minY + 100, maxY - 50)
-      fly.x = minX
+    // If tongue touching fly, increase score and bring fly back to random position on left side of screen
+    if (tongue.touching(fly) && !fly.touching(frog)) {
+      score++ 
+      fly.y = random(minY + 100, maxY - 50) 
+      fly.x = minX 
     }
   })
   

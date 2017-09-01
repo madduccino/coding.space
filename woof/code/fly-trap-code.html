@@ -1,6 +1,6 @@
 <head>
   
-  <script src="https://cdn.rawgit.com/stevekrouse/WoofJS/cb6d0621/dist/woof.js"></script>
+  <script src="https://cdn.rawgit.com/stevekrouse/WoofJS/e0c90249/dist/woof.js"></script>
   
   <script>
   
@@ -100,14 +100,9 @@
   })
   
   forever(() => {
-    // Detect if tongue is within a certain distance of fly
-    if (tongue.y1 >= fly.y - 10 &&
-      tongue.x >= fly.x - flySpeed * 2 &&
-      tongue.x <= fly.x + flySpeed * 2 &&
-      !fly.touching(frog)) {
-      // If so, increase score
+    // If tongue touching fly, increase score and bring fly back to random position on left side of screen
+    if (tongue.touching(fly) && !fly.touching(frog)) {
       score++ 
-      // And bring fly back to left side of screen at a random spot
       fly.y = random(minY + 100, maxY - 50) 
       fly.x = minX 
     }
