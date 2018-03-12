@@ -5,7 +5,7 @@ html {
 
 body {
 	text-align: center;
-	font-family: 'Lato', sans-serif;
+	font-family: 'Quicksand', sans-serif;
 	color: white;
 	background: url(./images/galaxy.jpg) no-repeat center center fixed; 
 	-webkit-background-size: cover;
@@ -20,7 +20,7 @@ h1 {
 	color: white;
 	padding-top: 20px;
 	margin-bottom: 20px;
-	font-family: 'Lato', sans-serif;
+	font-family: 'Quicksand', sans-serif;
 	font-weight: bold;
 }
 
