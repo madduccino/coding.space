@@ -1,11 +1,14 @@
 html {
 	height: 100%;
+
 }
 
 body {
-	font-family: 'Lato', sans-serif;
+	font-family: 'Quicksand', sans-serif;
 	color: white;
-	background: url(./images/galaxy.jpg) no-repeat center center fixed; 
+	background: linear-gradient(153.39deg, #8972DD 31.61%, #293CAE 131.68%);
+	/*transform: rotate(-90deg);*/
+	/*background: url(./images/galaxy.jpg) no-repeat center center fixed; */
 	-webkit-background-size: cover;
 	-moz-background-size: cover;
 	-o-background-size: cover;
