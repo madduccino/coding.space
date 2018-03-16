@@ -2,50 +2,61 @@
 <head>
 <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 <link rel="shortcut icon" href="images/favicon.ico" type="images/x-icon">
+<link href="https://fonts.googleapis.com/css?family=Quicksand" rel="stylesheet">
 <title>Coding.Space - WEB</title>
 <style>
-
-body {
-	   	 background-image: url('./images/galaxy.jpg')  ;
-	   	 background-repeat: no-repeat;
-	   	 background-size: cover;
-	   }
+	
+	body {
+		background: linear-gradient(37deg, #8972DD, #293CAE);	   	 
+		background-repeat: no-repeat;
+		background-size: cover;
+		}
 	.rocket {
 		width: 20px;
 		height: 20px;
 		margin-bottom: -4px;
 		display: none;
 	}
-	
+
 	.level {
 		display: flex;
 		flex-wrap: wrap;
 		justify-content: center;
 	}
-	
+
 	.project-image {
 		width: 175px;
 		height: 175px;
 	}
-	
+
 	.project {
 		width: 200px;
 		padding: 10px;
 		text-align: center
 	}
-	
+
 	html {
 		text-align: center;
-		font-family: sans-serif;
+		font-family: 'Quicksand', sans-serif;
 		color: white;
 	}
-	
-	h2 {
-		font-size: 30px;
+
+	h1, h2, h4 {	
+		font-family: 'Quicksand', sans-serif;
+		color: white;
 		margin: 0px;
 		padding-bottom: 10px;
 	}
-	
+	h1 {
+		font-size: 4em;
+	}
+
+	h2{
+		font-size: 30px;
+	}
+	h4 {
+    padding-top: 4px;
+  }
 	.level-container {
 		padding: 20px;
 		margin: 40px;
@@ -53,33 +64,8 @@ body {
 		color: white;
 		
 	}
-	
-	#level1 {
-		background-color: #00ACA1;
-		color: white;
-	}
-	
-	#level2 {
-		background-color: #41BDF5;
-		color: white;
-	}
-	
-	#level3 {
-		background-color: #74F541;
-		color: white;
-	}
-	
-	#level4 {
-		background-color: #9241F5;
-		color: white;
-	}
-	
-	#web-guides {
-	background-color: #00449F;
-		color: white;
-	}
 	#go-to-jsbin {
-		background-color:white;
+		background-color: #78B8FB;
 		color: black;
       font-size: 30px;
       border:none;
@@ -92,13 +78,10 @@ body {
 </style>
 </head>
 <body>
-<div>
-	<a>
-		<img src="./images/webguides.png" alt="Picture" style="margin-top: 30px;width:450;max-width:100%">
-	</a>
-	<div style="display:block;font-size:90%"></div>
+<div style="padding:30px;margin-left:0px;margin-right:0px;text-align:center">
+   <h1>Web Guides</h1>
 </div>
-<a target="_blank" href="http://jsbin.com"><button id="go-to-jsbin" class="btn btn-success">Go to jsbin.com</button></a>
+<a target="_blank" href="http://jsbin.com"><button id="go-to-jsbin" class="btn btn-success">Go to JS Bin</button></a>
 <div id="web-guides" class="level-container">
 	<div class="level">
 		<div>
@@ -106,7 +89,7 @@ body {
 				<a href='./web-guide.html'>
 					<img class="project-image" src="./images/9493930.jpg" alt="Picture" style="width:156;max-width:100%" />
 				</a>
-				<div style="display:block;font-size:90%"><b> Intro to Web Programming </b></div>
+				<div style="display:block;font-size:90%"><h4> Intro to Web Programming </h4></div>
 			</div>
 		</div>
 		<div>
@@ -114,7 +97,7 @@ body {
 				<a href='./html-guide.html'>
 					<img class="project-image" src="./images/7320695.png" alt="Picture" style="width:264;max-width:100%" />
 				</a>
-				<div style="display:block;font-size:90%"><b>Intro to HTML</b></div>
+				<div style="display:block;font-size:90%"><h4>Intro to HTML</h4></div>
 			</div>
 		</div>
 		<div>
@@ -122,7 +105,7 @@ body {
 				<a href='./css-guide.html'>
 					<img class="project-image" src="./images/1046539.png" alt="Picture" style="width:auto;max-width:100%" />
 				</a>
-				<div style="display:block;font-size:90%"><b>Intro to CSS</b></div>
+				<div style="display:block;font-size:90%"><h4>Intro to CSS</h4></div>
 			</div>
 		</div>
 		<div>
@@ -130,7 +113,7 @@ body {
 				<a href='./woof-to-js.html'>
 					<img class="project-image" src="./images/logo_JavaScript.png" alt="Picture" style="width:auto;max-width:100%" />
 				</a>
-				<div style="display:block;font-size:90%"><b>Woof to JavaScript</b></div>
+				<div style="display:block;font-size:90%"><h4>Woof to JavaScript</h4></div>
 			</div>
 		</div>
 		<div>
@@ -138,18 +121,15 @@ body {
 				<a href='./reference-guide.html'>
 					<img class="project-image" src="./images/web-reference.png" alt="Picture" style="width:156;max-width:100%" />
 				</a>
-				<div style="display:block;font-size:90%"><b>Web Reference Guide</b></div>
+				<div style="display:block;font-size:90%"><h4>Web Reference Guide</h4></div>
 			</div>
 		</div>
 	</div>
 </div>
 <div>
-	<div>
-		<a>
-			<img src="./images/webprojects.png" alt="Picture" style="width:485;max-width:100%" />
-		</a>
-		<div style="display:block;font-size:90%"></div>
-	</div>
+	<div style="padding:30px;margin-left:0px;margin-right:0px;text-align:center">
+   <h1>Web Projects</h1>
+</div>
 </div>
 <div id="level1" class="level-container">
 	<h2>Level 1</h2>
@@ -159,7 +139,7 @@ body {
 				<a href='./neon-flag.html'>
 					<img class="project-image" src="./images/1462296282.png" alt="Picture" style="width:auto;max-width:100%" />
 				</a>
-				<div style="display:block;font-size:90%"><b>Neon Flag</b>
+				<div style="display:block;font-size:90%"><h4>Neon Flag</h4>
 				</div>
 			</div>
 		</div>
@@ -168,7 +148,7 @@ body {
 				<a href='./portfolio-project.html'>
 					<img class="project-image" src="./images/1458238569.png" alt="Picture" style="width:auto;max-width:100%" />
 				</a>
-				<div style="display:block;font-size:90%"><b>Portfolio Project</b>
+				<div style="display:block;font-size:90%"><h4>Portfolio Project</h4>
 				</div>
 			</div>
 		</div>
@@ -182,7 +162,7 @@ body {
 				<a href='./sometimes-red-sometimes-blue.html'>
 					<img class="project-image" src="./images/1459957657.png" alt="Picture" style="width:auto;max-width:100%" />
 				</a>
-				<div style="display:block;font-size:90%"><b>Sometimes Red, Sometimes Blue </b>
+				<div style="display:block;font-size:90%"><h4>Sometimes Red, Sometimes Blue </h4>
 
 				</div>
 			</div>
@@ -192,7 +172,7 @@ body {
 				<a href='./hello-today.html'>
 					<img class="project-image" src="./images/1458239190.png" alt="Picture" style="width:auto;max-width:100%" />
 				</a>
-				<div style="display:block;font-size:90%"><b>Hello Today </b>
+				<div style="display:block;font-size:90%"><h4>Hello Today </h4>
 				</div>
 			</div>
 		</div>
@@ -206,7 +186,7 @@ body {
 				<a href='./counter.html'>
 					<img class="project-image" src="./images/1458238633.png" alt="Picture" style="width:auto;max-width:100%" />
 				</a>
-				<div style="display:block;font-size:90%"><b>Counter </b>
+				<div style="display:block;font-size:90%"><h4>Counter </h4>
 				</div>
 			</div>
 		</div>
@@ -215,7 +195,7 @@ body {
 				<a href='./calculator.html'>
 					<img class="project-image" src="./images/1458238883.png" alt="Picture" style="width:auto;max-width:100%" />
 				</a>
-				<div style="display:block;font-size:90%"><b>Calculator </b> </div>
+				<div style="display:block;font-size:90%"><h4>Calculator </h4> </div>
 			</div>
 		</div>
 		<div>
@@ -223,7 +203,7 @@ body {
 				<a href='./click-for-color.html'>
 					<img class="project-image" src="./images/7818640.png" alt="Picture" style="width:auto;max-width:100%" />
 				</a>
-				<div style="display:block;font-size:90%"><b>Click for Color</b>
+				<div style="display:block;font-size:90%"><h4>Click for Color</h4>
 				</div>
 			</div>
 		</div>
@@ -237,7 +217,7 @@ body {
 				<img class="project-image" src="./images/3411506.png" alt="Picture" style="width:auto;max-width:100%" />
 			</a>
 			<div style="display:block;font-size:90%">
-				<b>Knock Knock Joke Generator </b>
+				<h4>Knock Knock Joke Generator </h4>
 			</div>
 		</div>
 		<div class="wsite-image project">
@@ -245,7 +225,7 @@ body {
 				<img class="project-image" src="./images/1458238811.png" alt="Picture" style="width:auto;max-width:100%" />
 			</a>
 			<div style="display:block;font-size:90%">
-				<b>Disco Lights </b>
+				<h4>Disco Lights </h4>
 			</div>
 		</div>
 		<div>
@@ -254,7 +234,7 @@ body {
 					<img class="project-image" src="./images/1458238676.png" alt="Picture" style="width:auto;max-width:100%" />
 				</a>
 				<div style="display:block;font-size:90%">
-					<b>Pixel Drawing </b>
+					<h4>Pixel Drawing </h4>
 				</div>
 			</div>
 		</div>

@@ -6,9 +6,7 @@ html {
 body {
 	font-family: 'Quicksand', sans-serif;
 	color: white;
-	background: linear-gradient(153.39deg, #8972DD 31.61%, #293CAE 131.68%);
-	/*transform: rotate(-90deg);*/
-	/*background: url(./images/galaxy.jpg) no-repeat center center fixed; */
+	background: linear-gradient(37deg, #8972DD, #293CAE);
 	-webkit-background-size: cover;
 	-moz-background-size: cover;
 	-o-background-size: cover;
