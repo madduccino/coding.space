@@ -7,10 +7,11 @@
 <style>
 
  body {
-      background: linear-gradient(37deg, #8972DD , #293CAE);
-	   	 background-repeat: no-repeat;
-	   	 background-size: cover;
-	   }
+   font-family: 'Quicksand' ,sans-serif;
+   background: linear-gradient(37deg, #8972DD , #293CAE);
+   background-repeat: no-repeat;
+   background-size: cover;
+	}
 	   
   .rocket {    
     width: 20px;
@@ -24,13 +25,17 @@
     justify-content: center;
   }
   .project-image {
-    width: 175px;
-    height: 175px;
+    padding-top: 10px;
+    width: 275px;
+    height: 225px;
   }
   .project {
-    width: 200px;
+   background-color: white;
+    border-radius: 10px;
+    margin: 20px;
+    width: 305px;
+    height: 275px;
     padding: 10px;
-    text-align:center
   }
   html {
     text-align: center;
@@ -51,23 +56,34 @@
     font-size: 30px;
   }
   h4 {
-    padding-top: 4px;
+    padding-top: 10px;
+    color: #BA7CF0;
   }
   .level-container {
     padding: 20px;
     margin: 40px;
     border-radius: 20px;
   }
-
+  
   #go-to-scratch {
-      background-color: #78B8FB;
-    color: black;
-    font-size: 30px;
+    font-family: 'Quicksand', sans-serif;
+    background-color: #78B8FB;
+    color: white;
+    font-size: 24px;
     border:none;
     border-radius: 10px;
   }
   
-  img {border-radius:10px;
+  div.circle-break {
+    display: inline-block;
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    background-color: white;
+    margin: 0px 18px;
+  }
+  img {
+    border-radius:10px;
   }
   
   img:hover{opacity:.7;}
@@ -107,6 +123,9 @@
       </div>
    </div>
 </div>
+<div class="circle-break"></div>
+<div class="circle-break"></div>
+<div class="circle-break"></div>
 <div id="level2" class="level-container">
    <h2>Level 2</h2>
    <div class="level">
@@ -152,6 +171,9 @@
       </div>
    </div>
 </div>
+<div class="circle-break"></div>
+<div class="circle-break"></div>
+<div class="circle-break"></div>
 <div id="level3" class="level-container">
    <h2>Level 3</h2>
    <div class="level">
@@ -198,6 +220,9 @@
       </div>
    </div>
 </div>
+<div class="circle-break"></div>
+<div class="circle-break"></div>
+<div class="circle-break"></div>
 <div id="level4" class="level-container">
    <h2>Level 4</h2>
    <div class="level">
@@ -244,6 +269,9 @@
       </div>
    </div>
 </div>
+<div class="circle-break"></div>
+<div class="circle-break"></div>
+<div class="circle-break"></div>
 <div id="level5" class="level-container">
    <h2>Level 5</h2>
    <div class="level">
@@ -266,6 +294,9 @@
       </div>
    </div>
 </div>
+<div class="circle-break"></div>
+<div class="circle-break"></div>
+<div class="circle-break"></div>
 <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
