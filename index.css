@@ -7,8 +7,7 @@ body {
 	text-align: center;
 	font-family: 'Quicksand', sans-serif;
 	color: white;
-	background: url(./images/2018background.jpg);
-	 /*no-repeat center center fixed; */
+	background: url(./images/2018background.jpg) no-repeat center center fixed;
 	-webkit-background-size: cover;
 	-moz-background-size: cover;
 	-o-background-size: cover;
