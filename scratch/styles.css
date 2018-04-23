@@ -10,7 +10,8 @@ body {
 }
 
 h1 {
-    color: #FFFFBF;
+    /* color: #FFFFBF; */
+    color: white;
     padding-top: 20px;
     text-align: center;
 }
@@ -18,6 +19,10 @@ h1 {
 p {
     color: white !important;
     line-height: 1.4em;
+}
+
+a {
+    color: #FFFFBF;
 }
 
 .block {
