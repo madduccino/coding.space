@@ -1,0 +1,39 @@
+body {
+    font-family: sans-serif;
+    background-color: #2F2F2F;
+}
+
+h1 {
+    text-align: center;
+}
+
+p {
+    color: white !important;
+    font-weight: bold !important;
+}
+
+.block {
+    margin: 20px;
+    padding: 15px;
+    /*box-shadow: 2px 1px 1px gray;*/
+    background-color: #56CCF2;
+    color: white;
+    border-radius:10px;
+    max-width: 500px;
+    text-align: center;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+}
+
+input[type='checkbox'] {
+    transform: scale(3);
+}
+
+iframe {border-radius: 5px}
