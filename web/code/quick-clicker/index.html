@@ -1,0 +1,73 @@
+<!doctype html>
+<html>
+  <head>
+    <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+    <meta content="utf-8" http-equiv="encoding">
+  </head>
+  <body>
+    <section class="app">
+      <div class="prompt">
+        <h1 v-if="firstGame">
+          How quick can you click?
+        </h1>
+        <h1 v-else-if="active">
+          Quick! Click!
+        </h1>
+        <h1 v-else>
+          You can click quicker than that...
+        </h1>
+      </div>
+      
+      <div>
+        <button class="click-button"
+        @click="updateCount()">
+      </button>
+    </div>
+    <div class="start-buttons" v-if="!active">
+      <button
+      class="start-button"
+      type="submit"
+      @click="start()"
+      >
+      <p v-if="firstGame">Try it out!</p>
+      <p v-else>Try again?</p>
+    </button>
+    
+  </div>
+  
+  <div class="state">
+    <div
+    class="score"
+    v-if="!firstGame"
+    >
+    <h1> You clicked <b>{{ numClicks }}</b> times</h1>
+  </div>
+  
+  <div
+  v-if="active"
+  class="timer"
+  >
+  <h2> You have <b>{{ secs }}</b> secs left </h2>
+</div>
+</div>
+
+
+<!--    <div
+  v-else-if="!firstGame"
+  class="game-over"
+  >
+  <h1>Game over!</h1>
+</div> -->
+
+<!--    <div
+  v-else
+  class="first-game"
+  >
+  <h1>Try it out!</h1>
+</div> -->
+
+</section>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+<script src="./index.js"></script>
+</body>
+</html>
