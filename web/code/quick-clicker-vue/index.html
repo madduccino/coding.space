@@ -5,7 +5,7 @@
     <meta content="utf-8" http-equiv="encoding">
     <link rel="stylesheet" href="./index.css" type="text/css">
   <body>
-    <section class="vanilla-app">
+    <section class="app">
       <div class="prompt">
         <h1 v-if="firstGame">
           How quick can you click?
@@ -19,15 +19,18 @@
       </div>
       
       <div>
-        <button class="click-button"
-        @click="updateCount()">
+        <button
+          class="click-button"
+          @click="updateCount()"
+        >
       </button>
     </div>
-    <div class="start-buttons" v-if="!active">
+    <div class="start-buttons">
       <button
-      class="start-button"
-      type="submit"
-      @click="start()"
+        v-if="!active"
+        class="start-button"
+        type="submit"
+        @click="start()"
       >
       <p v-if="firstGame">Try it out!</p>
       <p v-else>Try again?</p>
@@ -37,15 +40,15 @@
   
   <div class="state">
     <div
-    class="score"
-    v-if="!firstGame"
+      class="score"
+      v-if="!firstGame"
     >
     <h1> You clicked <b>{{ numClicks }}</b> times</h1>
   </div>
   
   <div
-  v-if="active"
-  class="timer"
+    v-if="active"
+    class="timer"
   >
   <h2> You have <b>{{ secs }}</b> secs left </h2>
 </div>
@@ -67,7 +70,7 @@
 </div> -->
 
 </section>
-<script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+<script src="./vue.js"></script>
 <script src="./index.js"></script>
 </body>
 </html>

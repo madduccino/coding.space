@@ -1,8 +1,10 @@
 body {
+    display: flex;
+    flex-direction: column;
     background-color: #323133;
     color: #fff;
     text-align: center;
-    font-family: 'Dosis', sans-serif; background-image:url('http://imgh.us/bg_12.svg');
+    font-family: 'Dosis', sans-serif;
     background-repeat: no-repeat;
     background-size: cover;
     height: 100vh;
@@ -11,7 +13,7 @@ body {
   }
   
   .click-button {
-    position: relative;
+    justify-content: center;
     top: 100px;
     border: none;
     color: #fff;
@@ -21,6 +23,13 @@ body {
     border-radius: 50%;
     background-color: #f2ca27;
   }
+
+  .start-buttons {
+    padding-top: 50px;
+    height: 100px;
+    justify-content: center;
+  }
+  
   
   /* button:active {
     width: 190px;
