@@ -5,17 +5,17 @@
     <meta content="utf-8" http-equiv="encoding">
     <link rel="stylesheet" href="./index.css" type="text/css">
   <body>
-    <section class="vanilla-app">
-      <div class="prompt">
-        <h1 v-if="firstGame">
-          How quick can you click?
+    <section class="app">
+      <div class="prompt-area">
+        <h1 class="prompt">
+          <!-- How quick can you click? -->
         </h1>
-        <h1 v-else-if="active">
+        <!-- <h1 v-else-if="active">
           Quick! Click!
         </h1>
         <h1 v-else>
           You can click quicker than that...
-        </h1>
+        </h1> -->
       </div>
       
       <div>
@@ -27,7 +27,6 @@
       <button
       class="start-button"
       type="submit"
-      @click="start()"
       >
       <p v-if="firstGame">Try it out!</p>
       <p v-else>Try again?</p>

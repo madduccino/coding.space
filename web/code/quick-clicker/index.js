@@ -1,44 +1,56 @@
 
+document.addEventListener('DOMContentLoaded', function() { 
+    var active = false;
+    var firstGame = true;
+    var numClicks = 0;
+    var secondsLeft = 10;
+    var updateInterval = null;
 
-
-new Vue({
-	el: '.app',
-
-	data: {	
-		active: false,
-        firstGame: true,
-		numClicks: 0,
-		secs: 10,
-        interval: null
-	},
-
-	methods: {
-        updateCount: function () {
-            if (this.active) {
-                    this.numClicks = this.numClicks + 1;
+    function countDown() {
+        if (active) {
+            secondsLeft = secondsLeft - 1;
+            if (secondsLeft === 0) {
+                active = false;
+                firstGame = false;
+                clearInterval(updateInterval)
             }
-        },
-    
-        start: function() {
-            if (this.interval) {
-                clearInterval(this.interval);
-            }
-            
-            this.firstGame = false;
-            this.active = true;
-            this.secs = 10;
-            this.numClicks = 0;
-
-            this.interval = setInterval(() => {
-                if (this.active) {
-                    this.secs = this.secs - 1;
-                    if (this.secs === 0) {
-                        this.active = false;
-                        this.firstGame = false;
-                        clearInterval(this.interval)
-                    }
-                }
-            }, 1000);
         }
     }
-})
+
+    function updateCount() {
+        if (active) {
+            numClicks = numClicks + 1;
+        }
+    }
+
+    function startGame() {
+        setPrompt('Quick! Click!');
+
+        if (updateInterval) {
+            clearInterval(updateInterval);
+        }
+        
+        firstGame = false;
+        active = true;
+        secondsLeft = 10;
+        numClicks = 0;
+
+        updateInterval = setInterval(countDown, 1000);
+    }
+
+    function setPrompt(text) {
+        var prompt = document.querySelector('.prompt')
+        var promptText = document.createTextNode(text);
+        prompt.appendChild(promptText) 
+    }
+    
+    function setUpGame() {
+        setPrompt('How quick can you click?')
+        var startButton = document.querySelector('.start-button');
+        startButton.addEventListener('click', startGame);
+    }
+
+    
+    setUpGame();
+    
+}, false);

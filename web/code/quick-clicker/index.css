@@ -1,26 +1,32 @@
 body {
-    background-color: #323133;
-    color: #fff;
-    text-align: center;
-    font-family: 'Dosis', sans-serif; background-image:url('http://imgh.us/bg_12.svg');
-    background-repeat: no-repeat;
-    background-size: cover;
-    height: 100vh;
-    background-attachment: fixed;
-    min-height: 600px;
-  }
-  
-  .click-button {
-    position: relative;
-    top: 100px;
-    border: none;
-    color: #fff;
-    width: 200px;
-    height: 200px;
-    transition: 0.3s;
-    border-radius: 50%;
-    background-color: #f2ca27;
-  }
+  background-color: #323133;
+  color: #fff;
+  text-align: center;
+  font-family: 'Dosis', sans-serif;;
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 100vh;
+  background-attachment: fixed;
+  min-height: 600px;
+}
+
+.click-button {
+  position: relative;
+  top: 100px;
+  border: none;
+  color: #fff;
+  width: 200px;
+  height: 200px;
+  transition: 0.3s;
+  border-radius: 50%;
+  background-color: #f2ca27;
+}
+
+.start-button {
+  position: relative;
+  top: 100px;
+  height: 50px;
+}
   
   /* button:active {
     width: 190px;
