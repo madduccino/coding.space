@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+ 
+  <title>Counter</title>
+ <style>
+     body {
+  text-align: center;  
+  font-family: "Quicksand", "Arial", Palatino, serif;
+  font-size: 150%;
+  margin: auto;
+  background-color: #00ffcc;
+  color: #336699
+}
+
+#minus {
+  background : #ccffff;
+  font-family: "Quicksand", "Arial", Palatino, serif;
+  font-size: 150%;
+  border-radius:10px;
+   border-color: #ccffff;
+  border-style: solid;
+  color:000099;
+}
+
+#plus {
+  background : #000099;
+  font-family: "Quicksand", "Arial", Palatino, serif;
+  font-size: 150%;
+    border-radius:10px;
+  border-color: #000099;
+  border-style: solid;
+  color:white;
+
+}
+
+#number {
+  font-family: "Quicksand", "Arial", Palatino, serif;
+  font-size: 250%;
+  border-style:none;
+}
+
+input {border-radius:5px;
+height:150%;
+  width: 200px;
+border-style:none;
+margin-top:20px;
+     font-size:150%;
+}
+
+ </style>      
+
+</head>
+<body>
+
+  <p style="margin-top:200px;">Enter the number to be added or subtracted: <br> <input type="number" id="myNumber" value="0" onchange="updateOutput(this.value)">
+  <p>
+  <button onclick="minusOne()" id="minus"> Minus </button>
+  <p id = "number"> 0 </p>
+  <button onclick="plusOne()" id="plus"> Plus </button>
+</body>
+<script>
+var n = 0;
+var x = document.getElementById("myNumber").value;
+
+function updateOutput(val){
+  x = val;
+}
+
+function minusOne() {
+  n = +n - +x;
+  document.getElementById("number").innerHTML = n;
+}
+
+function plusOne() {
+  n = +n + +x;
+  document.getElementById("number").innerHTML = n;
+}</script>
+</html>
