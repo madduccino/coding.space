@@ -1,7 +1,7 @@
 html body {
     background: linear-gradient(37deg, #8972DD, #293CAE);
     background-repeat: no-repeat; 
-    font-family: 'Quicksand' ,sans-serif;
+    font-family: 'Quicksand' ,sans-serif !important;
 }
 
 h1 {
