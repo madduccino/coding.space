@@ -1,4 +1,8 @@
-body {
+.app {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
   background-color: #323133;
   color: #fff;
   text-align: center;
@@ -11,20 +15,18 @@ body {
 }
 
 .click-button {
-  position: relative;
+  font-weight: bold;
   top: 100px;
   border: none;
-  color: #fff;
   width: 200px;
   height: 200px;
-  transition: 0.3s;
   border-radius: 50%;
-  background-color: #f2ca27;
+  background-color: red;
 }
 
 .start-button {
-  position: relative;
-  top: 100px;
+  top: 50px;
+  bottom: 50px;
   height: 50px;
 }
   
