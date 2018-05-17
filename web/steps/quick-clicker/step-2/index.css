@@ -1,0 +1,65 @@
+.app {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    background-color: #323133;
+    color: #fff;
+    text-align: center;
+    font-family: 'Dosis', sans-serif;;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 100vh;
+    background-attachment: fixed;
+    min-height: 600px;
+  }
+  
+  .click-button {
+    font-weight: bold;
+    top: 100px;
+    border: none;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background-color: red;
+  }
+  
+  .start-button {
+    top: 50px;
+    bottom: 50px;
+    height: 50px;
+  }
+    
+    /* button:active {
+      width: 190px;
+      height: 190px;
+    }
+    button:focus {
+      outline: none;
+    } */
+    /* #status {
+      background: transparent;
+      position: relative;
+      top: 60px;
+    }
+    #status h2 {
+      font-size: 60px;
+      text-transform: uppercase;
+    }
+    #timer {
+      text-align: center;
+      margin-top: 140px;
+    }
+    
+    #app {
+      margin: 0 auto;
+    }
+    #app h1 {
+      color: #fff;
+      margin-top: 140px;
+      font-weight: 300;
+    }
+    .over {
+      background-color: transparent;
+      display: none;
+    } */
