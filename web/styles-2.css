@@ -67,6 +67,7 @@ pre > code {
 
 
 .steps {
+    
     width: 485px;
     margin: 15px auto;
     text-align: center;
@@ -97,4 +98,9 @@ pre > code {
     margin-left: 5px;
     width: 100%;
 }
+
+a{
+    color: #337ab7;
+}
+
 
