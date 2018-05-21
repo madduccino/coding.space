@@ -30,9 +30,10 @@
   <h1>Giphy API Project</h1>
     <div class="steps">
       <h2>Objective</h2>
-      <p>In this project we're going to make a small web app that takes a user query and 
-        displays the top gifs that match the search term. We'll learn about URL syntax,
-        reading API documentation and wrestling it to do our will. 
+      <p>We're going to implement a search engine which returns the top gifs 
+        that match the users search term. We'll learn about URL syntax,
+        reading API documentation and using it to make a cool app. 
+ 
       </p>
       
       <a class="jsbin-embed" href="http://jsbin.com/mawotuk/embed?output">JS Bin on jsbin.com</a>
@@ -53,7 +54,7 @@
       <li class="steps">
         Put together a url that follows giphy api protocols. Be careful with the URL syntax.<br>
         Limit the number of gifs in your response to 7.  
-        Use apiKey <code>'dc6zaTOxFJmzC'</code> 
+        Use this apiKey: <code>'dc6zaTOxFJmzC'</code> 
       </li>
 
       <li class="steps">
@@ -66,7 +67,7 @@
       <li class="steps">
         Add a chrome extension called 
         <a target="_blank" href="https://chrome.google.com/webstore/detail/jsonview/chklaanhfefbnpoihckbnefhakgolnmc?hl=en">jsonview</a> .
-        This presents the data from the server in a more intuitive way.
+        This presents the data from the server in a more intuitive and readable way.
         Once you have the extension, reload your request and examine the structure of the data.
       </li>
 
@@ -74,18 +75,17 @@
         It's time to start building your page. <br>
         Make a form and define a function that captures the users entry in variable.
       </li>
-      <li class="steps">
-        Find a set of JavaScript functions that can make an AJAX sever request. <br>
-        <br>
-        <!-- <b>New Terms</b> AJAX, XML, XMLhttprequest  -->
-      </li>
-      <li class="steps"></li>
+      
       
       <li class="steps">
         Find a javascript function that takes a user entry and makes it into an api query
         or a valid <a target="_blank" href="https://en.wikipedia.org/wiki/Uniform_Resource_Identifier">uri</a>.
-        This value will go into your server request.
         <!-- Check out <code>encodeURI</code> -->
+      </li>
+      <li class="steps">
+          Find a set of JavaScript functions that can make an AJAX server request. <br>
+          <br>
+          <!-- <b>New Terms</b> AJAX, XML, XMLhttprequest  -->
       </li>
 
       <li class="steps">
@@ -103,12 +103,17 @@
       <li class="steps">
         Convert the last function to iterate over the server response and show all your results. 
       </li>
+
       <li class="steps">
-        Find a function to clear your input field so your user doesn't have to delete the previous entry before 
-        i.e. clear the page so that only the results of your recent search show. 
+        Find a function to clear the page so that only the results of your recent search show.
       </li>
+      
       <li class="steps">
-        Add CSS to make everything look better organized. 
+          Find a function to clear your input field so your user doesn't have to delete the previous entry before typing the new one. 
+      </li>
+
+      <li class="steps">
+        Style your app to add color, personality and organization.
       </li>
     </ol>
 
