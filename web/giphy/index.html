@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Giphy API project Untutorial</title>
+  <title>Giphy Search</title>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -27,11 +27,11 @@
 
   <div class="container">
 
-  <h1>Giphy API Project</h1>
+  <h1>Giphy Searcht</h1>
     <div class="steps">
-      <h2>Objective</h2>
       <p>We're going to create a Google Image clone for gifs! 
-        When you search for a word or image, it will give you the top gifs using the Giphy API.
+        When you enter a search term, it will return the top gifs 
+        that match your search term using the Giphy API.
       </p>
       
       <a class="jsbin-embed" href="http://jsbin.com/mawotuk/embed?output">JS Bin on jsbin.com</a>
@@ -39,92 +39,112 @@
       <a target="_blank" href="http://jsbin.com/mawotuk">Click here for full screen</a>
     </div>
 
-    <ol>
-      <li class="steps">
-        Look for Giphy api documentaion.<br> 
-        <b>Hint:</b> Many web companies have a link on their website just for developers.
-      </li>
-      <li class="steps">
-        Can you find an example of a url that returns data from the Giphy server?<br>
-        <b>Hint:</b> Check out the "Code Examples" and "Sample Responses" sections.
-      </li>
-
-      <li class="steps">
-        Put together a url that follows giphy api protocols. Be careful with the URL syntax.<br>
-        Limit the number of gifs in your response to 3.  
-        Use this apiKey: <code>'dc6zaTOxFJmzC'</code> 
-      </li>
-
-      <li class="steps">
-        Test this url by putting it in your browser. If you see a wall of text, you've succeeded!
-        <br>
-        <span>This wall of text is called a Response. It is in JSON format. </span>
-      </li>
+    <div class="steps">
+      <p>1. Look for Giphy api documentaion.</p>
       
-      <li class="steps">
-        Add a chrome extension called 
+      <span>Hint: Many web companies have a link on their website just for developers.</span>
+    </div>
+    <div class="steps">
+      <p>2. Can you find an example of a url that returns data from the Giphy server?</p>
+      <span>Hint: Check out the "Code Examples" and "Sample Responses" sections.</span>
+    </div>
+
+    <div class="steps">
+      <p>
+        3. Put together a url that follows giphy api protocols. Be careful with the URL syntax. <br>
+        Limit the number of gifs in your response to 3.
+      </p>
+      <p>Use this apiKey: <code>'dc6zaTOxFJmzC'</code> </p>
+    </div>
+
+    <div class="steps">
+      <p>4. Test this url by putting it in your browser. If you see a wall of text, you've succeeded!</p>
+      <p>This wall of text is called a Response. <br> 
+        It is in JSON format. 
+      </p>
+    </div>
+          
+    <div class="steps">
+      <p>5. Add a chrome extension called 
         <a target="_blank" href="https://chrome.google.com/webstore/detail/jsonview/chklaanhfefbnpoihckbnefhakgolnmc?hl=en">jsonview</a> .
         This presents the data from the server in a more intuitive and readable way.
         Once you have the extension, reload your request and examine the structure of the data.
-      </li>
-
-      <li class="steps">
-        It's time to start building your page. <br>
-        Make a form and define a function that captures the users entry in variable.
-      </li>
-      
-      
-      <li class="steps">
-        Find a javascript function that takes a user entry and makes it into an api query
-        or a valid <a target="_blank" href="https://en.wikipedia.org/wiki/Uniform_Resource_Identifier">uri</a>.
-        <!-- Check out <code>encodeURI</code> -->
-      </li>
-      <li class="steps">
-          Find a set of JavaScript functions that can make an AJAX server request. <br>
-          <br>
-          <!-- <b>New Terms</b> AJAX, XML, XMLhttprequest  -->
-      </li>
-
-      <li class="steps">
-        Test your code. Are you sending a request to the server? Are you getting a valid response? 
-      </li>
-      
-      <li class="steps">
-        Find a javascript algorithm to put a single result from this query and put it into your html. <br>
-        <b>Note:</b> One can't access the data from json directly. <br>
-        <a  target="_blank"href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/parse">JSON.parse()</a>
-        is a method that makes the data available for your JavaScript to manipulate. <br>
-        <b>Hint:</b> consider using an <code> &ltiframe&gt &lt\iframe></code> tag.
-      </li>
-
-      <li class="steps">
-        Convert the last function to iterate over the server response and show all your results. 
-      </li>
-
-      <li class="steps">
-        Find a function to clear the page so that only the results of your recent search show.
-      </li>
-      
-      <li class="steps">
-          Find a function to clear your input field so your user doesn't have to delete the previous entry before typing the new one. 
-      </li>
-
-      <li class="steps">
-        Style your app to add color, personality and organization.
-      </li>
-    </ol>
-
-  </div>
-    <script>
-      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+      </p>
+    </div>
+        
+    <div class="steps">
+      <p>6. It's time to start building your page. 
+        Make an input element in your HTML and define a function that captures the users entry in a variable.
+      </p>
+    </div>
     
-      ga('create', 'UA-86847686-1', 'auto');
-      ga('send', 'pageview');
+    
+    <div class="steps">
+      <p>7. Find a javascript function that takes a user entry and makes it into an api query
+      or a valid <a target="_blank" href="https://en.wikipedia.org/wiki/Uniform_Resource_Identifier">uri</a>.
+      <!-- Check out <code>encodeURI</code> -->
+      </p>
+    </div>
+
+    <div class="steps">
+      <p>
+        8. Find a set of JavaScript functions that can make an AJAX server request. 
+      </p>
+        <!-- <b>New Terms</b> AJAX, XML, XMLhttprequest  -->
+    </div>
+
+    <div class="steps">
+      <p>
+        9. Test your code. Are you sending a request to the server? Are you getting a valid response? 
+      </p>
+    </div>
       
-    </script>
+    <div class="steps">
+      <p>
+        10. Find a javascript function to embed a single result from this query into your html.<br>
+        <b>Note:</b> One can't access the data from json directly.
+        <a  target="_blank"href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/parse">JSON.parse()</a>
+        is a method that makes the data available for your JavaScript to manipulate.
+      </p>
+      <span>Hint: consider using an <code> &ltiframe&gt &lt\iframe></code> tag.</span>
+    </div>
+
+    <div class="steps">
+      <p>
+        11. Convert the last function to iterate over the server response and show all your results. 
+      </p>
+    </div>
+
+    <div class="steps">
+      <p>
+        12. Find a function to clear the page so that only the results of your recent search show.
+      </p>
+    </div>
+      
+    <div class="steps">
+      <p>
+        13. Find a way to clear your input field so your user doesn't have to delete the previous entry before typing the new one. 
+      </p>
+    </div>
+
+    <div class="steps">
+      <p>
+        14. Style your app to add color, personality and organization.
+      </p>
+    </div>
+  
+  </div>
+
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  
+    ga('create', 'UA-86847686-1', 'auto');
+    ga('send', 'pageview');
+    
+  </script>
   
 </body>
 </html>
