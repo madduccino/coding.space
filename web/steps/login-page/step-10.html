@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Build a Login Page with Firebase</title>
+  <style>
+    body {background-color: white}
+    .show {display: flex}
+    .hide {display: none}
+  </style>
+
+</head>
+
+<body>
+    
+   <div id="form">
+   <h1 id="header">This site is for members only</h1>
+   <label id="email-label">Email</label> 
+   <input type="email" name="email" id="email">
+   <label id="password-label">Password</label> 
+   <input type="password" name="password" id="password">
+   </div>
+   
+   <button id="signup-button">Sign Up</button>
+
+   <script src="https://www.gstatic.com/firebasejs/5.0.4/firebase.js"></script>
+   <script>
+   // Initialize Firebase
+   var config = {
+    apiKey: "AIzaSyADYhZH7y1NmEF1OzmDlYK4n5k48x95um0",
+    authDomain: "my-awesome-login-page.firebaseapp.com",
+    databaseURL: "https://my-awesome-login-page.firebaseio.com",
+    projectId: "my-awesome-login-page",
+    storageBucket: "my-awesome-login-page.appspot.com",
+    messagingSenderId: "939265143159"
+  };
+  firebase.initializeApp(config);
+   document.getElementById("signup-button").addEventListener("click", () => {
+   const email = document.getElementById("email").value;
+   const password = document.getElementById("password").value;
+   firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error) {
+   // Handle Errors here.
+   var errorCode = error.code;
+   var errorMessage = error.message;
+   // ...
+  });
+})
+
+ // Change element from showing or hiding
+  function changeView(args, val) {
+    args.forEach(el => {
+      if (val == "show") {
+        document.getElementById(el).className = "show";
+      } else {
+        document.getElementById(el).className = "hide";
+      }
+    });
+  }
+
+  // Change element text
+  function changeText(el, val) {
+    document.getElementById(el).innerHTML = val;
+  }
+  
+   // Switch to login or signup screen
+  function changeScreen(state) {
+    if (state == "showForm") {
+      // Show form and hide buttons
+      changeView(
+        [
+          "email",
+          "email-label",
+          "password",
+          "password-label",
+        ],
+        "show"
+      );
+    } else {
+      // otherwise, hide form and show buttons
+      changeView([
+        "email",
+        "email-label",
+        "password",
+        "password-label",
+      ]);
+      changeView(["signup-button"], "show");
+    }
+  }
+
+  function clickSignup() {
+    if (firebase.auth().currentUser) {
+      changeView(["email", "email-label", "password", "password-label"], "show")
+      // change signup button to say "sign up"
+      changeText("signup-button", "Sign Up");
+      // change header back to non-member text
+      changeText("header", "This site is for members only");
+      // sign user out
+      firebase
+        .auth()
+        .signOut()
+        .then(function() {
+          // Sign-out successful.
+        })
+        .catch(function(error) {
+          // An error happened.
+        });
+    } else {
+      var email = document.getElementById("email").value;
+      var password = document.getElementById("password").value;
+      firebase
+        .auth()
+        .createUserWithEmailAndPassword(email, password)
+        .catch(function(error) {
+          // Handle Errors here.
+          errorCode = error.code;
+          errorMessage = error.message;
+          if (errorCode == "auth/invalid-email") {
+            errorMessage = "Please enter a valid email address.";
+          }
+          if (errorCode == "auth/weak-password") {
+            errorMessage = "Your password must be at least 6 characters.";
+          }
+          if (errorCode == "auth/email-already-in-use") {
+            errorMessage =
+              "There is an account already associated with that email address.";
+          }
+        });
+    } 
+  }
+  
+  // Attaches an observer to the auth object
+  // Gets called whenever the user's sign-in state changes
+  firebase.auth().onAuthStateChanged(function(user) {
+    // When signed in...
+    if (user) {
+      // save info of user in local variables
+      var displayName = user.displayName;
+      var email = user.email;
+      var emailVerified = user.emailVerified;
+      var photoURL = user.photoURL;
+      var isAnonymous = user.isAnonymous;
+      var uid = user.uid;
+      var providerData = user.providerData;
+
+      // change header text to welcome member
+      changeText("header", "You're in! I knew you could do it.");
+      // change login button text to say "sign out"
+      changeText("signup-button", "Sign Out");
+      showSignupForm = false;
+      // hide form
+      changeScreen();
+    }
+  });
+ 
+ 
+  
+  document.getElementById("signup-button").addEventListener("click", clickSignup);
+  
+  
+</script>
+</body>
+</html>
