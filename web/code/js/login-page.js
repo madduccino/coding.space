@@ -189,6 +189,7 @@ function initApp() {
         "account-link",
         "Already have an account?&nbsp;<a class='login' href='#'>Log In</a>"
       );
+      document.getElementById("signup-button").classList.add("submitButton");
       changeView(["reset"])
     } else {
       changeText(
@@ -197,7 +198,8 @@ function initApp() {
       );
       changeView(["reset"], "show")
       showSignupForm = true;
-    }
+      document.getElementById("login-button").classList.add("submitButton");
+    } 
   }
   
   // Switch links to alternative sign-up type when link clicked
