@@ -16,7 +16,7 @@
 <body>
   <h1>FIGHT!</h1>
   <p>First to be hit loses.</p>
-  <p>Controls: Red moves with WASD, slashes with E. Blue moves with Arrow Keys slashes with /.</p>
+  <p>Controls: Red moves with WASD, slashes with E. Blue moves with Arrow Keys, slashes with /.</p>
   <canvas id="gameCanvas" width=400px height=250px style="border:1px solid"></canvas>
   <script>
 //Step 1:set up the canvas and contest in javascript
@@ -83,15 +83,6 @@ function cycle(){
       myContext.strokeRect(attack.x,attack.y,attack.w,attack.h);
     }
     attack.nextFrame();
-    //Step 12: Make your looping function detect if an Attack is colliding with a Player, and if so, stop the loop and show an alert.
-    players.forEach(function(enemy){
-      if(enemy !== attack.player){
-        if(hitDetect(attack,enemy)!==0 || hitDetect(enemy,attack)!==0){
-          clearInterval(loop);
-          alert(attack.player.name + " wins!");
-        }
-      }
-    })
   })
 }
 
@@ -193,22 +184,6 @@ function Attack(controller, neutralX, neutralY){
 //Step 9: Create two of these "Attack" variables
 var attackOne=new Attack(playerOne,0,0);
 var attackTwo=new Attack(playerTwo,0,100);
-//Step 11: Create a function to detect if two rectangles are colliding
-function hitDetect(a,b){
-  if(a.x>=b.x && a.x<=b.x+b.w && a.y>=b.y && a.y<=b.y+b.h){
-    return 1;
-  }
-  if(a.x+a.w>=b.x && a.x+a.w<=b.x+b.w && a.y>=b.y && a.y<=b.y+b.h){
-    return 2;
-  }
-  if(a.x>=b.x && a.x<=b.x+b.w && a.y+a.h>=b.y && a.y+a.h<=b.y+b.h){
-    return 3;
-  }
-  if(a.x+a.w>=b.x && a.x+a.w<=b.x+b.w && a.y+a.h>=b.y && a.y+a.h<=b.y+b.h){
-    return 4;
-  }
-  return 0;
-}
   </script>
 
 

@@ -16,7 +16,7 @@
 <body>
   <h1>FIGHT!</h1>
   <p>First to be hit loses.</p>
-  <p>Controls: Red moves with WASD, slashes with E. Blue moves with Arrow Keys slashes with /.</p>
+  <p>Controls: Red moves with WASD, slashes with E. Blue moves with Arrow Keys, slashes with /.</p>
   <canvas id="gameCanvas" width=400px height=250px style="border:1px solid"></canvas>
   <script>
 //Step 1:set up the canvas and contest in javascript
@@ -71,19 +71,6 @@ function cycle(){
     myContext.fillStyle=player.c;
     myContext.fillRect(player.x,player.y,player.w,player.h);
   })
-  
-  //Step 10: Make your looping function also draw the attacks
-  attacks.forEach(function(attack){
-    attack.display();
-    myContext.fillStyle="green";
-    myContext.strokeStyle="green";
-    if(attack.fill){
-      myContext.fillRect(attack.x,attack.y,attack.w,attack.h);
-    } else {
-      myContext.strokeRect(attack.x,attack.y,attack.w,attack.h);
-    }
-    attack.nextFrame();
-  })
 }
 
 //Step 4: make it loop
@@ -115,75 +102,7 @@ function resolveKeys(){
   if(keys[87]){
     playerOne.jump();
   }
-  
-  //Step 10: Make the attacks only show up when a specific key is pressed
-  if(keys[69]){
-    if(attackOne.frames === 0){
-    attackOne.frames=20;
-    }
-  }
-  if(keys[191]){
-    if(attackTwo.frames === 0){
-    attackTwo.frames=20;
-    }
-  }
 }
-
-//Step 8: Make another constructor function for "Attack" variables
-var attacks=[];
-function Attack(controller, neutralX, neutralY){
-  this.player=controller;
-  this.neutralX=neutralX;
-  this.neutralY=neutralY;
-  this.x=neutralX;
-  this.y=neutralY;
-  this.w=0;
-  this.h=0;
-  this.fill=true;
-  attacks.push(this);
-  
-  //Step 10: Make the attacks show up only  when a specific key is pressed and at the correct location.
-  this.frames=0;
-  this.nextFrame= function(){
-    if(this.frames>0){
-      this.frames--;
-    }
-  }
-  this.display= function(){
-    if(this.frames>10){
-      if((this.player===playerTwo && keys[39])||(this.player===playerOne && keys[68])){
-        this.w=15;
-        this.h=5;
-        this.x=this.player.x+this.player.w;
-        this.y=this.player.y+3;
-        this.fill=true;
-      }
-      else if((this.player===playerTwo && keys[37])||(this.player===playerOne && keys[65])){
-        this.w=15;
-        this.h=5;
-        this.x=this.player.x-this.w;
-        this.y=this.player.y+3;
-        this.fill=true;
-      }
-      else{
-        this.w=40;
-        this.h=32;
-        this.x=this.player.x-15;
-        this.y=this.player.y-11;
-        this.fill=false;
-      }
-    } else {
-      this.w=0;
-      this.h=0;
-      this.x=this.neutralX;
-      this.y=this.neutralY;
-    }
-  }
-}
-
-//Step 9: Create two of these "Attack" variables
-var attackOne=new Attack(playerOne,0,0);
-var attackTwo=new Attack(playerTwo,0,100);
   </script>
 
 
