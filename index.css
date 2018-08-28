@@ -2,7 +2,6 @@ html {
 	height: 100%;
 }
 
-
 body {
 	text-align: center;
 	font-family: 'Quicksand', sans-serif;
@@ -24,14 +23,6 @@ h1 {
 	font-weight: bold;
 }
 
-img {
-	flex: 1 1 auto;
-}
-
-.large-img {
-	max-height: 28vh
-}
-
 a {
 	color: white;
 	text-decoration: none;
@@ -41,32 +32,32 @@ a:hover {
 	color: white;
 }
 
-.container {
+.container, .section-holder, .holder {
 	width: 100%;
-	display: flex;
+ 	display: flex;
 	flex-flow: row wrap;
-	align-content: center;
-	justify-content: center;
+	align-content: center; 
+  justify-content: center;
 	margin: 0 !important;
-	padding: 35px;
 }
 
-.tcs-row {
-	width: 100%;
-	margin-top: 7px;
-}
-
-.holder {
-	display: flex;
+.section-holder {
 	justify-content: space-around;
-	min-height: 140px;
+	min-height: 350px;
+	padding: 25px 10%;
+}
+
+img {
+	flex: 1 1 auto;
+}
+
+.large-img {
+	max-height: 28vh;
 }
 
 .img-responsive {
-	
 	border-radius: 10px;
-	/*padding: 13px;*/
-	margin: 0px 5px;
+	margin: 5px 5px;
 }
 
 .black-opaque {
@@ -77,15 +68,18 @@ a:hover {
 	padding: 8px;
 	border-radius: 4px;
 }
+
 .info-modal{
 		background-color: #78B8FB;
 		color: white;
 		border-radius: 10px;
-		margin: 5px;
+		margin: 5px; 
 }
-.textbox-holder {
-	width: 340px;
-	height: 100%;
+
+.bottom-holder {
+	width: 100%;
+	display: flex;
+	justify-content: center;
 }
 
 .info-para {
@@ -106,30 +100,20 @@ a:hover {
 }
 
 .infobox {
-	width: 95%;
-	height: 100%;
-	margin: 0px 5px;
+	width: 38vh;
+	margin: 0px auto;
+	padding: auto;
 	display: none;
 	font-size: 13px;
 }
 
-.bottom-holder {
-	display: flex;
-	justify-content: center;
-}
-
-#platform-holder {
-	display: flex;
-	justify-content: space-around;
-	min-height: 220px;
-}
-
 #learn-col {
+	width: 100%;
 	display: flex;
 	justify-content: center;
 }
 
-#about, #start {
+ #about, #start {
 	width: 170px;
 	height: 45px;
 	margin-bottom: 10px;
@@ -145,6 +129,7 @@ a:hover {
 }
 
 #start-box {
+	align-items: center;
 	justify-content: center;
 	max-width: 700px;
 	display: none;
@@ -158,4 +143,8 @@ a:hover {
 	width: 300px;
 	height: 25px;
 	line-height: 0.6em;
+}
+
+h4 {
+	font-size: 18px;
 }

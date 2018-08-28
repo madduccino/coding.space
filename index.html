@@ -1,143 +1,131 @@
 <!doctype html>
-<html>
+<html lang="en">
 
-	<head>
-		<meta charset="utf-8">
-		<meta name="description" content="">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>The Coding Space Projects</title>
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-		<link href="https://fonts.googleapis.com/css?family=Quicksand" rel="stylesheet">
-		<link rel="stylesheet" href="index.css">
-		<link rel="icon" type="favicon/x-icon" href="images/favicon.ico">
-		<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
-   </head>
+<head>
+	<meta charset="utf-8">
+	<meta name="description" content="">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>The Coding Space Projects</title>
+	<link href="https://fonts.googleapis.com/css?family=Quicksand" rel="stylesheet">
+	<link rel="stylesheet" href="index.css">
+	<link rel="icon" type="favicon/x-icon" href="images/favicon.ico">
+	<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+	 crossorigin="anonymous"></script>
+</head>
 
-   <body>
+<body>
 
-   	<h1>The Coding Space Projects</h1>
-   	<div class="container">
+	<h1>The Coding Space Projects</h1>
+	<div class="container">
 
-	   	<div class="row tcs-row">
-	   		<div class="col-sm-1"></div>
-		   		<div class="col-sm-10 holder">
-		   			<a id="scratch-img" href="./scratch"><img class="img-responsive large-img" src="./images/2018scratch.png" alt="Scratch" /></a>
-		   			<a id="woof-img" href="http://woofjs.com/create"><img class="img-responsive large-img" src="./images/2018woof.png" alt="Woof" /></a>
-		   			<a id="web-img" href="./web"><img class="img-responsive large-img" src="./images/2018web.png" alt="Web" /></a>
-		   		</div>
-		   	<div class="col-sm-1"></div>
-	   	</div>
+		<div class="section-holder">
 
-	   	<div class="row tcs-row hidden-xs">
-	   		<div class="col-sm-1"></div>
-		   		<div class="col-sm-10" id="platform-holder">
-		   			<div class="textbox-holder">
-		   				<div id="scratch-box" class="black-opaque infobox">Program your own interactive stories, games, and animations with Scratch -- and share your creations with others in the online community. <p class="info-para green">We recommend starting here.</p>  </div>
-		   			</div>
-		   			<div class="textbox-holder">
-		   				<div id="woof-box" class="black-opaque infobox">Build complex games, animations, and apps with WoofJS. It uses JavaScript, the language of the web, so you can build for mobile and integrate with APIs and databases. <p class="info-para yellow">We recommend completing two Level 4 Scratch projects before starting with WoofJS.</p></div>
-		   			</div>
-		   			<div class="textbox-holder">
-		   				<div id="web-box" class="black-opaque infobox">Create websites and web apps using HTML, CSS, and JavaScript. <p class="info-para red">We recommend completing two Level 3+ WoofJS projects before you start with Web projects.</p></div>
-		   			</div>
-		   		</div>
-		   	<div class="col-sm-1"></div>
-	   	</div>
-	   		
-	   	<div class="row" style="width: 100%">
-	   		<div class="col-sm-1"></div>
-	   		<div class="col-sm-10" id="learn-col">
-	   			<div id="start" class="info-modal" style="margin-right: 7px">Where do I start?</div>
-	   			<a href="./about.html" target="_blank"><div class= "info-modal" id="about">About this site</div></a>
-	   		</div>
-	   		<div class="col-sm-1"></div>
-	   	</div>
-   		
-	   	<div class="row tcs-row" style="margin: 0">
-	   		<div class="col-sm-1"></div>
-	   		<div class="col-sm-10 holder" style="min-height: 80px">
-	   			<div id="start-box" class="black-opaque" style="font-size: 14px; height: 50%">
-	   				<p>We recommend starting with a Level 1 Scratch project, like <a href="./scratch/ghost-busters.html" target="_blank">Ghost Busters</a>.</p>
-	   				<p style="margin-bottom: 0px">If you’re a experienced coder, browse the levels to find a project that's challenging for you.</p>
-	   			</div>
-	   		</div>
-	   		<div class="col-sm-1"></div>
-	   	</div>
-		
-	   	<div class="row tcs-row">
-	   		<div class="col-sm-2"></div>
-	   		<div class="col-sm-8 bottom-holder">
-	   			<h4 id="tcs-text" >Created by <a href="http://www.thecodingspace.com" target="_blank">The Coding Space</a></h4>
-	   		</div>
-	   		<div class="col-sm-2"></div>
-	   	</div>
+			<section id="scratch">
+				<a id="scratch-img" href="./scratch"><img class="img-responsive large-img" src="./images/2018scratch.png" alt="Scratch"></a>
+				<div id="scratch-box" class="black-opaque infobox">Program your own interactive stories, games, and animations with Scratch
+					-- and share your creations with others in the online community.
+					<p class="info-para green">We recommend starting here.</p>
+				</div>
+			</section>
 
+			<section id="woof">
+				<a id="woof-img" href="http://woofjs.com/create"><img class="img-responsive large-img" src="./images/2018woof.png" alt="Woof"></a>
+				<div id="woof-box" class="black-opaque infobox">Build complex games, animations, and apps with WoofJS. It uses JavaScript,
+					the language of the web, so you can build for mobile and integrate with APIs and databases.
+					<p class="info-para yellow">We recommend completing two Level 4 Scratch projects before starting with WoofJS.</p>
+				</div>
+			</section>
 
-		
-   	</div>
+			<section id="web">
+				<a id="web-img" href="./web"><img class="img-responsive large-img" src="./images/2018web.png" alt="Web"></a>
+				<div id="web-box" class="black-opaque infobox">Create websites and web apps using HTML, CSS, and JavaScript.
+					<p class="info-para red">We recommend completing two Level 3+ WoofJS projects before you start with Web projects.</p>
+				</div>
+			</section>
+		</div>
 
+	</div>
 
-   	<script>
-   	
-   		function isMobileDevice() {
-    		return (typeof window.orientation !== "undefined") || (navigator.userAgent.indexOf('IEMobile') !== -1);
+	<div id="learn-col">
+		<div id="start" class="info-modal" style="margin-right: 7px">Where do I start?</div>
+		<a href="./about.html"><div class="info-modal" id="about">About this site</div></a>
+	</div>
+
+	<div class="holder" style="min-height: 80px">
+		<div id="start-box" class="black-opaque">
+			<p class="info-para">We recommend starting with a Level 1 Scratch project, like
+				<a href="./scratch/ghost-busters.html" target="_blank">Ghost Busters
+				</a>.
+			</p>
+
+			<p class="info-para">If you’re a experienced coder, browse the levels to find a project that's challenging for you.
+			</p>
+		</div>
+	</div>
+
+	<div class="bottom-holder">
+		<h4 id="tcs-text">Created by <a href="http://www.thecodingspace.com" target="_blank">The Coding Space</a></h4>
+	</div>
+	
+
+	<script>
+
+		function isMobileDevice() {
+			return (typeof window.orientation !== "undefined") || (navigator.userAgent.indexOf('IEMobile') !== -1);
 		};
-		
-		$(document).ready(function() {
-			
+
+		$(document).ready(function () {
+
 			// scratch info hide/show
-			$("#scratch-img").mouseenter(function() {
+			$("#scratch-img").mouseenter(function () {
 				$("#scratch-box").fadeIn(250);
 			})
-			$("#scratch-img").mouseleave(function() {
+			$("#scratch-img").mouseleave(function () {
 				$("#scratch-box").fadeOut(400);
 			})
-			
+
 			// woof info hide/show
-			$("#woof-img").mouseenter(function() {
+			$("#woof-img").mouseenter(function () {
 				$("#woof-box").fadeIn(250);
 			})
-			$("#woof-img").mouseleave(function() {
+			$("#woof-img").mouseleave(function () {
 				$("#woof-box").fadeOut(400);
 			})
-			
+
 			// web info hide/show
-			$("#web-img").mouseenter(function() {
+			$("#web-img").mouseenter(function () {
 				$("#web-box").fadeIn(250);
 			})
-			$("#web-img").mouseleave(function() {
+			$("#web-img").mouseleave(function () {
 				$("#web-box").fadeOut(400);
 			})
 
 			// learn more hide/show
-			
+
 			// tappable on mobile
-			if(isMobileDevice()) {
-				$("#start").mousedown(function() {
+			if (isMobileDevice()) {
+				$("#start").mousedown(function () {
 					$("#start-box").toggle();
 				})
 			}
-			
+
 			// hoverable not on mobile
 			else {
-				$("#start").mouseenter(function() {
+				$("#start").mouseenter(function () {
 					// make the box stay showing for a longer period of time so you can click the Ghost Busters link
 					// only fade in if it's hidden -- prevents it from queuing up too many fade-ins during the delay()
 					if ($('#start-box').is(':hidden')) {
 						$("#start-box").fadeIn(250).delay(5000);
 					}
 				})
-				$("#start").mouseleave(function() {
+				$("#start").mouseleave(function () {
 					$("#start-box").fadeOut(600);
-				})	
+				})
 			}
-			
-			
-		
 		})
 
-		</script>
-        
-	</body>
-	
+	</script>
+
+</body>
+
 </html>
