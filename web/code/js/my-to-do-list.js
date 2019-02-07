@@ -34,7 +34,7 @@ function addListElement(val) {
   // Create trash can
   var close = document.createElement("IMG");
   close.src =
-    "https://www.icon2s.com/wp-content/uploads/2013/07/ios7-trash-icon.png";
+    "../images/trash.png";
   
   // Create span element to contain input text
   var task = document.createElement("SPAN");

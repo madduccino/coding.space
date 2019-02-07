@@ -20,7 +20,7 @@ h1 {
   color: #d42e00;
 }
 
-input {
+#textBox {
   padding: 10px 30px 10px 10px;
   border: 0;
   box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.16), 0 0 0 1px rgba(0, 0, 0, 0.08);
@@ -86,8 +86,12 @@ li {
   text-align: center;
   cursor: pointer;
   right: 60px;
-  width: 30px;
-  height: 30px;
+  transform: scale(2);
+  margin: 13px;
+
+}
+.done:focus {
+  outline: none;
 }
 
 .cross-out {
