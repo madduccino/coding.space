@@ -16,7 +16,19 @@
   img{
     width: 80%;
   }
+
+  li{
+    list-style-position: inside;
+  }
+
+  ul{
+    font-size: 140%;
+    padding: 10px;
+  }
   
+  p{
+    padding: 15px;
+  }
   </style>
 </head>
 
@@ -61,7 +73,7 @@
 
     <div class="steps">
         <h2>What is "Pure CSS"?</h2>
-        <p>The “pure CSS” refers to creating an image simply by adding style (with CSS) to several divs in your HTML.</p>
+        <p>The “pure CSS” refers to creating an image simply by adding style (with CSS) to several divs in your HTML — No JavaScript involved! </p>
         <p class="codepen" data-height="265" data-theme-id="0" data-default-tab="css,result" data-user="alexraby" data-slug-hash="xMQbZV" style="height: 265px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid black; margin: 1em 0; padding: 1em;" data-pen-title="PureCSS Square">
                 <span>See the Pen <a href="https://codepen.io/alexraby/pen/xMQbZV/">
                 PureCSS Square</a> by Alex (<a href="https://codepen.io/alexraby">@alexraby</a>)
@@ -82,6 +94,17 @@
     </div>
 
     <div class="steps">
+        <p>***When working with Pure CSS Pictures, there are a few CSS Properties you should brush up on.*** <br><br> Come back to this section if you're feeling stuck!</p>
+        <ul>
+          <li>The <a href="https://www.w3schools.com/css/css_positioning.asp">Position</a> Property</li>
+          <li>The <a href="https://www.w3schools.com/cssref/pr_pos_z-index.asp">Z-Index</a> Property</li>
+          <li>The <a href="https://www.w3schools.com/cssref/pr_pos_z-index.asp">Border-Radius</a> Property</li>
+          <li>The <a href="https://www.w3schools.com/cssref/pr_pos_top.asp">Top</a>,<a href="https://www.w3schools.com/cssref/pr_pos_left.asp"> Left</a>,<a href="https://www.w3schools.com/cssref/pr_pos_right.asp"> Right</a>, and <a href="https://www.w3schools.com/cssref/pr_pos_bottom.asp">Bottom</a> Properties</li>
+        </ul>
+      </div>
+      
+
+    <div class="steps">
       <p>3. Create a canvas for your animal using background-color and border. It should be large enough that you can fit your coding artwork inside. Make sure you center it on the screen. <br><br> (<strong>Hint:</strong> Use margins).  </p>
       <img src="./images/pure-css-canvas.png" /> 
     </div>
@@ -92,37 +115,50 @@
     </div>
     
     <div class="steps">
-      <p>5. Make the rectangles have random width and height.</p>
+      <p>5. Add two more divs for ears. Think about how you can style them with the same class and add a second class for their location. </p>
       <img src="./images/pure-css-ears.png" />
     </div>
 
     <div class="steps">
-      <p>5. Make the rectangles have random width and height.</p>
+      <p>6. Add divs for an inner-ear. You'll probably want to put them behind the head — think about the layers of shapes that could make this happen. (Hint: You may need to add an extra head layer)</p>
       <img src="./images/pure-css-inner-ears.png" />
     </div>
 
     <div class="steps">
-      <p>6. Add an event listener that will call your function each time the mouse moves. Make the rectangle be drawn at the mouse's current position. </p>
+      <p>7. Give your animal some eyes. </p>
       <img src="./images/pure-css-eyes.png" />
-       <!-- <p><a href="./code/canvas-painter-code.html" target="_blank">Click here to view fullscreen.</a></p> -->
     </div>
 
     <div class="steps">
-      <p>6. Add an event listener that will call your function each time the mouse moves. Make the rectangle be drawn at the mouse's current position. </p>
+      <p>8. Add a shape for a nose — try out a bunch of different types until you find the one you want. </p>
       <img src="./images/pure-css-nose.png" />
-       <!-- <p><a href="./code/canvas-painter-code.html" target="_blank">Click here to view fullscreen.</a></p> -->
     </div>
 
     <div class="steps">
-      <p>6. Add an event listener that will call your function each time the mouse moves. Make the rectangle be drawn at the mouse's current position. </p>
+      <p>9. Give your character a mouth. Using <a href="https://www.w3schools.com/css/css_border.asp"> borders </a> could work really well here.  </p>
       <img src="./images/pure-css-mouth.png" />
-       <!-- <p><a href="./code/canvas-painter-code.html" target="_blank">Click here to view fullscreen.</a></p> -->
     </div>
 
     <div class="steps">
-      <p>6. Add an event listener that will call your function each time the mouse moves. Make the rectangle be drawn at the mouse's current position. </p>
+      <p>10. Put in any finishing touches. Here are a few ideas: 
+        <ul>
+          <li>Add a body</li>
+          <li>Add freckles or wrinkles or stripes</li>
+          <li><a href="https://www.w3schools.com/css/css3_animations.asp">Animate</a> the pupils to go back and forth</li>
+        </ul>  
+      </p>
+      <p class="codepen" data-height="616" data-theme-id="0" data-default-tab="result" data-user="alexraby" data-slug-hash="vbqqxZ" style="height: 516px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid black; margin: 1em 0; padding: 1em;" data-pen-title="PureCSS Canvas">
+          <span>See the Pen <a href="https://codepen.io/alexraby/pen/vbqqxZ/">
+          PureCSS Canvas</a> by Alex (<a href="https://codepen.io/alexraby">@alexraby</a>)
+          on <a href="https://codepen.io">CodePen</a>.</span>
+        </p>
+        <script async src="https://static.codepen.io/assets/embed/ei.js"></script>
+    </div>
+    
+
+    <div class="steps">
+      <p>11. Remove the canvas from around your animal and voila! Show off your new friend! </p>
       <img src="./images/pure-css-final.png" />
-       <!-- <p><a href="./code/canvas-painter-code.html" target="_blank">Click here to view fullscreen.</a></p> -->
     </div>
     
 
