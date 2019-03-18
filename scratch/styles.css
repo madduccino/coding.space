@@ -43,3 +43,7 @@ a {
     align-content: center;
     align-items: center;
 }
+
+iframe {
+    border: 1px solid lightgrey !important;
+}
