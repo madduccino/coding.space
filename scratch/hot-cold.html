@@ -34,77 +34,66 @@
 
     <div class="block">
       <p>
-        3) It's time to make the mystery number!
+        3) Make the mystery number!
       </p> 
+      <iframe width="485" height="402" src="https://scratch.mit.edu/projects/embed/295008710/?autostart=false" allowfullscreen=""></iframe>
+    </div>
+    
+    <div class="block">
       <p>        
-        When the player enters a guess, have your host check if the answer is a number between 0 and 100.
-        If it isn't remind the player of the rules.  
-      </p> 
-        <p> Then check if the answer is the same as
-        as the mystery number. If the guess is equal to the mystery 
-        number, celebrate! Else, the host should ask the player to try again. 
+        4) When the player tries to guess the mystery number, check if their answer is a number between 0 and 100.
+        If it isn't, remind the player of the rules.  If it is, check if the answer is the same as
+        as the mystery number.</p>
+        <p>If the guess is equal to the mystery 
+        number, celebrate! Else, ask the player to try again. 
       </p>
       <iframe width="485" height="402" src="https://scratch.mit.edu/projects/embed/228242975/?autostart=false" allowfullscreen=""></iframe>
     </div>  
 
     <div class="block">
       <p>
-        4) Let's keep track of the player's guesses by creating a list of guesses. 
-        Add each new answer to the list.
-      </p>
-      <p>
+        5) Let's keep track of the player's guesses by creating a list.
         If the player repeats a guess, let them know they've guessed it already.  
-        Else add the answer to list and tell them they didn't get it right. 
-      </p>
-      <p>
-        Make it so that the list is visible only after the player guesses.
+        Else, add the answer to the list. Make sure to add the correct answer to the list as well.
       </p>
       <iframe width="485" height="402" src="https://scratch.mit.edu/projects/embed/228246520/?autostart=false" allowfullscreen=""></iframe>
     </div>  
 
     <div class="block">
       <p>
-        5) Can we make the host tell the player how many tries it took for them to guess the mystery number?
-        We can use the length of the list to construct the response. ;-)
+        6) Can we make the host tell the player how many tries it took for them to guess the mystery number?
+        We can use the length of the list to construct the response. ;-) 
       </p>
       <iframe width="485" height="402" src="https://scratch.mit.edu/projects/embed/294375835/?autostart=false" allowfullscreen=""></iframe>
     </div>  
     
     <div class="block">
       <p>
-        6) It's time to give our player hints of how far their guess is from the mystery number. 
-        Let's start by calcualting the difference between the guess and the mystery number. 
-      </p>
-      <iframe width="485" height="402" src="https://scratch.mit.edu/projects/embed/294383303/?autostart=false" allowfullscreen=""></iframe>
-    </div>  
-    
-    <div class="block">
-      <p>
-        7) Let's start giving the player feedback about their guesses. 
-      </p>
-      
-        <p>
-          If the difference between
-        the guess and the mystery number is less than 5, then the guess is  "HOT!"; else "Cold"  
-        </p>
-        <p>
-          If the difference is between 5 and 10, they're guess is "WARM!"; else "COLD!", etc..
-        </p>
-      
-      <p>You can add as many layers as you'd like.
-          We added Hot, Warm, Luke Warm, Tepid, Cold, ICE-Cold. 
+        7) It's time to give our player feedback on how far their guess is from the mystery number. 
+        Let's start by calculating the difference between the guess and the mystery number. 
       </p>
       <p>
-
-          Hint: use the absolute value of the difference to measure how far the guess is. 
-          The block you're looking for is in operators. 
-      </p>
+        Hint: Use the absolute value of the difference to measure how far off the guess is. 
+        The block you're looking for is in "Operators". 
+    </p>
       <iframe width="485" height="402" src="https://scratch.mit.edu/projects/embed/294388178/?autostart=false" allowfullscreen=""></iframe>
     </div>  
     
     <div class="block">
       <p>
-        8) Let's clean up our code. 
+        8) If the difference between the guess and the mystery number is less than 5, tell the player that the guess is "HOT!" If the difference is between 5 and 10, tell the player that the guess is "WARM!" Else, tell the player that the guess is "COLD!"
+        </p>
+
+      <p>You can give as much feedback as you'd like.
+          The example uses Hot, Warm, Luke Warm, Tepid, Cold, and Ice Cold to help players guess the right number. 
+      </p>
+ 
+      <iframe width="485" height="402" src="https://scratch.mit.edu/projects/embed/294383303/?autostart=false" allowfullscreen=""></iframe>
+    </div>  
+    
+    <div class="block">
+      <p>
+        9) Let's clean up our code. 
         The player should never see the mystery number and the difference. 
         The list should be hidden until someone makes a guess.
       </p>
@@ -112,6 +101,7 @@
           Are you satisfied? 
           Let's tell our player to click the green flag to play again.
         </p>
+        <iframe width="485" height="402" src="https://scratch.mit.edu/projects/embed/295014848/?autostart=false" allowfullscreen=""></iframe>
     </div>
  
   </div>
