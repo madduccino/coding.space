@@ -2,44 +2,47 @@
 	<title>Hover Crab</title>
 	<link rel="stylesheet" type="text/css" href="./styles.css">
 	<link href="https://fonts.googleapis.com/css?family=Quicksand" rel="stylesheet">
-	<link rel="icon" type="favicon/x-icon" href="../images/favicon.ico">
+	<link rel="icon" type="favicon/x-icon" href="../images/favicon.ico">	
+	<meta charset="UTF-8">
+	<script type="text/javascript" src="./index.js"></script>
 </head>
 
 <body>
 	<h1>Hover Crab</h1>
 	<div class="container">
 		<div class="block">
-
 			<p> Catch the fish! Use the Left and Right arrow keys to catch as many fish as you can before letting five escape. </p>
-			<iframe width="485" height="402" src="//scratch.mit.edu/projects/embed/90239020/?autostart=false" allowfullscreen=""></iframe>
+			<iframe id="full" data-src="https://scratch.mit.edu/projects/embed/90239020/?autostart=false" allowfullscreen=""></iframe>
 		</div>
 		<div class="block">
 			<p>1) Create a new project. Delete the cat, and choose your own sprite and background to get started.</p>
-			<iframe width="485" height="402" src="//scratch.mit.edu/projects/embed/90682221/?autostart=false" allowfullscreen=""></iframe>
+			<button onclick="loadiframe('step1', this)">View Example</button>
+			<iframe id="step1" data-src="https://scratch.mit.edu/projects/embed/90682221/?autostart=false" src="about:blank"></iframe>
 		</div>
 		<div class="block">
 			<p>2) Have the crab move left and right when the corresponding arrow key is pressed. </p>
-			<iframe width="485" height="402" src="//scratch.mit.edu/projects/embed/90682086/?autostart=false" allowfullscreen=""></iframe>
+			<button onclick="loadiframe('step2', this)">View Example</button>
+			<iframe id="step2" data-src="https://scratch.mit.edu/projects/embed/90682086/?autostart=false" src="about:blank"></iframe>
 		</div>
 		<div class="block">
 			<p>3) Create another sprite that starts at the bottom of the screen, moves towards the crab, then hides when it touches the crab, or the edge of the screen. </p>
-			<iframe width="485" height="402" src="//scratch.mit.edu/projects/embed/90681374/?autostart=false" allowfullscreen=""></iframe>
+			<button onclick="loadiframe('step3', this)">View Example</button>
+			<iframe id="step3" data-src="https://scratch.mit.edu/projects/embed/90681374/?autostart=false" src="about:blank"></iframe>
 		</div>
 		<div class="block">
-			<p>4)Create clones of your fish that start in different places. You can change the number or frequency of clones to change the game's difficulty. Hint: Hide the original sprite so you only have to write the code for clones.
-			</p>
-			<iframe width="485" height="402" src="//scratch.mit.edu/projects/embed/90680765/?autostart=false" allowfullscreen=""></iframe>
+			<p>4) Create clones of your fish that start in different places. You can change the number or frequency of clones to change the game's difficulty. Hint: Hide the original sprite so you only have to write the code for clones.</p>
+			<button onclick="loadiframe('step4', this)">View Example</button>
+			<iframe id="step4" data-src="https://scratch.mit.edu/projects/embed/90680765/?autostart=false" src="about:blank"></iframe>
 		</div>
 		<div class="block">
 			<p>5) Add variables so the game keeps track of score and lives. Think about what the score and time should start at, and how/when they should change.</p>
-			<iframe width="485" height="402" src="//scratch.mit.edu/projects/embed/90680486/?autostart=false" allowfullscreen=""></iframe>
+			<button onclick="loadiframe('step5', this)">View Example</button>
+			<iframe id="step5" data-src="https://scratch.mit.edu/projects/embed/90680486/?autostart=false" src="about:blank"></iframe>
 		</div>
 		<div class="block">
 			<p>6) The game is almost done, but remember, the pros spend a lot of time on the finishing touches. See if you can add a costume change for crab, a countdown at the beginning, instructions, and other personal touches of your own!</p>
-			<iframe width="485" height="402" src="//scratch.mit.edu/projects/embed/90239020/?autostart=false" allowfullscreen=""></iframe>
-		</div>
-		<div class="block">
-			<p>10) Share your game publicly by clicking the share button in the top-right corner.</p>
+			<button onclick="loadiframe('step6', this)">View Example</button>
+			<iframe id="step6" data-src="https://scratch.mit.edu/projects/embed/90239020/?autostart=false" src="about:blank"></iframe>
 		</div>
 	</div>
 	<script>

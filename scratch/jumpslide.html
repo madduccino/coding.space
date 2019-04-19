@@ -1,8 +1,9 @@
 <head>
 	<title>Jump Slide</title>
 	<link rel="stylesheet" type="text/css" href="./styles.css">
-	<link href="https://fonts.googleapis.com/css?family=Quicksand" rel="stylesheet">
-	<link rel="icon" type="favicon/x-icon" href="../images/favicon.ico">
+	<link href="https://fonts.googleapis.com/css?family=Quicksand" rel="stylesheet">	<link rel="icon" type="favicon/x-icon" href="../images/favicon.ico">	
+	<meta charset="UTF-8">
+	<script type="text/javascript" src="./index.js"></script>
 </head>
 
 <body>
@@ -11,46 +12,52 @@
 		<div class="block">
 
 			<p>How Long can you keep Scratchy going?! Use the Up/Down arrows to avoid oncoming objects. </p>
-			<iframe width="485" height="402" src="//scratch.mit.edu/projects/embed/113117789/?autostart=false" allowfullscreen=""></iframe>
+			<iframe id="full" data-src="https://scratch.mit.edu/projects/embed/113117789/?autostart=false" allowfullscreen=""></iframe>
 		</div>
 		<div class="block">
 			<p>1) Choose a backdrop and character.</p>
-			<iframe width="485" height="402" src="//scratch.mit.edu/projects/embed/114209391/?autostart=false" allowfullscreen=""></iframe>
+			<button onclick="loadiframe('step1', this)">View Example</button>
+			<iframe id="step1" data-src="https://scratch.mit.edu/projects/embed/114209391/?autostart=false" src="about:blank"></iframe>
 		</div>
 		<div class="block">
 			<p>2) Next, using costumes, make your character run in place forever (hint: this requires a sprite with different costumes for walking, otherwise you need to draw them). </p>
-			<iframe width="485" height="402" src="//scratch.mit.edu/projects/embed/114209354/?autostart=false" allowfullscreen=""></iframe>
+			<button onclick="loadiframe('step2', this)">View Example</button>
+			<iframe id="step2" data-src="https://scratch.mit.edu/projects/embed/114209354/?autostart=false" src="about:blank"></iframe>
 		</div>
 		<div class="block">
 			<p>3) Now make your character jump when the up arrow is pressed and duck when the down arrow is pressed. </p>
-			<iframe width="485" height="402" src="//scratch.mit.edu/projects/embed/114209208/?autostart=false" allowfullscreen=""></iframe>
+			<button onclick="loadiframe('step3', this)">View Example</button>
+			<iframe id="step3" data-src="https://scratch.mit.edu/projects/embed/114209208/?autostart=false" src="about:blank"></iframe>
 		</div>
 		<div class="block">
 			<p>4) Add an obstacle that moves across the screen from right to left for your character to jump over. </p>
-			<iframe width="485" height="402" src="//scratch.mit.edu/projects/embed/114209163/?autostart=false" allowfullscreen=""></iframe>
+			<button onclick="loadiframe('step4', this)">View Example</button>
+			<iframe id="step4" data-src="https://scratch.mit.edu/projects/embed/114209163/?autostart=false" src="about:blank"></iframe>
 		</div>
 		<div class="block">
 			<p>5) Create a second costume for the obstacle. Your character should have to duck to avoid this one. </p>
-			<iframe width="485" height="402" src="//scratch.mit.edu/projects/embed/114208996/?autostart=false" allowfullscreen=""></iframe>
+			<button onclick="loadiframe('step5', this)">View Example</button>
+			<iframe id="step5" data-src="https://scratch.mit.edu/projects/embed/114208996/?autostart=false" src="about:blank"></iframe>
 		</div>
 		<div class="block">
 			<p>6) Create a variable for the score so that every time the user avoids an obstacle, the score increases. </p>
-			<iframe width="485" height="402" src="//scratch.mit.edu/projects/embed/114208878/?autostart=false" allowfullscreen=""></iframe>
+			<button onclick="loadiframe('step6', this)">View Example</button>
+			<iframe id="step6" data-src="https://scratch.mit.edu/projects/embed/114208878/?autostart=false" src="about:blank"></iframe>
 		</div>
 		<div class="block">
 			<p>7) Let’s see if you can make the game harder as the score goes up! (the speed of the obstacles should get faster as the score increases) </p>
-			<iframe width="485" height="402" src="//scratch.mit.edu/projects/embed/114208817/?autostart=false" allowfullscreen=""></iframe>
+			<button onclick="loadiframe('step7', this)">View Example</button>
+			<iframe id="step7" data-src="https://scratch.mit.edu/projects/embed/114208817/?autostart=false" src="about:blank"></iframe>
 		</div>
 		<div class="block">
 			<p>8) Create a variable for lives. Then, make your character change colors when it gets hit by an obstacle. </p>
-			<iframe width="485" height="402" src="//scratch.mit.edu/projects/embed/114208691/?autostart=false" allowfullscreen=""></iframe>
+			<button onclick="loadiframe('step8', this)">View Example</button>
+			<iframe id="step8" data-src="https://scratch.mit.edu/projects/embed/114208691/?autostart=false" src="about:blank"></iframe>
 		</div>
 		<div class="block">
 			<p>9) Add more costumes to your obstacle sprite, or anything else to make your game unique (powerups…?). In this game, the cloud sprite aids the illusion that Scratchy is moving. </p>
-			<iframe width="485" height="402" src="//scratch.mit.edu/projects/embed/113117789/?autostart=false" allowfullscreen=""></iframe>
-		</div>
-		<div class="block">
-			<p>10) Share your game publicly by clicking the share button in the top-right corner.</p>
+			<button onclick="loadiframe('step9', this)">View Example</button>
+			<iframe id="step9" data-src="https://scratch.mit.edu/projects/embed/113117789/?autostart=false" src="about:blank"></iframe>
 		</div>
 	</div>
 	<script>

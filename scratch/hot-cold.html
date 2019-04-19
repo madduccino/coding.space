@@ -6,7 +6,8 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<link rel="stylesheet" type="text/css" href="./styles.css">
 	<link href="https://fonts.googleapis.com/css?family=Quicksand" rel="stylesheet">
-	<link rel="icon" type="favicon/x-icon" href="../images/favicon.ico">
+	<link rel="icon" type="favicon/x-icon" href="../images/favicon.ico">	<meta charset="UTF-8">
+	<script type="text/javascript" src="./index.js"></script>
   <title>Hot or Cold: Guess my number</title>
 </head>
 <body>
@@ -15,12 +16,13 @@
     
     <div class="block">
       <p>Can you guess the mystery number?!? It's between 0 and 100.</p>
-      <script src="https://forkphorus.github.io/embed.js?id=225440129&auto-start=false&light-content=true"></script>
+			<iframe id="full" data-src="https://scratch.mit.edu/projects/embed/225440129/?autostart=false" allowfullscreen=""></iframe>
     </div>
 
     <div class="block">
       <p>1) Choose a backdrop and a character to host the game.</p>
-      <script src="https://forkphorus.github.io/embed.js?id=227097802&auto-start=false&light-content=true"></script>
+			<button onclick="loadiframe('step1', this)">View Example</button>
+			<iframe id="step1" data-src="https://scratch.mit.edu/projects/embed/227097802/?autostart=false" src="about:blank"></iframe>
     </div>
 
     <div class="block">
@@ -29,14 +31,16 @@
         Remember to make sure the player has a space to enter their guess
         and start playing. 
       </p>
-      <script src=https://phosphorus.github.io/embed.js?id=228242648&auto-start=false&light-content=true></script>
+			<button onclick="loadiframe('step2', this)">View Example</button>
+			<iframe id="step2" data-src="https://scratch.mit.edu/projects/embed/228242648/?autostart=false" src="about:blank"></iframe>
     </div>
 
     <div class="block">
       <p>
         3) Make the mystery number!
       </p> 
-      <script src="https://forkphorus.github.io/embed.js?id=295008710&auto-start=false&light-content=true"></script>
+			<button onclick="loadiframe('step3', this)">View Example</button>
+			<iframe id="step3" data-src="https://scratch.mit.edu/projects/embed/295008710/?autostart=false" src="about:blank"></iframe>
     </div>
     
     <div class="block">
@@ -47,7 +51,8 @@
         <p>If the guess is equal to the mystery 
         number, celebrate! Else, ask the player to try again. 
       </p>
-      <script src="https://forkphorus.github.io/embed.js?id=228242975&auto-start=false&light-content=true"></script>
+			<button onclick="loadiframe('step4', this)">View Example</button>
+			<iframe id="step4" data-src="https://scratch.mit.edu/projects/embed/228242975/?autostart=false" src="about:blank"></iframe>
     </div>  
 
     <div class="block">
@@ -56,7 +61,8 @@
         If the player repeats a guess, let them know they've guessed it already.  
         Else, add the answer to the list. Make sure to add the correct answer to the list as well.
       </p>
-     <script src="https://forkphorus.github.io/embed.js?id=228246520&auto-start=false&light-content=true"></script>
+			<button onclick="loadiframe('step5', this)">View Example</button>
+			<iframe id="step5" data-src="https://scratch.mit.edu/projects/embed/228246520/?autostart=false" src="about:blank"></iframe>
     </div>  
 
     <div class="block">
@@ -64,7 +70,8 @@
         6) Can we make the host tell the player how many tries it took for them to guess the mystery number?
         We can use the length of the list to construct the response. ;-) 
       </p>
-      <script src="https://forkphorus.github.io/embed.js?id=294375835&auto-start=false&light-content=true"></script>
+			<button onclick="loadiframe('step6', this)">View Example</button>
+			<iframe id="step6" data-src="https://scratch.mit.edu/projects/embed/294375835/?autostart=false" src="about:blank"></iframe>
     </div>  
     
     <div class="block">
@@ -76,7 +83,8 @@
         Hint: Use the absolute value of the difference to measure how far off the guess is. 
         The block you're looking for is in "Operators". 
     </p>
-      <script src="https://forkphorus.github.io/embed.js?id=294388178&auto-start=false&light-content=true"></script>
+			<button onclick="loadiframe('step7', this)">View Example</button>
+			<iframe id="step7" data-src="https://scratch.mit.edu/projects/embed/294388178/?autostart=false" src="about:blank"></iframe>
     </div>  
     
     <div class="block">
@@ -87,7 +95,8 @@
       <p>You can give as much feedback as you'd like.
           The example uses Hot, Warm, Luke Warm, Tepid, Cold, and Ice Cold to help players guess the right number. 
       </p>
-     <script src="https://forkphorus.github.io/embed.js?id=294383303&auto-start=false&light-content=true"></script>
+			<button onclick="loadiframe('step8', this)">View Example</button>
+			<iframe id="step8" data-src="https://scratch.mit.edu/projects/embed/294383303/?autostart=false" src="about:blank"></iframe>
     </div>  
     
     <div class="block">
@@ -100,7 +109,8 @@
           Are you satisfied? 
           Let's tell our player to click the green flag to play again.
         </p>
-     <script src="https://forkphorus.github.io/embed.js?id=295014848&auto-start=false&light-content=true"></script>
+			<button onclick="loadiframe('step9', this)">View Example</button>
+			<iframe id="step9" data-src="https://scratch.mit.edu/projects/embed/295014848/?autostart=false" src="about:blank"></iframe>
     </div>
  
   </div>

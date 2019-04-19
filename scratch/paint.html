@@ -2,44 +2,57 @@
   <title>Paint</title>
   <link rel="stylesheet" type="text/css" href="./styles.css">
   <link href="https://fonts.googleapis.com/css?family=Quicksand" rel="stylesheet">
-  <link rel="icon" type="favicon/x-icon" href="../images/favicon.ico">
+  <link rel="icon" type="favicon/x-icon" href="../images/favicon.ico">	
+  <meta charset="UTF-8">
+	<script type="text/javascript" src="./index.js"></script>
 </head>
 
 <body>
   <h1>Paint</h1>
   <div class="container">
+    
     <div class="block">
       <p>In this project, we’re going to make a Paint application, where you can draw, erase, and choose different colors.</p>
-      <iframe width="485" height="402" src="//scratch.mit.edu/projects/embed/78862498/?autostart=false" allowfullscreen=""></iframe>
+			<iframe id="full" data-src="https://scratch.mit.edu/projects/embed/78862498/?autostart=false" allowfullscreen=""></iframe>
     </div>
+    
     <div class="block">
       <p>1) Create a circle sprite. On flag click, the circle should move with your mouse pointer.</p>
-      <iframe width="485" height="402" src="//scratch.mit.edu/projects/embed/78855660/?autostart=false" allowfullscreen=""></iframe>
+			<button onclick="loadiframe('step1', this)">View Example</button>
+			<iframe id="step1" data-src="https://scratch.mit.edu/projects/embed/78855660/?autostart=false" src="about:blank"></iframe>
     </div>
+    
     <div class="block">
-      <p>2) When you click and drag, it should continue to move with you and also draw. (Tip: Your code may only work properly in full screen mode for this game.)</p>
-      <iframe width="485" height="402" src="//scratch.mit.edu/projects/embed/82638404/?autostart=false" allowfullscreen=""></iframe>
+      <p>2) When you click and drag, it should continue to move with you and also draw.</p>
+			<button onclick="loadiframe('step2', this)">View Example</button>
+			<iframe id="step2" data-src="https://scratch.mit.edu/projects/embed/82638404/?autostart=false" src="about:blank"></iframe>
     </div>
+    
     <div class="block">
       <p>3) Create a width variable slider. Make the size of your sprite and the width of the lines correlate with the width variable. (Tip: To make the variable a slider, double click on the variable display. Also, use "Go back 10 layers" in the Looks menu
         to make your circle sprite always be behind other sprites.)</p>
-      <iframe width="485" height="402" src="//scratch.mit.edu/projects/embed/78857108/?autostart=false" allowfullscreen=""></iframe>
+			<button onclick="loadiframe('step3', this)">View Example</button>
+			<iframe id="step3" data-src="https://scratch.mit.edu/projects/embed/78857108/?autostart=false" src="about:blank"></iframe>
     </div>
+    
     <div class="block">
       <p>4) Create a clear button that clears the screen.</p>
-      <iframe width="485" height="402" src="//scratch.mit.edu/projects/embed/78858830/?autostart=false" allowfullscreen=""></iframe>
+			<button onclick="loadiframe('step4', this)">View Example</button>
+			<iframe id="step4" data-src="https://scratch.mit.edu/projects/embed/78858830/?autostart=false" src="about:blank"></iframe>
     </div>
+    
     <div class="block">
       <p>5) Create 4 different color options that change the pen’s color</p>
-      <iframe width="485" height="402" src="//scratch.mit.edu/projects/embed/78863924/?autostart=false" allowfullscreen=""></iframe>
+			<button onclick="loadiframe('step5', this)">View Example</button>
+			<iframe id="step5" data-src="https://scratch.mit.edu/projects/embed/78863924/?autostart=false" src="about:blank"></iframe>
     </div>
+    
     <div class="block">
       <p>6) Create an erase button</p>
-      <iframe width="485" height="402" src="//scratch.mit.edu/projects/embed/78862498/?autostart=false" allowfullscreen=""></iframe>
+			<button onclick="loadiframe('step6', this)">View Example</button>
+			<iframe id="step6" data-src="https://scratch.mit.edu/projects/embed/78862498/?autostart=false" src="about:blank"></iframe>
     </div>
-    <div class="block">
-      <p>7) Share your game publicly by clicking the share button in the top-right corner.</p>
-    </div>
+ 
   </div>
   <script>
 	  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){

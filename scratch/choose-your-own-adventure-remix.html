@@ -2,50 +2,54 @@
     <title>Choose Your Own Adventure</title>
     <link rel="stylesheet" type="text/css" href="./styles.css">
     <link href="https://fonts.googleapis.com/css?family=Quicksand" rel="stylesheet">
-    <link rel="icon" type="favicon/x-icon" href="../images/favicon.ico">
+    <link rel="icon" type="favicon/x-icon" href="../images/favicon.ico">	
+    <meta charset="UTF-8">
+	<script type="text/javascript" src="./index.js"></script>
 </head>
 
 <body>
     <h1>Choose Your Own Adventure</h1>
     <div class="container">
         <div class="block">
-            <p>In this project, we're going to make a choose your own adventure game. You can choose your own characters and story line!</p>
-            <script src="https://forkphorus.github.io/embed.js?id=71794054&auto-start=false&light-content=true"></script>
-
+            <p>In this project, we're going to make a choose your own adventure game. You can choose your own characters and story line!</p>		
+            <iframe id="full" data-src="https://scratch.mit.edu/projects/embed/71794054/?autostart=false" allowfullscreen=""></iframe>
         </div>
         <div class="block">
             <p>1) Create a new background and character. </p>
-            <script src="https://forkphorus.github.io/embed.js?id=71781160&auto-start=false&light-content=true"></script>
+			<button onclick="loadiframe('step1', this)">View Example</button>
+			<iframe id="step1" data-src="https://scratch.mit.edu/projects/embed/71781160/?autostart=false" src="about:blank"></iframe>
 
         </div>
         <div class="block">
             <p>2) On flag click, have your character say "Click me to say hi" </p>
-            <script src="https://forkphorus.github.io/embed.js?id=71781826&auto-start=false&light-content=true"></script>
+			<button onclick="loadiframe('step2', this)">View Example</button>
+			<iframe id="step2" data-src="https://scratch.mit.edu/projects/embed/71781826/?autostart=false" src="about:blank"></iframe>
 
         </div>
         <div class="block">
             <p>3) On click, make your character say hi and ask for the user's name. </p>
-            <script src="https://forkphorus.github.io/embed.js?id=71798338&auto-start=false&light-content=true"></script>
+			<button onclick="loadiframe('step3', this)">View Example</button>
+			<iframe id="step3" data-src="https://scratch.mit.edu/projects/embed/71798338/?autostart=false" src="about:blank"></iframe>
 
         </div>
         <div class="block">
             <p>4) Have your character say "Hi 'name'!" using the name the player gave (if the player said 'Joe' your character should say 'Hi Joe!'). </p>
-            <script src="https://forkphorus.github.io/embed.js?id=71782010&auto-start=false&light-content=true"></script>
+			<button onclick="loadiframe('step4', this)">View Example</button>
+			<iframe id="step4" data-src="https://scratch.mit.edu/projects/embed/71782010/?autostart=false" src="about:blank"></iframe>
 
         </div>
         <div class="block">
             <p>5) Ask the user how they're doing and respond based on their answer. For example if the player says they are good, your character can respond by saying 'that's great!'</p>
-            <script src="https://forkphorus.github.io/embed.js?id=71783384&auto-start=false&light-content=true"></script>
+			<button onclick="loadiframe('step5', this)">View Example</button>
+			<iframe id="step5" data-src="https://scratch.mit.edu/projects/embed/71783384/?autostart=false" src="about:blank"></iframe>
 
         </div>
         <div class="block">
             <p>6) Ask the user if they're ready for an adventure, and give them two options of different places to go. Make different scenarios for both of the options. You could go to the moon, to help Harry Potter defeat Voldemort, to steal candy from
                 Candy Land. It's up to you! </p>
-           <script src="https://forkphorus.github.io/embed.js?id=100208575&auto-start=false&light-content=true"></script>
+			<button onclick="loadiframe('step6', this)">View Example</button>
+			<iframe id="step6" data-src="https://scratch.mit.edu/projects/embed/100208575/?autostart=false" src="about:blank"></iframe>
 
-        </div>
-        <div class="block">
-            <p>7) Once you are happy with your game, share it publicly by clicking the share button at the top of the screen.</p>
         </div>
     </div>
     <script>

@@ -3,6 +3,8 @@
   <link rel="stylesheet" type="text/css" href="./styles.css">
   <link href="https://fonts.googleapis.com/css?family=Quicksand" rel="stylesheet">
   <link rel="icon" type="favicon/x-icon" href="../images/favicon.ico">
+  <meta charset="UTF-8">
+	<script type="text/javascript" src="./index.js"></script>
 </head>
 
 <body>
@@ -10,55 +12,64 @@
   <div class="container">
     <div class="block">
       <p>In this project we’re going to create a Bubble Burster game. Move using the left and right arrows, and press the up arrow to try to burst the bubbles. Careful, don’t let the bubbles touch you or you’ll lose a life!</p>
-      <iframe width="485" height="402" src="//scratch.mit.edu/projects/embed/98198174/?autostart=false" allowfullscreen=""></iframe>
+      <iframe id="full" data-src="https://scratch.mit.edu/projects/embed/98198174/?autostart=false" allowfullscreen=""></iframe>
     </div>
     <div class="block">
       <p>1) Choose a character and a background. Make the sprite move left and right when you press the arrow keys.</p>
-      <iframe width="485" height="402" src="//scratch.mit.edu/projects/embed/98202618/?autostart=false" allowfullscreen=""></iframe>
-    </div>
+			<button onclick="loadiframe('step1', this)">View Example</button>
+			<iframe id="step1" data-src="https://scratch.mit.edu/projects/embed/98202618/?autostart=false" src="about:blank"></iframe>    
+		</div>
     <div class="block">
       <p>2) Draw a long trail to burst the bubbles. When you press the up arrow (or spacebar if you prefer) the arrow &amp; trail should go from the bottom of the screen to the top. When it gets to the top of the screen it should disappear. (Hint: for the
         arrow and trail, if you want you can try finding a google image that might work.)</p>
-      <iframe width="485" height="402" src="//scratch.mit.edu/projects/embed/98202425/?autostart=false" allowfullscreen=""></iframe>
+			<button onclick="loadiframe('step2', this)">View Example</button>
+			<iframe id="step2" data-src="https://scratch.mit.edu/projects/embed/98202425/?autostart=false" src="about:blank"></iframe>
     </div>
     <div class="block">
       <p>3) Create a bubble sprite. Make it bounce up and down on the ground in a realistic way.</p>
-      <iframe width="485" height="402" src="//scratch.mit.edu/projects/embed/98202118/?autostart=false" allowfullscreen=""></iframe>
+			<button onclick="loadiframe('step3', this)">View Example</button>
+			<iframe id="step3" data-src="https://scratch.mit.edu/projects/embed/98202118/?autostart=false" src="about:blank"></iframe>
     </div>
     <div class="block">
       <p>4) Make the bubble move across the screen left and right.</p>
-      <iframe width="485" height="402" src="//scratch.mit.edu/projects/embed/98201833/?autostart=false" allowfullscreen=""></iframe>
+			<button onclick="loadiframe('step4', this)">View Example</button>
+			<iframe id="step4" data-src="https://scratch.mit.edu/projects/embed/98201833/?autostart=false" src="about:blank"></iframe>
     </div>
     <div class="block">
       <p>5) If the arrow touches the bubble, make both disappear.</p>
-      <iframe width="485" height="402" src="//scratch.mit.edu/projects/embed/98201730/?autostart=false" allowfullscreen=""></iframe>
+			<button onclick="loadiframe('step5', this)">View Example</button>
+			<iframe id="step5" data-src="https://scratch.mit.edu/projects/embed/98201730/?autostart=false" src="about:blank"></iframe>
     </div>
     <div class="block">
       <p>6) Give your character 3 lives. If the bubble touches your character, have it lose a life.</p>
-      <iframe width="485" height="402" src="//scratch.mit.edu/projects/embed/98200837/?autostart=false" allowfullscreen=""></iframe>
+			<button onclick="loadiframe('step6', this)">View Example</button>
+			<iframe id="step6" data-src="https://scratch.mit.edu/projects/embed/98200837/?autostart=false" src="about:blank"></iframe>
     </div>
     <div class="block">
       <p>7) When the character has lost all of its lives, have the game end. </p>
-      <iframe width="485" height="402" src="//scratch.mit.edu/projects/embed/98201465/?autostart=false" allowfullscreen=""></iframe>
+			<button onclick="loadiframe('step7', this)">View Example</button>
+			<iframe id="step7" data-src="https://scratch.mit.edu/projects/embed/98201465/?autostart=false" src="about:blank"></iframe>
     </div>
     <div class="block">
       <p>8) When the arrow hits the first bubble, have it “split” into two new smaller bubbles. Make sure the two new bubbles have all the same features as the first -- they should have the same motion, disappear when they are touched by the arrow, take
         away a life if they hit the character, etc.</p>
-      <iframe width="485" height="402" src="//scratch.mit.edu/projects/embed/98199174/?autostart=false" allowfullscreen=""></iframe>
+			<button onclick="loadiframe('step8', this)">View Example</button>
+			<iframe id="step8" data-src="https://scratch.mit.edu/projects/embed/98199174/?autostart=false" src="about:blank"></iframe>
     </div>
     <div class="block">
       <p>9) When the two new bubbles are popped, make them split into two new smaller bubbles each. </p>
-      <iframe width="485" height="402" src="//scratch.mit.edu/projects/embed/98199533/?autostart=false" allowfullscreen=""></iframe>
+			<button onclick="loadiframe('step9', this)">View Example</button>
+			<iframe id="step9" data-src="https://scratch.mit.edu/projects/embed/98199533/?autostart=false" src="about:blank"></iframe>
     </div>
     <div class="block">
       <p>10) If the player pops all the bubbles before they lose three lives, they win! Tell them this.</p>
-      <iframe width="485" height="402" src="//scratch.mit.edu/projects/embed/98198174/?autostart=false" allowfullscreen=""></iframe>
+			<button onclick="loadiframe('step10', this)">View Example</button>
+			<iframe id="step10" data-src="https://scratch.mit.edu/projects/embed/98198174/?autostart=false" src="about:blank"></iframe>
     </div>
-    <div class="block">
-      <p>11) Share your game publicly by clicking the share button in the top-right corner.</p>
-    </div>
+ 
   </div>
   <script>
+  
 	  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
 	  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
 	  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)

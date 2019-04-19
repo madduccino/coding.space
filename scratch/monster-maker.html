@@ -2,7 +2,9 @@
 	<title>Monster Maker</title>
 	<link rel="stylesheet" type="text/css" href="./styles.css">
 	<link href="https://fonts.googleapis.com/css?family=Quicksand" rel="stylesheet">
-	<link rel="icon" type="favicon/x-icon" href="../images/favicon.ico">
+	<link rel="icon" type="favicon/x-icon" href="../images/favicon.ico">	
+	<meta charset="UTF-8">
+	<script type="text/javascript" src="./index.js"></script>
 </head>
 
 <body>
@@ -10,36 +12,42 @@
 	<div class="container">
 		<div class="block">
 			<p>Click on each button to change up your monster&apos;s look! </p>
-            <script src="https://forkphorus.github.io/embed.js?id=295250542&auto-start=false&light-content=true"></script>
+			<iframe id="full" data-src="https://scratch.mit.edu/projects/embed/295250542/?autostart=false" allowfullscreen=""></iframe>
 		</div>
 		<div class="block">
 			<p>1) Create a head sprite for your monster.</p>
-            <script src="https://forkphorus.github.io/embed.js?id=295250305&auto-start=false&light-content=true"></script>
+			<button onclick="loadiframe('step1', this)">View Example</button>
+			<iframe id="step1" data-src="https://scratch.mit.edu/projects/embed/295250305/?autostart=false" src="about:blank"></iframe>
 		</div>
 		<div class="block">
 			<p>2) Make a few different costumes for the head (with different colors or different shapes). Make at least 3 costumes.</p>
-            <script src="https://forkphorus.github.io/embed.js?id=295250280&auto-start=false&light-content=true"></script>
+			<button onclick="loadiframe('step2', this)">View Example</button>
+			<iframe id="step2" data-src="https://scratch.mit.edu/projects/embed/295250280/?autostart=false" src="about:blank"></iframe>
 		</div>
 		<div class="block">
 			<p>3) Create a button sprite with the word &quot;Head&quot;. </p>
-            <script src="https://forkphorus.github.io/embed.js?id=295250485&auto-start=false&light-content=true"></script>
+			<button onclick="loadiframe('step3', this)">View Example</button>
+			<iframe id="step3" data-src="https://scratch.mit.edu/projects/embed/295250485/?autostart=false" src="about:blank"></iframe>
 		</div>
 		<div class="block">
-			<p>4) When you click on the button sprite, have it broadcast a message called &quot;Change Head&quot;.
-			</p>
-            <script src="https://forkphorus.github.io/embed.js?id=295250510&auto-start=false&light-content=true"></script>
+			<p>4) When you click on the button sprite, have it broadcast a message called &quot;Change Head&quot;.</p>
+			<button onclick="loadiframe('step4', this)">View Example</button>
+			<iframe id="step4" data-src="https://scratch.mit.edu/projects/embed/295250510/?autostart=false" src="about:blank"></iframe>
 		</div>
 		<div class="block">
 			<p>5) When your head sprite receives the &quot;Change Head&quot; message, have it change to the next costume.</p>
-            <script src="https://forkphorus.github.io/embed.js?id=295250522&auto-start=false&light-content=true"></script>
+			<button onclick="loadiframe('step5', this)">View Example</button>
+			<iframe id="step5" data-src="https://scratch.mit.edu/projects/embed/295250522/?autostart=false" src="about:blank"></iframe>
 		</div>
 		<div class="block">
 			<p>6) Repeat steps 1-5 for each monster part (eyes, mouth, hair, etc.). Get creative!</p>
-            <script src="https://forkphorus.github.io/embed.js?id=295250779&auto-start=false&light-content=true"></script>
+			<button onclick="loadiframe('step6', this)">View Example</button>
+			<iframe id="step6" data-src="https://scratch.mit.edu/projects/embed/295250779/?autostart=false" src="about:blank"></iframe>
 		</div>
 		<div class="block">
 			<p>7) Create a &quot;Random&quot; button that broadcasts a message called &quot;random&quot;. When each body part receives that message, have it change to a random costume. </p>
-            <script src="https://forkphorus.github.io/embed.js?id=295250542&auto-start=false&light-content=true"></script>
+			<button onclick="loadiframe('step7', this)">View Example</button>
+			<iframe id="step7" data-src="https://scratch.mit.edu/projects/embed/295250542/?autostart=false" src="about:blank"></iframe>
 		</div>
 	</div>
 	<script>

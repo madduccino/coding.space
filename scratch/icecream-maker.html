@@ -2,7 +2,9 @@
     <title>Ice Cream Maker</title>
     <link rel="stylesheet" type="text/css" href="./styles.css">
     <link href="https://fonts.googleapis.com/css?family=Quicksand" rel="stylesheet">
-    <link rel="icon" type="favicon/x-icon" href="../images/favicon.ico">
+    <link rel="icon" type="favicon/x-icon" href="../images/favicon.ico">	
+    <meta charset="UTF-8">
+	<script type="text/javascript" src="./index.js"></script>
 </head>
 
 <body>
@@ -11,39 +13,47 @@
         <div class="block">
 
             <p>In this project, we're going to build a game where you need to make the ice cream orders of picky customers! </p>
-            <iframe allowtransparency="true" width="485" height="402" src="//scratch.mit.edu/projects/embed/237273117/?autostart=false" frameborder="0" allowfullscreen></iframe>
+			<iframe id="full" data-src="https://scratch.mit.edu/projects/embed/237273117/?autostart=false" allowfullscreen=""></iframe>
         </div>
         <div class="block">
             <p>1)  Create an animation letting players know what they are going to do in the game.</p>
-            <iframe allowtransparency="true" width="485" height="402" src="//scratch.mit.edu/projects/embed/237272402/?autostart=false" frameborder="0" allowfullscreen></iframe>
+			<button onclick="loadiframe('step1', this)">View Example</button>
+			<iframe id="step1" data-src="https://scratch.mit.edu/projects/embed/237272402/?autostart=false" src="about:blank"></iframe>
         </div>
         <div class="block">
             <p>2) Have your backdrop switch to a station for ice cream making.</p>
-            <iframe allowtransparency="true" width="485" height="402" src="//scratch.mit.edu/projects/embed/237272936/?autostart=false" frameborder="0" allowfullscreen></iframe>
+			<button onclick="loadiframe('step2', this)">View Example</button>
+			<iframe id="step2" data-src="https://scratch.mit.edu/projects/embed/237272936/?autostart=false" src="about:blank"></iframe>
         </div>
         <div class="block">
             <p>3) Create ice cream and at least three toppings and make them start at the station when the flag is clicked. Bonus: Create two flavors of ice cream. </p>
-            <iframe allowtransparency="true" width="485" height="402" src="//scratch.mit.edu/projects/embed/237272981/?autostart=false" frameborder="0" allowfullscreen></iframe>
+			<button onclick="loadiframe('step3', this)">View Example</button>
+			<iframe id="step3" data-src="https://scratch.mit.edu/projects/embed/237272981/?autostart=false" src="about:blank"></iframe>
         </div>
         <div class="block">
             <p>4) Make a bowl to catch your toppings. Have it begin at the front of the station and slowly move across the station. When it reaches the end of the station, make it go back to the beginning and start again. </p>
-            <iframe allowtransparency="true" width="485" height="402" src="//scratch.mit.edu/projects/embed/237273011/?autostart=false" frameborder="0" allowfullscreen></iframe>
+			<button onclick="loadiframe('step4', this)">View Example</button>
+			<iframe id="step4" data-src="https://scratch.mit.edu/projects/embed/237273011/?autostart=false" src="about:blank"></iframe>
         </div>
         <div class="block">
             <p>5) Have your ice cream and toppings fall when clicked. If they land in your bowl, have them follow the bowl. If they miss the bowl, make them return to their starting positions once they reach the bottom of the screen. Bonus: Create an animation for falling ice cream and toppings. </p>
-            <iframe allowtransparency="true" width="485" height="402" src="//scratch.mit.edu/projects/embed/237273042/?autostart=false" frameborder="0" allowfullscreen></iframe>
+			<button onclick="loadiframe('step5', this)">View Example</button>
+			<iframe id="step5" data-src="https://scratch.mit.edu/projects/embed/237273042/?autostart=false" src="about:blank"></iframe>
         </div>
         <div class="block">
             <p>6) Now we need to make the orders! Create a list that will contain the names of the ice cream flavors and toppings in each order. Add different names to the list at random each time the bowl is ready for a new order.  </p>
-            <iframe allowtransparency="true" width="485" height="402" src="//scratch.mit.edu/projects/embed/237273074/?autostart=false" frameborder="0" allowfullscreen></iframe>
+			<button onclick="loadiframe('step6', this)">View Example</button>
+			<iframe id="step6" data-src="https://scratch.mit.edu/projects/embed/237273074/?autostart=false" src="about:blank"></iframe>
         </div>
         <div class="block">
             <p>7) When the bowl reaches the end of the station, check whether or not the order has been filled correctly. Create a score variable that keeps track of the correct orders. </p>
-            <iframe allowtransparency="true" width="485" height="402" src="//scratch.mit.edu/projects/embed/237273097/?autostart=false" frameborder="0" allowfullscreen></iframe>
+			<button onclick="loadiframe('step7', this)">View Example</button>
+			<iframe id="step7" data-src="https://scratch.mit.edu/projects/embed/237273097/?autostart=false" src="about:blank"></iframe>
         </div>
         <div class="block">
             <p>8) Create another variable that keeps track of the incorrect orders. Have the game end if there are too many incorrect orders. </p>
-            <iframe allowtransparency="true" width="485" height="402" src="//scratch.mit.edu/projects/embed/237273117/?autostart=false" frameborder="0" allowfullscreen></iframe>
+			<button onclick="loadiframe('step8', this)">View Example</button>
+			<iframe id="step8" data-src="https://scratch.mit.edu/projects/embed/237273117/?autostart=false" src="about:blank"></iframe>
             <p>Bonus: Make customers! </p>
         </div>
     </div>
