@@ -14,6 +14,7 @@ h1 {
     color: white;
     padding-top: 20px;
     text-align: center;
+    width: 100%;
 }
 
 p {
@@ -46,13 +47,21 @@ a {
 .block {
     width: 485px;
 }
+
+#back {
+    display: inline-block;
+    background-color: #7661D4;
+    padding: 5px 15px;
+    border-radius: 4px;
+    text-decoration: none;
+}
 	iframe {
 		display: none;
 		width: 100%;
 		height: 402px;
 	}
 	#full {
-		display: block;
+		display: none;
 	}
 	button {
 		background-color: #7661D4;
@@ -63,6 +72,19 @@ a {
 		border-radius: 8px;
 		cursor: pointer;
 	}
-	button:hover {
+	#back:hover, button:hover {
 		opacity: 0.8;
 	}
+
+    #loading {
+    		-webkit-animation: rotation 2s infinite linear;
+    		width: 40px;
+    }
+    @-webkit-keyframes rotation {
+    		from {
+    				-webkit-transform: rotate(0deg);
+    		}
+    		to {
+    				-webkit-transform: rotate(359deg);
+    		}
+    }
