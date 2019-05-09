@@ -592,6 +592,21 @@ height: 25%</code></pre>
                     <h3>Variables and Functions</h3>
                 </div>
             </div>
+
+            <!--Keywords-->
+            <div class="row">
+                <div class="col-sm-1"></div>
+                <div class="col-sm-5">
+                    <pre><code><span style="color: blue">var, if, else,<br><br>true, false,for,<br><br>break, while, switch;</span></code></pre>
+                </div>
+                <div class="col-sm-1"></div>
+                <div class="col-sm-5">
+                    <p><strong>Keywords</strong></p>
+                    <p>Keywords in Javascript are like special tokens,
+                         with each one having a unique purpose. The most common keyword in Javascript is <code>var</code>. 
+                         To see a full list of keywords check out this <a href="http://www.javascripter.net/faq/reserved.htm">link</a></p>
+                </div>
+            </div>
             
             <!--variable assignment-->
             <div class="row">
@@ -603,7 +618,7 @@ height: 25%</code></pre>
                 <div class="col-sm-1"></div>
                 <div class="col-sm-5">
                     <p><strong>Variable assignment</strong></p>
-                    <p>To create a new variable, type <code>var</code> followed by the name of your new variable.</p>
+                    <p>To create a new variable, type the keyword <code>var</code> followed by the name of your new variable.</p>
                 </div>
             </div>
             
@@ -616,8 +631,10 @@ height: 25%</code></pre>
                 </div>
                 <div class="col-sm-1"></div>
                 <div class="col-sm-5">
-                    <p><strong>Variable changing</strong></p>
-                    <p>To change the value of an existing variable, just use the name of the variable (no need for <code>var</code>).</p>
+                    <p><strong>Assign new value to a variable</strong></p>
+                    <p>To change the value of an existing variable we have to assign a new value to it. 
+                        To do this just use the name of the variable (no need for <code>var</code>)
+                         with one equal sign, otherwise called the assignment operator <code>(=)</code>.</p>
                 </div>
             </div>
             
@@ -625,19 +642,22 @@ height: 25%</code></pre>
             <div class="row">
                 <div class="col-sm-1"></div>
                 <div class="col-sm-5">
-                    <pre><code><span style="color: blue">var plusOne = function(number)</span> {
-   return number + 1;
-};
-
-<span style="color: blue">function sayHello()</span> {
-   console.log("Hello);
-}</code></pre>
+                    <pre><img src="images/js_function_trans.png"></pre>
+                        
+            
                 </div>
                 <div class="col-sm-1"></div>
                 <div class="col-sm-5">
                     <p><strong>Function declaration</strong></p>
-                    <p>You can declare a function just like you assign a variable.</p>
-                    <p>Or you can simply use <code>function nameOfFunction() {/*function content here*/}</code></p>
+                    <p>To declare a function you need at least four things:</p>
+                    <ul>
+                        <li>The <code>function</code> keyword, which tells the computer this piece of code is a function.</li>
+                        <li>A name for your function</li>
+                        <li>Parentheses to handle your parameters. This tells the computer what we need to make the function work. 
+                            A function can take nothing or a multiple things! (i.e. <code>()</code> or <code>(variable)</code>)</li>
+                        <li>Curly Braces <code>{}</code>, which encloses our code body (i.e. the code that is executed) </li>
+
+                    </ul>
                 </div>
             </div>
             
@@ -646,13 +666,21 @@ height: 25%</code></pre>
                 <div class="col-sm-1"></div>
                 <div class="col-sm-5">
                     <pre><code><span style="color: blue">plusOne(4);</span>
-<span style="color: blue">sayHello();</span></code></pre>
+
+<span style="color: blue">sayHello();</span></code>
+
+<span style="color: blue">findArea(10, 10);</span></code>
+</pre>
+
                 </div>
                 <div class="col-sm-1"></div>
                 <div class="col-sm-5">
                     <p><strong>Calling a function (using the function)</strong></p>
-                    <p>To use a function that takes parameters, type the function name with your parameters inside the parentheses.</p>
-                    <p>To use a function that doesn't take parameters, leave the parentheses blank.</p>
+                    <p>To use a function we have to call it then insert any necessary arguments.</p>
+                    <p>To use a function that doesn't take arguments, leave the parentheses empty.</p>
+                    <p>You can call a function as many times as you want. 
+                        It's important to call a function by its exact name followed by parentheses 
+                        or else your computer won't understand that you're trying to call a function.</p>
                 </div>
             </div>
             
