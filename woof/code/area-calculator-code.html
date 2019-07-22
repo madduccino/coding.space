@@ -1,164 +1,174 @@
 <head>
     <script src="https://rawgit.com/stevekrouse/WoofJS/master/dist/woof.js"></script>
     <script>
-    setBackdropColor("white");
+    setBackdropColor('honeydew')
 
 var windowText = new Text({
-  text: "Click a shape or area to calculate area.", 
-  size: 30, 
+  text: "Click shape to calculate area or perimeter.", 
+  size: 20, 
   color: "black", 
   fontFamily: "arial", 
-  textAlign: "center",
+  textAlign: "center", 
+})
+
+var circle = new Circle({
+  radius: 50, 
+  color: "hotpink", 
+  x: windowText.x, 
+  y: windowText.y + 125
 })
 
 var rectangle = new Rectangle({
-  width: 100, 
-  height: 350, 
-  color: "black",
-  x: -250,
-  y: maxY - 200
-})
-
-var square = new Rectangle({
-  width: 200, 
-  height: 200, 
-  color: "brown",
-  x: 0,
-  y: maxY - 200
+  width: 75, 
+  height: 90, 
+  color: "gold",
+  x: windowText.x,
+  y: windowText.y - 125
 })
 
 var triangle = new Polygon({
   sides: 3, 
-  length: 100, 
-  color: "orange",
-  x: 250,
-  y: maxY - 200
+  length: 60, 
+  color: "powderblue",
+  x: 0,
+  y: circle.y + 175
 })
 
-var circle = new Circle({
-  radius: 125, 
-  color: "darksalmon", 
-  x: -200, 
-  y: maxY - 900
-})
-
-var ellipse = new Oval({
-  width: 200, 
-  height: 150, 
-  color: "olive",
-  x: 200,
-  y: maxY - 900
-})
-
-var rectangleAreaText = new Text({
-  text: () => "Area", 
-  size: 30, 
-  color: "white", 
-  fontFamily: "arial", 
-  textAlign: "center",
-  x: rectangle.x,
-  y: maxY - 200
-})
-
-var squareAreaText = new Text({
-  text: () => "Area", 
-  size: 30, 
-  color: "white", 
-  fontFamily: "arial", 
-  textAlign: "center",
-  x: square.x,
-  y: maxY - 200
-})
-
-var triangleAreaText = new Text({
-  text: () => "Area", 
-  size: 30, 
-  color: "white", 
-  fontFamily: "arial", 
-  textAlign: "center",
-  x: triangle.x,
- y: maxY - 200
-})
-
-var circleAreaText = new Text({
-  text: () => "Area", 
-  size: 30, 
-  color: "white", 
-  fontFamily: "arial", 
-  textAlign: "center",
-  x: circle.x,
-  y: maxY - 900
-})
-
-var ellipseAreaText = new Text({
-  text: () => "Area", 
-  size: 30, 
-  color: "white", 
-  fontFamily: "arial", 
-  textAlign: "center",
-  x: ellipse.x,
-  y: maxY - 900
-})
-
-function areaSquare(side) {
-  return side*side;
-}
-
-function areaRectangle(height, width) {
-  return (height*width).toFixed(2);
-}
-
-function areaTriangle(base, height){
-  return 0.5*base*height;
-}
-
-function areaCircle(radius){
-  return (Math.PI * radius * radius).toFixed(2);
-}
-
-function areaEllipse(semiMinorAxis, semiMajorAxis){
-  return (Math.PI * semiMinorAxis * semiMajorAxis).toFixed(2);
-}
-
-rectangle.onMouseDown(() => {
-  windowText.text = "Rectangle";
-})
-
-square.onMouseDown(() => {
-  windowText.text = "Square";
-})
-
-triangle.onMouseDown(() => {
-  windowText.text = "Triangle";
+var nPolygon = new Polygon({
+  sides: 6, 
+  length: 55, 
+  color: "thistle",
+  x: 0,
+  y: rectangle.y - 150
 })
 
 circle.onMouseDown(() => {
-  windowText.text = "Circle";
+  var radius = prompt("Enter Radius")
+  if (isNaN(radius)){
+        windowText.text = "The value input for radius must be a number. Please try again."
+        return
+    }
+  var areaOrPerimeter = prompt("Area or perimeter? 1 for area, 2 for perimeter.")
+  if (areaOrPerimeter == 1) {
+    var area = areaCircle(radius).toFixed(2)
+    windowText.text = "A circle of radius " + radius + " has an area of " + area + "."
+    } else if (areaOrPerimeter == 2) {
+    var perimeter = perimeterCircle(radius).toFixed(2)
+      windowText.text = "A circle of radius " + radius + " has a perimeter of " + perimeter + "."  
+    } else {
+      windowText.text = "Invalid input, please try again."
+    }
 })
 
-ellipse.onMouseDown(() => {
-  windowText.text = "Ellipse";
+rectangle.onMouseDown(() => {
+  var width = prompt("Enter Width")
+  if (isNaN(width)){
+    windowText.text = "The value input for width and height must be a number. Please try again."
+    return
+  }
+  var height = prompt("Enter Height")
+  if (isNaN(height)){
+        windowText.text = "The value input for width and height must be a number. Please try again."
+        return
+  }
+  var areaOrPerimeter = prompt("Area or perimeter? 1 for area, 2 for perimeter.")
+  if (areaOrPerimeter == 1) {
+    var area = areaRectangle(width, height).toFixed(2)
+    windowText.text = "A rectangle of w = " + width + " and h = " + height +"  has an area of " + area + "."
+    } else if (areaOrPerimeter == 2) {
+    var perimeter = perimeterRectange(width, height).toFixed(2)
+      windowText.text = "A rectangle of w = " + width + " and h = " + height +"  has a perimeter of " + perimeter + "." 
+    } else {
+      windowText.text = "Invalid input, please try again."
+    }
 })
 
-rectangleAreaText.onMouseDown(() => {
-  windowText.text = "Rectangle area is: " + areaRectangle(prompt("Rectangle Width?"), prompt("Rectangle Height?"));
+triangle.onMouseDown(() => {
+  var side1 = parseInt(prompt("Enter first side length"))
+  if (isNaN(side1)){
+    windowText.text = "The value input for the side length must be a number. Please try again."
+    return
+  }
+  var side2 = parseInt(prompt("Enter second side length"))
+  if (isNaN(side2)){
+        windowText.text = "The value input for the side length must be a number. Please try again."
+        return
+  }
+  var side3 = parseInt(prompt("Enter third side length"))
+  if (isNaN(side3)){
+        windowText.text = "The value input for side length must be a number. Please try again."
+        return
+  }
+  var areaOrPerimeter = prompt("Area or perimeter? 1 for area, 2 for perimeter.")
+  if (areaOrPerimeter == 1) {
+    var area = areaTriangle(side1, side2, side3).toFixed(2)
+    windowText.text = "A triangle with side lengths " + side1 + ", " + side2 + ", and " + side3 + " has an area of " + area + "."
+    } else if (areaOrPerimeter == 2) {
+    var perimeter = perimeterTriangle(side1, side2, side3).toFixed(2)
+      windowText.text = "A triangle with side lengths " + side1 + ", " + side2 + ", and " + side3 + " has a perimeter of " + perimeter + "."
+    } else {
+      windowText.text = "Invalid input, please try again."
+    }
 })
 
-squareAreaText.onMouseDown(() => {
-  windowText.text = "Square area is: " + areaSquare(prompt("Square Width?"));
+nPolygon.onMouseDown(() => {
+  var lengthSide = parseInt(prompt("Enter length of sides"))
+  if (isNaN(lengthSide)){
+    windowText.text = "The value input for the side length is invalid. Please try again."
+    return
+  }
+  var numberSides = parseInt(prompt("Enter the number of sides"))
+  if (isNaN(numberSides)){
+        windowText.text = "The value input for the number of sides must be a number. Please try again."
+        return
+  }
+  
+  var areaOrPerimeter = prompt("Area or perimeter? 1 for area, 2 for perimeter.")
+  if (areaOrPerimeter == 1) {
+    var area = areaNPolygon(lengthSide, numberSides).toFixed(2)
+      windowText.text = "A regular polygon with side lengths " + lengthSide + " and " + numberSides + " sides" + " has an area of " + area + "."
+    } else if (areaOrPerimeter == 2) {
+    var perimeter = perimeterNPolygon(lengthSide, numberSides).toFixed(2)
+      windowText.text = "A regular polygon with side lengths " + lengthSide + " and " + numberSides + " sides" + " has a perimeter of " + perimeter + "."
+    } else {
+      windowText.text = "Invalid input, please try again."
+    }
 })
 
-triangleAreaText.onMouseDown(() => {
-  windowText.text = "Triangle area is: " + areaTriangle(prompt("Triangle Base?"), prompt("Triangle Height?"));
-})
 
-circleAreaText.onMouseDown(() => {
-  windowText.text = "Circle area is: " + areaCircle(prompt("Circle Radius?"));
-})
+var areaCircle = (radius) => {
+  return Math.PI * radius * radius 
+}
 
-ellipseAreaText.onMouseDown(() => {
-  windowText.text = "Ellipse area is: " + areaEllipse(prompt("Major Axis?"), prompt("Minor Axis?"));
-})
+var perimeterCircle = (radius) => {
+  return 2 * Math.PI * radius
+}
+
+var areaRectangle = (width, height) => {
+  return width * height 
+}
+
+var perimeterRectange = (width, height) => {
+  return 2 * width + 2 * height
+}
+
+var areaTriangle = (side1, side2, side3) => {
+  var s = (side1 + side2 + side3)/2
+  console.log(s);
+  return (Math.sqrt(s*(s - side1)*(s - side2)*(s - side3)))
+}
+
+var perimeterTriangle = (side1, side2, side3) => {
+  return side1 + side2 + side3
+}
+
+var areaNPolygon = (side, numberSides) => {
+  return ((side*side*numberSides)/(4 * Math.tan((Math.PI)/numberSides)))
+}
+
+var perimeterNPolygon = (side, numberSides) => {
+  return side * numberSides
+}
 </script>
 </head>
 <body>
