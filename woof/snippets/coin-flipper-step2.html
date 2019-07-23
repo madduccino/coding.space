@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="https://cdn.rawgit.com/stevekrouse/WoofJS/cb6d0621/dist/woof.js"></script>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Apple Catcher Step 1</title>
+</head>
+<body>
+
+<script>
+//left display labels and outputs
+var spaceBetweenLeftButtons = 80;
+var leftButtonsX = 100;
+var numHeadsY = minY + 300;
+var numTailsY = numHeadsY - spaceBetweenLeftButtons;
+var probabilityHeadsY = numTailsY - spaceBetweenLeftButtons;
+var probabilityTailsY = probabilityHeadsY - spaceBetweenLeftButtons;
+
+//program commands
+setBackdropColor("gold")
+
+//sprite definitions
+var flipButton = new Image({
+  url: "../images/coin-flipper-flip-coin.png",
+  x: maxX - 100,
+  y: probabilityTailsY
+})
+
+var numHeadsText = new Image ({
+  url: "../images/coin-flipper-number-heads.png",
+  x: minX + leftButtonsX,
+  y: numHeadsY,
+})
+
+var numTailsText = new Image ({
+  url: "../images/coin-flipper-number-tails.png",
+  x: minX + leftButtonsX,
+  y: numTailsY,
+})
+
+var probabilityHeadsText = new Image ({
+  url: "../images/coin-flipper-probability-heads.png",
+  x: minX + leftButtonsX,
+  y: probabilityHeadsY,
+})
+
+var probabilityTailsText = new Image ({
+  url: "../images/coin-flipper-probability-tails.png",
+  x: minX + leftButtonsX,
+  y: probabilityTailsY,
+})
+</script>
+</body>
+</html>
