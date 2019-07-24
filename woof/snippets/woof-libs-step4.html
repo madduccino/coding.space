@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="https://cdn.rawgit.com/stevekrouse/WoofJS/cb6d0621/dist/woof.js"></script>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Woof Libs Step 4</title>
+</head>
+<body>
+
+<script>
+setBackdropColor("white")
+
+var noun1 = "___________"
+var adverb1 =  "___________ "
+var adjective1 =  "___________ "
+var noun2 = "___________"
+var verb1 = "___________"
+var noun3 = "___________"
+var noun4 = "___________"
+var verb2 = "___________"
+var exclamation1 = "___________"
+var number1 = "___________"
+var verb3 = "___________"
+var noun5 = "___________"
+var topLine = maxY - 100
+var fontSize = 20
+
+var buttonFront = new Rectangle({
+  width: 200, 
+  height: 55, 
+  color: "pink",
+  y: topLine + 50,
+  x: minX + 120
+})
+
+var buttonBack = new Rectangle({
+  width: 210, 
+  height: 65, 
+  color: "black",
+  y: topLine + 50,
+  x: minX + 120
+})
+buttonBack.sendToBack()
+
+var buttonText = new Text({
+  text: () => "Press Me!", 
+  size: 30, 
+  color: "black", 
+  fontFamily: "sans-serif", 
+  textAlign: "left",
+  y: topLine + 52,
+  x: minX + 50
+})
+
+function askQuestions() {
+  noun1 = prompt("Enter a year.")
+  noun2 = prompt("Enter a plural noun.")
+  adverb1 = prompt("Enter an adverb.")
+  verb1 = prompt("Enter a past tense verb.")
+  noun3 = prompt("Enter a plural noun.")
+  noun4 = prompt("Enter a feeling.")
+  verb2 = prompt("Enter a present tense verb.")
+  exclamation1 = prompt("Enter an exclamation.")
+  number1 = prompt("Enter a number.")
+  verb3 = prompt("Enter a past tense verb.")
+  noun5 = prompt("Enter a place.")
+  adjective1 = prompt("Enter an adjective.")
+}
+
+var firstLine = new Text({
+  text: () => "I was born in " + noun1 +" in a small town.", 
+  size: fontSize, 
+  color: "black", 
+  fontFamily: "sans-serif", 
+  textAlign: "left",
+  x: minX + 20,
+  y: topLine
+})
+
+var secondLine = new Text({
+  text: () => "As I child, I ate " + noun2 +".", 
+  size: fontSize, 
+  color: "black", 
+  fontFamily: "sans-serif", 
+  textAlign: "left",
+  x: minX + 20,
+  y: firstLine.y - 30
+})
+
+var thirdLine = new Text({
+  text: () => "Living " + adverb1 + ", I began to be " + verb1 + ".", 
+  size: fontSize, 
+  color: "black", 
+  fontFamily: "sans-serif", 
+  textAlign: "left",
+  x: minX + 20,
+  y: secondLine.y - 30
+})
+
+var fourthLine = new Text({
+  text: () => "It's crazy: " + noun2 + " weren't as popular as " + noun3 +".", 
+  size: fontSize, 
+  color: "black", 
+  fontFamily: "sans-serif", 
+  textAlign: "left",
+  x: minX + 20,
+  y: thirdLine.y - 30
+})
+
+var fifthLine = new Text({
+  text: () => "So why did I feel " + noun4 +"?", 
+  size: fontSize, 
+  color: "black", 
+  fontFamily: "sans-serif", 
+  textAlign: "left",
+  x: minX + 20,
+  y: fourthLine.y - 30
+})
+
+var sixthLine = new Text({
+  text: () => "I know why. I couldn't " + verb2 + " without " + noun2 + ".",
+  size: fontSize, 
+  color: "black", 
+  fontFamily: "sans-serif", 
+  textAlign: "left",
+  x: minX + 20,
+  y: fifthLine.y - 30
+})
+
+var seventhLine = new Text({
+  text: () => exclamation1 + "!", 
+  size: fontSize, 
+  color: "black", 
+  fontFamily: "sans-serif", 
+  textAlign: "left",
+  x: minX + 20,
+  y: sixthLine.y - 30
+})
+
+var eigthLine = new Text({
+  text: () => number1 + " years later, I returned to " + noun5 +".", 
+  size: fontSize, 
+  color: "black", 
+  fontFamily: "sans-serif", 
+  textAlign: "left",
+  x: minX + 20,
+  y: seventhLine.y - 30
+})
+
+var ninthLine = new Text({
+  text: () => "Can you believe that?",   
+  size: fontSize, 
+  color: "black", 
+  fontFamily: "sans-serif", 
+  textAlign: "left",
+  x: minX + 20,
+  y: eigthLine.y - 30
+})
+
+var tenthLine = new Text({
+  text: () => "It's such a " + adjective1 +" story, I know.",   
+  size: fontSize, 
+  color: "black", 
+  fontFamily: "sans-serif", 
+  textAlign: "left",
+  x: minX + 20,
+  y: ninthLine.y - 30
+})
+
+buttonFront.onMouseDown(() => {
+  askQuestions();
+})
+</script>
+</body>
+</html>

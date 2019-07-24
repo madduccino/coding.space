@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="https://cdn.rawgit.com/stevekrouse/WoofJS/cb6d0621/dist/woof.js"></script>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Woof Libs Step 1</title>
+</head>
+<body>
+
+<script>
+var topLine = maxY - 100
+
+var buttonFront = new Rectangle({
+  width: 200, 
+  height: 55, 
+  color: "pink",
+  y: topLine + 50,
+  x: minX + 120
+})
+
+var buttonBack = new Rectangle({
+  width: 210, 
+  height: 65, 
+  color: "black",
+  y: topLine + 50,
+  x: minX + 120
+})
+buttonBack.sendToBack()
+
+var buttonText = new Text({
+  text: () => "Press Me!", 
+  size: 30, 
+  color: "black", 
+  fontFamily: "sans-serif", 
+  textAlign: "left",
+  y: topLine + 52,
+  x: minX + 50
+})
+</script>
+</body>
+</html>
