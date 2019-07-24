@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <script src="https://rawgit.com/stevekrouse/WoofJS/master/dist/woof.js"></script>
-
+  <script src="https://rawcdn.githack.com/stevekrouse/WoofJS/8f46930383acf6e7bc6db6a9084014bd3cbdd44a/woof.js"></script>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width">
   <title>Area Calculator Step 8</title>
@@ -10,8 +9,14 @@
 <body>
 
 <script>
+
+var areaOrPerimeterText = "Area or perimeter? 1 for area, 2 for perimeter.";
+var radiusErrorText = "The value input for radius must be a number. Please try again.";
+var invalidInputErrorText = "Invalid input, please try again.";
+
 setBackdropColor('honeydew')
 
+//objects that appear on screen
 var windowText = new Text({
   text: "Click shape to calculate area or perimeter.", 
   size: 20, 
@@ -27,13 +32,14 @@ var circle = new Circle({
   y: windowText.y + 125
 })
 
+//what happens when each shape is clicked
 circle.onMouseDown(() => {
   var radius = prompt("Enter Radius")
-  if (isNaN(radius)){
-        windowText.text = "The value input for radius must be a number. Please try again."
+  if (isNaN(radius)){ //isNan tests a value -- returns true if not number, false if so 
+        windowText.text = radiusErrorText
         return
     }
-  var areaOrPerimeter = prompt("Area or perimeter? 1 for area, 2 for perimeter.")
+  var areaOrPerimeter = prompt(areaOrPerimeterText)
   if (areaOrPerimeter == 1) {
     var area = areaCircle(radius).toFixed(2)
     windowText.text = "A circle of radius " + radius + " has an area of " + area + "."
@@ -41,11 +47,12 @@ circle.onMouseDown(() => {
     var perimeter = perimeterCircle(radius).toFixed(2)
       windowText.text = "A circle of radius " + radius + " has a perimeter of " + perimeter + "."  
     } else {
-      windowText.text = "Invalid input, please try again."
+      windowText.text = invalidInputErrorText
     }
 })
 
 
+//formula functions for each shape
 var areaCircle = (radius) => {
   return Math.PI * radius * radius 
 }

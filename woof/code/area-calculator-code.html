@@ -1,8 +1,17 @@
 <head>
-    <script src="https://rawgit.com/stevekrouse/WoofJS/master/dist/woof.js"></script>
+    <script src="https://rawcdn.githack.com/stevekrouse/WoofJS/8f46930383acf6e7bc6db6a9084014bd3cbdd44a/woof.js"></script>
     <script>
-    setBackdropColor('honeydew')
 
+var areaOrPerimeterText = "Area or perimeter? 1 for area, 2 for perimeter.";
+var radiusErrorText = "The value input for radius must be a number. Please try again.";
+var widthHeightErrorText = "The value input for width and height must be a number. Please try again.";
+var sideLengthErrorText = "The value input for the side length must be a number. Please try again.";
+var numberSidesErrorText = "The value input for the number of sides must be a number. Please try again.";
+var invalidInputErrorText = "Invalid input, please try again.";
+
+setBackdropColor('honeydew')
+
+//objects that appear on screen
 var windowText = new Text({
   text: "Click shape to calculate area or perimeter.", 
   size: 20, 
@@ -42,13 +51,14 @@ var nPolygon = new Polygon({
   y: rectangle.y - 150
 })
 
+//what happens when each shape is clicked
 circle.onMouseDown(() => {
   var radius = prompt("Enter Radius")
   if (isNaN(radius)){
-        windowText.text = "The value input for radius must be a number. Please try again."
+        windowText.text = radiusErrorText
         return
     }
-  var areaOrPerimeter = prompt("Area or perimeter? 1 for area, 2 for perimeter.")
+  var areaOrPerimeter = prompt(areaOrPerimeterText)
   if (areaOrPerimeter == 1) {
     var area = areaCircle(radius).toFixed(2)
     windowText.text = "A circle of radius " + radius + " has an area of " + area + "."
@@ -63,43 +73,43 @@ circle.onMouseDown(() => {
 rectangle.onMouseDown(() => {
   var width = prompt("Enter Width")
   if (isNaN(width)){
-    windowText.text = "The value input for width and height must be a number. Please try again."
+    windowText.text = widthHeightErrorText
     return
   }
   var height = prompt("Enter Height")
   if (isNaN(height)){
-        windowText.text = "The value input for width and height must be a number. Please try again."
+        windowText.text = widthHeightErrorText
         return
   }
-  var areaOrPerimeter = prompt("Area or perimeter? 1 for area, 2 for perimeter.")
+  var areaOrPerimeter = prompt(areaOrPerimeterText)
   if (areaOrPerimeter == 1) {
     var area = areaRectangle(width, height).toFixed(2)
     windowText.text = "A rectangle of w = " + width + " and h = " + height +"  has an area of " + area + "."
     } else if (areaOrPerimeter == 2) {
-    var perimeter = perimeterRectange(width, height).toFixed(2)
+    var perimeter = perimeterRectangle(width, height).toFixed(2)
       windowText.text = "A rectangle of w = " + width + " and h = " + height +"  has a perimeter of " + perimeter + "." 
     } else {
-      windowText.text = "Invalid input, please try again."
+      windowText.text = invalidInputErrorText
     }
 })
 
 triangle.onMouseDown(() => {
   var side1 = parseInt(prompt("Enter first side length"))
   if (isNaN(side1)){
-    windowText.text = "The value input for the side length must be a number. Please try again."
+    windowText.text = sideLengthErrorText
     return
   }
   var side2 = parseInt(prompt("Enter second side length"))
   if (isNaN(side2)){
-        windowText.text = "The value input for the side length must be a number. Please try again."
+        windowText.text = sideLengthErrorText
         return
   }
   var side3 = parseInt(prompt("Enter third side length"))
   if (isNaN(side3)){
-        windowText.text = "The value input for side length must be a number. Please try again."
+        windowText.text = sideLengthErrorText
         return
   }
-  var areaOrPerimeter = prompt("Area or perimeter? 1 for area, 2 for perimeter.")
+  var areaOrPerimeter = prompt(areaOrPerimeterText)
   if (areaOrPerimeter == 1) {
     var area = areaTriangle(side1, side2, side3).toFixed(2)
     windowText.text = "A triangle with side lengths " + side1 + ", " + side2 + ", and " + side3 + " has an area of " + area + "."
@@ -107,23 +117,23 @@ triangle.onMouseDown(() => {
     var perimeter = perimeterTriangle(side1, side2, side3).toFixed(2)
       windowText.text = "A triangle with side lengths " + side1 + ", " + side2 + ", and " + side3 + " has a perimeter of " + perimeter + "."
     } else {
-      windowText.text = "Invalid input, please try again."
+      windowText.text = invalidInputErrorText
     }
 })
 
 nPolygon.onMouseDown(() => {
   var lengthSide = parseInt(prompt("Enter length of sides"))
   if (isNaN(lengthSide)){
-    windowText.text = "The value input for the side length is invalid. Please try again."
+    windowText.text = sideLengthErrorText
     return
   }
   var numberSides = parseInt(prompt("Enter the number of sides"))
   if (isNaN(numberSides)){
-        windowText.text = "The value input for the number of sides must be a number. Please try again."
+        windowText.text = numberSidesErrorText
         return
   }
   
-  var areaOrPerimeter = prompt("Area or perimeter? 1 for area, 2 for perimeter.")
+  var areaOrPerimeter = prompt(areaOrPerimeterText)
   if (areaOrPerimeter == 1) {
     var area = areaNPolygon(lengthSide, numberSides).toFixed(2)
       windowText.text = "A regular polygon with side lengths " + lengthSide + " and " + numberSides + " sides" + " has an area of " + area + "."
@@ -131,11 +141,11 @@ nPolygon.onMouseDown(() => {
     var perimeter = perimeterNPolygon(lengthSide, numberSides).toFixed(2)
       windowText.text = "A regular polygon with side lengths " + lengthSide + " and " + numberSides + " sides" + " has a perimeter of " + perimeter + "."
     } else {
-      windowText.text = "Invalid input, please try again."
+      windowText.text = invalidInputErrorText
     }
 })
 
-
+//formula functions for each shape
 var areaCircle = (radius) => {
   return Math.PI * radius * radius 
 }
@@ -148,7 +158,7 @@ var areaRectangle = (width, height) => {
   return width * height 
 }
 
-var perimeterRectange = (width, height) => {
+var perimeterRectangle = (width, height) => {
   return 2 * width + 2 * height
 }
 

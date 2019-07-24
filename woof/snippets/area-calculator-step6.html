@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <script src="https://rawgit.com/stevekrouse/WoofJS/master/dist/woof.js"></script>
-
+  <script src="https://rawcdn.githack.com/stevekrouse/WoofJS/8f46930383acf6e7bc6db6a9084014bd3cbdd44a/woof.js"></script>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width">
   <title>Area Calculator Step 6</title>
@@ -12,6 +11,7 @@
 <script>
 setBackdropColor('honeydew')
 
+//objects that appear on screen
 var windowText = new Text({
   text: "Click shape to calculate area.", 
   size: 20, 
@@ -27,12 +27,14 @@ var circle = new Circle({
   y: windowText.y + 125
 })
 
+//what happens when each shape is clicked
 circle.onMouseDown(() => {
   var radius = prompt("Enter Radius")
   var area = areaCircle(radius).toFixed(2)
   windowText.text = "A circle of radius " + radius + " has an area of " + area + "."
 })
 
+//formula functions for each shape
 var areaCircle = (radius) => {
   return Math.PI * radius * radius 
 }
