@@ -1,0 +1,186 @@
+<head>
+    <script src="https://rawcdn.githack.com/stevekrouse/WoofJS/8f46930383acf6e7bc6db6a9084014bd3cbdd44a/woof.js"></script>
+    <script>
+
+var areaOrPerimeterText = "Area or perimeter? 1 for area, 2 for perimeter.";
+var radiusErrorText = "The value input for radius must be a number. Please try again.";
+var widthHeightErrorText = "The value input for width and height must be a number. Please try again.";
+var sideLengthErrorText = "The value input for the side length must be a number. Please try again.";
+var numberSidesErrorText = "The value input for the number of sides must be a number. Please try again.";
+var invalidInputErrorText = "Invalid input, please try again.";
+
+setBackdropColor('honeydew')
+
+//objects that appear on screen
+var windowText = new Text({
+  text: "Click shape to calculate area or perimeter.", 
+  size: 20, 
+  color: "black", 
+  fontFamily: "arial", 
+  textAlign: "center", 
+})
+
+var circle = new Circle({
+  radius: 50, 
+  color: "hotpink", 
+  x: windowText.x, 
+  y: windowText.y + 125
+})
+
+var rectangle = new Rectangle({
+  width: 75, 
+  height: 90, 
+  color: "gold",
+  x: windowText.x,
+  y: windowText.y - 125
+})
+
+var triangle = new Polygon({
+  sides: 3, 
+  length: 60, 
+  color: "powderblue",
+  x: 0,
+  y: circle.y + 175
+})
+
+var nPolygon = new Polygon({
+  sides: 6, 
+  length: 55, 
+  color: "thistle",
+  x: 0,
+  y: rectangle.y - 150
+})
+
+//what happens when each shape is clicked
+circle.onMouseDown(() => {
+  var radius = prompt("Enter Radius")
+  if (isNaN(radius)){
+        windowText.text = radiusErrorText
+        return
+    }
+  var areaOrPerimeter = prompt(areaOrPerimeterText)
+  if (areaOrPerimeter == 1) {
+    var area = areaCircle(radius).toFixed(2)
+    windowText.text = "A circle of radius " + radius + " has an area of " + area + "."
+    } else if (areaOrPerimeter == 2) {
+    var perimeter = perimeterCircle(radius).toFixed(2)
+      windowText.text = "A circle of radius " + radius + " has a perimeter of " + perimeter + "."  
+    } else {
+      windowText.text = "Invalid input, please try again."
+    }
+})
+
+rectangle.onMouseDown(() => {
+  var width = prompt("Enter Width")
+  if (isNaN(width)){
+    windowText.text = widthHeightErrorText
+    return
+  }
+  var height = prompt("Enter Height")
+  if (isNaN(height)){
+        windowText.text = widthHeightErrorText
+        return
+  }
+  var areaOrPerimeter = prompt(areaOrPerimeterText)
+  if (areaOrPerimeter == 1) {
+    var area = areaRectangle(width, height).toFixed(2)
+    windowText.text = "A rectangle of w = " + width + " and h = " + height +"  has an area of " + area + "."
+    } else if (areaOrPerimeter == 2) {
+    var perimeter = perimeterRectangle(width, height).toFixed(2)
+      windowText.text = "A rectangle of w = " + width + " and h = " + height +"  has a perimeter of " + perimeter + "." 
+    } else {
+      windowText.text = invalidInputErrorText
+    }
+})
+
+triangle.onMouseDown(() => {
+  var side1 = parseInt(prompt("Enter first side length"))
+  if (isNaN(side1)){
+    windowText.text = sideLengthErrorText
+    return
+  }
+  var side2 = parseInt(prompt("Enter second side length"))
+  if (isNaN(side2)){
+        windowText.text = sideLengthErrorText
+        return
+  }
+  var side3 = parseInt(prompt("Enter third side length"))
+  if (isNaN(side3)){
+        windowText.text = sideLengthErrorText
+        return
+  }
+  var areaOrPerimeter = prompt(areaOrPerimeterText)
+  if (areaOrPerimeter == 1) {
+    var area = areaTriangle(side1, side2, side3).toFixed(2)
+    windowText.text = "A triangle with side lengths " + side1 + ", " + side2 + ", and " + side3 + " has an area of " + area + "."
+    } else if (areaOrPerimeter == 2) {
+    var perimeter = perimeterTriangle(side1, side2, side3).toFixed(2)
+      windowText.text = "A triangle with side lengths " + side1 + ", " + side2 + ", and " + side3 + " has a perimeter of " + perimeter + "."
+    } else {
+      windowText.text = invalidInputErrorText
+    }
+})
+
+nPolygon.onMouseDown(() => {
+  var lengthSide = parseInt(prompt("Enter length of sides"))
+  if (isNaN(lengthSide)){
+    windowText.text = sideLengthErrorText
+    return
+  }
+  var numberSides = parseInt(prompt("Enter the number of sides"))
+  if (isNaN(numberSides)){
+        windowText.text = numberSidesErrorText
+        return
+  }
+  
+  var areaOrPerimeter = prompt(areaOrPerimeterText)
+  if (areaOrPerimeter == 1) {
+    var area = areaNPolygon(lengthSide, numberSides).toFixed(2)
+      windowText.text = "A regular polygon with side lengths " + lengthSide + " and " + numberSides + " sides" + " has an area of " + area + "."
+    } else if (areaOrPerimeter == 2) {
+    var perimeter = perimeterNPolygon(lengthSide, numberSides).toFixed(2)
+      windowText.text = "A regular polygon with side lengths " + lengthSide + " and " + numberSides + " sides" + " has a perimeter of " + perimeter + "."
+    } else {
+      windowText.text = invalidInputErrorText
+    }
+})
+
+//formula functions for each shape
+var areaCircle = (radius) => {
+  return Math.PI * radius * radius 
+}
+
+var perimeterCircle = (radius) => {
+  return 2 * Math.PI * radius
+}
+
+var areaRectangle = (width, height) => {
+  return width * height 
+}
+
+var perimeterRectangle = (width, height) => {
+  return 2 * width + 2 * height
+}
+
+var areaTriangle = (side1, side2, side3) => {
+  var s = (side1 + side2 + side3)/2
+  console.log(s);
+  return (Math.sqrt(s*(s - side1)*(s - side2)*(s - side3)))
+}
+
+var perimeterTriangle = (side1, side2, side3) => {
+  return side1 + side2 + side3
+}
+
+var areaNPolygon = (side, numberSides) => {
+  return ((side*side*numberSides)/(4 * Math.tan((Math.PI)/numberSides)))
+}
+
+var perimeterNPolygon = (side, numberSides) => {
+  return side * numberSides
+}
+</script>
+</head>
+<body>
+    
+</body>
