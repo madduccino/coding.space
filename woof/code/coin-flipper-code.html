@@ -1,143 +1,143 @@
 <head>
-    <script src="https://cdn.rawgit.com/stevekrouse/WoofJS/cb6d0621/dist/woof.js"></script>
+    <script src="https://rawcdn.githack.com/stevekrouse/WoofJS/e5f829d0cad69a001e4636a4f4452e6f60b8d2cd/woof.js"></script>
     <script>
     //array to hold coins
-    var coins = [];
-    
-    //tracking indexes
-    var coinIndex = 0; //keeps track of the index of the coin index being created in coins array
-    var currentCol = 0; //current column of coin to be created
-    var currentRow = 0; //current row of coin to be created
+var coins = [];
 
-    //coin counters
-    var numTails = 0;
-    var numHeads = 0;
-    
-    //left display labels and outputs
-    var spaceBetweenLeftButtons = 80;
-    var leftButtonsX = 100;
-    var numHeadsY = minY + 300;
-    var numTailsY = numHeadsY - spaceBetweenLeftButtons;
-    var probabilityHeadsY = numTailsY - spaceBetweenLeftButtons;
-    var probabilityTailsY = probabilityHeadsY - spaceBetweenLeftButtons;
-    
-    //row spacing for coins
-    var spaceBetweenRows = 120;
-    var spaceBetweenCoins = 120;
-    
-    //sprite definitions
-    var flipButton = new Image({
-      url: "../images/coin-flipper-flip-coin.png",
-      x: maxX - 100,
-      y: probabilityTailsY
+//tracking indexes
+var coinIndex = 0; //keeps track of the index of the coin index being created in coins array
+var currentCol = 0; //current column of coin to be created
+var currentRow = 0; //current row of coin to be created
+
+//coin counters - keeps track of number of heads and tails flipped 
+var numTails = 0;
+var numHeads = 0;
+
+//variables to space labels and buttons
+var spaceBetweenLeftButtons = 80;  //vertical space between buttons
+var leftButtonsX = 100;
+var numHeadsY = minY + 300;
+var numTailsY = numHeadsY - spaceBetweenLeftButtons;
+var probabilityHeadsY = numTailsY - spaceBetweenLeftButtons;
+var probabilityTailsY = probabilityHeadsY - spaceBetweenLeftButtons;
+
+//row and column spacing for coins
+var spaceBetweenRows = 120;
+var spaceBetweenCoins = 120;
+
+//sprite definitions
+var flipButton = new Image({
+  url: "https://firebasestorage.googleapis.com/v0/b/woofjs-d1b27.appspot.com/o/UserImageUpload%2FTg3vZt0IZgfM9Z7PqQ9TfFrETqz1%2Fcoin-flipper-main%2Fhdddocej3k0qjxqhg0le?alt=media&token=4d290431-575f-4fa5-9654-2da70e69837b",
+  x: maxX - 100,
+  y: probabilityTailsY
+})
+
+var numHeadsText = new Image ({
+  url: "https://firebasestorage.googleapis.com/v0/b/woofjs-d1b27.appspot.com/o/UserImageUpload%2FTg3vZt0IZgfM9Z7PqQ9TfFrETqz1%2Fcoin-flipper-main%2Fj1h7ei5quavcjxqikrrl?alt=media&token=d2b1d587-4200-429e-a31d-5aae79fd07b4",
+  x: minX + leftButtonsX,
+  y: numHeadsY,
+})
+
+var numHeadsCalculation = new Text({
+  text: () => numHeads, 
+  size: 50, 
+  color: "black", 
+  fontFamily: "arial", 
+  textAlign: "left",
+  x: numHeadsText.x + 100,
+  y: numHeadsText.y + 5
+})
+
+var numTailsText = new Image ({
+  url: "https://firebasestorage.googleapis.com/v0/b/woofjs-d1b27.appspot.com/o/UserImageUpload%2FTg3vZt0IZgfM9Z7PqQ9TfFrETqz1%2Fcoin-flipper-main%2Fjlir55jwjq02jxqikww5?alt=media&token=a15d8213-c152-420c-b587-2a8a5f65ff43",
+  x: minX + leftButtonsX,
+  y: numTailsY,
+})
+
+var numTailsCalculation = new Text({
+  text: () => numTails, 
+  size: 50, 
+  color: "black", 
+  fontFamily: "arial", 
+  textAlign: "left",
+  x: numTailsText.x + 100,
+  y: numTailsText.y + 5
+})
+
+var probabilityHeadsText = new Image ({
+  url: "https://firebasestorage.googleapis.com/v0/b/woofjs-d1b27.appspot.com/o/UserImageUpload%2FTg3vZt0IZgfM9Z7PqQ9TfFrETqz1%2Fcoin-flipper-main%2Fn4mrzwtji9osjxqil0rx?alt=media&token=4ea2fc76-cf05-43fd-912b-104f92343602",
+  x: minX + leftButtonsX,
+  y: probabilityHeadsY,
+})
+
+var probabilityHeadsCalculation = new Text({
+  text: () => (numHeads/(numTails+numHeads)).toFixed(2), 
+  size: 50, 
+  color: "black", 
+  fontFamily: "arial", 
+  textAlign: "left",
+  x: probabilityHeadsText.x + 100,
+  y: probabilityHeadsText.y + 5
+})
+
+var probabilityTailsText = new Image ({
+  url: "https://firebasestorage.googleapis.com/v0/b/woofjs-d1b27.appspot.com/o/UserImageUpload%2FTg3vZt0IZgfM9Z7PqQ9TfFrETqz1%2Fcoin-flipper-main%2F9nwk2wqwd7zwjxqil3wj?alt=media&token=d4a5f335-a8d2-4a12-a47c-7affe75caa7a",
+  x: minX + leftButtonsX,
+  y: probabilityTailsY,
+})
+
+var probabilityTailsCalculation = new Text({
+  text: () => (numTails/(numTails+numHeads)).toFixed(2), 
+  size: 50, 
+  color: "black", 
+  fontFamily: "arial", 
+  textAlign: "left",
+  x: probabilityTailsText.x + 100,
+  y: probabilityTailsText.y + 5
+})
+
+
+//what happens each coin flip
+function flipNewCoin() {
+  //choose graphic based upon random function call
+  var coinURL = "";
+  if (random(1, 2) == 1){
+    coinURL = "https://firebasestorage.googleapis.com/v0/b/woofjs-d1b27.appspot.com/o/UserImageUpload%2FTg3vZt0IZgfM9Z7PqQ9TfFrETqz1%2Fcoin-flipper-main%2Ftahx0qimxk2rjxqh139l?alt=media&token=6f4e99d6-8332-4db7-ada7-f9a262cf87ff";
+    numHeads++;
+  } else {
+    coinURL = "https://firebasestorage.googleapis.com/v0/b/woofjs-d1b27.appspot.com/o/UserImageUpload%2FTg3vZt0IZgfM9Z7PqQ9TfFrETqz1%2Fcoin-flipper-main%2F3wu7afy5rqcjjxqh0zyu?alt=media&token=a04f0390-d8a9-4918-ad87-fbf83cff952f"
+    numTails++;
+  }
+  //push image with appropriate image URL into array
+  coins.push(
+    new Image({
+      url: coinURL,
+      x: minX + 63 + currentCol*spaceBetweenCoins,
+      y: maxY - 75 - currentRow*spaceBetweenRows
     })
-    
-    var numHeadsText = new Image ({
-      url: "../images/coin-flipper-number-heads.png",
-      x: minX + leftButtonsX,
-      y: numHeadsY,
+  );
+  coins[coinIndex].sendToBack();
+  //move indexes to next coin
+  coinIndex++;
+  currentCol++;
+  if (coins[coinIndex - 1].x > maxX - 100){ //if at end of row start at next row
+    currentRow++;
+    currentCol = 0;
+    if (coins[coinIndex - 1].y < minY + 500){ //if at end of page start new page
+      coins.forEach(thing => {
+      thing.delete();
     })
-    
-    var numHeadsCalculation = new Text({
-      text: () => numHeads, 
-      size: 50, 
-      color: "black", 
-      fontFamily: "arial", 
-      textAlign: "left",
-      x: numHeadsText.x + 100,
-      y: numHeadsText.y + 5
-    })
-    
-    var numTailsText = new Image ({
-      url: "../images/coin-flipper-number-tails.png",
-      x: minX + leftButtonsX,
-      y: numTailsY,
-    })
-    
-    var numTailsCalculation = new Text({
-      text: () => numTails, 
-      size: 50, 
-      color: "black", 
-      fontFamily: "arial", 
-      textAlign: "left",
-      x: numTailsText.x + 100,
-      y: numTailsText.y + 5
-    })
-    
-    var probabilityHeadsText = new Image ({
-      url: "../images/coin-flipper-probability-heads.png",
-      x: minX + leftButtonsX,
-      y: probabilityHeadsY,
-    })
-    
-    var probabilityHeadsCalculation = new Text({
-      text: () => (numHeads/(numTails+numHeads)).toFixed(2), 
-      size: 50, 
-      color: "black", 
-      fontFamily: "arial", 
-      textAlign: "left",
-      x: probabilityHeadsText.x + 100,
-      y: probabilityHeadsText.y + 5
-    })
-    
-    var probabilityTailsText = new Image ({
-      url: "../images/coin-flipper-probability-tails.png",
-      x: minX + leftButtonsX,
-      y: probabilityTailsY,
-    })
-    
-    var probabilityTailsCalculation = new Text({
-      text: () => (numTails/(numTails+numHeads)).toFixed(2), 
-      size: 50, 
-      color: "black", 
-      fontFamily: "arial", 
-      textAlign: "left",
-      x: probabilityTailsText.x + 100,
-      y: probabilityTailsText.y + 5
-    })
-    
-    
-    //what happens each coin flip
-    function flipNewCoin() {
-      //choose graphic based upon random function call
-      var coinURL = "";
-      if (random(1, 2) == 1){
-        coinURL = "../images/coin-flipper-heads.png";
-        numHeads++;
-      } else {
-        coinURL = "../images/coin-flipper-tails.png"
-        numTails++;
-      }
-      //push image with appropriate image URL into array
-      coins.push(
-        new Image({
-          url: coinURL,
-          x: minX + 63 + currentCol*spaceBetweenCoins,
-          y: maxY - 75 - currentRow*spaceBetweenRows
-        })
-      );
-      coins[coinIndex].sendToBack();
-      coinIndex++;
-      currentCol++;
-      if (coins[coinIndex - 1].x > maxX - 100){
-        currentRow++;
-        currentCol = 0;
-        if (coins[coinIndex - 1].y < minY + 500){
-          coins.forEach(thing => {
-          thing.delete();
-        })
-          currentRow = 0;
-        }
-      } 
+      currentRow = 0;
     }
-    
-    //program commands
-    setBackdropColor("gold")
-    flipButton.onMouseDown(() => {
-      flipNewCoin();
-    })
+  } 
+}
 
-    </script>
+//program commands
+setBackdropColor("gold")
+flipButton.onMouseDown(() => {
+  flipNewCoin();
+})
+</script>
 </head>
 <body>
     
