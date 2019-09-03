@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="https://rawcdn.githack.com/stevekrouse/WoofJS/8f46930383acf6e7bc6db6a9084014bd3cbdd44a/woof.js"></script>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Memory Game Step 1</title>
+</head>
+<body>
+
+<script>
+setBackdropColor("#fbf5f3")
+
+//game variables
+let sizeSide = maxX; //side length of game board squares
+let squareOriginalColors = ["#f7b538", "#ff82a9", "#e16036", "#05a8aa"] //color resting
+let squareDarkerColors = ["#b7862a", "#bf617f", "#a04526", "#02696b"] //color when pressed
+let compressAmount = 15;
+let volume = 0.15;
+
+//preload sounds
+let sounds = [
+  new Sound({
+  url: "../audio/memory-game-sound1.mp3",
+  loop: false,
+  speed: "normal",
+  volume: volume
+}),
+  new Sound({
+  url: "../audio/memory-game-sound2.mp3",
+  loop: false,
+  speed: "normal",
+  volume: volume
+}),
+  new Sound({
+  url: "../audio/memory-game-sound3.mp3",
+  loop: false,
+  speed: "normal",
+  volume: volume
+}),
+  new Sound({
+  url: "../audio/memory-game-sound4.mp3",
+  loop: false,
+  speed: "normal",
+  volume: volume
+  })
+]
+
+//gameboard squares
+let squares = [
+  new Rectangle({
+  width: sizeSide, 
+  height: sizeSide, 
+  color: squareOriginalColors[0],
+  x: minX + sizeSide/2,
+  y: sizeSide/2,
+}),
+  new Rectangle({
+  width: sizeSide, 
+  height: sizeSide, 
+  color: squareOriginalColors[1],
+  x: minX + sizeSide/2 + sizeSide,
+  y: sizeSide/2
+}),
+  new Rectangle({
+  width: sizeSide, 
+  height: sizeSide, 
+  color: squareOriginalColors[2],
+  x: minX + sizeSide/2,
+  y: sizeSide/2 - sizeSide
+}),
+  new Rectangle({
+  width: sizeSide, 
+  height: sizeSide, 
+  color: squareOriginalColors[3],
+  x: minX + sizeSide/2 + sizeSide,
+  y: sizeSide/2 - sizeSide,
+})
+]
+
+//sets onclick features of buttons
+function activateButtons(){
+  //game board functions
+  for (let i=0; i<squares.length; i++ ){
+  squares[i].onMouseDown(() => {
+    shrinkSquare(squares[i], compressAmount);
+    dimColor(squares[i], i)
+    playSound(i)
+    after(0.1, "seconds", () => {
+    restoreSquare(squares[i], compressAmount);
+    lightenColor(squares[i], i)
+    })
+  })
+}
+}
+
+//for shrinking and dimming squares on player button press
+function shrinkSquare(squareToShrink, amountToShrink){
+  squareToShrink.width -= amountToShrink;
+  squareToShrink.height -= amountToShrink;
+}
+
+function restoreSquare(squareToRestore, amountToRestore){
+  squareToRestore.width += amountToRestore;
+  squareToRestore.height += amountToRestore;
+}
+
+function dimColor(squareToChange, colorIndex){
+  squareToChange.color = squareDarkerColors[colorIndex]
+}
+
+function lightenColor(squareToChange, colorIndex){
+  squareToChange.color = squareOriginalColors[colorIndex]
+}
+
+function playSound(indexToPlay){
+  sounds[indexToPlay].startPlaying()
+}
+
+
+//program commands
+activateButtons()
+</script>
+</body>
+</html>
