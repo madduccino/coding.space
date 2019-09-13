@@ -148,3 +148,7 @@ img {
 h4 {
 	font-size: 18px;
 }
+
+#scratch-box, #web-box, #woof-box {
+	position: absolute;
+}
