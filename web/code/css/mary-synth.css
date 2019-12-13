@@ -1,0 +1,14 @@
+body{
+  background-color: white;
+}
+
+div{
+   text-align:center;
+}
+
+.key{
+  display:inline-block;
+  border: 1px solid black;
+  background-color: blue;
+  padding: 30px;
+}
