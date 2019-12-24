@@ -15,7 +15,9 @@
     
     function pressKey(key) {
       var synth = new Tone.Synth().toMaster();
-      synth.triggerAttackRelease("C4", "8n");
+      if (key.keyCode===65) {
+        synth.triggerAttackRelease("C4", "8n");
+      }
     }
     
 </script>
