@@ -33,6 +33,7 @@ function pressKey(key) {
 }
 
 function releaseKey(key) {
+  //if key is released, change the background color back to normal
   switch(key.code){
     case "KeyA":
       cNote.style.backgroundColor = "blue"
