@@ -1,0 +1,89 @@
+<head>
+	<title>Extremely Normal Driving</title>
+	<link rel="stylesheet" type="text/css" href="./styles.css">
+	<link href="https://fonts.googleapis.com/css?family=Quicksand" rel="stylesheet">
+	<link rel="icon" type="favicon/x-icon" href="../images/favicon.ico">	
+	<meta charset="UTF-8">
+	<script type="text/javascript" src="./index.js"></script>
+</head>
+
+<body>
+	<h1>Extremely Normal Driving</h1>
+	<div class="container">
+		<div class="block">
+			<p>In this project, we're going to build a basic 3D driving simulator! Check it out!</p>
+			<iframe id="full" data-src="https://scratch.mit.edu/projects/355907202/embed?autostart=false" allowfullscreen=""></iframe>
+		</div>
+		<div class="block">
+			<p>1) Go to the link below and click "Remix" at the top. This will get us our backdrop and an important block: "Draw Line From To"! We will use it many times. Don't worry if you don't understand, we are only learning how to use it today!</p>
+			<p><a target="_blank" href="https://scratch.mit.edu/projects/357363953/editor">Extremely Normal Driving - Remix</a></p>
+			<button onclick="loadiframe('step1', this)">View Example</button>
+			<iframe id="step1" data-src="https://scratch.mit.edu/projects/357363953/embed?autostart=false" src="about:blank"></iframe>
+		</div>
+		<div class="block">
+			<p>2) The first thing you'll notice is that the remix came with a sprite! Called Drawer? It's a purple dot? Weird! That's because in 3D we DON'T use sprites AT ALL. That dot is hidden and you'll never see it! Instead, in the Drawer sprite, we'll write all of our code to 'draw' the 3D models.</p>
+			   <p>Find the "Draw Line From To block" in the "My Blocks" category. Use it to draw a white line on the road. Remember this is 3D, so you'll need to think about Z now! Don't worry about the variables that came with the remix just yet. Focus on drawing a line.</p>
+			<button onclick="loadiframe('step2', this)">View Example</button>
+			<iframe id="step2" data-src="https://scratch.mit.edu/projects/357366975/embed?autostart=false" src="about:blank"></iframe>
+		</div>
+		<div class="block">
+			<p>3) Figure out how to erase your line! Then code it to repeatedly erase and draw your road line again and again. Once you do that, show these variables:</p>
+			<p>camera X</p>
+			<p>camera Y</p>
+			<p>camera Z</p>
+			<p>Play around with them. What happens when you change X? Y? Z? What are these variables for? What do they mean? Change the Z-coordinates of your line a few times using the "Draw From Line To" block. Can you make the line start at different places closer and farther from the screen? </p>
+			<button onclick="loadiframe('step3', this)">View Example</button>
+			<iframe id="step3" data-src="https://scratch.mit.edu/projects/350372265/embed?autostart=false" src="about:blank"></iframe>
+		</div>
+		<div class="block">
+			<p>4) Now show one more variable: timer! You can find this one in the Sensing category. It's the number of seconds that have passed since the game began! Open up a new project and try using timer, the "mod" operator, and some number in a loop, saying the calculation. What do you notice? How can this be useful in controlling the position of something that moves in loops?</p> 
+			  <p>Use this concept and the Z-coordinate of your line to make your line move down the screen. You may need to multiply it by a bigger number to get it moving fast! Z is just like X and Y except it's the direction leading OUT OF THE SCREEN. Remember that towards the screen is the negative Z direction.</p>
+			<button onclick="loadiframe('step4', this)">View Example</button>
+			<iframe id="step4" data-src="https://scratch.mit.edu/projects/357371072/embed?autostart=false" src="about:blank"></iframe>
+		</div>
+		<div class="block">
+			<p>5) Then add more lines!</p>
+			<button onclick="loadiframe('step5', this)">View Example</button>
+			<iframe id="step5" data-src="https://scratch.mit.edu/projects/350414403/embed?autostart=false" src="about:blank"></iframe>
+		</div>
+		<div class="block">
+			<p>6) Now for a tree! Use what you learned about road lines to make a tree on the side of the road. It should move towards you just like the road lines. </p>
+			<button onclick="loadiframe('step6', this)">View Example</button>
+			<iframe id="step6" data-src="https://scratch.mit.edu/projects/351738802/embed?autostart=false" src="about:blank"></iframe>
+		</div>
+		<div class="block">
+			<p>7) You guessed it. Make a second tree.</p>
+			<button onclick="loadiframe('step7', this)">View Example</button>
+			<iframe id="step7" data-src="https://scratch.mit.edu/projects/357373227/embed?autostart=false" src="about:blank"></iframe>
+		</div>
+		<div class="block">
+			<p>8) And then make them start at different spots! By now your code must be sooooooo long. Maybe you should make some "My Blocks" to help you keep it short and clean?</p>
+			<button onclick="loadiframe('step8', this)">View Example</button>
+			<iframe id="step8" data-src="https://scratch.mit.edu/projects/357373382/embed?autostart=false" src="about:blank"></iframe>
+		</div>
+		<div class="block">
+			<p>9) Last but not least, model you a car! It doesn't need to move, but don't let that make you think it'll be easy! This is your final challenge! Great Work!</p>
+			<button onclick="loadiframe('step9', this)">View Example</button>
+			<iframe id="step9" data-src="https://scratch.mit.edu/projects/355737457/embed?autostart=false" src="about:blank"></iframe>
+		</div>
+		
+		<h2>Bonus Challenge (Advanced)</h2>
+		<div class="block">
+			<p>Bonus) Add steering! And don't let us stop you there: adding acceleration/deceleration might be cool. What about the variable FOV? Hmm what does that do?</p>
+			<button onclick="loadiframe('stepB', this)">View Example</button>
+			<iframe id="stepB" data-src="https://scratch.mit.edu/projects/355907202/embed?autostart=false" src="about:blank"></iframe>
+		</div>
+		
+		
+	</div>
+	<script>
+	  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	
+	  ga('create', 'UA-86847686-1', 'auto');
+	  ga('send', 'pageview');
+	
+	</script>
+</body>
