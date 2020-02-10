@@ -1,0 +1,82 @@
+<head>
+	<title>Easy Cash</title>
+	<link rel="stylesheet" type="text/css" href="./styles.css">
+	<link href="https://fonts.googleapis.com/css?family=Quicksand" rel="stylesheet">
+	<link rel="icon" type="favicon/x-icon" href="../images/favicon.ico">	
+	<meta charset="UTF-8">
+	<script type="text/javascript" src="./index.js"></script>
+</head>
+
+<body>
+	<h1>Easy Cash</h1>
+	<div class="container">
+		<div class="block">
+			<p>In this game, you click balloons and win REAL Amazon gift cards. It's easy! Just start the game and win money...</p>
+			<iframe id="full" data-src="https://scratch.mit.edu/projects/356191891/embed?autostart=false" allowfullscreen=""></iframe>
+		</div>
+		<div class="block">
+			<p>1) I hope you figured out this game is trolling you! There are no gift cards or balloons! Games like this are fun practical coding jokes you can play on your friends. Let's make our own! Start out by picking a backdrop and making a start button sprite.</p>
+			
+			<button onclick="loadiframe('step1', this)">View Example</button>
+			<iframe id="step1" data-src="https://scratch.mit.edu/projects/366571989/embed?autostart=false" src="about:blank"></iframe>
+		</div>
+		<div class="block">
+			<p>2) There are three seperate things the start button should do. Trying to do all of them together is complicated, so let's work on them one at a time! The first thing the button should do is move back to the center of the screen so long as it's far away from the cursor. Give it a try. Hint: you will need an sensing block called "Distance to ____."</p>
+			<button onclick="loadiframe('step2', this)">View Example</button>
+			<iframe id="step2" data-src="https://scratch.mit.edu/projects/366573645/embed?autostart=false" src="about:blank"></iframe>
+		</div>
+		<div class="block">
+			<p>3) The second thing the start sprite should do is run away from the mouse cursor as long as the cursor is close. Makes sure it moves real fast! You can do it! Hint: If the mouse cursor is right of the button, have it move left. If the mouse cursor is above the button, have it move down. Where should it move if the mouse cursor is left of the sprite? </p>
+			<button onclick="loadiframe('step3', this)">View Example</button>
+			<iframe id="step3" data-src="https://scratch.mit.edu/projects/366573591/embed?autostart=false" src="about:blank"></iframe>
+		</div>
+		<div class="block">
+			<p>4) The final thing the button should do is teleport to the opposite side if it gets pushed off screen. You got this. Hint: You can use the 'minus' operation block with a '0' to flip any positive or negative number to its opposite.</p>
+			<button onclick="loadiframe('step4', this)">View Example</button>
+			<iframe id="step4" data-src="https://scratch.mit.edu/projects/366574718/embed?autostart=false" src="about:blank"></iframe>
+		</div>
+		<div class="block">
+			<p>5) Great! Now we are going to work on making that button more tempting to players. Try out some of the effects you can find in 'looks.' Try to make the button look like it WANTS to be pressed. </p>
+			<button onclick="loadiframe('step5', this)">View Example</button>
+			<iframe id="step5" data-src="https://scratch.mit.edu/projects/366575172/embed?autostart=false" src="about:blank"></iframe>
+		</div>
+		<div class="block">
+			<p>6) Awesome! Now we want to make it more believeable that other players (not the friend you are making play this) play and win your game. We are going to add notifications from other players getting high scores or winning prizes. They don't actually exist of course but your friend doesn't know that! Create a sprite, and put a message in it that a player has won a prize. Then make more costumes, as many as you can, each with a unique player name and prize.</p>
+			<button onclick="loadiframe('step6', this)">View Example</button>
+			<iframe id="step6" data-src="https://scratch.mit.edu/projects/366575849/embed?autostart=false" src="about:blank"></iframe>
+		</div>
+		<div class="block">
+			<p>7) Do you remember Ghostbusters? Basically, do all the same steps as your ghost except with your messages. They should disappear and reappear every few seconds. Each time, appear in a new random location and change to a different costume.</p>
+			<button onclick="loadiframe('step7', this)">View Example</button>
+			<iframe id="step7" data-src="https://scratch.mit.edu/projects/366576138/embed?autostart=false" src="about:blank"></iframe>
+		</div>
+		<div class="block">
+			<p>8) When each message appears, make it appear in a new color. Or, if you want to be truly annoying, add a sound effect when they appear. </p>
+			<button onclick="loadiframe('step8', this)">View Example</button>
+			<iframe id="step8" data-src="https://scratch.mit.edu/projects/366577308/embed?autostart=false" src="about:blank"></iframe>
+		</div>
+		<div class="block">
+			<p>9) As a final trick, make a score variable. Name it whatever you like, we won't use it. It's just to make the player think they'll get money or points. Muahahahaha, the illusion is complete!</p>
+			<button onclick="loadiframe('step9', this)">View Example</button>
+			<iframe id="step9" data-src="https://scratch.mit.edu/projects/366577636/embed?autostart=false" src="about:blank"></iframe>
+		</div>
+		<h2>Bonus Challenge (Advanced)</h2>
+		<div class="block">
+			<p>Bonus) Did you notice how the start button is very jittery and shakes sometimes while it moves? This is because you likely coded it to only move in 8 or fewer different directions. Recode it using trigonometry to truly be able to travel in any direction. Compare how smooth this example is compared to the base version.</p>
+			<button onclick="loadiframe('stepB', this)">View Example</button>
+			<iframe id="stepB" data-src="https://scratch.mit.edu/projects/356417485/embed?autostart=false" src="about:blank"></iframe>
+		</div>
+		
+		
+	</div>
+	<script>
+	  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	
+	  ga('create', 'UA-86847686-1', 'auto');
+	  ga('send', 'pageview');
+	
+	</script>
+</body>
