@@ -402,12 +402,12 @@ function start(){
   
   if (canvas.getContext && dictionaryLoaded)
   {
-    //gameMessage = ["DINO HUNTER","Type the words above the Dinos as fast as possible","Hunt. Survive. Type."];
-    /*setTimeout(()=>{
+    gameMessage = ["DINO HUNTER","Type the words above the Dinos as fast as possible","Hunt. Survive. Type."];
+    setTimeout(()=>{
       gameMessage=[];
     },5000)
     setInterval(spawner,10);
-    setInterval(physics, 10);*/
+    setInterval(physics, 10);
     requestAnimationFrame(draw);
     //console.log(zombie)
     
