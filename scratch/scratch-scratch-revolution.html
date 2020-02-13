@@ -15,9 +15,10 @@
 			<iframe id="full" data-src="https://scratch.mit.edu/projects/356118346/embed?autostart=false" allowfullscreen=""></iframe>
 		</div>
 		<div class="block">
-			<p>1) Go to the link below and click "Remix" at the top. This will get us our Dancer and all of his costumes. Feel free to make your own if you know how!</p>
-			<button onclick="loadiframe('step1', this)">View Example</button>
-			<iframe id="step1" data-src="https://scratch.mit.edu/projects/356017150/embed?autostart=false" src="about:blank"></iframe>
+			<p>1) Go to the link below and click "Remix" at the top. This will get us our Dancer and all of his costumes. Feel free to make your own if you prefer!</p>
+				<p><a target="_blank" href="https://scratch.mit.edu/projects/356017150/editor">Scratch Scratch Revolution - Remix</a></p>
+			
+		
 		</div>
 		<div class="block">
 			<p>2) Choose a background for your dancer to dance in. Make sure to set your dancer to start in the correct position. Also choose your music and make it auto-repeat!</p>
@@ -30,13 +31,18 @@
 			<iframe id="step3" data-src="https://scratch.mit.edu/projects/356028456/embed?autostart=false" src="about:blank"></iframe>
 		</div>
 		<div class="block">
-			<p>4) Add the Video Sensing library to your project. You can add libraries by clicking the bottom left icon in Scratch. We are going to use the Camera Motion on Stage block! This block tells us how much motion (like dancing) your camera can see! I also recommend you set video transparency to 100%. Okay, now make a list. Over an over again, add the current camera motion value to the list. If the list gets too big, maybe more than ten, remove the oldest number.</p>
+			<p>4) Add the "Video Sensing" library to your project. You can add libraries by clicking the bottom left icon in Scratch. We are going to use the "Camera Motion on Stage" block! This block tells us how much motion (like dancing) your camera can see! We recommend you set video transparency to 100%.</p>
+			<p>Okay, now make a list. Over and over again, add the current camera motion value to the list. If the list gets too big, maybe more than ten, remove the oldest number.</p>
 			<p>Test! What do you think of the numbers? What are the highest and lowest numbers you see? What number is most common? Does anything seem strange? Why? </p>
 			<button onclick="loadiframe('step4', this)">View Example</button>
 			<iframe id="step4" data-src="https://scratch.mit.edu/projects/356031922/embed?autostart=false" src="about:blank"></iframe>
 		</div>
 		<div class="block">
-			<p>5) We need to figure out how to measure the amount of dancing you are doing. The list shows us what we get! Hmm, the numbers are very chaotic. Dancing is messy, who knew? We need to figure out a way to smooth the numbers a little, just so our game doesn't stop and start jarringly. There are two options. 1) We can calculate an average from our list. Averages changes slower and thus we'll have better control over what happens in our game. Or 2) we can use a rolling maximum, the highest in our list at any given time. Since every number in the list stays for a while, a single large number may stay the maximum for some time, also giving us control over our game. Choose one, and figure out how to calculate the value! </p>
+			<p>5) We need to figure out how to measure the amount of dancing you are doing. The list shows us what we get! Hmm, the numbers are very chaotic. Dancing is messy, who knew? We need to figure out a way to smooth the numbers a little, just so our game doesn't stop and start jarringly. There are two options:</p> 
+			<p>A) We can calculate an average from our list. Averages change more slowly and thus we'll have better control over what happens in our game.</p>
+			<p>-or-</p>
+			<p> B) We can use a rolling maximum: the highest in our list at any given time. Since every number in the list stays for a while, a single large number may stay the maximum for some time, also giving us control over our game.</p>
+			<p>Choose one option, and figure out how to calculate the value! </p>
 			<button onclick="loadiframe('step5', this)">View Example</button>
 			<iframe id="step5" data-src="https://scratch.mit.edu/projects/356029343/embed?autostart=false" src="about:blank"></iframe>
 		</div>
