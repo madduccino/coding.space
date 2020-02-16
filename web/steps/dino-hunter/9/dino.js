@@ -26,15 +26,15 @@ var go = false;
 var kills = 0;
 var health = 10;
 
-fetch('misc/words.txt')
-  .then((response) => {
+// fetch('/web/code/misc/words.txt')
+//   .then((response) => {
   
-     response.text().then((data)=>{
-       dictionary = data.split("\n");
-       dictionaryLoaded = true;
-     })
-     .then(()=>{start();})
-  })
+//     response.text().then((data)=>{
+//       dictionary = data.split("\n");
+//       dictionaryLoaded = true;
+//     })
+//     .then(()=>{start();})
+//   })
 var bg = new Image();
 bg.src = "/web/code/images/dinobg.png";
 var renderList = [];
