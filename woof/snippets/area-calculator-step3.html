@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="https://rawcdn.githack.com/stevekrouse/WoofJS/8f46930383acf6e7bc6db6a9084014bd3cbdd44a/woof.js"></script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Area Calculator Step 3</title>
+</head>
+<body>
+
+<script>
+setBackdropColor('honeydew')
+
+//objects that appear on screen
+var windowText = new Text({
+  text: "Click shape to calculate area.", 
+  size: 20, 
+  color: "black", 
+  fontFamily: "arial", 
+  textAlign: "center", 
+})
+
+var circle = new Circle({
+  radius: 100, 
+  color: "hotpink", 
+  x: windowText.x, 
+  y: windowText.y + 125
+})
+
+//what happens when each shape is clicked
+circle.onMouseDown(() => {
+  windowText.text = prompt("Enter Radius")
+})
+</script>
+</body>
+</html>

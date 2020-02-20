@@ -2,7 +2,9 @@
     <title>Maze</title>
     <link rel="stylesheet" type="text/css" href="./styles.css">
     <link href="https://fonts.googleapis.com/css?family=Quicksand" rel="stylesheet">
-    <link rel="icon" type="favicon/x-icon" href="../images/favicon.ico">
+    <link rel="icon" type="favicon/x-icon" href="../images/favicon.ico">	
+    <meta charset="UTF-8">
+	<script type="text/javascript" src="./index.js"></script>
 </head>
 
 <body>
@@ -11,94 +13,123 @@
         <div class="block">
 
             <p>Help! Your friend is trapped in a maze. In this game, we're going to get them out!</p>
-            <iframe allowtransparency="true" width="485" height="402" src="//scratch.mit.edu/projects/embed/96413206/?autostart=false" frameborder="0" allowfullscreen></iframe>
+			<iframe id="full" data-src="https://scratch.mit.edu/projects/embed/96413206/?autostart=false" allowfullscreen=""></iframe>
         </div>
+        
         <div class="block">
             <p>1) Delete the cat character (or “sprite”). </p>
-            <p> (Hint: click on the scissors at the top of the screen and then click on the cat.)
-            </p>
-            <iframe allowtransparency="true" width="485" height="402" src="//scratch.mit.edu/projects/embed/96397793/?autostart=false" frameborder="0" allowfullscreen></iframe>
+     
+			<button onclick="loadiframe('step1', this)">View Example</button>
+			<iframe id="step1" data-src="https://scratch.mit.edu/projects/embed/96397793/?autostart=false" src="about:blank"></iframe>
         </div>
+        
         <div class="block">
             <p>2) Choose a character to complete the maze. </p>
-            <p> (Hint: Look for the words “New Sprite” in the middle of the screen and click the character to see your options. Double click on the character that you want to use.)
+         
             </p>
-            <iframe allowtransparency="true" width="485" height="402" src="//scratch.mit.edu/projects/embed/96312288/?autostart=false" frameborder="0" allowfullscreen></iframe>
+			<button onclick="loadiframe('step2', this)">View Example</button>
+			<iframe id="step2" data-src="https://scratch.mit.edu/projects/embed/96312288/?autostart=false" src="about:blank"></iframe>
+  
         </div>
+        
         <div class="block">
             <p>3) Make the background (or “backdrop”) all one color. </p>
-            <p> (Hint: Click on on the backdrop in the bottom-left of the screen. Then use the “paint can” tool on the left and select a color.)</p>
-            <iframe allowtransparency="true" width="485" height="402" src="//scratch.mit.edu/projects/embed/96409618/?autostart=false" frameborder="0" allowfullscreen></iframe>
+			<button onclick="loadiframe('step3', this)">View Example</button>
+			<iframe id="step3" data-src="https://scratch.mit.edu/projects/embed/96409618/?autostart=false" src="about:blank"></iframe>
         </div>
+        
         <div class="block">
             <p>4) Draw a white path for the character to follow. Don’t make the path too skinny or your maze will be very hard. </p>
-            <p> (Hint: Use the paintbrush or line-drawing tool. Find it close to the paint bucket. To make the brush or line thicker, there is a sliding bar to the left of the colors.)
+            <p> (Hint: Use the paintbrush or line-drawing tool. Find it close to the paint bucket. To make the brush or line thicker, adjust the number above the backdrop.)
             </p>
-            <iframe allowtransparency="true" width="485" height="402" src="//scratch.mit.edu/projects/embed/96449738/?autostart=false" frameborder="0" allowfullscreen></iframe>
+			<button onclick="loadiframe('step4', this)">View Example</button>
+			<iframe id="step4" data-src="https://scratch.mit.edu/projects/embed/96449738/?autostart=false" src="about:blank"></iframe>
         </div>
+        
         <div class="block">
             <p>5) Using two different colors, draw a starting point and and ending point for your maze.</p>
-            <iframe allowtransparency="true" width="485" height="402" src="//scratch.mit.edu/projects/embed/96410071/?autostart=false" frameborder="0" allowfullscreen></iframe>
+			<button onclick="loadiframe('step5', this)">View Example</button>
+			<iframe id="step5" data-src="https://scratch.mit.edu/projects/embed/96410071/?autostart=false" src="about:blank"></iframe>
         </div>
+        
         <div class="block">
             <p>6) Make your character small enough to fit inside the maze. </p>
-            <p> (Hint: Click the shrink tool next to the scissors and then click on your character as many times as it takes to be the right size.)</p>
-            <iframe allowtransparency="true" width="485" height="402" src="//scratch.mit.edu/projects/embed/96410704/?autostart=false" frameborder="0" allowfullscreen></iframe>
+            <button onclick="loadiframe('step6', this)">View Example</button>
+			<iframe id="step6" data-src="https://scratch.mit.edu/projects/embed/96410704/?autostart=false" src="about:blank"></iframe>
         </div>
+        
         <div class="block">
             <p>7) Make your character go to the starting point of the maze when the green flag is clicked. </p>
             <p> (Hint: if you drag your character to the starting point, the block that says "Go to" will automatically record that location.)</p>
-            <iframe allowtransparency="true" width="485" height="402" src="//scratch.mit.edu/projects/embed/96410759/?autostart=false" frameborder="0" allowfullscreen></iframe>
+			<button onclick="loadiframe('step7', this)">View Example</button>
+            <iframe id="step7" data-src="https://scratch.mit.edu/projects/embed/96410759/?autostart=false" src="about:blank"></iframe>
         </div>
+        
         <div class="block">
             <p>8) The character will move based on the four different arrow keys. </p>
             <p> To start, make your character move right when you press the right arrow key. </p>
             <p> (Hint: Look in Events and Motion.)</p>
-            <iframe allowtransparency="true" width="485" height="402" src="//scratch.mit.edu/projects/embed/96410878/?autostart=false" frameborder="0" allowfullscreen></iframe>
+			<button onclick="loadiframe('step8', this)">View Example</button>
+			<iframe id="step8" data-src="https://scratch.mit.edu/projects/embed/96410878/?autostart=false" src="about:blank"></iframe>
         </div>
+        
         <div class="block">
             <p>9) When you press the up key, make your character point in the right direction and then move.</p>
-            <iframe allowtransparency="true" width="485" height="402" src="//scratch.mit.edu/projects/embed/96410980/?autostart=false" frameborder="0" allowfullscreen></iframe>
+			<button onclick="loadiframe('step9', this)">View Example</button>
+			<iframe id="step9" data-src="https://scratch.mit.edu/projects/embed/96410980/?autostart=false" src="about:blank"></iframe>
         </div>
+        
         <div class="block">
             <p>10) Make the other arrow keys (down and left) work the same way. </p>
             <p> (Hint: you will also need to tell the character not to rotate.)</p>
-            <iframe allowtransparency="true" width="485" height="402" src="//scratch.mit.edu/projects/embed/96411070/?autostart=false" frameborder="0" allowfullscreen></iframe>
+			<button onclick="loadiframe('step10', this)">View Example</button>
+			<iframe id="step10" data-src="https://scratch.mit.edu/projects/embed/96411070/?autostart=false" src="about:blank"></iframe>
         </div>
+        
         <div class="block">
             <p>11) If your sprite touches a wall of the maze, have it go back to the starting point. </p>
-            <iframe allowtransparency="true" width="485" height="402" src="//scratch.mit.edu/projects/embed/96411329/?autostart=false" frameborder="0" allowfullscreen></iframe>
+			<button onclick="loadiframe('step11', this)">View Example</button>
+			<iframe id="step11" data-src="https://scratch.mit.edu/projects/embed/96411329/?autostart=false" src="about:blank"></iframe>
         </div>
+        
         <div class="block">
             <p>12) Make a second level for your maze game by making a second background. </p>
             <p> Follow the same steps you used to create the background for Level 1, including painting the background one solid color, drawing a white path, and creating a finish line. </p>
             <p> Make sure to use a different color from Level 1 for your background, but still leave a white path. </p>
-            <iframe allowtransparency="true" width="485" height="402" src="//scratch.mit.edu/projects/embed/96411481/?autostart=false" frameborder="0" allowfullscreen></iframe>
+			<button onclick="loadiframe('step12', this)">View Example</button>
+			<iframe id="step12" data-src="https://scratch.mit.edu/projects/embed/96411481/?autostart=false" src="about:blank"></iframe>
         </div>
+        
         <div class="block">
             <p>13) When you get to the endpoint sprite on Level 1, switch to the second backdrop and have your character go to the starting point for Level 2. </p>
-            <iframe allowtransparency="true" width="485" height="402" src="//scratch.mit.edu/projects/embed/96412567/?autostart=false" frameborder="0" allowfullscreen></iframe>
+			<button onclick="loadiframe('step13', this)">View Example</button>
+			<iframe id="step13" data-src="https://scratch.mit.edu/projects/embed/96412567/?autostart=false" src="about:blank"></iframe>
         </div>
+        
         <div class="block">
             <p>14) If your character touches the wall of the maze in Level 2, have it transport to the starting point of level 2. </p>
             <p> (Hint: use the same strategy you used in Level 1.)</p>
-            <iframe allowtransparency="true" width="485" height="402" src="//scratch.mit.edu/projects/embed/96413040/?autostart=false" frameborder="0" allowfullscreen></iframe>
+			<button onclick="loadiframe('step14', this)">View Example</button>
+			<iframe id="step14" data-src="https://scratch.mit.edu/projects/embed/96413040/?autostart=false" src="about:blank"></iframe>
         </div>
+        
         <div class="block">
             <p>15) When the flag is clicked, make sure the background will start at Level 1. </p>
-            <iframe allowtransparency="true" width="485" height="402" src="//scratch.mit.edu/projects/embed/96413079/?autostart=false" frameborder="0" allowfullscreen></iframe>
+			<button onclick="loadiframe('step15', this)">View Example</button>
+			<iframe id="step15" data-src="https://scratch.mit.edu/projects/embed/96413079/?autostart=false" src="about:blank"></iframe>
         </div>
+        
         <div class="block">
             <p>16) When your character touches the finish spot, they’re free! </p>
             <p> (Hint: there are many ways to tell the player that they have won the game. Choose one and be creative!)</p>
-            <iframe allowtransparency="true" width="485" height="402" src="//scratch.mit.edu/projects/embed/96456596/?autostart=false" frameborder="0" allowfullscreen></iframe>
+            <button onclick="loadiframe('step16', this)">View Example</button>
+            <iframe id="step16" data-src="https://scratch.mit.edu/projects/embed/96456596/?autostart=false" src="about:blank"></iframe>
         </div>
+        
         <div class="block">
             <p>17) Want to make the game even more your own? This is your chance. You can decorate the background, make obstacles, have the character greet you at the start or when you finish Level 1, etc. Be creative!</p>
-            <iframe allowtransparency="true" width="485" height="402" src="//scratch.mit.edu/projects/embed/96413206/?autostart=false" frameborder="0" allowfullscreen></iframe>
-        </div>
-        <div class="block">
-            <p>Share your game publicly by clicking the share button in the top-right corner.</p>
+			<button onclick="loadiframe('step17', this)">View Example</button>
+			<iframe id="step17" data-src="https://scratch.mit.edu/projects/embed/96413206/?autostart=false" src="about:blank"></iframe>
         </div>
     </div>
     <script>

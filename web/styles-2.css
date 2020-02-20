@@ -2,6 +2,7 @@ html body {
     background: linear-gradient(37deg, #8972DD, #293CAE);
     background-repeat: no-repeat; 
     font-family: 'Quicksand' ,sans-serif !important;
+    text-align: center;
 }
 
 h1 {
@@ -9,7 +10,10 @@ h1 {
     text-align: center;
     color:white;
 }
-
+h2 {
+    font-weight: 700;
+    
+}
 p {font-size: 140%;}
 
 iframe {

@@ -3,54 +3,73 @@
   <link rel="stylesheet" type="text/css" href="./styles.css">
   <link href="https://fonts.googleapis.com/css?family=Quicksand" rel="stylesheet">
   <link rel="icon" type="favicon/x-icon" href="../images/favicon.ico">
+	<meta charset="UTF-8">
+	<script type="text/javascript" src="./index.js"></script>
 </head>
 
 <body>
   <h1>Platform Game</h1>
   <div class="container">
+    
     <div class="block">
       <p>Use the arrow keys and spacebar in this platform game to dodge the balls and get to the end.</p>
-      <iframe width="485" height="402" src="//scratch.mit.edu/projects/embed/83053432/?autostart=false" allowfullscreen=""></iframe>
-    </div>
+			<iframe id="full" data-src="https://scratch.mit.edu/projects/embed/83053432/?autostart=false" allowfullscreen=""></iframe>
+    </div> 
+    
     <div class="block">
       <p>1) Draw a platform background, with ground one color, and ladders another color, at least three platforms, and a finish place.</p>
-      <iframe width="485" height="402" src="//scratch.mit.edu/projects/embed/83046512/?autostart=false" allowfullscreen=""></iframe>
+			<button onclick="loadiframe('step1', this)">View Example</button>
+			<iframe id="step1" data-src="https://scratch.mit.edu/projects/embed/83046512/?autostart=false" src="about:blank"></iframe>
     </div>
+    
     <div class="block">
       <p>2) If the character is not touching the ground or a platform, make it fall until it does. (To see the example again, click the green flag.)</p>
-      <iframe width="485" height="402" src="//scratch.mit.edu/projects/embed/100217239/?autostart=false" allowfullscreen=""></iframe>
+			<button onclick="loadiframe('step2', this)">View Example</button>
+			<iframe id="step2" data-src="https://scratch.mit.edu/projects/embed/100217239/?autostart=false" src="about:blank"></iframe>
     </div>
+    
     <div class="block">
       <p>3) Now, make the character fall realistically. (Hint: Does a falling object’s speed stay the same, get faster, or get slower as it falls? Observe the difference between the examples for step 2 and step 3.)</p>
-      <iframe width="485" height="402" src="//scratch.mit.edu/projects/embed/83043916/?autostart=false" allowfullscreen=""></iframe>
+			<button onclick="loadiframe('step3', this)">View Example</button>
+			<iframe id="step3" data-src="https://scratch.mit.edu/projects/embed/83043916/?autostart=false" src="about:blank"></iframe>
     </div>
+    
     <div class="block">
       <p>4) Make the left-right arrow keys move your sprite on ground with its legs moving.</p>
-      <iframe width="485" height="402" src="//scratch.mit.edu/projects/embed/83046684/?autostart=false" allowfullscreen=""></iframe>
+			<button onclick="loadiframe('step4', this)">View Example</button>
+			<iframe id="step4" data-src="https://scratch.mit.edu/projects/embed/83046684/?autostart=false" src="about:blank"></iframe>
     </div>
+    
     <div class="block">
       <p>5) Make the up-arrow key move your sprite up the ladder when you’re touching it.</p>
-      <iframe width="485" height="402" src="//scratch.mit.edu/projects/embed/83048388/?autostart=false" allowfullscreen=""></iframe>
+			<button onclick="loadiframe('step5', this)">View Example</button>
+			<iframe id="step5" data-src="https://scratch.mit.edu/projects/embed/83048388/?autostart=false" src="about:blank"></iframe>
     </div>
+    
     <div class="block">
       <p>6) Make the spacebar have your sprite jump. (Hint: When you jump, on the way up, does your speed get faster, slower or stay the same?)</p>
-      <iframe width="485" height="402" src="//scratch.mit.edu/projects/embed/83049368/?autostart=false" allowfullscreen=""></iframe>
+			<button onclick="loadiframe('step6', this)">View Example</button>
+			<iframe id="step6" data-src="https://scratch.mit.edu/projects/embed/83049368/?autostart=false" src="about:blank"></iframe>
     </div>
+    
     <div class="block">
       <p>7) Add balls. (Hint: Making them move is easier than you think.)</p>
-      <iframe width="485" height="402" src="//scratch.mit.edu/projects/embed/83049650/?autostart=false" allowfullscreen=""></iframe>
+			<button onclick="loadiframe('step7', this)">View Example</button>
+			<iframe id="step7" data-src="https://scratch.mit.edu/projects/embed/83049650/?autostart=false" src="about:blank"></iframe>
     </div>
+    
     <div class="block">
       <p>8) Make the finish place work.</p>
-      <iframe width="485" height="402" src="//scratch.mit.edu/projects/embed/83051448/?autostart=false" allowfullscreen=""></iframe>
+			<button onclick="loadiframe('step8', this)">View Example</button>
+			<iframe id="step8" data-src="https://scratch.mit.edu/projects/embed/83051448/?autostart=false" src="about:blank"></iframe>
     </div>
+    
     <div class="block">
       <p>9) Be creative: add another level or a trapdoor or a laser or another kind of obstacle.</p>
-      <iframe width="485" height="402" src="//scratch.mit.edu/projects/embed/83053432/?autostart=false" allowfullscreen=""></iframe>
+			<button onclick="loadiframe('step9', this)">View Example</button>
+			<iframe id="step9" data-src="https://scratch.mit.edu/projects/embed/83053432/?autostart=false" src="about:blank"></iframe>
     </div>
-    <div class="block">
-      <p>10) Share your game publicly by clicking the share button in the top-right corner.</p>
-    </div>
+
   </div>
   <script>
 	  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){

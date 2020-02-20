@@ -3,39 +3,46 @@
     <link rel="stylesheet" type="text/css" href="./styles.css">
     <link href="https://fonts.googleapis.com/css?family=Quicksand" rel="stylesheet">
     <link rel="icon" type="favicon/x-icon" href="../images/favicon.ico">
+	<meta charset="UTF-8">
+	<script type="text/javascript" src="./index.js"></script>
 </head>
 
 <body>
     <h1>Cloning Tutorial</h1>
     <div class="container">
         <div class="block">
-
-            <p>In this project, we're going to learn how to make clones! </p>
-            <iframe allowtransparency="true" width="485" height="402" src="//scratch.mit.edu/projects/embed/222927020/?autostart=false" frameborder="0" allowfullscreen></iframe>
+            <p>In this project, we're going to learn how to make clones! </p>        
+			<iframe id="full" data-src="https://scratch.mit.edu/projects/embed/222927020/?autostart=false" allowfullscreen=""></iframe>    
         </div>
         <div class="block">
             <p>1) Pick a sprite and a backdrop! </p>
-            <iframe allowtransparency="true" width="485" height="402" src="//scratch.mit.edu/projects/embed/221550441/?autostart=false" frameborder="0" allowfullscreen></iframe>
+			<button onclick="loadiframe('step2', this)">View Example</button>
+			<iframe id="step2" data-src="https://scratch.mit.edu/projects/embed/221550441/?autostart=false" src="about:blank"></iframe>
         </div>
         <div class="block">
             <p>2) Have your original sprite say "I am the original sprite" for 2 seconds then hide.</p>
-            <iframe allowtransparency="true" width="485" height="402" src="//scratch.mit.edu/projects/embed/222924180/?autostart=false" frameborder="0" allowfullscreen></iframe>
+			<button onclick="loadiframe('step3', this)">View Example</button>
+			<iframe id="step3" data-src="https://scratch.mit.edu/projects/embed/222924180/?autostart=false" src="about:blank"></iframe>
         </div>
         <div class="block">
             <p>3) After 2 seconds, "create a clone" of your sprite and hide your original sprite (note: make sure your clone still shows).</p>
-            <iframe allowtransparency="true" width="485" height="402" src="//scratch.mit.edu/projects/embed/222925079/?autostart=false" frameborder="0" allowfullscreen></iframe>
+			<button onclick="loadiframe('step4', this)">View Example</button>
+			<iframe id="step4" data-src="https://scratch.mit.edu/projects/embed/222925079/?autostart=false" src="about:blank"></iframe>
         </div>
         <div class="block">
-            <p>4) When your sprite "starts as a clone", have it go to a random location on the screen and then say "I am a clone".  </p>
-            <iframe allowtransparency="true" width="485" height="402" src="//scratch.mit.edu/projects/embed/222925586/?autostart=false" frameborder="0" allowfullscreen></iframe>
+            <p>4) When your sprite "starts as a clone", have it go to a random location on the screen and then say "I am a clone".</p>
+			<button onclick="loadiframe('step5', this)">View Example</button>
+			<iframe id="step5" data-src="https://scratch.mit.edu/projects/embed/222925586/?autostart=false" src="about:blank"></iframe>
         </div>
         <div class="block">
             <p>5) Make it so that your clones are created <b>every </b>two seconds. </p>
-            <iframe allowtransparency="true" width="485" height="402" src="//scratch.mit.edu/projects/embed/222927692/?autostart=false" frameborder="0" allowfullscreen></iframe>
+			<button onclick="loadiframe('step6', this)">View Example</button>
+			<iframe id="step6" data-src="https://scratch.mit.edu/projects/embed/222927692/?autostart=false" src="about:blank"></iframe>
         </div>
         <div class="block">
-            <p>6) Bonus step: Add a new feature for your clone to do after it says "I am a clone". This can be anything you want!  </p>
-            <iframe allowtransparency="true" width="485" height="402" src="//scratch.mit.edu/projects/embed/222927020/?autostart=false" frameborder="0" allowfullscreen></iframe>
+            <p>6) Bonus step: Add a new feature for your clone to do after it says "I am a clone". This can be anything you want!</p>
+			<button onclick="loadiframe('step7', this)">View Example</button>
+			<iframe id="step7" data-src="https://scratch.mit.edu/projects/embed/222927020/?autostart=false" src="about:blank"></iframe>
         </div>
     </div>
     <script>

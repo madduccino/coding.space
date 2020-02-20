@@ -2,56 +2,67 @@
     <title>Maze</title>
     <link rel="stylesheet" type="text/css" href="./styles.css">
 		<link href="https://fonts.googleapis.com/css?family=Quicksand" rel="stylesheet">
-		<link rel="icon" type="favicon/x-icon" href="../images/favicon.ico">
+		<link rel="icon" type="favicon/x-icon" href="../images/favicon.ico">	
+		<meta charset="UTF-8">
+	<script type="text/javascript" src="./index.js"></script>
 </head>
 
 <body>
 	<h1>Maze</h1>
 	<div class="paragraph" style="text-align:center; color:white;">If this is a little hard, click <a href="./maze-beginner.html">here</a> for a version of the Maze Game untutorial that has more steps.</div>
 	<div class="container">
+	    <div class="block">
+		  <p>In this project, we're going to make a maze game.</p>
+       		<iframe id="full" data-src="https://scratch.mit.edu/projects/embed/84495266/?autostart=false" allowfullscreen=""></iframe>
+        </div>
 		<div class="block">
-			<p>In this project, we're going to make a maze game.</p>
-				<iframe width="485" height="402" src="//scratch.mit.edu/projects/embed/84495266/?autostart=false" allowfullscreen=""></iframe>
-		</div>
-		<div class="block">
-			<p>1) Pick one of these three pre-made mazes and remix them:</p>
-			<ul style="list-style: none;">
-				<li>  <a href="//scratch.mit.edu/projects/203757293/#editor" target="blank">Maze 1</a></li>
-				<li>  <a href="//scratch.mit.edu/projects/203760148/#editor" target="blank">Maze 2 </a></li>
-				<li>  <a href="//scratch.mit.edu/projects/203763113/#editor" target="blank">Maze 3 </a> </li>
-			</ul>
-			<p> OR Make a background and design your maze using one color. 
-				Feel free to make any design you like, as long as you leave a path to follow.
+			<p>1) Click on the link below and remix it</p>
+			
+				<a href="//scratch.mit.edu/projects/203763113/#editor" target="blank">Maze Game - Starter </a>
+			
+			<p> 
+				OR design a background with a maze. Remember to leave a clear path for your sprite.
 			</p>
-			<iframe width="485" height="402" src="//scratch.mit.edu/projects/embed/84465390/?autostart=false" allowfullscreen=""></iframe>
+			<button onclick="loadiframe('step1', this)">View Example</button>
+			<iframe id="step1" data-src="https://scratch.mit.edu/projects/embed/84465390/?autostart=false" src="about:blank"></iframe>
 		</div>
+
 		<div class="block">
 			<p>2) Choose a sprite to solve your maze. Shrink the sprite fit your maze and teleport to the start of your maze when the green flag is clicked.</p>
-			<iframe width="485" height="402" src="//scratch.mit.edu/projects/embed/84467668/?autostart=false" allowfullscreen=""></iframe>
+			<button onclick="loadiframe('step2', this)">View Example</button>
+			<iframe id="step2" data-src="https://scratch.mit.edu/projects/embed/84467668/?autostart=false" src="about:blank"></iframe>	
 		</div>
+
 		<div class="block">
 			<p>3) Make your sprite move when you press the arrow keys. Make sure to prevent your sprite from rotating, so it doesn't accidentally hit a maze wall.</p>
-			<iframe width="485" height="402" src="//scratch.mit.edu/projects/embed/84470144/?autostart=false" allowfullscreen=""></iframe>
+			<button onclick="loadiframe('step3', this)">View Example</button>
+			<iframe id="step3" data-src="https://scratch.mit.edu/projects/embed/84470144/?autostart=false" src="about:blank"></iframe>	  
 		</div>
+
 		<div class="block">
 			<p>4) Make your sprite go back to the start if it hits a wall. </p>
-					<iframe width="485" height="402" src="//scratch.mit.edu/projects/embed/84473186/?autostart=false" allowfullscreen=""></iframe>
-		</div>
+			<button onclick="loadiframe('step4', this)">View Example</button>
+			<iframe id="step4" data-src="https://scratch.mit.edu/projects/embed/84473186/?autostart=false" src="about:blank"></iframe>	
+       </div>
+
 		<div class="block">
-			<p>5) Make a second level for your maze game. Create a variable called level and make it start at 1 when the green flag is pressed.</p>
-			<iframe width="485" height="402" src="//scratch.mit.edu/projects/embed/84474824/?autostart=false" allowfullscreen=""></iframe>
+			<p>5) Create a variable called level and make it start at 1 when the green flag is pressed.</p>
+			<button onclick="loadiframe('step5', this)">View Example</button>
+			<iframe id="step5" data-src="https://scratch.mit.edu/projects/embed/84474824/?autostart=false" src="about:blank"></iframe>	
 		</div>
+
 		<div class="block">
 			<p>6) Make a finish spot on your first level. When you get to the finish spot, the background switches to the second level.</p>
-				<iframe width="485" height="402" src="//scratch.mit.edu/projects/embed/84476498/?autostart=false" allowfullscreen=""></iframe>
+			<button onclick="loadiframe('step6', this)">View Example</button>
+			<iframe id="step6" data-src="https://scratch.mit.edu/projects/embed/84476498/?autostart=false" src="about:blank"></iframe>	
 		</div>
+
 		<div class="block">
 			<p>7) Make it so that when your character touches the finish spot on the second level, you win! </p>
-			<iframe width="485" height="402" src="//scratch.mit.edu/projects/embed/84481418/?autostart=false" allowfullscreen=""></iframe>
+			<button onclick="loadiframe('step7', this)">View Example</button>
+			<iframe id="step7" data-src="https://scratch.mit.edu/projects/embed/84495266/?autostart=false" src="about:blank"></iframe>	
 		</div>
-		<div class="block">
-			<p>8) Share your game publicly by clicking the share button in the top-right corner.</p>
-		</div>
+
 	</div>
 	<script>
 	  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){

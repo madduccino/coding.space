@@ -2,50 +2,52 @@
 	<title>Design Click</title>
 	<link rel="stylesheet" type="text/css" href="./styles.css">
 	<link href="https://fonts.googleapis.com/css?family=Quicksand" rel="stylesheet">
-	<link rel="icon" type="favicon/x-icon" href="../images/favicon.ico">
+	<link rel="icon" type="favicon/x-icon" href="../images/favicon.ico">	
+	<meta charset="UTF-8">
+	<script type="text/javascript" src="./index.js"></script>
 </head>
 
 <body>
 	<h1>Design Click</h1>
 	<div class="container">
 		<div class="block">
-
-			<p>In this project we're making a graphic design generator. See what happens when you click the screen and adjust the sliders! </p>
-			<iframe width="485" height="402" src="//scratch.mit.edu/projects/embed/106427546/?autostart=false" allowfullscreen=""></iframe>
+			<p>In this project we're making a graphic design generator. See what happens when you click the screen and adjust the sliders! </p>			
+			<iframe id="full" data-src="https://scratch.mit.edu/projects/embed/106427546/?autostart=false" allowfullscreen=""></iframe>
 		</div>
 		<div class="block">
-			<p>1) First, replace the cat sprite with some kind of small sprite, like a dot.
-			</p>
-			<iframe width="485" height="402" src="//scratch.mit.edu/projects/embed/107077086/? autostart=false" allowfullscreen=""></iframe>
+			<p>1) First, replace the cat sprite with some kind of small sprite, like a dot.</p>
+			<button onclick="loadiframe('step1', this)">View Example</button>
+			<iframe id="step1" data-src="https://scratch.mit.edu/projects/embed/107077086/?autostart=false" src="about:blank"></iframe>
 		</div>
 		<div class="block">
 			<p>2) Make it so your sprite always follows the mouse when the green flag is clicked.</p>
-			<iframe width="485" height="402" src="//scratch.mit.edu/projects/embed/107076027/?autostart=false" allowfullscreen=""></iframe>
+			<button onclick="loadiframe('step2', this)">View Example</button>
+			<iframe id="step2" data-src="https://scratch.mit.edu/projects/embed/107076027/?autostart=false" src="about:blank"></iframe>
 		</div>
 		<div class="block">
 			<p>3) Next, use pen and motion blocks to make a line when you click. </p>
-			<iframe width="485" height="402" src="//scratch.mit.edu/projects/embed/109186347/?autostart=false" allowfullscreen=""></iframe>
+			<button onclick="loadiframe('step3', this)">View Example</button>
+			<iframe id="step3" data-src="https://scratch.mit.edu/projects/embed/109186347/?autostart=false" src="about:blank"></iframe>
 		</div>
 		<div class="block">
 			<p>4) See if you can turn that line into some kind of shape. (Hint: try changing the angle.)</p>
-			<iframe width="485" height="402" src="//scratch.mit.edu/projects/embed/107070139/?autostart=false" allowfullscreen=""></iframe>
+			<button onclick="loadiframe('step4', this)">View Example</button>
+			<iframe id="step4" data-src="https://scratch.mit.edu/projects/embed/107070139/?autostart=false" src="about:blank"></iframe>
 		</div>
 		<div class="block">
 			<p>5) Make the shape change color on each different click.</p>
-			<iframe width="485" height="402" src="//scratch.mit.edu/projects/embed/107069629/?autostart=false" allowfullscreen=""></iframe>
+			<button onclick="loadiframe('step5', this)">View Example</button>
+			<iframe id="step5" data-src="https://scratch.mit.edu/projects/embed/107069629/?autostart=false" src="about:blank"></iframe>
 		</div>
 		<div class="block">
-			<p>6) Create a button that lets the user clear the screen and start over.
-			</p>
-			<iframe width="485" height="402" src="//scratch.mit.edu/projects/embed/107068660/?autostart=false" allowfullscreen=""></iframe>
+			<p>6) Create a button that lets the user clear the screen and start over.</p>
+			<button onclick="loadiframe('step6', this)">View Example</button>
+			<iframe id="step6" data-src="https://scratch.mit.edu/projects/embed/107068660/?autostart=false" src="about:blank"></iframe>
 		</div>
 		<div class="block">
-			<p>7) In this game, the color of the shape depends on the coordinates of the click, and other characteristics of the shape can be modified using variables. Can you make something different every time you click?
-			</p>
-			<iframe width="485" height="402" src="//scratch.mit.edu/projects/embed/106427546/?autostart=false" allowfullscreen=""></iframe>
-		</div>
-		<div class="block">
-			<p>8) Share your game publicly by clicking the share button in the top-right corner.</p>
+			<p>7) In this game, the color of the shape depends on the coordinates of the click, and other characteristics of the shape can be modified using variables. Can you make something different every time you click?</p>
+			<button onclick="loadiframe('step7', this)">View Example</button>
+			<iframe id="step7" data-src="https://scratch.mit.edu/projects/embed/106427546/?autostart=false" src="about:blank"></iframe>
 		</div>
 	</div>
 	<script>

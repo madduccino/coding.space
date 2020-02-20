@@ -3,6 +3,8 @@
 	<link rel="stylesheet" type="text/css" href="./styles.css">
 	<link href="https://fonts.googleapis.com/css?family=Quicksand" rel="stylesheet">
 	<link rel="icon" type="favicon/x-icon" href="../images/favicon.ico">
+	<meta charset="UTF-8">
+	<script type="text/javascript" src="./index.js"></script>
 </head>
 
 <body>
@@ -11,49 +13,55 @@
 		<div class="block">
 
 			<p>In this project, we’re making a game where you rotate a controller to catch the colored dots correctly.</p>
-			<iframe width="485" height="402" src="//scratch.mit.edu/projects/embed/79395566/?autostart=false" allowfullscreen=""></iframe>
+			<iframe id="full" data-src="https://scratch.mit.edu/projects/embed/79395566/?autostart=false" allowfullscreen="" src="about:me"></iframe>
 		</div>
 		<div class="block">
 			<p>1) Delete the original sprite and draw a controller sprite. Put it in the center of the screen.</p>
-			<iframe width="485" height="402" src="//scratch.mit.edu/projects/embed/79301444/?autostart=false" allowfullscreen=""></iframe>
+			<button onclick="loadiframe('step2', this)">View Example</button>
+			<iframe id="step2" data-src="https://scratch.mit.edu/projects/embed/79301444/?autostart=false" src="about:blank"></iframe>
 		</div>
 		<div class="block">
 			<p>2) When you click the left and right arrow keys, make the controller rotate. (Challenge: can you make the rotation motion smooth?)</p>
-			<iframe width="485" height="402" src="//scratch.mit.edu/projects/embed/79304328/?autostart=false" allowfullscreen=""></iframe>
+			<button onclick="loadiframe('step3', this)">View Example</button>
+			<iframe id="step3" data-src="https://scratch.mit.edu/projects/embed/79304328/?autostart=false" src="about:blank"></iframe>
 		</div>
 		<div class="block">
 			<p>3) Create a single dot sprite. Have the dot sprite hide and then clone itself. When the flag is clicked, have the clone start in the right-hand corner. Have it travel towards the center and disapear when it hits the controller.</p>
-			<iframe width="485" height="402" src="//scratch.mit.edu/projects/embed/79305924/?autostart=false" allowfullscreen=""></iframe>
+			<button onclick="loadiframe('step4', this)">View Example</button>
+			<iframe id="step4" data-src="https://scratch.mit.edu/projects/embed/79305924/?autostart=false" src="about:blank"></iframe>
 		</div>
 		<div class="block">
 			<p>4) Instead of having the clone start in the same place every time, have it start in a random location on the screen.</p>
-			<iframe width="485" height="402" src="//scratch.mit.edu/projects/embed/100810042/?autostart=false" allowfullscreen=""></iframe>
+			<button onclick="loadiframe('step5', this)">View Example</button>
+			<iframe id="step5" data-src="https://scratch.mit.edu/projects/embed/100810042/?autostart=false" src="about:blank"></iframe>
 		</div>
 		<div class="block">
 			<p>**Optional Challenge:** Instead of having your sprite go to a random location, have it go to one of the four corners of the screen. (Create your own custom block in More Blocks called “go to a random corner,” define it, and use it in your dot sprite.)</p>
-			<iframe width="485" height="402" src="//scratch.mit.edu/projects/embed/79307732/?autostart=false" allowfullscreen=""></iframe>
+			<button onclick="loadiframe('step6', this)">View Example</button>
+			<iframe id="step6" data-src="https://scratch.mit.edu/projects/embed/79307732/?autostart=false" src="about:blank"></iframe>
 		</div>
 		<div class="block">
 			<p>5) Create a score that goes up whenever the dot is correctly caught. (Still just one color.)</p>
-			<iframe width="485" height="402" src="//scratch.mit.edu/projects/embed/100202692/?autostart=false" allowfullscreen=""></iframe>
+			<button onclick="loadiframe('step7', this)">View Example</button>
+			<iframe id="step7" data-src="https://scratch.mit.edu/projects/embed/100202692/?autostart=false" src="about:blank"></iframe>
 		</div>
 		<div class="block">
 			<p>6) Create a lives variable that starts at 3 and goes down whenever a dot is caught incorrectly. The single dot should continue to reappear until there are 0 lives. (Still just one color.)</p>
-			<iframe width="485" height="402" src="//scratch.mit.edu/projects/embed/79393700/?autostart=false" allowfullscreen=""></iframe>
+			<button onclick="loadiframe('step8', this)">View Example</button>
+			<iframe id="step8" data-src="https://scratch.mit.edu/projects/embed/79393700/?autostart=false" src="about:blank"></iframe>
 		</div>
 		<div class="block">
 			<p>7) Instead of having just a single dot, have your dot continue to clone itself.</p>
-			<iframe width="485" height="402" src="//scratch.mit.edu/projects/embed/79394470/?autostart=false" allowfullscreen=""></iframe>
+			<button onclick="loadiframe('step9', this)">View Example</button>
+			<iframe id="step9" data-src="https://scratch.mit.edu/projects/embed/79394470/?autostart=false" src="about:blank"></iframe>
 		</div>
 		<div class="block">
 			<p>8) Now add different colored dots. (Tip: this may involve tweaking of various parts of the game to make it fun but also possible.)</p>
-			<iframe width="485" height="402" src="//scratch.mit.edu/projects/embed/79395566/?autostart=false" allowfullscreen=""></iframe>
+			<button onclick="loadiframe('step10', this)">View Example</button>
+			<iframe id="step10" data-src="https://scratch.mit.edu/projects/embed/79395566/?autostart=false" src="about:blank"></iframe>
 		</div>
 		<div class="block">
 			<p>9) Optional: make the game get progressively harder and harder the further you get</p>
-		</div>
-		<div class="block">
-			<p>10) Share your game publicly by clicking the share button in the top-right corner.</p>
 		</div>
 	</div>
 	<script>

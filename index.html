@@ -29,7 +29,7 @@
 			</section>
 
 			<section id="woof">
-				<a id="woof-img" href="http://woofjs.com/create"><img class="img-responsive large-img" src="./images/2018woof.png" alt="Woof"></a>
+				<a id="woof-img" href="http://woofjs.com/"><img class="img-responsive large-img" src="./images/2018woof.png" alt="Woof"></a>
 				<div id="woof-box" class="black-opaque infobox">Build complex games, animations, and apps with WoofJS. It uses JavaScript,
 					the language of the web, so you can build for mobile and integrate with APIs and databases.
 					<p class="info-para yellow">We recommend completing two Level 4 Scratch projects before starting with WoofJS.</p>
@@ -45,12 +45,12 @@
 		</div>
 
 	</div>
+<div id= "footer">
 
 	<div id="learn-col">
 		<div id="start" class="info-modal" style="margin-right: 7px">Where do I start?</div>
 		<a href="./about.html"><div class="info-modal" id="about">About this site</div></a>
 	</div>
-
 	<div class="holder" style="min-height: 80px">
 		<div id="start-box" class="black-opaque">
 			<p class="info-para">We recommend starting with a Level 1 Scratch project, like
@@ -66,7 +66,7 @@
 	<div class="bottom-holder">
 		<h4 id="tcs-text">Created by <a href="http://www.thecodingspace.com" target="_blank">The Coding Space</a></h4>
 	</div>
-	
+</div>	
 
 	<script>
 
@@ -79,25 +79,31 @@
 			// scratch info hide/show
 			$("#scratch-img").mouseenter(function () {
 				$("#scratch-box").fadeIn(250);
+				$("#footer").css("display","none");
 			})
 			$("#scratch-img").mouseleave(function () {
 				$("#scratch-box").fadeOut(400);
+				$("#footer").fadeIn(400);
 			})
 
 			// woof info hide/show
 			$("#woof-img").mouseenter(function () {
-				$("#woof-box").fadeIn(250);
+				$("#woof-box").fadeIn(400);
+				$("#footer").css("display","none");
 			})
 			$("#woof-img").mouseleave(function () {
 				$("#woof-box").fadeOut(400);
+				$("#footer").fadeIn(400);
 			})
 
 			// web info hide/show
 			$("#web-img").mouseenter(function () {
-				$("#web-box").fadeIn(250);
+				$("#web-box").fadeIn(400);
+				$("#footer").css("display","none");
 			})
 			$("#web-img").mouseleave(function () {
 				$("#web-box").fadeOut(400);
+				$("#footer").fadeIn(400);
 			})
 
 			// learn more hide/show

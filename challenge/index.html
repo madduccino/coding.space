@@ -1,0 +1,187 @@
+<!doctype html>
+<html>
+	<head>
+		
+		<meta charset="utf-8">
+		<meta name="description" content="">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Challenge</title>
+			<link rel="stylesheet" href="../about.css">
+
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+		<link href="https://fonts.googleapis.com/css?family=Quicksand" rel="stylesheet">
+		<link rel="icon" type="image/x-icon" href="./images/favicon.ico">
+	<style>
+	    img  {
+	    	display: inline-block;
+	    	margin: 5px;
+	    }
+		#imageContainer {
+		  display: flex;
+		  align-items: center;
+		  justify-content: center;
+		  height: 40vh;
+		  cursor: pointer;
+		}
+		#titleContainer {
+		  display: flex;
+		  align-items: center;
+		  justify-content: center;
+		  height: 30vh;
+		  color: white;
+		}
+		.challenge {
+		  position: fixed; /* Sit on top of the page content */
+		  display: none; /* Hidden by default */
+		  width: 100%; /* Full width (cover the whole page) */
+		  height: 100%; /* Full height (cover the whole page) */
+		  top: 0; 
+		  left: 0;
+		  right: 0;
+		  bottom: 0;
+		  background-color: rgba(0,0,0,0.95); /* Black background with opacity */
+		  z-index: 2; /* Specify a stack order in case you're using a different order for other elements */
+		  cursor: pointer; /* Add a pointer on hover */
+		  text-align: center;
+		  color: white;
+		  padding-top: 50vh;
+		  font-size: 200%;
+		}	
+	</style>
+		</head>
+
+	<body>
+		<div id="titleContainer">
+			<a href="https://coding.space"><h1 id="title">New Challenges Coming Soon!</h1></a>
+		</div>
+		
+		<!--
+		<div id="titleContainer">
+  			<h1 id="title">Coding Space Weekly Challenge Week</h1>
+		</div>
+		<div id="imageContainer">
+		  <img id = "scratchImage" onclick = "overlayOn('scratchChallenge')"  src="http://coding.space/images/2018scratch.png">
+		  <img id = "woofJSImage" onclick = "overlayOn('woofChallenge')" src="http://coding.space/images/2018woof.png">
+		  <img id = "webImage" onclick = "overlayOn('webChallenge')" src="http://coding.space/images/2018web.png">
+		</div>
+		<div class = "challenge"  onclick =     "overlayOff('scratchChallenge')" id="scratchChallenge">
+		</div>
+		<div class = "challenge" id="woofChallenge" onclick = "overlayOff('woofChallenge')" ></div>
+		<div class = "challenge" id="webChallenge" onclick = "overlayOff('webChallenge')" ></div>
+		<script>
+			//arrays contain challenge information
+			let scratchChallenges = [
+			  "Learn the name of everyone in your class--teachers and students.",
+			  "Find 4 totally different methods for moving sprites and demonstrate them in a project.",
+			  "Make a project with only 5 surprise sprites and 2 surprise backdrops (and some code). ",
+			  "Share one or more of your projects on the Scratch website.",
+			  "Make a variable that stays on the screen and use it in a project.",
+			  "Use messages to communicate between sprites.",
+			  "Make a variable that is hidden and use it in a project.",
+			  "Make an original scratch animation using costumes.",
+			  "Make a list and use it in a project.",
+			  "Use a loop block that you haven't used before.",
+			  "Make a block and use it in your project.",
+			  "Make a block with input values and use it in your project.",
+			  "Make a block that adds basic controls for a sprite, save it to your backpack, and use it in another project.",
+			  "Use one or more operator blocks that you've never used before.",
+			  "Test out a classmate's project.",
+			  "Add an extension to Scratch and use it in your project.",
+			  "Use the current time (year, month, etc) block in a project."
+			]
+			let woofChallenges = [
+			  "Learn the name of everyone in your class--teachers and students.",
+			  "Make a sprite on an external website (piskelapp.com is great for pixel art) and import it into Woof and use it in your project.",
+			  "Do the cloning tutorial and, after you complete it, explain to someone what each part of the code does.",
+			  "Research good techniques for organizing code, and organize the code of your current or a past project.",
+			  "Try to use as many variables as you can, and reduce the number of 'hard-coded' numbers in your script. ",
+			  "Learn one new thing about Javascript from w3schools.com/js and test it in WoofJS.",
+			  "Make your own array and use it in a project.",
+			  "Research while and for loops and use them in a project.",
+			  "Define your own function and use it in a project.",
+			  "Define a function that takes parameters and use it in a project.",
+			  "Define a function that ends with a return statement. Use the returned value for something in your project.",
+			  "Use a javascript switch statement in a project.",
+			  "Test out a classmate's project.",
+			  "Add an integration to your woof project.",
+			  "Make and use an object in a project.",
+			  "Make a constructor and use it in a project.",
+			  "Make and use a class (with a constructor) in a project."
+			]
+			let webChallenges = [
+			  "Learn the name of everyone in your class--teachers and students.",
+			  "Come up with a 15-week plan for your web development this semester.",
+			  "Use the browser inspector to inspect the code of whatever web editor you are using, and use the console to show a console.log result from code that you write.",
+			  "Make a sprite on an external website (piskelapp.com is great for pixel art) and import it into Woof and use the link that is generated there in your web project (or host it by some other means).",
+			  "Research good techniques for organizing code, and organize the code of your current or a past project.",
+			  "Research the difference between var, let, and const and revise a project to use the appropriate keywords.",
+			  "Research Javascript's pre-defined Array functions and utilize one of them in a project.",
+			  "Research while and for loops and use them in a project.",
+			  "Define your own function and use it in a project (use parameters and return statements where needed).",
+			  "Write a program that consists almost entirely of functions and runs normally.",
+			  "Find a website that has javascript algorithm challenges, and complete one of those challenges.",
+			  "Use a javascript switch statement, a default parameter, and a ternary operator all in one project.",
+			  "Test out a classmate's project.",
+			  "Add an api to a project.",
+			  "Make and use an object in a project.",
+			  "Make a constructor and use it in a project.",
+			  "Make and use a class (with a constructor) in a project."
+			]
+			//currentWeek index will be used to find the right challenges
+			var currentWeek = 0;
+			//uses today's date to find current week index
+			function findCurrentWeek() {
+			  let firstWeek = new Date(2019, 8, 15)
+			  let secondWeek = new Date(2019, 8, 22)
+			  let thirdWeek = new Date(2019, 8, 29)
+			  let fourthWeek = new Date(2019, 9, 6)
+			  let fifthWeek = new Date(2019, 9, 13)
+			  let sixthWeek = new Date(2019, 9, 20)
+			  let seventhWeek = new Date(2019, 9, 27)
+			  let eigthWeek = new Date(2019, 10, 3)
+			  let ninthWeek = new Date(2019, 10, 10)
+			  let tenthWeek = new Date(2019, 10, 17)
+			  let eleventhWeek = new Date(2019, 11, 1)
+			  let twelfthWeek = new Date(2019, 11, 8)
+			  let thirteenthWeek = new Date(2019, 11, 15)
+			  let fourteenthWeek = new Date(2020, 0, 5)
+			  let fifteenthWeek = new Date(2020, 0, 12)
+			  let sixteenthWeek = new Date(2020, 0, 19)
+			  let seventeenthWeek = new Date (2020, 0, 26)
+			  let dateToday = new Date(/*add date here to test other dates*/)
+			  if (dateToday <= firstWeek) currentWeek = 0;
+			  if (dateToday <= secondWeek && dateToday > firstWeek) currentWeek = 0;
+			  if (dateToday <= thirdWeek && dateToday > secondWeek) currentWeek = 1;
+			  if (dateToday <= fourthWeek && dateToday > thirdWeek) currentWeek = 2;
+			  if (dateToday <= fifthWeek && dateToday > fourthWeek) currentWeek = 3;
+			  if (dateToday <= sixthWeek && dateToday > fifthWeek) currentWeek = 4;
+			  if (dateToday <= seventhWeek && dateToday > sixthWeek) currentWeek = 5;
+			  if (dateToday <= eigthWeek && dateToday > seventhWeek) currentWeek = 6;
+			  if (dateToday <= ninthWeek && dateToday > eigthWeek) currentWeek = 7;
+			  if (dateToday <= tenthWeek && dateToday > ninthWeek) currentWeek = 8;
+			  if (dateToday <= eleventhWeek && dateToday > tenthWeek) currentWeek = 9;
+			  if (dateToday <= twelfthWeek && dateToday > eleventhWeek) currentWeek = 10;
+			  if (dateToday <= thirteenthWeek && dateToday > twelfthWeek) currentWeek = 11;
+			  if (dateToday <= fourteenthWeek && dateToday > thirteenthWeek) currentWeek = 12;
+			  if (dateToday <= fifteenthWeek && dateToday > fourteenthWeek) currentWeek = 13;
+			  if (dateToday <= sixteenthWeek && dateToday > fifteenthWeek) currentWeek = 14;
+			  if (dateToday <= seventeenthWeek && dateToday > sixteenthWeek) currentWeek = 15;
+			  if (dateToday >= seventeenthWeek) currentWeek = 16;
+			}
+			function overlayOn(elementToTurnOn) {
+			  document.getElementById(elementToTurnOn).style.display = "block";
+			}
+			
+			function overlayOff(elementToTurnOff) {
+			  document.getElementById(elementToTurnOff).style.display = "none";
+			}
+			//script commands
+			findCurrentWeek()
+			document.getElementById("title").innerHTML += " " + (currentWeek + 1)
+			document.getElementById("scratchChallenge").innerHTML = "Scratch Challenge: " + scratchChallenges[currentWeek] 
+			document.getElementById("woofChallenge").innerHTML = "WoofJS Challenge: " + woofChallenges[currentWeek]
+			document.getElementById("webChallenge").innerHTML = "Web Challenge: " + webChallenges[currentWeek]
+		</script>
+		-->
+	</body>
+</html>

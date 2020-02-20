@@ -2,7 +2,9 @@
 	<title>Dust Buddy</title>
 	<link rel="stylesheet" type="text/css" href="./styles.css">
 	<link href="https://fonts.googleapis.com/css?family=Quicksand" rel="stylesheet">
-	<link rel="icon" type="favicon/x-icon" href="../images/favicon.ico">
+	<link rel="icon" type="favicon/x-icon" href="../images/favicon.ico">	
+	<meta charset="UTF-8">
+	<script type="text/javascript" src="./index.js"></script>
 </head>
 
 <body>
@@ -10,37 +12,38 @@
 	<div class="container">
 		<div class="block">
 
-			<p>How long can you keep your Dust Buddy safe from the Vacuum?
-			</p>
-			<iframe width="485" height="402" src="//scratch.mit.edu/projects/embed/106415560/?autostart=false" allowfullscreen=""></iframe>
+			<p>How long can you keep your Dust Buddy safe from the Vacuum?</p>
+			<iframe id="full" data-src="https://scratch.mit.edu/projects/embed/106415560/?autostart=false" allowfullscreen=""></iframe>
 		</div>
 		<div class="block">
-			<p>1) First, pick, or draw, your character that is going to be chased, and pick a backdrop.
-			</p>
-			<iframe width="485" height="402" src="//scratch.mit.edu/projects/embed/107437813/?autostart=false" allowfullscreen=""></iframe>
+			<p>1) First, pick, or draw, your character that is going to be chased, and pick a backdrop.</p>
+			<button onclick="loadiframe('step2', this)">View Example</button>
+			<iframe id="step2" data-src="https://scratch.mit.edu/projects/embed/107437813/?autostart=false" src="about:blank"></iframe>
 		</div>
 		<div class="block">
 			<p>2) Next, get this character to follow your mouse around.</p>
-			<iframe width="485" height="402" src="//scratch.mit.edu/projects/embed/107437642/?autostart=false" allowfullscreen=""></iframe>
+			<button onclick="loadiframe('step3', this)">View Example</button>
+			<iframe id="step3" data-src="https://scratch.mit.edu/projects/embed/107437642/?autostart=false" src="about:blank"></iframe>
 		</div>
 		<div class="block">
 			<p>3) Time to add another character and make it chase your original character.</p>
-			<iframe width="485" height="402" src="//scratch.mit.edu/projects/embed/107436624/?autostart=false" allowfullscreen=""></iframe>
+			<button onclick="loadiframe('step4', this)">View Example</button>
+			<iframe id="step4" data-src="https://scratch.mit.edu/projects/embed/107436624/?autostart=false" src="about:blank"></iframe>
 		</div>
 		<div class="block">
-			<p>4)When the character is caught by the chaser, indicate that the game is over with an animation. </p>
-			<iframe width="485" height="402" src="//scratch.mit.edu/projects/embed/107435993/?autostart=false" allowfullscreen=""></iframe>
+			<p>4) When the character is caught by the chaser, indicate that the game is over with an animation.</p>
+			<button onclick="loadiframe('step5', this)">View Example</button>
+			<iframe id="step5" data-src="https://scratch.mit.edu/projects/embed/107435993/?autostart=false" src="about:blank"></iframe>
 		</div>
 		<div class="block">
-			<p>5)Add a variable (in Data) that shows how long the user lasted before the sprites touched. </p>
-			<iframe width="485" height="402" src="//scratch.mit.edu/projects/embed/107434371/?autostart=false" allowfullscreen=""></iframe>
+			<p>5) Make a variable that shows how long the user lasted before the sprites touched.</p>
+			<button onclick="loadiframe('step6', this)">View Example</button>
+			<iframe id="step6" data-src="https://scratch.mit.edu/projects/embed/107434371/?autostart=false" src="about:blank"></iframe>
 		</div>
-		<div class="block">
-			<p>6) Challenge step: Can you make your game keep track of the user that has the high score? (Hint: you’ll need a cloud variable. Ask your instructor to help you become a Scratcher.) </p>
-			<iframe width="485" height="402" src="//scratch.mit.edu/projects/embed/106415560/?autostart=false" allowfullscreen=""></iframe>
-		</div>
-		<div class="block">
-			<p>7) Share your game publicly by clicking the share button in the top-right corner.</p>
+		<div class="block">			
+		   <p>6) Challenge step: Can you make your game keep track of the user that has the high score? (Hint: you’ll need a cloud variable. Ask your instructor to help you become a Scratcher.) </p>
+			<button onclick="loadiframe('step7', this)">View Example</button>
+			<iframe id="step7" data-src="https://scratch.mit.edu/projects/embed/106415560/?autostart=false" src="about:blank"></iframe>
 		</div>
 	</div>
 	<script>
