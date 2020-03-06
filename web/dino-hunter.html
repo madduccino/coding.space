@@ -65,60 +65,48 @@
     </div>
     
     <div class="steps">
-      <p>5. Create a constructor that creates a "Raptor." It should have all the 2D properties like x, y, width, and height, and also an Image property that links to the Raptor Spritesheet. Create one and assign it to a variable.</p>
+      <p>5. Create a constructor that creates a "Raptor." It should have all the 2D properties like x, y, width, and height. Create one and assign it to a variable.</p>
     </div>
 
     <div class="steps">
-      <p>6. Independently try drawing the Raptor Spritesheet onto the Background. Give your raptor constructor another property, a "draw" function. When you call this function, the game should draw the Raptor Spritesheet onto the background.</p>
+      <p>6. Give your raptor constructor another property, a "draw" function. When you call this function, the game should draw a red rectangle at the location of the Raptor onto the background.</p>
       <img width="430" height="430" src="./steps/dino-hunter/raptor-sprites-on-bg.png"/>
     </div>
     
     <div class="steps">
-      <p>7. Research the drawImage function. Find and learn about the override that allows you to draw a cut portion of an image called a 'clip.' It's the override with nine arguments. Using your understanding of the override, upgrade your draw function to draw only a specific 'frame' of the raptor, the first downward facing one, at the raptor's x and y position. </p>
-    </div>
-
-    <div class="steps">
-      <p>8. We are going to move our 'clip' around to simulate animation. Use the image below as a reference for what we are trying to accomplish. Note that the only value that is changing is X because we are simply moving our clip to the right. Upgrade your draw function to switch to the next downward facing raptor sprite every second, eventually cycling back to the first.</p>
-      <img width="430" height="430" src="./steps/dino-hunter/drawImage.gif"/>
+      <p>7. Give your raptor constructor another property, a "move" function. When you call this function, your raptor should take a step down the screen.</p>
     </div>
     
     <div class="steps">
-      <p>9. Give your raptor constructor another property, a "move" function. When you call this function, your raptor should take a step down the screen. Upgrade it to include that if it touches the bottom of the screen, it should reduce your health.</p>
-    </div>
-    
-    <div class="steps">
-      <p>10. Make an array and add your current testing Raptor to it. I'm going to refer to the array as the 'live' array but call it whatever is useful to you. Make a function called movement that runs on an interval. It loops through the array and calls the move function of every dino in the array. Your dino should walk to the bottom of the screen.</p>
-      
+      <p>8. Make an array and add your current testing Raptor to it. I'm going to refer to the array as the 'live' array but call it whatever is useful to you. Make a function called movement that runs on an interval. It loops through the array and calls the move function of every dino in the array. Your dino should move slowly to the bottom of the screen. </p>
       <p><a target="_blank" href="/web/steps/dino-hunter/9/dino.html">Click here to view full screen example</a>
     </div>
+
+     <div class="steps">
+      <p>9. When your raptor reaches the bottom, it should reduce your health and be removed from the array. It should no longer be drawn or moved.</p>
+    </div>
     
     <div class="steps">
-      <p>11. Make another function on an interval called spawner. This function should continuously create raptors at random locations along the top of the screen. Add them to your array of dinos to move. </p>
+      <p>10. Make another function on an interval called spawner. This function should continuously create raptors at random locations along the top of the screen. Add them to your array of dinos to move. </p>
       <p><a href="/web/steps/dino-hunter/11/dino.html" target="_blank">Click here to view fullscreen example.</a></p>
     </div>
-    
     <div class="steps">
-      <p>12. Don't draw or move Raptors that have reached the bottom. You can do this by integrating the 'live' array into your animation function and by removing them from that array when they reach the bottom</p>
-    </div>
-    
-    <div class="steps">
-      <p>13. Play the bite sound when a raptor reaches the bottom. Note: Most browsers block sound until you click or press a button in the window, so make sure you click on your screen after refreshing or else you might accidentally think it's broken. The same is true with the link below. It won't make the bite noise until you click inside.</p>
+      <p>11. Play the bite sound when a raptor reaches the bottom. Note: Most browsers block sound until you click or press a button in the window, so make sure you click on your screen after refreshing or else you might accidentally think it's broken. The same is true with the link below. It won't make the bite noise until you click inside.</p>
       <p><a href="/web/steps/dino-hunter/13/dino.html" target="_blank">Click here to view fullscreen example.</a></p>
     </div>
     
     <div class="steps">
-      <p>14. Repeat all the previous steps for the Triceratops. Make another constructor for the Triceratops, wire up its sprite sheet, write draw and move functions, and add them to the spawner. </p>
+      <p>12. Repeat all the previous steps for the Triceratops. Make another constructor for the Triceratops, write draw (make it a bigger blue rectangle) and move functions, and add them to the spawner. </p>
       <p><a href="/web/steps/dino-hunter/14/dino.html" target="_blank">Click here to view fullscreen example.</a></p>
     </div>
     
     <div class="steps">
-        <p>15. Repeat all the previous steps for the Compys. Make another constructor for the Compys, wire up its sprite sheet, write draw and move functions, and add them to the spawner.)</p>
+        <p>13. Repeat all the previous steps for the Compys. Make another constructor for the Compys, write draw (make it a small green rectangle) and move functions, and add them to the spawner.)</p>
       <p><a href="/web/steps/dino-hunter/15/dino.html" target="_blank">Click here to view fullscreen example.</a></p>
     </div>
 
     <div class="steps">
-      <p>16. Change the Triceratops to make it different than the Raptor. I recommend:</p>
-       <p>-> Make the Triceratops much bigger on screen</p>
+      <p>14. Change the Triceratops to make it different than the Raptor. I recommend:</p>
        <p>-> Make it roar when it spawns</p>
        <p>-> Make it a much rarer spawn</p>
        <p>-> Make it bite for more damage when it reaches the bottom</p>
@@ -126,52 +114,56 @@
     </div>
     
     <div class="steps">
-      <p>17. Now make the Compy different too! I recommend:</p>
+      <p>15. Now make the Compy different too! I recommend:</p>
        <p>-> Make the Compy move randomly, but never backwards and never off screen</p>
-       <p>-> Give the Compy unique animation frames for moving diagonally</p>
        <p>-> Make the Compy spawn much more commonly</p>
-       <p>-> Make the Compy much smaller on screen</p>
       <p><a href="/web/steps/dino-hunter/16/dino.html" target="_blank">Click here to view fullscreen example.</a></p>
     </div>
     
     <div class="steps">
-        <p>18. Add Background Music to the game. Remember that browsers will block sound until you click or otherwise interact with the screen.</p>
+        <p>16. Add Background Music to the game. Remember that browsers will block sound until you click or otherwise interact with the screen.</p>
     </div>
     <div class="steps">
-        <p>19. Okay! It's finally time to introduce... Typing! Research the Fetch function. Use it to retrieve the dictionary asset included above, split it on newline characters, and store it in a variable as an array.</p>
+        <p>17. Okay! It's finally time to introduce... Typing! Research the Fetch function. Use it to retrieve the dictionary asset included above, split it on newline characters, and store it in a variable as an array.</p>
     </div>
     <div class="steps">
-        <p>20. Each Dino should add another property to their constructor, word! Raptors should be assigned a random word on construction from your dictionary array. Triceratops should be assigned three words, and Compys should be assigned a random letter instead.</p>
+        <p>18. Each Dino should add another property to their constructor, word! Raptors should be assigned a random word on construction from your dictionary array. Triceratops should be assigned three words, and Compys should be assigned a random letter instead.</p>
     </div>
     <div class="steps">
-        <p>21. Upgrade your Dino draw functions to draw their individual words above their heads. You have already used the drawText function all the way back in step 4.</p>
+        <p>19. Upgrade your Dino draw functions to draw their individual words above them. You have already used the drawText function all the way back in step 4. Give the text a background so as to be easier to see.</p>
         <p><a href="/web/steps/dino-hunter/21/dino.html" target="_blank">Click here to view fullscreen example.</a></p>
     </div>
     <div class="steps">
-        <p>22. On key press, check every Dino's word to see if its first letter matches. If it does, delete it from the word. If the Dino's word is gone, kill it and get a point! Finally!</p>
+        <p>20. On key press, check every Dino's word to see if its first letter matches. If it does, delete it from the word. </p>
         
     </div>
     <div class="steps">
-        <p>23. Now you need to work with the Dino deaths. Create a new property in all the Dino constructors, a function called "kill." This function should handle playing the death animation, removing the Dino from the 'live' array, giving you points, and playing the death sounds in the assets above. Call it when a Dino's word is empty.</p>
+        <p>21. Now you need to work with the Dino deaths. Create a new property in all the Dino constructors, a function called "kill." This function should remove the Dino from the 'live' array, give you points, and play the death sounds in the assets above.</p>
     </div>
     <div class="steps">
-        <p>24. Give all the Dinos death animations. You've done this before. You got this. Most of the death sprites are on the right side of the sprite sheets and are vertical instead of horizontal. Don't let that intimidate you! Note that the Triceratops doesn't have a death sprite in its spritesheet. Either make one yourself (explosion!) or be creative. I just made my Triceratops back up right back into the trees.</p>
+      <p>22. If the Dino's word is gone, kill it! Finally!</p>
+    </div>
+    <div class="steps">
+        <p>23. The Raptors have a unique ability too! When they reach half-health (read: their word is half gone), they leap towards you! Focus on changing their move function to make them faster at half health or less for now.</p>
+        
+    </div>
+    <div class="steps">
+        <p>24. Now it's time to integrate the sprite assets. Research the drawImage function and try drawing the Raptor spritesheet onto the game.  Find and learn about the override that allows you to draw a clipped portion of an image. It's the override with nine arguments. Using your understanding of the drawImage function and it's clipping override, upgrade your draw functions to draw the first frame of each Dino's downward facing walking frames. </p>
         <p><a href="/web/steps/dino-hunter/24/dino.html" target="_blank">Click here to view fullscreen example.</a></p>
     </div>
     <div class="steps">
-        <p>25. The Raptors have a unique ability too! When they reach half-health (read: their word is half gone), they leap towards you! Focus on changing their move function to make them faster at half health or less for now.</p>
-        
+      <p>25. Upgrade your draw function to animate your dinos:</p>
+      <p>-> Switch to the next downward facing dino walk sprite every second, eventually cycling back to the first. Try moving your 'clip' around. </p>
+      <p>-> Give all the Dinos death animations that play when they die. You can find death sprites on the right side of the sprite sheets, except for the Triceratops. Either make one yourself or just make it back up into the trees.</p>
+      <p>-> Give your Compys unique animation frames based on what direction they are traveling.</p>
+      <p>-> Give your Raptors unique animation frames for leaping at you.</p>
     </div>
     <div class="steps">
-        <p>26. Now give the Raptors a unique movement animation for when they are leaping. You'll find leaping sprites in their spritesheet.</p>
-        <p><a href="/web/steps/dino-hunter/26/dino.html" target="_blank">Click here to view fullscreen example.</a></p>
-    </div>
-    <div class="steps">
-        <p>27. Show a Title Screen at the start. This can be as simple as showing some introductory message before the game begins.</p>
+        <p>26. Show a Title Screen at the start. This can be as simple as showing some introductory message before the game begins.</p>
         <p><a href="/web/steps/dino-hunter/27/dino.html" target="_blank">Click here to view fullscreen example.</a></p>
     </div>
     <div class="steps">
-        <p>28. Aaaand finally, add a Game Over Screen when your health reaches zero. This should remove all the current dinos and stop the spawner. It should also show your score. Wow. Congratulations, you just completed a massive project. Go ring that gong FIVE TIMES.</p>
+        <p>27. Aaaand finally, add a Game Over Screen when your health reaches zero. This should remove all the current dinos and stop the spawner. It should also show your score. Wow. Congratulations, you just completed a massive project. Go ring that gong FIVE TIMES.</p>
         <p><a href="/web/steps/dino-hunter/28/dino.html" target="_blank">Click here to view fullscreen example.</a></p>
     </div>
     <div class="steps">
