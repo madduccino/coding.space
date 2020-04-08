@@ -1,20 +1,36 @@
 <html>
+    
   <head>
     <title>The Coding Space Virtual Gong</title>
+      <link rel="stylesheet" href="https://www.myinstants.com/media/css/external.css" />
+      <script>
+        var audioBuffer=null;window.AudioContext=window.AudioContext||window.webkitAudioContext;var audioContext=null;var source;function play(url){if(audioContext==null){audioContext=new AudioContext();}
+var request=new XMLHttpRequest();if(source){try{source.stop();}catch(err){}}
+source=audioContext.createBufferSource();source.connect(audioContext.destination);request.open('GET',url,true);request.responseType='arraybuffer';request.onload=function(){audioContext.decodeAudioData(request.response,function(buffer){source.buffer=buffer;source.start(0);});}
+request.send();}
+function share(url){if(navigator.share){navigator.share({url:url,}).then(()=>ga('send','event','webshare_api','success')).catch((error)=>ga('send','event','webshare_api','error'));}else{shareFacebook(url);}}
+function shareFacebook(url){url=new URL(url);url.searchParams.set('utm_source','facebook');url.searchParams.set('utm_medium','share');window.open(`https://www.facebook.com/dialog/share?app_id=429381653766621&href=${encodeURIComponent(url)}`)
+ga('send','event','share','facebook',url);}
+function shareWhatsapp(url){url=new URL(url);url.searchParams.set('utm_source','whatsapp');url.searchParams.set('utm_medium','share');window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(url)}`);ga('send','event','share','whatsapp',url);return false;}
+function shareTwitter(url,title){url=new URL(url);url.searchParams.set('utm_source','twitter');url.searchParams.set('utm_medium','share');window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(title)}&url=${encodeURIComponent(url)}&via=myinstants`,'_blank');ga('send','event','share','twitter',url);return false;}
+function shareTelegram(url,title){url=new URL(url);url.searchParams.set('utm_source','telegram');url.searchParams.set('utm_medium','share');window.open(`https://telegram.me/share/url?url=${encodeURIComponent(url)}&text=${encodeURIComponent(title)}`,'_blank');ga('send','event','share','telegram',url);return false;}
+function shareReddit(url,title){url=new URL(url);url.searchParams.set('utm_source','reddit');url.searchParams.set('utm_medium','share');window.open(`https://reddit.com/submit?url=${encodeURIComponent(url)}&title=${encodeURIComponent(title)}`,'_blank');ga('send','event','share','reddit',url);return false;}
+function sharePinterest(url){url=new URL(url);url.searchParams.set('utm_source','pinterest');url.searchParams.set('utm_medium','share');window.open(`http://pinterest.com/pin/create/button/?url=${encodeURIComponent(url)}`,'_blank');ga('send','event','share','pinterest',url);return false;}
+function shareMessenger(url){url=new URL(url);url.searchParams.set('utm_source','messenger');url.searchParams.set('utm_medium','share');window.open(`fb-messenger://share?link=${encodeURIComponent(url)}&app_id=429381653766621`,'_blank');ga('send','event','share','messenger',url);return false;}
+function copyLink(){var dummy=document.createElement('input');document.body.appendChild(dummy);var url=new URL(window.location);url.searchParams.set('utm_source','copy');url.searchParams.set('utm_medium','share');dummy.value=url;dummy.select();document.execCommand('copy');document.body.removeChild(dummy);ga('send','event','share','copy_link',window.location);Materialize.toast('URL copied to the clipboard!',1500)
+return false;}
+function copyEmbed(){var textarea=document.getElementById('instant-embed');textarea.select();document.execCommand('copy');ga('send','event','embed','click',window.location);Materialize.toast('Copied to the clipboard!',1500)
+return false;}
+function getTitle(){return document.querySelector("meta[property='og:title']").getAttribute("content")||document.title;}
+function chromeInstall(){ga('send','event','ChromeInstall','chrome-install');chrome.webstore.install();}
+      </script>
   </head>
   <body>
   <div class="instant" style="position:relative; margin:0px;">
     <div class="circle small-button-background" style="background-color:#FF0000;"></div>
-    <div class="small-button" onmousedown="play('https://www.myinstants.com/media/sounds/gong_lihylPb.mp3')"></div>
+    <div class="small-button" onmousedown="play('gong.mp3')"></div>
     <div class="small-button-shadow" style="margin-bottom:5px;"></div>
   </div>
-  <script type="text/javascript">
-      var addthis_config = {
-        data_ga_property: 'UA-10088995-2',
-        data_ga_social: true
-      };
-    </script>
-  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=atoji" async="async"></script>
 
 </body>
 </html>
