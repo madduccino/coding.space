@@ -107,6 +107,12 @@ img {
 	font-size: 13px;
 }
 
+.gong {
+	position: fixed;
+     	bottom: 0px;
+     	right: 0px;	
+}
+
 #learn-col {
 	width: 100%;
 	display: flex;
