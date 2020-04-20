@@ -84,7 +84,7 @@ var Dino = function(options){
     ctx.globalAlpha = z._a;
     if(z.state === state.WALKING){
       //console.log(z.image.src)
-      z.cycle = Math.floor(n*6/z.p);
+      //z.cycle = Math.floor(n*6/z.p);
       ctx.drawImage(z.image,211 + 32.5*z.cycle,30,37,70,z.x,z.y,z.w,z.h);
     }
     if(z.state === state.JUMPING){
@@ -178,7 +178,7 @@ var BigDino = function(options){
   z.draw = function(){
     var d = new Date();
     var n = (d.getTime() + z._salt)%z.p;
-    z.cycle = Math.floor(n*4/z.p);
+    //z.cycle = Math.floor(n*4/z.p);
     ctx.globalAlpha = z._a;
     ctx.drawImage(z.image,5 + 64*z.cycle,20,64,100,z.x,z.y,z.w,z.h);
     if(z.state === state.DYING && z.y < 75){
@@ -222,11 +222,11 @@ var BabyDino = function(options){
   z.w = options&&options.w? options.w:50;
   z.h = options&&options.h? options.h:50;
   z.word = babyCharacters[Math.floor(Math.random()*babyCharacters.length)]
-  z.direction = Math.random()*180 + 180;
+  z.direction =270;// Math.random()*180 + 180;
   z._pick = true;
   z.move = function(){   
     if(z.cycle == 0 && !z._pick){
-      z.direction = Math.random()*180 + 180;
+      //z.direction = Math.random()*180 + 180;
       z._pick = true;
     }
     if(z.cycle!=0)
@@ -250,11 +250,11 @@ var BabyDino = function(options){
   z.draw = function(){
     var d = new Date();
     var n = (d.getTime() + z._salt)%z.p;
-    z.cycle = Math.floor(n*4/z.p);
+    z.cycle =0;// Math.floor(n*4/z.p);
     ctx.globalAlpha = z._a;
     if(z.state === state.WALKING && Math.abs(z.direction-270) < 30){
       //console.log(z.image.src)
-      z.cycle = Math.floor(n*3/z.p);
+      //z.cycle = Math.floor(n*3/z.p);
 
       ctx.drawImage(babySprite,16 + 21*z.cycle,68,15,18,z.x,z.y,z.w*0.85,z.h);
       
@@ -262,7 +262,7 @@ var BabyDino = function(options){
     else if(z.state === state.WALKING && Math.abs(z.direction-270) < 60){
       //console.log(z.image.src)
       
-      z.cycle = Math.floor(n*3/z.p);
+      //z.cycle = Math.floor(n*3/z.p);
       switch(Math.sign(z.direction-270)){
         case -1:ctx.drawImage(babySprite,6 + 26*z.cycle,18,25,20,z.x,z.y,z.w,z.h); break;
         case 1:
@@ -274,7 +274,7 @@ var BabyDino = function(options){
     else if(z.state === state.WALKING && Math.abs(z.direction-270) <= 90){
       //console.log(z.image.src)
       
-      z.cycle = Math.floor(n*3/z.p);
+      //z.cycle = 0;//Math.floor(n*3/z.p);
       switch(Math.sign(z.direction-270)){
         case -1: ctx.drawImage(babySprite,85 + 27*z.cycle,68,25,20,z.x,z.y,z.w,z.h);break;
         case 1:
@@ -284,7 +284,7 @@ var BabyDino = function(options){
     }
     else if(z.state === state.DYING){
       
-      z.cycle = Math.floor(n*4/z.p);
+      //z.cycle = Math.floor(n*4/z.p);
 
       //console.log(z.cycle);
       switch(z.cycle){

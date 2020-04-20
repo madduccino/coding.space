@@ -1,10 +1,10 @@
-var zSpritesheet = "/web/code/images/raptorspritesheet.png";
+var zSpritesheet = "/web/code/images/red.png";
 var raptorSprite = new Image();
 raptorSprite.src = zSpritesheet;
-var bSpritesheet = "/web/code/images/trispritesheet.png";
+var bSpritesheet = "/web/code/images/blue.png";
 var triSprite = new Image();
 triSprite.src = bSpritesheet;
-var oSpritesheet = "/web/code/images/babyspritesheet.png";
+var oSpritesheet = "/web/code/images/green.png";
 var babySprite = new Image();
 babySprite.src = oSpritesheet;
 var canvas = document.getElementById("c");
