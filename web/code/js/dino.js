@@ -421,6 +421,7 @@ window.onkeypress = function(e){
 
     if(e.key === renderList[i].word.substring(0,1)){
       renderList[i].word = renderList[i].word.substring(1);
+      if(renderList[i].word.length===1) renderList[i].word = renderList[i].word.trim();
       if(renderList[i].word.length===0 && renderList[i].state != state.DYING){
         console.log("setDying");
         renderList[i].setState(state.DYING);
