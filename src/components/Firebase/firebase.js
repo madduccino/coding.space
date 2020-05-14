@@ -55,6 +55,9 @@ class Firebase {
 
   project = pid => this.db.ref('db/Projects/' + pid);
   projects = () => this.db.ref('db/Projects');
+
+  classes = () => this.db.ref('db/Classes');
+  class = cid => this.db.ref('db/Classes/' + cid);
   //levels = () => this.db.ref('db/Projects/**/Level');
 }
 export default Firebase;

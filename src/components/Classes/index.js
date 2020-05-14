@@ -3,21 +3,22 @@ import './index.css';
 import './styles.css';
 import LazyImage from '../LazyImage';
 import { AuthUserContext } from '../Session';
-import {withAuthentication} from '../Session';
+import {withAuthorization} from '../Session';
 import {withFirebase} from '../Firebase';
 import TCSEditor from '../TCSEditor';
+import * as ROLES from '../../constants/roles';
 
 
 
-class ProfilePageBase extends React.Component {
+class ClassesPageBase extends React.Component {
 
  constructor(props){
  	super(props);
  	this.state = {
  		authUser:null,
  		loading:true,
- 		projects: {},
- 		profile:{},
+ 		classes: {},
+
 
 
 
@@ -45,30 +46,12 @@ class ProfilePageBase extends React.Component {
  	//console.log(this.authUser);
 
  	const {key} = this.props.match.params;
- 	this.props.firebase.profile(key).on('value',snapshot => {
+ 	this.props.firebase.classes().on('value',snapshot => {
 		this.setState({
-			profile:snapshot.val()
+			classes:Object.values(snapshot.val()),
+			loading:false,
 		})
-		this.props.firebase.projects().once('value')
-			.then(snapshot => {
- 				const {key} = this.props.match.params;
- 				const projects = Object.values(snapshot.val()).filter(project=>project.Author===key);
- 				/*const filProjects = [];
- 				for(var keyz in projects){
- 					if(projects[keyz].Author === key)
- 						filProjects.push(projects[keyz]);
- 				}*/
- 				
-
- 		
-		 		this.setState({
-		 			projects: projects,
-		 			loading:false,
-		 		})
- 		
-
- 		
- 	})
+		
 	})
  	
 
@@ -96,88 +79,49 @@ class ProfilePageBase extends React.Component {
 
  render(){
  	
- 	const {projects, loading, profile} = this.state;
+ 	const {classes, loading} = this.state;
  	const {authUser} = this.props;
- 	const {key} = this.props.match.params;
+ 	//const {key} = this.props.match.params;
  	
  	//console.log(Object.keys(project));
  	if(loading)
  		return (<div>Loading ...</div>);
- 	
- 	//can edit
-	if(authUser && (!!authUser.roles['ADMIN'] || authUser.uid===profile.key) )
- 	{
- 		return (
- 			<div>
- 				<h1>{profile.Name}</h1>
- 				<div className={'container'}>
- 					<div classname={'block'}>About Me</div>
- 					<TCSEditor className={'block'} onEditorChange={this.handlePDescriptionOnChange} placeholder={'Project Description'} text={profile.About}/>
- 				</div>
- 				<div className={'container'}>
- 					<div classname={'block'}>My Age</div>
- 					<TCSEditor onEditorChange={this.handlePDescriptionOnChange} placeholder={'Project Description'} text={profile.Age}/>
- 				</div>
- 				<div className={'container'}>
- 					<div classname={'block'}>Username</div>
- 					<TCSEditor onEditorChange={this.handlePDescriptionOnChange} placeholder={'Project Description'} text={profile.Username}/>
- 				</div>
- 				<div className={'container'}>
- 					<div classname={'block'}>My Projects</div>
- 					{projects.map(project => (
- 						<div id={project.key} class={'wsite-image wsite-image-border-none project'}>
-							<a href={'/project/' + project.key} path={'/public/' + project.Author + '/' + project.ThumbnailFilename}>
-								<LazyImage file={this.props.firebase.storage.ref('/public/' + project.Author + '/' + project.ThumbnailFilename)}/>
-							</a>
-							<div>
-								<h4>{project.Title}</h4>
-							</div>
-						</div>
-					))}
- 				</div>
- 				
- 			</div>
- 		)
 
- 	}
-
- 	return (
+	return (
 			<div>
- 				<h1>{profile.Name}</h1>
- 				<div className={'container'}>
- 					<div classname={'block'}>About Me</div>
- 					<div class="block" dangerouslySetInnerHTML={{__html:profile.About}}/>
- 				</div>
- 				<div className={'container'}>
- 				<div classname={'block'}>My Age</div>
- 					<div class="block" dangerouslySetInnerHTML={{__html:profile.Age}}/>
- 				</div>
- 				<div className={'container'}>
- 					<div classname={'block'}>Email Address</div>
- 					<a href={"mailto:" + "students+"+ profile.Username + "@thecodingspace.com"} class="block" >
- 						{"students+"+ profile.Username + "@thecodingspace.com"}
- 					</a>
- 				</div>
- 				<div className={'container'}>
- 					<div classname={'block'}>My Projects</div>
- 					{projects.map(project => (
- 						<div id={project.key} class={'wsite-image wsite-image-border-none project'}>
-							<a href={'/project/' + project.key} path={'/public/' + project.Author + '/' + project.ThumbnailFilename}>
-								<LazyImage file={this.props.firebase.storage.ref('/public/' + project.Author + '/' + project.ThumbnailFilename)}/>
-							</a>
-							<div>
-								<h4>{project.Title}</h4>
+				<div style={{padding:30 + 'px',marginLeft:0 + 'px',marginRight:0 + 'px',textAlign:'center'}}>
+				   <h1>The Coding Space Classes</h1>
+				</div>
+				
+				
+				<div id="level1" class="level-container">
+
+
+				   <div class="level">
+					    {loading && <div>Loading ...</div>}
+						{classes.filter(clazz=>clazz.Approved).map(clazz => (
+							
+							<div id={clazz.key} class={'wsite-image wsite-image-border-none project'}>
+								<a href={'/class/' + clazz.key} path={'/classes/' + clazz.ThumbnailFilename}>
+									<LazyImage file={this.props.firebase.storage.ref('/classes/' + clazz.ThumbnailFilename)}/>
+								</a>
+								<div>
+									<h4>{clazz.Title}</h4>
+								</div>
 							</div>
-						</div>
-					))}
- 				</div>
- 				
- 			</div>
- 		)
+						))}
+				   </div>
+				</div>
+			</div>
+			)
+ 	
+ 	
+
+
+	}
 }
-}
 
+const condition = authUser => authUser && (!!authUser.roles[ROLES.ADMIN] || !!authUser.roles[ROLES.TEACHER]);
+const ClassesPage = withFirebase(withAuthorization(condition)(ClassesPageBase));
 
-const ProfilePage = withFirebase(withAuthentication(ProfilePageBase));
-
-export default ProfilePage;
+export default ClassesPage;
