@@ -9,69 +9,62 @@
 	<link href="https://fonts.googleapis.com/css?family=Quicksand" rel="stylesheet">
 	<link rel="stylesheet" href="index.css">
 	<link rel="icon" type="favicon/x-icon" href="images/favicon.ico">
+	<link rel="stylesheet" href="node_modules/react-quill/dist/quill.snow.css">
 	<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
 	 crossorigin="anonymous"></script>
 </head>
 
 <body>
+<div id="root"/>
 
-	<h1>The Coding Space Projects</h1>
-	<div class="container">
-
-		<div class="section-holder">
-
-			<section id="scratch">
-				<a id="scratch-img" href="./scratch"><img class="img-responsive large-img" src="./images/2018scratch.png" alt="Scratch"></a>
-				<div id="scratch-box" class="black-opaque infobox">Program your own interactive stories, games, and animations with Scratch
-					-- and share your creations with others in the online community.
-					<p class="info-para green">We recommend starting here.</p>
-				</div>
-			</section>
-
-			<section id="woof">
-				<a id="woof-img" href="http://woofjs.com/"><img class="img-responsive large-img" src="./images/2018woof.png" alt="Woof"></a>
-				<div id="woof-box" class="black-opaque infobox">Build complex games, animations, and apps with WoofJS. It uses JavaScript,
-					the language of the web, so you can build for mobile and integrate with APIs and databases.
-					<p class="info-para yellow">We recommend completing two Level 4 Scratch projects before starting with WoofJS.</p>
-				</div>
-			</section>
-
-			<section id="web">
-				<a id="web-img" href="./web"><img class="img-responsive large-img" src="./images/2018web.png" alt="Web"></a>
-				<div id="web-box" class="black-opaque infobox">Create websites and web apps using HTML, CSS, and JavaScript.
-					<p class="info-para red">We recommend completing two Level 3+ WoofJS projects before you start with Web projects.</p>
-				</div>
-			</section>
-		</div>
-
-	</div>
-<div id= "footer">
-
-	<div id="learn-col">
-		<div id="start" class="info-modal" style="margin-right: 7px">Where do I start?</div>
-		<a href="./about.html"><div class="info-modal" id="about">About this site</div></a>
-	</div>
-	<div class="holder" style="min-height: 80px">
-		<div id="start-box" class="black-opaque">
-			<p class="info-para">We recommend starting with a Level 1 Scratch project, like
-				<a href="./scratch/ghost-busters.html" target="_blank">Ghost Busters
-				</a>.
-			</p>
-
-			<p class="info-para">If you’re a experienced coder, browse the levels to find a project that's challenging for you.
-			</p>
-		</div>
-	</div>
-
-	<div class="bottom-holder">
-		<h4 id="tcs-text">Created by <a href="http://www.thecodingspace.com" target="_blank">The Coding Space</a></h4>
-	</div>
-	
-	<div class="gong">
-		<a href="/gong"><img src="gong_assets/gong.png" alt="Virtual Gong"/></a>
-	</div>
-</div>	
 	<script>
+		function goBack() {
+	 var back = document.createElement("a");
+	  back.href = "./";
+	  back.id = "back";
+	  back.innerHTML = "Back"
+	  var h1 = document.querySelector("h1");
+	  document.querySelector(".container").insertBefore(back, document.querySelector(".container").firstChild)
+	}
+	
+	
+	function loadiframe(id, el) {
+	  
+	  var iframe = document.getElementById(id);
+	  var data = iframe.getAttribute("data-src");
+	  iframe.setAttribute("src", data); 
+	  
+	  var block;
+
+	  if (el) {
+	  	el.style.display = "none";
+	  	block = el.parentNode;;
+	  } else {
+	  	block = document.querySelector(".block");
+	  }
+	 
+	  var x = document.createElement("p");
+      x.innerHTML = '<img id="loading" src="./images/costume1.svg"><br>Loading...';
+
+      block.insertBefore(x, block.lastElementChild);
+	  
+       
+      iframe.onload = function() { 
+      	
+      	block.removeChild(x)
+      	iframe.style.display = "block";
+      	iframe.style.width = "100%";
+        iframe.style.height = "402px";
+
+      };
+	
+	}
+	
+	
+	/*window.onload = function() {
+		loadiframe("full");
+		goBack();
+	}*/
 
 		function isMobileDevice() {
 			return (typeof window.orientation !== "undefined") || (navigator.userAgent.indexOf('IEMobile') !== -1);
@@ -134,7 +127,18 @@
 		})
 
 	</script>
+<script>
+	(function (i, s, o, g, r, a, m) {
+		i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+			(i[r].q = i[r].q || []).push(arguments)
+		}, i[r].l = 1 * new Date(); a = s.createElement(o),
+			m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+	})(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
 
+	ga('create', 'UA-86847686-1', 'auto');
+	ga('send', 'pageview');
+
+</script>
 </body>
 
 </html>

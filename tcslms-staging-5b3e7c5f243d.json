@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "tcslms-staging",
+  "private_key_id": "5b3e7c5f243d38bf0a55b63346d2460436188370",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDcH1pYBGj7BowV\nfj6AtSA2u20uSUjR63oFWrR2S3IIwoNwhXOjVVHS9gGN45sPTs3y6SELuDAWdlnL\nbFaO5j5v8eelgxH6J3VgfOXvuxAeyINjMpSLq+NPArkwnfsxnWwa/VMprNdP3SOG\no4xpbROTJKJCYc0x5nWVHQ5eTN6NqFO3rXmeLGF/hL4TBqk/MXkkaXUwHhbAMrsu\nOu+NkkIihYw3HJJO/ngtgnE/GhNpVYm88RZQOaUtz3DiKfrxJv6rtOM28RDkzYet\nXcGE/5SmJ/qQTE4EpDyBWhJWQp0Y7w34suxsxJcfb+gO9Bg91xUaYGKe43sc/YDF\nTNMk0+8LAgMBAAECggEAHhgrQd1YfPloLYgVA4O/47u8MZfTXN/UzuaXxZSLAqeV\nUMzuAmanyS/ZBo0XpgAgKBW3buK/sFJ99FHbg63221c3VGmXC5xZb9ejmCL7ETpY\nvDcuF+poKWU17G+s6BudrBL2S7xVs5WIReAWUlOXWYaoqGq2oxve94QBcuMPik44\nGW9FbNiqzPYM1VXWeO64W1xTbOFGeXj56h6D7xYDUe54jbewtUX6vKViEdfMibIQ\ndRs/5w/rEPiQnMz6oFsR+EzHLGM4ex+Zh20UYyPVvTCXMc9bmXBoHP8dxp6F6nvn\nDVbeS5KhhYIQpjZD/O0C5mWrDzvDIycAe0eTqOLIAQKBgQD89McVcJ5YvOX8jiDQ\nroTukCYoC1BXKFpg3MFfvE7FpQjUcCvkprSS/57EJP3KwGRX6EgWJNnxzL4xX2TB\nZUwLX2hMq+64EkPjLqeHuBbMxQM9cWJy5++1e0DUustgOHQmFnis1GAjs+OzQ3pC\nDoA+NuwRHDLf+NVldnQ+PWZovwKBgQDexW6nCB+k8TlykLUNK/RGokzvn6QNdR4y\n6mB5fGhyNMATUIh+qI4CXIO2fttqch/9gvRJPwk9aTEz7c+G4S2gdXpRQKexjjFH\n840z2e54Tq1MmFOHqSmC+9W7nWZsKZItGvkAcJgw5t+v/KZYYSOk9mjZJFLS8ZTN\nh00u8qwgtQKBgQCDuLc+2+EpFlyw0hYWdPp1/AxSh+mzKSk/DVWJE9b1JsZdUXgZ\n3hFkBsZXH2glP2BBQozfMxtmxZY4wZMG/kfGGE2It3Nc2O4PDEli7CK7SNAyG6wH\nZ+20VFVjMU4ccelRuBvo68KQdOlafQXaBhET1KfDFSsM5FfDORa5HmIIowKBgQC9\nS9Un+B4zoYsoT9CZPbVX5AguQmA70z5zE3ghI1b5XNuuTet+fSoW1ZhSld9Kx2lp\nmUKNjxQB7AYUU0raGTQVOl5S9vbISMSVmF5vJguejXRzNqkcCOGuXOKUhz6GQJjm\n3Rmjhwm73CNNvwl25ixMu9oCUfxTJVdFgmhSsYEUVQKBgGB7W4HOyQhd4UeDQN8G\nIGTkgkVgPQzHawv0Onzvxnm3emPwp5/zEWwZX1PE4nsONhlDrBTXlrqfRZU04G6V\n+3/TKHyxBnUarleU45RdSlkrmsG6UTvU5QzKMYWJ0VdQaLFv9CBKOfoKvinyi9LB\nEMUChUtgpWHvYvQR+59Ny3uc\n-----END PRIVATE KEY-----\n",
+  "client_email": "students-thecodingspace-com@tcslms-staging.iam.gserviceaccount.com",
+  "client_id": "100062814833979075614",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/students-thecodingspace-com%40tcslms-staging.iam.gserviceaccount.com"
+}
