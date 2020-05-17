@@ -55,7 +55,7 @@ class App extends Component {
 				<AuthUserContext.Provider value={this.state.authUser}>
 					<Router>
 						<div>
-							<Navigation />
+							<Route component={Navigation} />
 							<hr />
 							<Route exact path={ROUTES.LANDING} render={(props) =><LandingPage {...this.props} setGlobalState={this.setGlobalState}  />} />
 							<Route path={ROUTES.SIGN_UP} component={NewUserForm} />

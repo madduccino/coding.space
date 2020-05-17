@@ -3,67 +3,77 @@ import { Link } from 'react-router-dom';
 import SignOutButton from '../SignOut';
 import * as ROUTES from '../../constants/routes';
 import * as ROLES from '../../constants/roles';
-import { AuthUserContext } from '../Session';
-const Navigation = () => (
-  <div>
-    <AuthUserContext.Consumer>
-      {authUser =>
-        authUser ? <NavigationAuth authUser={authUser}/> : <NavigationNonAuth/> 
-      }
-    </AuthUserContext.Consumer>    
-  </div>
+import { AuthUserContext, withAuthentication } from '../Session';
 
-);
-const NavigationAuth = ({ authUser }) => (
+class Navigation extends React.Component{
+  constructor(props){
+    super(props);
+    this.state={
 
-      <ul>
-        {!authUser && (
-          <li>
-            <Link to={ROUTES.SIGN_IN}>Sign In</Link>
-          </li>
-        )}
-        <li>
-          <Link to={ROUTES.LANDING}>Home</Link>
-        </li>
-        {!!authUser && (
-          <li>
-            <Link to={'/profile/' + authUser.uid}>Account</Link>
-          </li>
+    }
+  }
+  render(){
+    const {authUser} = this.props;
+    const {pathname} = this.props.location;
+    if(authUser)
+      return (
+
+        <ul>
+          {(!authUser ) && (
+            <li>
+              <Link to={ROUTES.SIGN_IN}>Sign In</Link>
+            </li>
           )}
-        
-        {(!!authUser.roles[ROLES.ADMIN] || !!authUser.roles[ROLES.TEACHER]) && (
           <li>
-            <Link to={ROUTES.CLASSES}>Classes</Link>
+            <Link to={ROUTES.LANDING}>Home</Link>
           </li>
-
-          )}
-        {!!authUser.roles[ROLES.ADMIN] && (
+          {!!authUser && (
+            <li>
+              <Link to={'/profile/' + authUser.uid}>Account</Link>
+            </li>
+            )}
           
+          {(!!authUser.roles[ROLES.ADMIN] || !!authUser.roles[ROLES.TEACHER]) && (
+            <li>
+              <Link to={ROUTES.CLASSES}>Classes</Link>
+            </li>
+
+            )}
+          {!!authUser.roles[ROLES.ADMIN] && (
+            
+            <li>
+              <Link to={ROUTES.SIGN_UP}>New User</Link>
+            </li>
+          )}
           <li>
-            <Link to={ROUTES.SIGN_UP}>New User</Link>
+            <SignOutButton />
           </li>
-        )}
-        <li>
-          <SignOutButton />
-        </li>
-      </ul>
+        </ul>
 
 
-)
-const NavigationNonAuth = () => (
+      )
+    return (
 
-      <ul>
-        <li>
-          <Link to={ROUTES.LANDING}>Landing</Link>
-        </li>
+        <ul>
+        
+          <li>
+            <Link to={ROUTES.LANDING}>Landing</Link>
+          </li>
+          
+          {pathname != '/signin' && (
+            <li>
+              <Link to={ROUTES.SIGN_IN}>Sign In</Link>
+            </li>
+          )}
 
-        <li>
-          <Link to={ROUTES.SIGN_IN}>Sign In</Link>
-        </li>
-
-      </ul>
+        </ul>
 
 
-  )
+      )
+  }
+}
 
-export default Navigation;
+
+
+
+export default withAuthentication(Navigation);

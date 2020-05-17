@@ -76,7 +76,8 @@ class ProfilePageBase extends React.Component {
  }
 
  componentWillUnmount(){
- 	this.props.firebase.project().off();
+ 	this.props.firebase.profile().off();
+ 	this.props.firebase.projects().off();
  }
  handlePDescriptionOnChange(value){
 
