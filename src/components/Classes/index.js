@@ -47,8 +47,9 @@ class ClassesPageBase extends React.Component {
 
  	const {key} = this.props.match.params;
  	this.props.firebase.classes().on('value',snapshot => {
+ 		const classes = snapshot.val();
 		this.setState({
-			classes:Object.values(snapshot.val()),
+			classes:classes,
 			loading:false,
 		})
 		
@@ -99,14 +100,14 @@ class ClassesPageBase extends React.Component {
 
 				   <div class="level">
 					    {loading && <div>Loading ...</div>}
-						{classes.filter(clazz=>clazz.Approved).map(clazz => (
+						{Object.keys(classes).filter(clazz=>classes[clazz].Status==='APPROVED').map(clazz => (
 							
 							<div id={clazz.key} class={'wsite-image wsite-image-border-none project'}>
-								<a href={'/class/' + clazz.key} path={'/classes/' + clazz.ThumbnailFilename}>
-									<LazyImage file={this.props.firebase.storage.ref('/classes/' + clazz.ThumbnailFilename)}/>
+								<a href={'/classes/' + clazz} path={'/classes/' + classes[clazz].ThumbnailFilename}>
+									<LazyImage file={this.props.firebase.storage.ref('/classes/' + classes[clazz].ThumbnailFilename)}/>
 								</a>
 								<div>
-									<h4>{clazz.Title}</h4>
+									<h4>{classes[clazz].Title}</h4>
 								</div>
 							</div>
 						))}

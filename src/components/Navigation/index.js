@@ -17,9 +17,11 @@ const Navigation = () => (
 const NavigationAuth = ({ authUser }) => (
 
       <ul>
-        <li>
-          <Link to={ROUTES.SIGN_IN}>Sign In</Link>
-        </li>
+        {!authUser && (
+          <li>
+            <Link to={ROUTES.SIGN_IN}>Sign In</Link>
+          </li>
+        }
         <li>
           <Link to={ROUTES.LANDING}>Home</Link>
         </li>

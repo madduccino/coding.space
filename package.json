@@ -20,6 +20,8 @@
     "draft-js-side-toolbar-plugin": "^3.0.2",
     "emailjs-com": "^2.4.1",
     "eslint": "^6.8.0",
+    "eslint-config-dev": "^2.0.0",
+    "eslint-config-developit": "^1.2.0",
     "firebase": "^7.14.2",
     "fs": "0.0.1-security",
     "googleapis": "^40.0.1",

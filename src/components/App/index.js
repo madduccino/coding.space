@@ -14,6 +14,7 @@ import AccountPage from '../Account';
 import AdminPage from '../Admin';
 import ProjectPage from '../Project';
 import ProfilePage from '../Profile';
+import ClassPage from '../Class';
 import Scratch from '../Scratch';
 import * as ROUTES from '../../constants/routes';
 import {withAuthentication} from '../Session';
@@ -66,6 +67,7 @@ class App extends Component {
 							<Route path={ROUTES.SCRATCH} component={Scratch} />
 							<Route path={ROUTES.PROJECT} component={ProjectPage} />
 							<Route path={ROUTES.PROFILE} component={ProfilePage} />
+							<Route path={ROUTES.CLASS} component={ClassPage} />
 							{this.state.showFooter &&
 								<Footer showFooter={this.state.showFooter} />
 							}

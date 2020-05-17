@@ -23,3 +23,10 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+.firebase/hosting.YnVpbGQ.cache
+.firebase/hosting.YnVpbGQ.cache
+firebase-debug.log
+functions/tcslms/
+.firebase/hosting.YnVpbGQ.cache
+firebase-debug.log
+package-lock.json
