@@ -34,7 +34,8 @@
     "react-quill-image-uploader": "^0.1.1",
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.4.1",
-    "recompose": "^0.30.0"
+    "recompose": "^0.30.0",
+    "uuid": "^8.0.0"
   },
   "scripts": {
     "start": "react-scripts start",

@@ -15,6 +15,7 @@ import AdminPage from '../Admin';
 import ProjectPage from '../Project';
 import ProfilePage from '../Profile';
 import ClassPage from '../Class';
+import NewProjectPage from '../NewProject';
 import Scratch from '../Scratch';
 import * as ROUTES from '../../constants/routes';
 import {withAuthentication} from '../Session';
@@ -58,7 +59,7 @@ class App extends Component {
 							<Route component={Navigation} />
 							<hr />
 							<Route exact path={ROUTES.LANDING} render={(props) =><LandingPage {...this.props} setGlobalState={this.setGlobalState}  />} />
-							<Route path={ROUTES.SIGN_UP} component={NewUserForm} />
+							<Route path={ROUTES.NEW_USER} component={NewUserForm} />
 							<Route path={ROUTES.SIGN_IN} component={SignInPage} />
 							<Route path={ROUTES.PASSWORD_FORGET} component={PasswordForgetPage} />
 							<Route path={ROUTES.CLASSES} component={ClassesPage} />
@@ -68,6 +69,7 @@ class App extends Component {
 							<Route path={ROUTES.PROJECT} component={ProjectPage} />
 							<Route path={ROUTES.PROFILE} component={ProfilePage} />
 							<Route path={ROUTES.CLASS} component={ClassPage} />
+							<Route path={ROUTES.NEW_PROJECT} component={NewProjectPage} />
 							{this.state.showFooter &&
 								<Footer showFooter={this.state.showFooter} />
 							}

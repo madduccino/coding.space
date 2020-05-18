@@ -19,19 +19,16 @@ class Navigation extends React.Component{
       return (
 
         <ul>
-          {(!authUser ) && (
-            <li>
-              <Link to={ROUTES.SIGN_IN}>Sign In</Link>
-            </li>
-          )}
           <li>
             <Link to={ROUTES.LANDING}>Home</Link>
           </li>
-          {!!authUser && (
-            <li>
-              <Link to={'/profile/' + authUser.uid}>Account</Link>
-            </li>
-            )}
+          <li>
+            <Link to={ROUTES.NEW_PROJECT}>Create a Project!</Link>
+          </li>
+          <li>
+            <Link to={'/profile/' + authUser.uid}>Account</Link>
+          </li>
+
           
           {(!!authUser.roles[ROLES.ADMIN] || !!authUser.roles[ROLES.TEACHER]) && (
             <li>
@@ -42,7 +39,7 @@ class Navigation extends React.Component{
           {!!authUser.roles[ROLES.ADMIN] && (
             
             <li>
-              <Link to={ROUTES.SIGN_UP}>New User</Link>
+              <Link to={ROUTES.NEW_USER}>New User</Link>
             </li>
           )}
           <li>

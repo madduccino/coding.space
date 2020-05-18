@@ -23,7 +23,7 @@ class TCSEditor extends React.Component {
 
 	render(){
 		return (
-			<ReactQuill theme={'snow'} value={this.state.text} onChange={this.handleChange}/>
+			<ReactQuill theme={'snow'} placeholder={this.props.placeholder} value={this.state.text} onChange={this.handleChange}/>
 			)
 	}
 }

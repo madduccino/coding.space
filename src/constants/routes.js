@@ -1,5 +1,5 @@
 export const LANDING = '/';
-export const SIGN_UP = '/signup';
+export const NEW_USER = '/signup';
 export const SIGN_IN = '/signin';
 export const CLASSES = '/classes';
 export const CLASS = '/classes/:key';
@@ -9,3 +9,4 @@ export const PASSWORD_FORGET = '/pw-forget';
 export const SCRATCH = '/scratch';
 export const PROJECT = '/project/:key';
 export const PROFILE = '/profile/:key';
+export const NEW_PROJECT = '/new_project'

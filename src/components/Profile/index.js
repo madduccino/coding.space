@@ -6,6 +6,7 @@ import { AuthUserContext } from '../Session';
 import {withAuthentication} from '../Session';
 import {withFirebase} from '../Firebase';
 import TCSEditor from '../TCSEditor';
+import { v4 as uuidv4 } from 'uuid';
 
 
 
@@ -18,10 +19,13 @@ class ProfilePageBase extends React.Component {
  		loading:true,
  		projects: {},
  		profile:{},
+ 		uploading:false,
+ 		uploadPercent:0,
 
 
 
  	}
+ 	this.handleThumbnailUpload = this.handleThumbnailUpload.bind(this);
  	this.handlePDescriptionOnChange = this.handlePDescriptionOnChange.bind(this);
  	this.handleStepOnChange = this.handleStepOnChange.bind(this);
  	this.addStepHandler = this.addStepHandler.bind(this);
@@ -79,6 +83,34 @@ class ProfilePageBase extends React.Component {
  	this.props.firebase.profile().off();
  	this.props.firebase.projects().off();
  }
+  handleThumbnailUpload(event){
+ 	var file = event.target.files[0];
+ 	var ext = file.name.substring(file.name.lastIndexOf('.') + 1);
+ 	var pCopy = this.state.profile;
+ 	pCopy.ThumbnailFilename = uuidv4() + '.' + ext;
+
+ 	var storageRef = this.props.firebase.storage.ref('/public/' + pCopy.key + '/' + pCopy.ThumbnailFilename);
+ 	var task = storageRef.put(file);
+
+ 	task.on('state_changed',
+ 		(snapshot)=>{
+ 			//update
+ 			var percentage = 100 * snapshot.bytesTransferred / snapshot.totalBytes;
+ 			this.setState({uploadPercent:percentage,uploading:true})
+
+	 	},(error)=>{
+	 		//error
+	 		console.log(error);
+	 		this.setState({uploadPercent:0,uploading:false})
+	 	},
+	 	()=>{
+	 		//complete
+	 		this.setState({uploadPercent:0,uploading:false,profile:pCopy})
+
+	 	})
+
+
+ }
  handlePDescriptionOnChange(value){
 
  }
@@ -116,6 +148,19 @@ class ProfilePageBase extends React.Component {
  					<TCSEditor className={'block'} onEditorChange={this.handlePDescriptionOnChange} placeholder={'Project Description'} text={profile.About}/>
  				</div>
  				<div className={'container'}>
+					<h4>Avatar</h4>
+				</div>
+				<div className={'container'}>
+					<input type="file" onChange={this.handleThumbnailUpload}/>
+					{this.state.uploading && (
+						<progress value={this.state.uploadPercent} max="100"/>
+					)}
+					{!!profile.ThumbnailFilename && !this.state.uploading &&(
+						<LazyImage file={this.props.firebase.storage.ref('/public/' + profile.key + '/' + profile.ThumbnailFilename)}/>
+					)}
+					
+				</div>
+ 				<div className={'container'}>
  					<div classname={'block'}>My Age</div>
  					<TCSEditor onEditorChange={this.handlePDescriptionOnChange} placeholder={'Project Description'} text={profile.Age}/>
  				</div>
@@ -131,7 +176,7 @@ class ProfilePageBase extends React.Component {
 								<LazyImage file={this.props.firebase.storage.ref('/public/' + project.Author + '/' + project.ThumbnailFilename)}/>
 							</a>
 							<div>
-								<h4>{project.Title}</h4>
+								<h4 dangerouslySetInnerHTML={{__html:project.Title}}/>
 							</div>
 						</div>
 					))}
@@ -150,6 +195,16 @@ class ProfilePageBase extends React.Component {
  					<div class="block" dangerouslySetInnerHTML={{__html:profile.About}}/>
  				</div>
  				<div className={'container'}>
+					<h4>Avatar</h4>
+				</div>
+				<div className={'container'}>
+
+					{!!profile.ThumbnailFilename &&(
+						<LazyImage file={this.props.firebase.storage.ref('/public/' + profile.key + '/' + profile.ThumbnailFilename)}/>
+					)}
+					
+				</div>
+ 				<div className={'container'}>
  				<div classname={'block'}>My Age</div>
  					<div class="block" dangerouslySetInnerHTML={{__html:profile.Age}}/>
  				</div>
@@ -167,7 +222,7 @@ class ProfilePageBase extends React.Component {
 								<LazyImage file={this.props.firebase.storage.ref('/public/' + project.Author + '/' + project.ThumbnailFilename)}/>
 							</a>
 							<div>
-								<h4>{project.Title}</h4>
+								<h4 dangerouslySetInnerHTML={{__html:project.Title}}/>
 							</div>
 						</div>
 					))}

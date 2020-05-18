@@ -6,7 +6,7 @@ import { AuthUserContext } from '../Session';
 import {withAuthentication} from '../Session';
 import {withFirebase} from '../Firebase';
 import TCSEditor from '../TCSEditor';
-
+import { v4 as uuidv4 } from 'uuid';
 
 
 class ProjectPageBase extends React.Component {
@@ -18,11 +18,18 @@ class ProjectPageBase extends React.Component {
  		author:null,
  		loading:true,
  		project: {},
+ 		dirty:false,
+ 		uploading:false,
+ 		uploadPercent:0,
 
 
 
  	}
+ 	this.handleStatusOnChange = this.handleStatusOnChange.bind(this);
+ 	this.handleThumbnailUpload = this.handleThumbnailUpload.bind(this);
+ 	this.handlePTitleOnChange = this.handlePTitleOnChange.bind(this);
  	this.handlePDescriptionOnChange = this.handlePDescriptionOnChange.bind(this);
+ 	this.handleLevelOnChange = this.handleLevelOnChange.bind(this);
  	this.handleStepOnChange = this.handleStepOnChange.bind(this);
  	this.addStepHandler = this.addStepHandler.bind(this);
  	this.deleteStepHandler = this.deleteStepHandler.bind(this);
@@ -70,27 +77,92 @@ class ProjectPageBase extends React.Component {
  componentWillUnmount(){
  	this.props.firebase.project().off();
  }
+ handleThumbnailUpload(event){
+ 	
+ 	var file = event.target.files[0];
+ 	var ext = file.name.substring(file.name.lastIndexOf('.') + 1);
+ 	var pCopy = this.state.project;
+ 	const {authUser} = this.props;
+ 	if(authUser && !!authUser.roles['STUDENT'])
+ 		pCopy.Status = 'DRAFT';
+ 	pCopy.ThumbnailFilename = uuidv4() + '.' + ext;
+
+ 	var storageRef = this.props.firebase.storage.ref('/public/' + pCopy.Author + '/' + pCopy.ThumbnailFilename);
+ 	var task = storageRef.put(file);
+
+ 	task.on('state_changed',
+ 		(snapshot)=>{
+ 			//update
+ 			var percentage = 100 * snapshot.bytesTransferred / snapshot.totalBytes;
+ 			this.setState({uploadPercent:percentage,uploading:true})
+
+	 	},(error)=>{
+	 		//error
+	 		console.log(error);
+	 		this.setState({uploadPercent:0,uploading:false})
+	 	},
+	 	()=>{
+	 		//complete
+	 		this.setState({uploadPercent:0,uploading:false,project:pCopy,dirty:true})
+
+	 	})
+
+
+ }
+ handlePTitleOnChange(value){
+ 	var pCopy = this.state.project;
+ 	pCopy.Title = value;
+ 	const {authUser} = this.props;
+ 	if(authUser && !!authUser.roles['STUDENT'])
+ 		pCopy.Status = 'DRAFT';
+ 	this.setState({project:pCopy,dirty:true});
+ }
  handlePDescriptionOnChange(value){
  	var pCopy = this.state.project;
  	pCopy.Description = value;
- 	this.setState({project:pCopy});
+ 	const {authUser} = this.props;
+ 	if(authUser && !!authUser.roles['STUDENT'])
+ 		pCopy.Status = 'DRAFT';
+ 	this.setState({project:pCopy,dirty:true});
+ }
+ handleStatusOnChange(event){
+ 	var pCopy = this.state.project;
+ 	pCopy.Status = event.target.value;
+ 	this.setState({project:pCopy,dirty:true});
+ }
+ handleLevelOnChange(event){
+ 	var pCopy = this.state.project;
+ 	pCopy.Level = event.target.value;
+ 	const {authUser} = this.props;
+ 	if(authUser && !!authUser.roles['STUDENT'])
+ 		pCopy.Status = 'DRAFT';
+ 	this.setState({project:pCopy,dirty:true});
  }
  handleStepOnChange(value,step){
  	var pCopy = this.state.project;
  	pCopy.steps[step].Description = value;
- 	this.setState({project:pCopy});
+ 	const {authUser} = this.props;
+ 	if(authUser && !!authUser.roles['STUDENT'])
+ 		pCopy.Status = 'DRAFT';
+ 	this.setState({project:pCopy,dirty:true});
  }
  deleteStepHandler(event,key){
  	var pCopy = this.state.project;
+ 	const {authUser} = this.props;
+ 	if(authUser && !!authUser.roles['STUDENT'])
+ 		pCopy.Status = 'DRAFT';
  	delete pCopy.steps[key];
- 	this.setState({project:pCopy});
+ 	this.setState({project:pCopy,dirty:true});
  	console.log("Delete Step");
  	console.log(key);
  }
  addStepHandler(event){
  	var pCopy = this.state.project;
+ 	const {authUser} = this.props;
+ 	if(authUser && !!authUser.roles['STUDENT'])
+ 		pCopy.Status = 'DRAFT';
  	pCopy.steps[Math.max(...Object.keys(pCopy.steps)) + 1] = {Description:''};
- 	this.setState({project:pCopy});
+ 	this.setState({project:pCopy,dirty:true});
  	console.log("Add Step");
  }
  saveChangesHandler(event){
@@ -99,7 +171,10 @@ class ProjectPageBase extends React.Component {
  	this.props.firebase.project(key).set({
  		...this.state.project
  	})
- 		.then(()=>console.log("Successfully Saved"))
+ 		.then(()=>{
+ 			console.log("Successfully Saved");
+ 			this.setState({dirty:false})
+ 		})
  		.catch(error=>console.log(error));
  	console.log("Save Changes");
  }
@@ -107,22 +182,66 @@ class ProjectPageBase extends React.Component {
  render(){
  	
  	const {project, loading, author} = this.state;
+ 	const {Title,Description, Level, steps} = project;
  	const {authUser} = this.props;
+ 	const stepCount = (!!project&& !!project.steps) ? Object.keys(project.steps).length : 0;
  	
  	//console.log(Object.keys(project));
  	if(loading)
  		return (<div>Loading ...</div>);
- 	
+ 	var isInvalid =
+      Title === '' ||
+      Description === '' ||
+      isNaN(Level) ||
+      stepCount < 1;
+     for(var step in steps)
+     	if(step.Description === '')
+     		isInvalid = true;
  	//can edit
+
 	if(authUser && (!!authUser.roles['ADMIN'] || authUser.uid===project.Author) )
  	{
  		return (
  			<div>
- 				<h1>{project.Title}</h1>
+ 				<h1 dangerouslySetInnerHTML={{__html:project.Title}}/>
  				<h3>by: <a href={'/profile/' + project.Author}>{author.Name}</a></h3>
+ 				{authUser && !!authUser.roles['ADMIN'] && (
+ 					<select value={project.Status} onChange={this.handleStatusOnChange}>
+ 						<option value="DRAFT">DRAFT</option>
+ 						<option value="APPROVED">APPROVED</option>
+ 					</select>
+
+ 				)}
+ 				<div className={'container'}>
+					<h4>Thumbnail</h4>
+				</div>
+				<div className={'container'}>
+					<input type="file" onChange={this.handleThumbnailUpload}/>
+					{this.state.uploading && (
+						<progress value={this.state.uploadPercent} max="100"/>
+					)}
+					{!!project.ThumbnailFilename && !this.state.uploading &&(
+						<LazyImage file={this.props.firebase.storage.ref('/public/' + project.Author + '/' + project.ThumbnailFilename)}/>
+					)}
+					
+				</div>
  				<div className={'container'}>
  					<TCSEditor onEditorChange={this.handlePDescriptionOnChange} placeholder={'Project Description'} text={project.Description}/>
  				</div>
+ 				<div className={'container'}>
+ 					<h3>Level</h3>
+ 				</div>
+ 				<div className={'container'}>
+					<select value={project.Level} onChange={this.handleLevelOnChange}>
+						<option value="1">1</option>
+						<option value="2">2</option>
+						<option value="3">3</option>
+						<option value="4">4</option>
+						<option value="5">5</option>
+						<option value="6">6</option>
+					</select>
+					
+				</div>
  				<div className={'container'}>
  					{Object.keys(project.steps).map(step => (
  						<div>
@@ -132,7 +251,10 @@ class ProjectPageBase extends React.Component {
 					))}
  				</div>
  				<button onClick={this.addStepHandler}>Add Step</button>
- 				<button onClick={this.saveChangesHandler}>Save Changes</button>
+ 				{this.state.dirty && (
+ 					<button onClick={this.saveChangesHandler}>Save Changes</button>
+ 				)}
+ 				
  			</div>
  		)
 
@@ -140,7 +262,7 @@ class ProjectPageBase extends React.Component {
 
  	return (
 			<div>
-	 			<h1>{project.Title}</h1>
+	 			<h1 dangerouslySetInnerHTML={{__html:project.Title}}/>
 	 			<h3>by: <a href={'/profile/' + project.Author}>{author.Name}</a></h3>
 				<div className={'container'} dangerouslySetInnerHTML={{__html:project.Description}}/>
 				<div className={'container'}>
