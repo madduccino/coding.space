@@ -43,12 +43,16 @@ class NewUserFormBase extends Component {
         .then((response)=>{
           var {uid} = response.json().then(data =>{
             return this.props.firebase
-              .user(uid)
+              .profile(data.uid)
               .set({
                 Email:data.email,
-                DisplayName:data.displayName,
+                DisplayName:name,
                 key:data.uid,
                 roles,
+                About:'',
+                Age:'',
+                Username:username,
+                ThumbnailFilename:'',
               })
           });
           

@@ -1,8 +1,13 @@
 const functions = require('firebase-functions');
+const serviceAccount = require('./credential.json');
+
 //const cors = require('cors')({origin:true});
 
 const admin = require('firebase-admin');
-admin.initializeApp();
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL: "https://tcslms-staging.firebaseio.com"
+});
 
 // // Create and Deploy Your First Cloud Functions
 // // https://firebase.google.com/docs/functions/write-firebase-functions
@@ -30,7 +35,7 @@ exports.createUser = functions.https.onRequest(async(req,res)=>{
 	}
 
 	const email = req.body.email;
-	const pass = req.body.pass;
+	const pass = req.body.password;
 	const name = req.body.name;
 
 	admin.auth().createUser({
