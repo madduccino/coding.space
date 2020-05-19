@@ -21,6 +21,7 @@ class ProfilePageBase extends React.Component {
  		profile:{},
  		uploading:false,
  		uploadPercent:0,
+ 		
 
 
 

@@ -41,7 +41,7 @@ class NewProjectPageBase extends React.Component {
 
 
  	}
- 	this.handleStatusOnChange = this.handleStatusOnChange.bind(this);
+ 	//this.handleStatusOnChange = this.handleStatusOnChange.bind(this);
  	this.handleThumbnailUpload = this.handleThumbnailUpload.bind(this);
  	this.handlePTitleOnChange = this.handlePTitleOnChange.bind(this);
  	this.handlePDescriptionOnChange = this.handlePDescriptionOnChange.bind(this);

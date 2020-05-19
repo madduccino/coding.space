@@ -53,6 +53,7 @@ class NewUserFormBase extends Component {
                 Age:'',
                 Username:username,
                 ThumbnailFilename:'',
+                Status:'DRAFT',
               })
           });
           
