@@ -65,10 +65,14 @@ class NewProjectPageBase extends React.Component {
  };
 
  componentDidMount(){
-
+ 	var pCopy = this.state.project;
+ 	pCopy.Author = this.props.authUser.key;
 
  	this.setState({
  		projectRef: this.props.firebase.project(this.state.project.key),
+ 		project:pCopy,
+ 		loading:false,
+
 
  		
  	})
@@ -98,8 +102,11 @@ class NewProjectPageBase extends React.Component {
  }
   handlePTitleOnChange(value){
  	var pCopy = this.state.project;
- 	pCopy.Title = value;
- 	this.setState({project:pCopy});
+ 	if(value !== pCopy.Title){
+ 		pCopy.Title = value;
+ 		this.setState({project:pCopy});
+ 	}
+ 	
  }
  handleThumbnailUpload(event){
  	var file = event.target.files[0];
@@ -131,18 +138,27 @@ class NewProjectPageBase extends React.Component {
  }
  handlePDescriptionOnChange(value){
  	var pCopy = this.state.project;
- 	pCopy.Description = value;
- 	this.setState({project:pCopy});
+ 	if(value !== pCopy.Description){
+ 		pCopy.Description = value;
+ 		this.setState({project:pCopy});
+ 	}
+ 	
  }
  handleLevelOnChange(event){
  	var pCopy = this.state.project;
- 	pCopy.Level = event.target.value;
- 	this.setState({project:pCopy});
+ 	if(event.target.value !== pCopy.Level){
+ 		pCopy.Level = event.target.value;
+ 		this.setState({project:pCopy});
+ 	}
+ 	
  }
  handleStepOnChange(value,step){
  	var pCopy = this.state.project;
- 	pCopy.steps[step].Description = value;
- 	this.setState({project:pCopy});
+ 	if(value !== pCopy.steps[step].Description){
+ 		pCopy.steps[step].Description = value;
+ 		this.setState({project:pCopy});
+ 	}
+
  }
  deleteStepHandler(event,key){
  	var pCopy = this.state.project;

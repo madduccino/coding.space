@@ -20,6 +20,8 @@ class NewUserFormBase extends Component {
   constructor(props) {
     super(props);
     this.state = { ...INITIAL_STATE   };
+    this.onChange = this.onChange.bind(this);
+    this.onCheckboxChange = this.onCheckboxChange.bind(this);
   }
 
   onSubmit = event => {
@@ -69,6 +71,13 @@ class NewUserFormBase extends Component {
     if(event.target.name === "name")
       this.setState({ username: event.target.value.trim().replace(/ /g,'.')})
   	this.setState({ [event.target.name]: event.target.value });
+    
+
+  };
+  onCheckboxChange = event => {
+    
+
+    this.setState({ [event.target.name]: event.target.checked });
     
 
   };
@@ -123,18 +132,18 @@ class NewUserFormBase extends Component {
           <label>
             Admin:
             <input
-              name="isAdmin"
               type="checkbox"
-              checked={isAdmin}
-              onChange={this.onChange}/>
+              name="isAdmin"
+
+              onChange={this.onCheckboxChange}/>
           </label>
           <label>
             Teacher:
             <input
-              name="isTeacher"
               type="checkbox"
-              checked={isTeacher}
-              onChange={this.onChange}/>
+              name="isTeacher"
+              
+              onChange={this.onCheckboxChange}/>
           </label>
 	        <button disabled={isInvalid ? true : null} type="submit">Sign Up</button>
 	        {error && <p>{error.message}</p>}

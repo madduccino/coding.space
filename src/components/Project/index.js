@@ -75,6 +75,7 @@ class ProjectPageBase extends React.Component {
  }
 
  componentWillUnmount(){
+ 	//this.props.firebase.proj().off();
  	this.props.firebase.project().off();
  }
  handleThumbnailUpload(event){
@@ -111,40 +112,55 @@ class ProjectPageBase extends React.Component {
  }
  handlePTitleOnChange(value){
  	var pCopy = this.state.project;
- 	pCopy.Title = value;
- 	const {authUser} = this.props;
- 	if(authUser && !!authUser.roles['STUDENT'])
- 		pCopy.Status = 'DRAFT';
- 	this.setState({project:pCopy,dirty:true});
+ 	if(value !== pCopy.Title){
+ 		pCopy.Title = value;
+	 	const {authUser} = this.props;
+	 	if(authUser && !!authUser.roles['STUDENT'])
+	 		pCopy.Status = 'DRAFT';
+	 	this.setState({project:pCopy,dirty:true});
+ 	}
+ 	
  }
  handlePDescriptionOnChange(value){
  	var pCopy = this.state.project;
- 	pCopy.Description = value;
- 	const {authUser} = this.props;
- 	if(authUser && !!authUser.roles['STUDENT'])
- 		pCopy.Status = 'DRAFT';
- 	this.setState({project:pCopy,dirty:true});
+ 	if(value !== pCopy.Description){
+ 		pCopy.Description = value;
+	 	const {authUser} = this.props;
+	 	if(authUser && !!authUser.roles['STUDENT'])
+	 		pCopy.Status = 'DRAFT';
+	 	this.setState({project:pCopy,dirty:true});
+ 	}
+ 	
  }
  handleStatusOnChange(event){
  	var pCopy = this.state.project;
- 	pCopy.Status = event.target.value;
- 	this.setState({project:pCopy,dirty:true});
+ 	if(event.target.value !== pCopy.Status){
+ 		pCopy.Status = event.target.value;
+ 		this.setState({project:pCopy,dirty:true});
+ 	}
+ 	
  }
  handleLevelOnChange(event){
  	var pCopy = this.state.project;
- 	pCopy.Level = event.target.value;
- 	const {authUser} = this.props;
- 	if(authUser && !!authUser.roles['STUDENT'])
- 		pCopy.Status = 'DRAFT';
- 	this.setState({project:pCopy,dirty:true});
+ 	if(event.target.value !== pCopy.Level){
+ 		pCopy.Level = event.target.value;
+	 	const {authUser} = this.props;
+	 	if(authUser && !!authUser.roles['STUDENT'])
+	 		pCopy.Status = 'DRAFT';
+	 	this.setState({project:pCopy,dirty:true});
+ 	}
+ 	
  }
  handleStepOnChange(value,step){
  	var pCopy = this.state.project;
- 	pCopy.steps[step].Description = value;
- 	const {authUser} = this.props;
- 	if(authUser && !!authUser.roles['STUDENT'])
- 		pCopy.Status = 'DRAFT';
- 	this.setState({project:pCopy,dirty:true});
+ 	if(value !== pCopy.steps[step].Description){
+ 		pCopy.steps[step].Description = value;
+	 	const {authUser} = this.props;
+	 	if(authUser && !!authUser.roles['STUDENT'])
+	 		pCopy.Status = 'DRAFT';
+	 	this.setState({project:pCopy,dirty:true});
+ 	}
+ 	
  }
  deleteStepHandler(event,key){
  	var pCopy = this.state.project;
@@ -204,14 +220,16 @@ class ProjectPageBase extends React.Component {
  		return (
  			<div>
  				<h1 dangerouslySetInnerHTML={{__html:project.Title}}/>
- 				<h3>by: <a href={'/profile/' + project.Author}>{author.Name}</a></h3>
- 				{authUser && !!authUser.roles['ADMIN'] && (
- 					<select value={project.Status} onChange={this.handleStatusOnChange}>
- 						<option value="DRAFT">DRAFT</option>
- 						<option value="APPROVED">APPROVED</option>
- 					</select>
+ 				<div className={'container'}>
+	 				<h3>by: <a href={'/profile/' + project.Author}>{author.DisplayName}</a></h3>
+	 				{authUser && !!authUser.roles['ADMIN'] && (
+	 					<select value={project.Status} onChange={this.handleStatusOnChange}>
+	 						<option value="DRAFT">DRAFT</option>
+	 						<option value="APPROVED">APPROVED</option>
+	 					</select>
 
- 				)}
+	 				)}
+ 				</div>
  				<div className={'container'}>
 					<h4>Thumbnail</h4>
 				</div>
@@ -263,7 +281,12 @@ class ProjectPageBase extends React.Component {
  	return (
 			<div>
 	 			<h1 dangerouslySetInnerHTML={{__html:project.Title}}/>
-	 			<h3>by: <a href={'/profile/' + project.Author}>{author.Name}</a></h3>
+	 			<div className={'container'}>
+	 				<h3>by: <a href={'/profile/' + project.Author}>{author.DisplayName}</a></h3>
+	 				{!!author && !!author.ThumbnailFilename &&(
+						<LazyImage file={this.props.firebase.storage.ref('/public/' + author.key + '/' + author.ThumbnailFilename)}/>
+					)}
+	 			</div>
 				<div className={'container'} dangerouslySetInnerHTML={{__html:project.Description}}/>
 				<div className={'container'}>
 					{Object.keys(project.steps).map(step => (

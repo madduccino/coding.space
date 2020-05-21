@@ -21,16 +21,20 @@ class ProfilePageBase extends React.Component {
  		profile:{},
  		uploading:false,
  		uploadPercent:0,
- 		
+ 		dirty:false,
+
+
 
 
 
  	}
+ 	this.handleStatusOnChange = this.handleStatusOnChange.bind(this);
+ 	this.handleAgeOnChange = this.handleAgeOnChange.bind(this);
+ 	this.handlePTitleOnChange = this.handlePTitleOnChange.bind(this);
  	this.handleThumbnailUpload = this.handleThumbnailUpload.bind(this);
+ 	this.handleUsernameOnChange = this.handleUsernameOnChange.bind(this);
  	this.handlePDescriptionOnChange = this.handlePDescriptionOnChange.bind(this);
- 	this.handleStepOnChange = this.handleStepOnChange.bind(this);
- 	this.addStepHandler = this.addStepHandler.bind(this);
- 	this.deleteStepHandler = this.deleteStepHandler.bind(this);
+ 	this.handleAgeOnChange = this.handleAgeOnChange.bind(this);
  	this.saveChangesHandler = this.saveChangesHandler.bind(this);
  	
  	//this.onChange = editorState => this.setState({editorState});
@@ -73,7 +77,7 @@ class ProfilePageBase extends React.Component {
  		
 
  		
- 	})
+ 		})
 	})
  	
 
@@ -88,6 +92,9 @@ class ProfilePageBase extends React.Component {
  	var file = event.target.files[0];
  	var ext = file.name.substring(file.name.lastIndexOf('.') + 1);
  	var pCopy = this.state.profile;
+ 	const {authUser} = this.props;
+ 	if(!!authUser && !!authUser.roles['STUDENT'] && !(!!pCopy.roles['ADMIN']))
+ 		pCopy.Status = 'DRAFT';
  	pCopy.ThumbnailFilename = uuidv4() + '.' + ext;
 
  	var storageRef = this.props.firebase.storage.ref('/public/' + pCopy.key + '/' + pCopy.ThumbnailFilename);
@@ -106,26 +113,77 @@ class ProfilePageBase extends React.Component {
 	 	},
 	 	()=>{
 	 		//complete
-	 		this.setState({uploadPercent:0,uploading:false,profile:pCopy})
+	 		this.setState({uploadPercent:0,uploading:false,profile:pCopy,dirty:true})
 
 	 	})
 
 
  }
+
+ handlePTitleOnChange(value){
+ 	var pCopy = this.state.profile;
+ 	if(value !== pCopy.Title){
+ 		pCopy.Title = value;
+	 	const {authUser} = this.props;
+	 	if(!!authUser && !!authUser.roles['STUDENT'] && !(!!pCopy.roles['ADMIN']))
+	 		pCopy.Status = 'DRAFT';
+	 	this.setState({project:pCopy,dirty:true});
+ 	}
+ 	
+ }
  handlePDescriptionOnChange(value){
-
+ 	var pCopy = this.state.profile;
+ 	if(value !== pCopy.About){
+ 		pCopy.About = value;
+	 	const {authUser} = this.props;
+	 	if(!!authUser && !!authUser.roles['STUDENT'] && !(!!pCopy.roles['ADMIN']))
+	 		pCopy.Status = 'DRAFT';
+	 	this.setState({project:pCopy,dirty:true});
+ 	}
+ 	
  }
- handleStepOnChange(value,step){
-
+  handleAgeOnChange(value){
+ 	var pCopy = this.state.profile;
+ 	if(value !== pCopy.Age){
+ 		pCopy.Age = value;
+	 	const {authUser} = this.props;
+	 	if(!!authUser && !!authUser.roles['STUDENT'] && !(!!pCopy.roles['ADMIN']))
+	 		pCopy.Status = 'DRAFT';
+	 	this.setState({project:pCopy,dirty:true});
+ 	}
+ 	
  }
- deleteStepHandler(event,key){
-
+ handleUsernameOnChange(value){
+ 	var pCopy = this.state.profile;
+ 	if(value !== pCopy.Username){
+ 		pCopy.Username = value;
+	 	const {authUser} = this.props;
+	 	if(!!authUser && !!authUser.roles['STUDENT'] && !(!!pCopy.roles['ADMIN']))
+	 		pCopy.Status = 'DRAFT';
+	 	this.setState({project:pCopy,dirty:true});
+ 	}
+ 	
  }
- addStepHandler(event){
-
+ handleStatusOnChange(event){
+ 	var pCopy = this.state.profile;
+ 	if(event.target.value !== pCopy.Status){
+ 		pCopy.Status = event.target.value;
+ 		this.setState({profile:pCopy,dirty:true});	
+ 	}
+ 	
  }
  saveChangesHandler(event){
+ 	const {key} = this.props.match.params;
 
+ 	this.props.firebase.profile(key).set({
+ 		...this.state.profile
+ 	})
+ 		.then(()=>{
+ 			console.log("Successfully Saved");
+ 			this.setState({dirty:false})
+ 		})
+ 		.catch(error=>console.log(error));
+ 	console.log("Save Changes");
  }
 
  render(){
@@ -144,9 +202,16 @@ class ProfilePageBase extends React.Component {
  		return (
  			<div>
  				<h1>{profile.Name}</h1>
+				{!!authUser && (!!authUser.roles['ADMIN'] || !!authUser.roles['TEACHER']) && (
+ 					<select value={profile.Status} onChange={this.handleStatusOnChange}>
+ 						<option value="DRAFT">DRAFT</option>
+ 						<option value="APPROVED">APPROVED</option>
+ 					</select>
+
+ 				)}
  				<div className={'container'}>
  					<div classname={'block'}>About Me</div>
- 					<TCSEditor className={'block'} onEditorChange={this.handlePDescriptionOnChange} placeholder={'Project Description'} text={profile.About}/>
+ 					<TCSEditor className={'block'} onEditorChange={this.handlePDescriptionOnChange} placeholder={'About Me'} text={profile.About}/>
  				</div>
  				<div className={'container'}>
 					<h4>Avatar</h4>
@@ -163,12 +228,15 @@ class ProfilePageBase extends React.Component {
 				</div>
  				<div className={'container'}>
  					<div classname={'block'}>My Age</div>
- 					<TCSEditor onEditorChange={this.handlePDescriptionOnChange} placeholder={'Project Description'} text={profile.Age}/>
+ 					<TCSEditor onEditorChange={this.handleAgeOnChange} placeholder={'I\'m ___ years old!'} text={profile.Age}/>
  				</div>
  				<div className={'container'}>
  					<div classname={'block'}>Username</div>
- 					<TCSEditor onEditorChange={this.handlePDescriptionOnChange} placeholder={'Project Description'} text={profile.Username}/>
+ 					<TCSEditor onEditorChange={this.handleUsernameOnChange} placeholder={'My Nickname'} text={profile.Username}/>
  				</div>
+ 				{this.state.dirty && (
+ 					<button onClick={this.saveChangesHandler}>Save Changes</button>
+ 				)}
  				<div className={'container'}>
  					<div classname={'block'}>My Projects</div>
  					{projects.map(project => (
@@ -182,6 +250,7 @@ class ProfilePageBase extends React.Component {
 						</div>
 					))}
  				</div>
+ 				
  				
  			</div>
  		)
