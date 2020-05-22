@@ -28,6 +28,7 @@ class ProfilePageBase extends React.Component {
 
 
  	}
+ 	this.handleNotesOnChange = this.handleNotesOnChange.bind(this);
  	this.handleStatusOnChange = this.handleStatusOnChange.bind(this);
  	this.handleAgeOnChange = this.handleAgeOnChange.bind(this);
  	this.handlePTitleOnChange = this.handlePTitleOnChange.bind(this);
@@ -172,6 +173,16 @@ class ProfilePageBase extends React.Component {
  	}
  	
  }
+ handleNotesOnChange(value){
+ 	var pCopy = this.state.profile;
+ 	if(value !== pCopy.Notes){
+ 		pCopy.Notes = value;
+	 	const {authUser} = this.props;
+	 	if(!!authUser && !!authUser.roles['STUDENT'] && !(!!pCopy.roles['ADMIN']))
+	 		pCopy.Status = 'DRAFT';
+	 	this.setState({project:pCopy,dirty:true});
+ 	}
+ }
  saveChangesHandler(event){
  	const {key} = this.props.match.params;
 
@@ -233,6 +244,10 @@ class ProfilePageBase extends React.Component {
  				<div className={'container'}>
  					<div classname={'block'}>Username</div>
  					<TCSEditor onEditorChange={this.handleUsernameOnChange} placeholder={'My Nickname'} text={profile.Username}/>
+ 				</div>
+ 				<div className={'container'}>
+ 					<div classname={'block'}>Notes</div>
+ 					<TCSEditor onEditorChange={this.handleNotesOnChange} placeholder={'Notes'} text={profile.Notes}/>
  				</div>
  				{this.state.dirty && (
  					<button onClick={this.saveChangesHandler}>Save Changes</button>
