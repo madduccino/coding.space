@@ -154,10 +154,10 @@ class ProfilePageBase extends React.Component {
  	}
  	
  }
- handleUsernameOnChange(value){
+ handleUsernameOnChange(event){
  	var pCopy = this.state.profile;
- 	if(value !== pCopy.Username){
- 		pCopy.Username = value;
+ 	if(event.target.value !== pCopy.Username){
+ 		pCopy.Username = event.target.value;
 	 	const {authUser} = this.props;
 	 	if(!!authUser && !!authUser.roles['STUDENT'] && !(!!pCopy.roles['ADMIN']))
 	 		pCopy.Status = 'DRAFT';
@@ -243,7 +243,7 @@ class ProfilePageBase extends React.Component {
  				</div>
  				<div className={'container'}>
  					<div classname={'block'}>Username</div>
- 					<TCSEditor onEditorChange={this.handleUsernameOnChange} placeholder={'My Nickname'} text={profile.Username}/>
+ 					<div className={'block'}>{profile.Username}</div>
  				</div>
  				<div className={'container'}>
  					<div classname={'block'}>Notes</div>
@@ -301,7 +301,7 @@ class ProfilePageBase extends React.Component {
  				</div>
  				<div className={'container'}>
  					<div classname={'block'}>My Projects</div>
- 					{projects.map(project => (
+ 					{projects.filter(project=>project.Status==='APPROVED').map(project => (
  						<div id={project.key} class={'wsite-image wsite-image-border-none project'}>
 							<a href={'/project/' + project.key} path={'/public/' + project.Author + '/' + project.ThumbnailFilename}>
 								<LazyImage file={this.props.firebase.storage.ref('/public/' + project.Author + '/' + project.ThumbnailFilename)}/>
