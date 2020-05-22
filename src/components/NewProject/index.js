@@ -66,16 +66,20 @@ class NewProjectPageBase extends React.Component {
 
  componentDidMount(){
  	var pCopy = this.state.project;
- 	pCopy.Author = this.props.authUser.key;
+ 	if(this.props.authUser){
+		pCopy.Author = this.props.authUser.key;
 
- 	this.setState({
- 		projectRef: this.props.firebase.project(this.state.project.key),
- 		project:pCopy,
- 		loading:false,
+	 	this.setState({
+	 		projectRef: this.props.firebase.project(this.state.project.key),
+	 		project:pCopy,
+	 		loading:false,
 
 
- 		
- 	})
+	 		
+	 	})
+
+ 	}
+ 	
 
 
  }

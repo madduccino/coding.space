@@ -2,6 +2,7 @@ import app from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/database';
 import 'firebase/storage';
+import * as ROUTES from '../../constants/routes';
 const config = {
 	apiKey: process.env.REACT_APP_API_KEY,
   authDomain: process.env.REACT_APP_AUTH_DOMAIN,
@@ -46,7 +47,7 @@ class Firebase {
     this.auth.createUserWithEmailAndPassword(email, password);
   doSignInWithEmailAndPassword = (email, password) =>
     this.auth.signInWithEmailAndPassword(email, password);
-  doSignOut = () => this.auth.signOut();
+  doSignOut = () => {this.auth.signOut();window.location = ROUTES.LANDING;}
   doPasswordReset = email => this.auth.sendPasswordResetEmail(email);
   doPasswordUpdate = password =>
     this.auth.currentUser.updatePassword(password);

@@ -1,6 +1,7 @@
 import React from 'react';
 import {AuthUserContext} from '../Session';
 import {withFirebase} from '../Firebase';
+import * as ROUTES from '../../constants/routes';
 
 const withAuthentication = Component => {
 	class WithAuthentication extends React.Component {
@@ -13,10 +14,12 @@ const withAuthentication = Component => {
 		}
 
 		render(){
+
 			return (
 				<AuthUserContext.Consumer>
-
+					
 					{authUser => <Component {...this.props} authUser={authUser} /> }
+					
 
 				</AuthUserContext.Consumer>
 			) ;
