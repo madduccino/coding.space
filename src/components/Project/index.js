@@ -7,6 +7,7 @@ import {withAuthentication} from '../Session';
 import {withFirebase} from '../Firebase';
 import TCSEditor from '../TCSEditor';
 import { v4 as uuidv4 } from 'uuid';
+import * as ROUTES from '../../constants/routes';
 
 
 class ProjectPageBase extends React.Component {
@@ -25,6 +26,7 @@ class ProjectPageBase extends React.Component {
 
 
  	}
+ 	this.deleteProjectHandler = this.deleteProjectHandler.bind(this);
  	this.handleStatusOnChange = this.handleStatusOnChange.bind(this);
  	this.handleThumbnailUpload = this.handleThumbnailUpload.bind(this);
  	this.handlePTitleOnChange = this.handlePTitleOnChange.bind(this);
@@ -181,6 +183,12 @@ class ProjectPageBase extends React.Component {
  	this.setState({project:pCopy,dirty:true});
  	console.log("Add Step");
  }
+ deleteProjectHandler(value){
+ 	const {key} = this.props.match.params;
+
+ 	this.props.firebase.project(key).remove();
+ 	window.location = ROUTES.LANDING;
+ }
  saveChangesHandler(event){
  	const {key} = this.props.match.params;
 
@@ -272,6 +280,7 @@ class ProjectPageBase extends React.Component {
  				{this.state.dirty && (
  					<button onClick={this.saveChangesHandler}>Save Changes</button>
  				)}
+ 				<button onClick={this.deleteProjectHandler}>Delete Project</button>
  				
  			</div>
  		)
