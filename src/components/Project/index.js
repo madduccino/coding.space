@@ -229,7 +229,7 @@ class ProjectPageBase extends React.Component {
  			<div>
  				<h1 dangerouslySetInnerHTML={{__html:project.Title}}/>
  				<div className={'container'}>
-	 				<h3>by: <a href={'/profile/' + project.Author}>{author.DisplayName}</a></h3>
+	 				<h3>by: <a href={'/profile/' + project.Author} dangerouslySetInnerHTML={{__html:author.DisplayName}}/></h3>
 	 				{authUser && !!authUser.roles['ADMIN'] && (
 	 					<select value={project.Status} onChange={this.handleStatusOnChange}>
 	 						<option value="DRAFT">DRAFT</option>
@@ -291,7 +291,7 @@ class ProjectPageBase extends React.Component {
 			<div>
 	 			<h1 dangerouslySetInnerHTML={{__html:project.Title}}/>
 	 			<div className={'container'}>
-	 				<h3>by: <a href={'/profile/' + project.Author}>{author.DisplayName}</a></h3>
+	 				<h3>by: <a href={'/profile/' + project.Author} dangerouslySetInnerHTML={{__html:author.DisplayName}}/></h3>
 	 				{!!author && !!author.ThumbnailFilename &&(
 						<LazyImage file={this.props.firebase.storage.ref('/public/' + author.key + '/' + author.ThumbnailFilename)}/>
 					)}

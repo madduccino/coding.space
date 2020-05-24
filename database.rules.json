@@ -1,6 +1,34 @@
 {
   "rules": {
-    ".read": "true",
-    ".write": "auth != null"
+    "db":{
+      "Profiles" : {
+      ".read":"true",
+      "$uid": {
+        ".read":"true",
+        ".write" : "auth!= null && $uid === auth.uid || root.child('db/Profiles/' + auth.uid + '/roles/ADMIN').exists()"
+        }
+      },
+      "Projects" : {
+        ".read":"true",
+        "$project" : {
+          ".read" : "true",
+        	".write" : "auth!= null && !data.exists() || (auth.uid === data.child('Author').val()) || root.child('profiles/' + auth.uid + '/roles/ADMIN').exists() || root.child('profiles/' + auth.uid + '/roles/TEACHER').exists()"  
+        }
+        
+      },
+      "Classes" : {
+        ".read" : "true",
+          "$class":{
+            ".read":"true",
+        		".write" : "auth.uid != null && root.child('db/Profiles/' + auth.uid + '/roles/ADMIN').exists()",
+            "$members":{
+              ".read":"auth!= null && root.child('db/Profiles/' + auth.uid + '/roles/ADMIN').exists() || (root.child('profiles/' + auth.uid + '/roles/TEACHER').exists() && data.child(auth.uid).exists())",
+              ".write":"auth!= null && root.child('db/Profiles/' + auth.uid + '/roles/ADMIN').exists()"
+            }
+          }
+        
+      }
   }
+    }
+    
 }

@@ -33,7 +33,7 @@ class ProfilePageBase extends React.Component {
  	this.handleAgeOnChange = this.handleAgeOnChange.bind(this);
  	this.handlePTitleOnChange = this.handlePTitleOnChange.bind(this);
  	this.handleThumbnailUpload = this.handleThumbnailUpload.bind(this);
- 	this.handleUsernameOnChange = this.handleUsernameOnChange.bind(this);
+ 	this.handleDisplayNameOnChange = this.handleDisplayNameOnChange.bind(this);
  	this.handlePDescriptionOnChange = this.handlePDescriptionOnChange.bind(this);
  	this.handleAgeOnChange = this.handleAgeOnChange.bind(this);
  	this.saveChangesHandler = this.saveChangesHandler.bind(this);
@@ -154,10 +154,10 @@ class ProfilePageBase extends React.Component {
  	}
  	
  }
- handleUsernameOnChange(event){
+ handleDisplayNameOnChange(value){
  	var pCopy = this.state.profile;
- 	if(event.target.value !== pCopy.Username){
- 		pCopy.Username = event.target.value;
+ 	if(value !== pCopy.DisplayName){
+ 		pCopy.DisplayName = value;
 	 	const {authUser} = this.props;
 	 	if(!!authUser && !!authUser.roles['STUDENT'] && !(!!pCopy.roles['ADMIN']))
 	 		pCopy.Status = 'DRAFT';
@@ -212,7 +212,20 @@ class ProfilePageBase extends React.Component {
  	{
  		return (
  			<div>
- 				<h1>{profile.Name}</h1>
+ 				<div className={'container'}>
+ 					<div classname={'block'}>Display Name</div>
+ 					<TCSEditor className={'block'} onEditorChange={this.handleDisplayNameOnChange} placeholder={'Display Name'} text={profile.DisplayName}/>
+ 				</div>
+ 				<div className={'container'}>
+ 					<div classname={'block'}>Email Address</div>
+ 					<a href={"mailto:" + "students+"+ profile.Username + "@thecodingspace.com"} class="block" >
+ 						{"students+"+ profile.Username + "@thecodingspace.com"}
+ 					</a>
+ 				</div>
+ 				<div className={'container'}>
+ 					<div classname={'block'}>Username</div>
+ 					<div className={'block'}>{profile.Username}</div>
+ 				</div>
 				{!!authUser && (!!authUser.roles['ADMIN'] || !!authUser.roles['TEACHER']) && (
  					<select value={profile.Status} onChange={this.handleStatusOnChange}>
  						<option value="DRAFT">DRAFT</option>
@@ -241,10 +254,7 @@ class ProfilePageBase extends React.Component {
  					<div classname={'block'}>My Age</div>
  					<TCSEditor onEditorChange={this.handleAgeOnChange} placeholder={'I\'m ___ years old!'} text={profile.Age}/>
  				</div>
- 				<div className={'container'}>
- 					<div classname={'block'}>Username</div>
- 					<div className={'block'}>{profile.Username}</div>
- 				</div>
+ 				
  				<div className={'container'}>
  					<div classname={'block'}>Notes</div>
  					<TCSEditor onEditorChange={this.handleNotesOnChange} placeholder={'Notes'} text={profile.Notes}/>
@@ -274,7 +284,7 @@ class ProfilePageBase extends React.Component {
 
  	return (
 			<div>
- 				<h1>{profile.Name}</h1>
+ 				<h1 dangerouslySetInnerHTML={{__html:profile.DisplayName}}/>
  				<div className={'container'}>
  					<div classname={'block'}>About Me</div>
  					<div class="block" dangerouslySetInnerHTML={{__html:profile.About}}/>
@@ -293,12 +303,7 @@ class ProfilePageBase extends React.Component {
  				<div classname={'block'}>My Age</div>
  					<div class="block" dangerouslySetInnerHTML={{__html:profile.Age}}/>
  				</div>
- 				<div className={'container'}>
- 					<div classname={'block'}>Email Address</div>
- 					<a href={"mailto:" + "students+"+ profile.Username + "@thecodingspace.com"} class="block" >
- 						{"students+"+ profile.Username + "@thecodingspace.com"}
- 					</a>
- 				</div>
+ 				
  				<div className={'container'}>
  					<div classname={'block'}>My Projects</div>
  					{projects.filter(project=>project.Status==='APPROVED').map(project => (

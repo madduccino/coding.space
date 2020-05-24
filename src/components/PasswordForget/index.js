@@ -16,18 +16,18 @@ class PasswordForgetFormBase extends Component {
 		super(props);
 
 		this.state = {
-			email:'',
+			username:'',
 			error:null,
 		}
 
 	}
 	onSubmit = event => {
-		const {email} = this.state;
-		this.props.Firebase
-			.doPasswordReset(email)
+		const {username} = this.state;
+		this.props.firebase
+			.doPasswordReset('students+'+username+'@thecodingspace.com')
 			.then(() => {
 				this.setState({
-					email:'',
+					username:'',
 					error:null,
 					success:'Password reset email sent!'
 				})
@@ -46,18 +46,18 @@ class PasswordForgetFormBase extends Component {
 	};
 
 	render() {
-		const {email, error} = this.state;
+		const {username, error} = this.state;
 
-		const isInvalid = email === '';
+		const isInvalid = username === '';
 
 		return (
 			<form onSubmit={this.onSubmit}>
 				<input
-					name="email"
-					value={this.state.email}
+					name="username"
+					value={this.state.username}
 					onChange={this.onChange}
 					type="text"
-					placeholder="Email Address"
+					placeholder="Username"
 				/>
 				<button disabled={isInvalid} type="submit">
 					Reset My Password
