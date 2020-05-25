@@ -3,7 +3,7 @@ import './index.css';
 import './styles.css';
 import LazyImage from '../LazyImage';
 import { AuthUserContext } from '../Session';
-import {withAuthorization} from '../Session';
+import {withAuthentication} from '../Session';
 import {withFirebase} from '../Firebase';
 import TCSEditor from '../TCSEditor';
 import * as ROLES from '../../constants/roles';
@@ -60,7 +60,7 @@ class ClassesPageBase extends React.Component {
  }
 
  componentWillUnmount(){
- 	this.props.firebase.project().off();
+ 	this.props.firebase.classes().off();
  }
  handlePDescriptionOnChange(value){
 
@@ -100,7 +100,7 @@ class ClassesPageBase extends React.Component {
 
 				   <div class="level">
 					    {loading && <div>Loading ...</div>}
-						{Object.keys(classes).filter(clazz=>classes[clazz].Status==='APPROVED').map(clazz => (
+						{Object.keys(classes).filter(clazz=>classes[clazz].Status==='APPROVED' || (!!authUser && !!authUser.roles['ADMIN'])).map(clazz => (
 							
 							<div id={clazz.key} class={'wsite-image wsite-image-border-none project'}>
 								<a href={'/classes/' + clazz} path={'/classes/' + classes[clazz].ThumbnailFilename}>
@@ -108,6 +108,9 @@ class ClassesPageBase extends React.Component {
 								</a>
 								<div>
 									<h4>{classes[clazz].Title}</h4>
+									{!!authUser && !!authUser.roles['ADMIN'] && clazz.Status != 'APPROVED' && (
+										<h5>DRAFT</h5>
+									)}
 								</div>
 							</div>
 						))}
@@ -123,6 +126,6 @@ class ClassesPageBase extends React.Component {
 }
 
 const condition = authUser => authUser && (!!authUser.roles[ROLES.ADMIN] || !!authUser.roles[ROLES.TEACHER]);
-const ClassesPage = withFirebase(withAuthorization(condition)(ClassesPageBase));
+const ClassesPage = withFirebase(withAuthentication(ClassesPageBase));
 
 export default ClassesPage;

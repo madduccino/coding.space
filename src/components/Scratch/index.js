@@ -65,7 +65,7 @@ class Scratch extends React.Component {
 					{projects.filter(project=>project.Status === 'APPROVED' && project.Level == 1).map(project => (
 						
 						<div id={project.key} class={'wsite-image wsite-image-border-none project'}>
-							<a href={'/project/' + project.key} path={'/public/' + project.Author + '/' + project.ThumbnailFilename}>
+							<a href={'/projects/' + project.key} path={'/public/' + project.Author + '/' + project.ThumbnailFilename}>
 								<LazyImage file={this.props.firebase.storage.ref('/public/' + project.Author + '/' + project.ThumbnailFilename)}/>
 							</a>
 							<div>
@@ -85,7 +85,7 @@ class Scratch extends React.Component {
 					{projects.filter(project=>project.Status === 'APPROVED' && project.Level == 2).map(project => (
 						
 						<div id={project.key} class={'wsite-image wsite-image-border-none project'}>
-							<a href={'/project/' + project.key} path={'/public/' + project.Author + '/' + project.ThumbnailFilename}>
+							<a href={'/projects/' + project.key} path={'/public/' + project.Author + '/' + project.ThumbnailFilename}>
 								<LazyImage file={this.props.firebase.storage.ref('/public/' + project.Author + '/' + project.ThumbnailFilename)}/>
 							</a>
 							<div>
@@ -105,7 +105,7 @@ class Scratch extends React.Component {
 					{projects.filter(project=>project.Status === 'APPROVED' && project.Level == 3).map(project => (
 						
 						<div id={project.key} class={'wsite-image wsite-image-border-none project'}>
-							<a href={'/project/' + project.key} path={'/public/' + project.Author + '/' + project.ThumbnailFilename}>
+							<a href={'/projects/' + project.key} path={'/public/' + project.Author + '/' + project.ThumbnailFilename}>
 								<LazyImage file={this.props.firebase.storage.ref('/public/' + project.Author + '/' + project.ThumbnailFilename)}/>
 							</a>
 							<div>
@@ -126,7 +126,7 @@ class Scratch extends React.Component {
 					{projects.filter(project=>project.Status === 'APPROVED' && project.Level == 4).map(project => (
 						
 						<div id={project.key} class={'wsite-image wsite-image-border-none project'}>
-							<a href={'/project/' + project.key} path={'/public/' + project.Author + '/' + project.ThumbnailFilename}>
+							<a href={'/projects/' + project.key} path={'/public/' + project.Author + '/' + project.ThumbnailFilename}>
 								<LazyImage file={this.props.firebase.storage.ref('/public/' + project.Author + '/' + project.ThumbnailFilename)}/>
 							</a>
 							<div>
@@ -148,7 +148,7 @@ class Scratch extends React.Component {
 					{projects.filter(project=>project.Status === 'APPROVED' && project.Level == 5).map(project => (
 						
 						<div id={project.key} class={'wsite-image wsite-image-border-none project'}>
-							<a href={'/project/' + project.key} path={'/public/' + project.Author + '/' + project.ThumbnailFilename}>
+							<a href={'/projects/' + project.key} path={'/public/' + project.Author + '/' + project.ThumbnailFilename}>
 								<LazyImage file={this.props.firebase.storage.ref('/public/' + project.Author + '/' + project.ThumbnailFilename)}/>
 							</a>
 							<div>
@@ -168,7 +168,7 @@ class Scratch extends React.Component {
 					{projects.filter(project=>project.Status === 'APPROVED' && project.Level == 6).map(project => (
 						
 						<div id={project.key} class={'wsite-image wsite-image-border-none project'}>
-							<a href={'/project/' + project.key} path={'/public/' + project.Author + '/' + project.ThumbnailFilename}>
+							<a href={'/projects/' + project.key} path={'/public/' + project.Author + '/' + project.ThumbnailFilename}>
 								<LazyImage file={this.props.firebase.storage.ref('/public/' + project.Author + '/' + project.ThumbnailFilename)}/>
 							</a>
 							<div>

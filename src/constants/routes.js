@@ -7,6 +7,6 @@ export const ACCOUNT = '/account';
 export const ADMIN = '/admin';
 export const PASSWORD_FORGET = '/pw-forget';
 export const SCRATCH = '/scratch';
-export const PROJECT = '/project/:key';
+export const PROJECT = '/projects/:key';
 export const PROFILE = '/profile/:key';
 export const NEW_PROJECT = '/new_project'

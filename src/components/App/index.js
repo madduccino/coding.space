@@ -62,7 +62,7 @@ class App extends Component {
 							<Route path={ROUTES.NEW_USER} component={NewUserForm} />
 							<Route path={ROUTES.SIGN_IN} component={SignInPage} />
 							<Route path={ROUTES.PASSWORD_FORGET} component={PasswordForgetPage} />
-							<Route path={ROUTES.CLASSES} component={ClassesPage} />
+							<Route exact path={ROUTES.CLASSES} component={ClassesPage} />
 							<Route path={ROUTES.ACCOUNT} component={AccountPage} />
 							<Route path={ROUTES.ADMIN} component={AdminPage} />
 							<Route path={ROUTES.SCRATCH} component={Scratch} />

@@ -31,12 +31,12 @@ class Navigation extends React.Component{
             </li>
 
             
-            {(!!authUser.roles[ROLES.ADMIN] || !!authUser.roles[ROLES.TEACHER]) && (
-              <li>
-                <Link to={ROUTES.CLASSES}>Classes</Link>
-              </li>
+            
+            <li>
+              <Link to={ROUTES.CLASSES}>Classes</Link>
+            </li>
 
-              )}
+             
             {!!authUser.roles[ROLES.ADMIN] && (
               
               <li>
