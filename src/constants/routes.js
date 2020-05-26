@@ -10,3 +10,4 @@ export const SCRATCH = '/scratch';
 export const PROJECT = '/projects/:key';
 export const PROFILE = '/profile/:key';
 export const NEW_PROJECT = '/new_project'
+export const NEW_CLASS = '/new_class'

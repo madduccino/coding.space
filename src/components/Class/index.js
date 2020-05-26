@@ -219,7 +219,7 @@ class ClassPageBase extends React.Component {
  					value:profiles[profile].key,
  				})
  				if(!!clazz.Members[profiles[profile].key])
- 					listBoxSelected.push(profile.key);
+ 					listBoxSelected.push(profile);
  			})
  				
  		}

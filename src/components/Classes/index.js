@@ -7,6 +7,7 @@ import {withAuthentication} from '../Session';
 import {withFirebase} from '../Firebase';
 import TCSEditor from '../TCSEditor';
 import * as ROLES from '../../constants/roles';
+import * as ROUTES from '../../constants/routes';
 
 
 
@@ -96,7 +97,9 @@ class ClassesPageBase extends React.Component {
 				
 				
 				<div id="level1" class="level-container">
-
+					{!!authUser && !!authUser.roles['ADMIN'] && (
+					<a href={ROUTES.NEW_CLASS}>New Class</a>
+				)}
 
 				   <div class="level">
 					    {loading && <div>Loading ...</div>}
@@ -107,7 +110,7 @@ class ClassesPageBase extends React.Component {
 									<LazyImage file={this.props.firebase.storage.ref('/classes/' + classes[clazz].ThumbnailFilename)}/>
 								</a>
 								<div>
-									<h4>{classes[clazz].Title}</h4>
+									<h4 className={'container'} dangerouslySetInnerHTML={{__html:clazz.Title}}/>
 									{!!authUser && !!authUser.roles['ADMIN'] && clazz.Status != 'APPROVED' && (
 										<h5>DRAFT</h5>
 									)}
