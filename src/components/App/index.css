@@ -1,0 +1,52 @@
+#overlay {
+  position: fixed; 
+  width: 100%; 
+  height: 100%; 
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0,0,0,0.8); 
+  z-index: 2; 
+  cursor: pointer; 
+
+}
+#messageBox{
+	display:flex;
+	position: relative;
+	top:50%;
+	left: 50%;
+	width:30%;
+	transform: translate(-50%, -50%);
+}
+#typewriter{
+  overflow: hidden; 
+  border-right: .15em solid purple; 
+  white-space: nowrap; 
+  margin: 0 auto; 
+  letter-spacing: .15em;
+}
+#typewriter.type{
+	animation: 
+		typing 2s steps(40,end),
+		blink-caret .5s step-end infinite;
+
+}
+#overlay.flash {
+	display: block;
+	animation-name:green-flash;
+  	animation-duration: 0.5s;
+}
+@keyframes green-flash{
+	from {background-color:rgba(0,0,0,0.5);}
+	to {background-color: green}
+}
+
+@keyframes typing{
+	from {width: 0}
+	to { width: 100% }
+}
+@keyframes blink-caret {
+	from, to {border-color: transparent;}
+	50% { border-color: orange }
+}

@@ -201,7 +201,13 @@ class ClassPageBase extends React.Component {
  	
  	const {clazz, loading,dirty,uploading,uploadPercent, profiles} = this.state;
  	const {authUser} = this.props;
- 	
+ 	const isInvalid = 
+ 		clazz.Title === '' ||
+ 		clazz.Description === '' ||
+ 		clazz.Schedule === '' ||
+ 		clazz.Location === '' ||
+ 		Object.keys(clazz.Members).length <= 0 ||
+ 		loading;
  	//console.log(Object.keys(project));
  	if(loading)
  		return (<div>Loading ...</div>);
@@ -276,7 +282,7 @@ class ClassPageBase extends React.Component {
 				)}
 
  				 {this.state.dirty && (
- 					<button onClick={this.saveChangesHandler}>Save Changes</button>
+ 					<button disabled={isInvalid} onClick={this.saveChangesHandler}>Save Changes</button>
  				)}
  				<button onClick={this.deleteClassHandler}>Delete Class</button>
  			</div>

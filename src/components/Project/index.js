@@ -191,6 +191,7 @@ class ProjectPageBase extends React.Component {
  }
  saveChangesHandler(event){
  	const {key} = this.props.match.params;
+ 	//this.props.setGlobalState({message:"$HAX!@--->BEGIN SAVE;"});
 
  	this.props.firebase.project(key).set({
  		...this.state.project
@@ -198,6 +199,7 @@ class ProjectPageBase extends React.Component {
  		.then(()=>{
  			console.log("Successfully Saved");
  			this.setState({dirty:false})
+ 			this.props.setGlobalState({message:"$CODE__1337<span style='color:blue'>@</span>\><span style='color:green'>SAVE.GOOD</span>;"});
  		})
  		.catch(error=>console.log(error));
  	console.log("Save Changes");
@@ -209,15 +211,19 @@ class ProjectPageBase extends React.Component {
  	const {Title,Description, Level, steps} = project;
  	const {authUser} = this.props;
  	const stepCount = (!!project&& !!project.steps) ? Object.keys(project.steps).length : 0;
+ 	const isInvalid = 
+ 		project.Title === '' ||
+ 		project.Description === '' ||
+ 		!(!!project.Author) ||
+ 		!(!!project.Categories) ||
+ 		isNaN(project.Level) ||
+ 		!(!!project.steps) ||
+ 		stepCount <= 0 ||
+ 		loading;
  	
  	//console.log(Object.keys(project));
  	if(loading)
  		return (<div>Loading ...</div>);
- 	var isInvalid =
-      Title === '' ||
-      Description === '' ||
-      isNaN(Level) ||
-      stepCount < 1;
      for(var step in steps)
      	if(step.Description === '')
      		isInvalid = true;
@@ -278,7 +284,7 @@ class ProjectPageBase extends React.Component {
  				</div>
  				<button onClick={this.addStepHandler}>Add Step</button>
  				{this.state.dirty && (
- 					<button onClick={this.saveChangesHandler}>Save Changes</button>
+ 					<button disabled={isInvalid} onClick={this.saveChangesHandler}>Save Changes</button>
  				)}
  				<button onClick={this.deleteProjectHandler}>Delete Project</button>
  				

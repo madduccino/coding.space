@@ -22,6 +22,7 @@ import * as ROUTES from '../../constants/routes';
 import {withAuthentication} from '../Session';
 import AuthUserContext from '../Session/context';
 import {withFirebase} from '../Firebase';
+import './index.css';
 
 
 class App extends Component {
@@ -29,13 +30,18 @@ class App extends Component {
 		super(props);
 		this.state = {
 			showFooter:true,
+			showMessage:false,
+			message:'',
 			authUser:null,
 		}
 		this.setGlobalState = this.setGlobalState.bind(this);
+		this.overlayOnClick = this.overlayOnClick.bind(this);
+
 		//this.props.setGlobalProps = this.setGlobalProps;
 	}
 	setGlobalState(map){
-		this.setState({...map});
+		this.setState({...map,showMessage: (!!map['message'] ? true : false)});
+
 		//console.log(this.state);
 	}
 	componentDidMount(){
@@ -51,8 +57,20 @@ class App extends Component {
 	componentWillUnmount(){
 		this.listener();
 	}
+	typewriter(){
+		//document.querySelector('#overlay').innerHtml = 'kitty cat';
+		document.querySelector('#overlay').style.display = 'block';
+		document.querySelector('#typewriter').className = ('type')
+	}
+	flash(){
+		document.querySelector('#overlay').className = ('flash')
+	}
+	overlayOnClick(){
+		this.setState({showMessage:false,message:false})
+		//document.querySelector('#overlay').style.display = 'none';
+	}
 	render(){
-
+		const {showMessage,message} = this.state;
 		return (
 				<AuthUserContext.Provider value={this.state.authUser}>
 					<Router>
@@ -60,25 +78,35 @@ class App extends Component {
 							<Route component={Navigation} />
 							<hr />
 							<Route exact path={ROUTES.LANDING} render={(props) =><LandingPage {...this.props} setGlobalState={this.setGlobalState}  />} />
-							<Route path={ROUTES.NEW_USER} component={NewUserForm} />
-							<Route path={ROUTES.SIGN_IN} component={SignInPage} />
-							<Route path={ROUTES.PASSWORD_FORGET} component={PasswordForgetPage} />
-							<Route exact path={ROUTES.CLASSES} component={ClassesPage} />
-							<Route path={ROUTES.ACCOUNT} component={AccountPage} />
-							<Route path={ROUTES.ADMIN} component={AdminPage} />
-							<Route path={ROUTES.SCRATCH} component={Scratch} />
-							<Route path={ROUTES.PROJECT} component={ProjectPage} />
-							<Route path={ROUTES.PROFILE} component={ProfilePage} />
-							<Route path={ROUTES.CLASS} component={ClassPage} />
-							<Route path={ROUTES.NEW_PROJECT} component={NewProjectPage} />
-							<Route path={ROUTES.NEW_CLASS} component={NewClassPage} />
+							<Route path={ROUTES.NEW_USER} render={(props)=><NewUserForm {...props} setGlobalState={this.setGlobalState}/>} />
+							<Route path={ROUTES.SIGN_IN} render={(props)=><SignInPage {...props} setGlobalState={this.setGlobalState} />} />
+							<Route path={ROUTES.PASSWORD_FORGET} render={(props)=><PasswordForgetPage {...props} setGlobalState={this.setGlobalState} />} />
+							<Route exact path={ROUTES.CLASSES} render={(props)=><ClassesPage {...props} setGlobalState={this.setGlobalState} />} />
+							<Route path={ROUTES.ACCOUNT} render={(props)=><AccountPage {...props} setGlobalState={this.setGlobalState} />} />
+							<Route path={ROUTES.ADMIN} render={(props)=><AdminPage {...props} setGlobalState={this.setGlobalState} />} />
+							<Route path={ROUTES.SCRATCH} render={(props)=><Scratch {...props} setGlobalState={this.setGlobalState} />} />
+							<Route path={ROUTES.PROJECT} render={(props)=><ProjectPage {...props} setGlobalState={this.setGlobalState} />} />
+							<Route path={ROUTES.PROFILE} render={(props)=><ProfilePage {...props} setGlobalState={this.setGlobalState} />} />
+							<Route path={ROUTES.CLASS} render={(props)=><ClassPage {...props} setGlobalState={this.setGlobalState} />} />
+							<Route path={ROUTES.NEW_PROJECT} render={(props)=><NewProjectPage {...props} setGlobalState={this.setGlobalState} />} />
+							<Route path={ROUTES.NEW_CLASS} render={(props)=><NewClassPage {...props} setGlobalState={this.setGlobalState} />} />
 							{this.state.showFooter &&
 								<Footer showFooter={this.state.showFooter} />
 							}
 						</div>
 
 					</Router>
+					{showMessage && !!message && (
+						<div id="overlay" onClick={this.overlayOnClick}>
+							<div id="messageBox">
+								<div id="typewriter" className={'type'} dangerouslySetInnerHTML={{__html:message}}/>
+							</div>
+						</div>
+					)}
+					
+
 				</AuthUserContext.Provider>
+
 
 		)
 	}
