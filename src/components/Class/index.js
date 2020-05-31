@@ -201,6 +201,10 @@ class ClassPageBase extends React.Component {
  	
  	const {clazz, loading,dirty,uploading,uploadPercent, profiles} = this.state;
  	const {authUser} = this.props;
+ 	
+ 	//console.log(Object.keys(project));
+ 	if(loading)
+ 		return (<div>Loading ...</div>);
  	const isInvalid = 
  		clazz.Title === '' ||
  		clazz.Description === '' ||
@@ -208,9 +212,6 @@ class ClassPageBase extends React.Component {
  		clazz.Location === '' ||
  		Object.keys(clazz.Members).length <= 0 ||
  		loading;
- 	//console.log(Object.keys(project));
- 	if(loading)
- 		return (<div>Loading ...</div>);
  	
  	//can edit
 	if(!!authUser && !!authUser.roles['ADMIN']  )
