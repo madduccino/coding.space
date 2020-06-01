@@ -212,9 +212,9 @@ class ProjectPageBase extends React.Component {
  	const stepCount = (!!project&& !!project.steps) ? Object.keys(project.steps).length : 0;
  	const validation = {};
 
- 	validation['Title']=project.Title != '';
- 	validation['Description']=project.Description != '';
- 	validation['Author']=!!project.Author;
+ 	validation['Title']=project.Title.replace(/<(.|\n)*?>/g, '').trim().length !== 0;
+ 	validation['Description']=project.Description.replace(/<(.|\n)*?>/g, '').trim().length !== 0;
+ 	validation['Author']=!!project.Author.replace(/<(.|\n)*?>/g, '').trim().length !== 0;
  	validation['Categories']=!!project.Categories;
  	validation['Level']=!isNaN(project.Level);
  	validation['Steps']=true;
@@ -222,7 +222,7 @@ class ProjectPageBase extends React.Component {
  	
  	if(stepCount <= 0) validation['Steps'] = false;
     for(var step in steps)
-    	if(step.Description === '')
+    	if(steps[step].Description.replace(/<(.|\n)*?>/g, '').trim().length === 0)
      		validation['Steps']= false;
 	
  	if(Object.values(validation).indexOf(false) < 0){

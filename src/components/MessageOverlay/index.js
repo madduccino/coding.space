@@ -30,7 +30,7 @@ class MessageOverlay extends Component {
 	        tag = "",
 	        writingTag = false,
 	        tagOpen = false,
-	        typeSpeed = 15,
+	        typeSpeed = 5,
         tempTypeSpeed = 0;
 
 	    var type = function() {
@@ -59,7 +59,7 @@ class MessageOverlay extends Component {
 	                tempTypeSpeed = 0;
 	            }
 	            else {
-	                tempTypeSpeed = (Math.random() * typeSpeed) + 50;
+	                tempTypeSpeed = (Math.random() * typeSpeed) + 25;
 	            }
 	            t.innerHTML += HTML[cursorPosition];
 	        }
@@ -106,6 +106,10 @@ class MessageOverlay extends Component {
 
 		return (
 			<div id="overlay" className={'crt'} onClick={this.overlayOnClick} onKeyPressed={this.overlayOnClick} tabIndex="0">
+				<div id="topBar">
+					<h4>CODING___X!TERM</h4>
+					<img src="/images/x-red.png"/>
+				</div>
 				<pre dangerouslySetInnerHTML={{__html:rArt}}/>
 	
 				{!!message && (
