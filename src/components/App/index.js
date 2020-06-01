@@ -18,6 +18,7 @@ import ClassPage from '../Class';
 import NewProjectPage from '../NewProject';
 import NewClassPage from '../NewClass';
 import Scratch from '../Scratch';
+import MessageOverlay from '../MessageOverlay';
 import * as ROUTES from '../../constants/routes';
 import {withAuthentication} from '../Session';
 import AuthUserContext from '../Session/context';
@@ -31,11 +32,13 @@ class App extends Component {
 		this.state = {
 			showFooter:true,
 			showMessage:false,
-			message:'',
+			message:null,
+			instantMessage:null,
 			authUser:null,
 		}
 		this.setGlobalState = this.setGlobalState.bind(this);
-		this.overlayOnClick = this.overlayOnClick.bind(this);
+		
+		
 
 		//this.props.setGlobalProps = this.setGlobalProps;
 	}
@@ -53,24 +56,17 @@ class App extends Component {
 			()=>{
 				this.setState({authUser:null});
 			})
+		
 	}
 	componentWillUnmount(){
 		this.listener();
 	}
-	typewriter(){
-		//document.querySelector('#overlay').innerHtml = 'kitty cat';
-		document.querySelector('#overlay').style.display = 'block';
-		document.querySelector('#typewriter').className = ('type')
-	}
-	flash(){
-		document.querySelector('#overlay').className = ('flash')
-	}
-	overlayOnClick(){
-		this.setState({showMessage:false,message:false})
-		//document.querySelector('#overlay').style.display = 'none';
-	}
+	
+	
+	
 	render(){
-		const {showMessage,message} = this.state;
+		const {showMessage,message, instantMessage} = this.state;
+
 		return (
 				<AuthUserContext.Provider value={this.state.authUser}>
 					<Router>
@@ -97,12 +93,8 @@ class App extends Component {
 
 					</Router>
 					{showMessage && !!message && (
-						<div id="overlay" onClick={this.overlayOnClick}>
-							<div id="messageBox">
-								<div id="typewriter" className={'type'} dangerouslySetInnerHTML={{__html:message}}/>
-							</div>
-						</div>
-					)}
+						<MessageOverlay message={message} instantMessage={instantMessage} setGlobalState={this.setGlobalState}/>
+					) }
 					
 
 				</AuthUserContext.Provider>

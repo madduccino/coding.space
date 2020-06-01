@@ -36,13 +36,27 @@ class ProjectPageBase extends React.Component {
  	this.addStepHandler = this.addStepHandler.bind(this);
  	this.deleteStepHandler = this.deleteStepHandler.bind(this);
  	this.saveChangesHandler = this.saveChangesHandler.bind(this);
+ 	this.saveSuccessMsg = this.saveSuccessMsg.bind(this);
+ 	this.defaultInstantMsg = this.defaultInstantMsg.bind(this);
+
  	
  	//this.onChange = editorState => this.setState({editorState});
  	//console.log("hiya");
 
  }
+ saveSuccessMsg = ()=>{
+ 	const {authUser} = this.props;
+ 	return (
+ 		`$${authUser.Username}:<span style='color:orange'>@</span>/:<span style='color:green'>SAVE.GOOD</span>`
+ 	);
+ }
+ defaultInstantMsg = ()=>{
+ 	const {authUser} = this.props;
+ 	return (
+ 		`$${authUser.Username}:<span style='color:orange'>@</span>/:Press any key to continue...`
+ 	);
+ }
 
- 
  handleMouseEnter = (target) => {
 
  	if(this.state.canEdit){
@@ -190,43 +204,70 @@ class ProjectPageBase extends React.Component {
  	window.location = ROUTES.LANDING;
  }
  saveChangesHandler(event){
- 	const {key} = this.props.match.params;
- 	//this.props.setGlobalState({message:"$HAX!@--->BEGIN SAVE;"});
 
- 	this.props.firebase.project(key).set({
- 		...this.state.project
- 	})
+ 	const {project, loading, author} = this.state;
+ 	const {Title,Description, Level, steps} = project;
+ 	const {authUser} = this.props;
+ 	const {key} = this.props.match.params;
+ 	const stepCount = (!!project&& !!project.steps) ? Object.keys(project.steps).length : 0;
+ 	const validation = {};
+
+ 	validation['Title']=project.Title != '';
+ 	validation['Description']=project.Description != '';
+ 	validation['Author']=!!project.Author;
+ 	validation['Categories']=!!project.Categories;
+ 	validation['Level']=!isNaN(project.Level);
+ 	validation['Steps']=true;
+ 	validation['Loading'] = !loading;
+ 	
+ 	if(stepCount <= 0) validation['Steps'] = false;
+    for(var step in steps)
+    	if(step.Description === '')
+     		validation['Steps']= false;
+	
+ 	if(Object.values(validation).indexOf(false) < 0){
+ 		this.props.firebase.project(key).set({
+	 		...this.state.project
+	 	})
  		.then(()=>{
  			console.log("Successfully Saved");
  			this.setState({dirty:false})
- 			this.props.setGlobalState({message:"$CODE__1337<span style='color:blue'>@</span>\><span style='color:green'>SAVE.GOOD</span>;"});
+ 			this.props.setGlobalState({
+ 				message:this.saveSuccessMsg(),
+ 				instantMessage:this.defaultInstantMsg(),
+ 			});
  		})
  		.catch(error=>console.log(error));
+ 	}
+ 	else{
+ 		var badFields = Object.keys(validation).filter(field=>!validation[field]);
+	 	for(var i =0;i< badFields.length;i++)
+	 		badFields[i] = `$${authUser.Username}:<span style='color:orange'>@</span>/:${badFields[i]}.<span style='color:red'>ISBAD</span>\n`;
+	 	
+ 		this.props.setGlobalState({
+			message:badFields.join(''),
+			instantMessage:this.defaultInstantMsg(),
+		});
+ 	}
+
+ 	
  	console.log("Save Changes");
  }
-
+ 
  render(){
  	
  	const {project, loading, author} = this.state;
  	const {Title,Description, Level, steps} = project;
  	const {authUser} = this.props;
  	const stepCount = (!!project&& !!project.steps) ? Object.keys(project.steps).length : 0;
- 	const isInvalid = 
- 		project.Title === '' ||
- 		project.Description === '' ||
- 		!(!!project.Author) ||
- 		!(!!project.Categories) ||
- 		isNaN(project.Level) ||
- 		!(!!project.steps) ||
- 		stepCount <= 0 ||
- 		loading;
+ 	
+ 	
  	
  	//console.log(Object.keys(project));
  	if(loading)
  		return (<div>Loading ...</div>);
-     for(var step in steps)
-     	if(step.Description === '')
-     		isInvalid = true;
+ 	
+
  	//can edit
 
 	if(authUser && (!!authUser.roles['ADMIN'] || authUser.uid===project.Author) )
@@ -284,7 +325,7 @@ class ProjectPageBase extends React.Component {
  				</div>
  				<button onClick={this.addStepHandler}>Add Step</button>
  				{this.state.dirty && (
- 					<button disabled={isInvalid} onClick={this.saveChangesHandler}>Save Changes</button>
+ 					<button onClick={this.saveChangesHandler}>Save Changes</button>
  				)}
  				<button onClick={this.deleteProjectHandler}>Delete Project</button>
  				
