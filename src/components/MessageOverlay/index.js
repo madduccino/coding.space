@@ -9,17 +9,40 @@ class MessageOverlay extends Component {
 		super(props);
 		this.state = {
 			
-			message:null,
-			instantMessage:null,
+			messages:null,
 			authUser:null,
 		}
 		this.overlayOnClick = this.overlayOnClick.bind(this);
+		this.setupTypewriter = this.setupTypewriter.bind(this);
 	}
 	componentDidMount(){
-		this.setupTypewriter().type();
+		const {messages} = this.props;
+		document.querySelector('#overlay').focus();
+		
+		this.setupTypewriter(0).type();
+		
 	}
-	setupTypewriter() {
-		var t = document.getElementById('typewriter');
+	setupTypewriter(index) {
+		const lines = document.querySelectorAll('#overlay .line');
+		const count = lines.length;
+		if(index === count) return;
+		const line = document.querySelectorAll('#overlay .line')[index];
+		const lineMarker = document.querySelectorAll('#overlay .line-marker')[index];
+		line.style.display = 'inline-block';
+		lineMarker.style.display = 'inline-block';
+
+		
+		
+		var shouldType = line.classList.contains('type');
+
+
+		if(!shouldType){
+
+			var k = this.setupTypewriter(index+1);
+			if(!!k)k.type();
+			return;
+		}
+		var t = line;
 
 
 	    var HTML = t.innerHTML;
@@ -30,8 +53,9 @@ class MessageOverlay extends Component {
 	        tag = "",
 	        writingTag = false,
 	        tagOpen = false,
-	        typeSpeed = 5,
-        tempTypeSpeed = 0;
+	        typeSpeed = 25,
+        tempTypeSpeed = 0,
+        setupTypewriter = this.setupTypewriter;
 
 	    var type = function() {
         
@@ -79,45 +103,47 @@ class MessageOverlay extends Component {
 	            setTimeout(type, tempTypeSpeed);
 	        }
 	        else{
-	        	//display instant text
-	        		var instant = document.querySelector('#instant');
-	        		if(!!instant)
-	        			instant.style.display = 'block';
+	        	if(index < count)
+	        		setupTypewriter(index+1).type();
 	        }
 
 	    };
-
 	    return {
-	        type: type
-	    };
-	    type();
+	    	type:type
+	    }
+	    
 	}
 	overlayOnClick(){
-		this.props.setGlobalState({showMessage:false,message:null});
+		this.props.setGlobalState({showMessage:false,messages:null});
 		//document.querySelector('#overlay').style.display = 'none';
 	}
 
 	render(){
-		const {message,instantMessage} = this.props;
+		const {messages, authUser} = this.props;
+
 		//choose random ASCII art
 		const arts = Object.values(ASCII);
 		const rArt = arts[Math.floor(Math.random()*arts.length)];
 
 
 		return (
-			<div id="overlay" className={'crt'} onClick={this.overlayOnClick} onKeyPressed={this.overlayOnClick} tabIndex="0">
-				<div id="topBar">
-					<h4>CODING___X!TERM</h4>
-					<img src="/images/x-red.png"/>
-				</div>
+			<div id="overlay" ref={(overlay) => { this.overlay = overlay; }} className={'crt'} onClick={this.overlayOnClick} onKeyDown={this.overlayOnClick} tabIndex="0">
+				
 				<pre dangerouslySetInnerHTML={{__html:rArt}}/>
-	
-				{!!message && (
-					<pre id="typewriter" className={'type'} dangerouslySetInnerHTML={{__html:message}}/>
-				)}
-				{!!instantMessage && (
-					<pre id="instant" className={'type'} dangerouslySetInnerHTML={{__html:instantMessage}}/>
-				)}
+				<br/>
+				<br/>
+				<table>
+					{messages.map(message=>(
+						<tr>
+							<td className={'line-marker'}>$<span className={'orange'}>@</span>{authUser.Username}::></td>
+							<td className={'line ' + (message.type ? 'type' : '')} dangerouslySetInnerHTML={{__html:message.html}}/>
+						</tr>
+					))}
+				</table>
+
+					
+				
+				
 				
 				
 				

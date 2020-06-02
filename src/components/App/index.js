@@ -32,8 +32,7 @@ class App extends Component {
 		this.state = {
 			showFooter:true,
 			showMessage:false,
-			message:null,
-			instantMessage:null,
+			messages:null,
 			authUser:null,
 		}
 		this.setGlobalState = this.setGlobalState.bind(this);
@@ -43,7 +42,7 @@ class App extends Component {
 		//this.props.setGlobalProps = this.setGlobalProps;
 	}
 	setGlobalState(map){
-		this.setState({...map,showMessage: (!!map['message'] ? true : false)});
+		this.setState({...map,showMessage: (!!map['messages'] ? true : false)});
 
 		//console.log(this.state);
 	}
@@ -65,7 +64,7 @@ class App extends Component {
 	
 	
 	render(){
-		const {showMessage,message, instantMessage} = this.state;
+		const {showMessage,messages} = this.state;
 
 		return (
 				<AuthUserContext.Provider value={this.state.authUser}>
@@ -92,8 +91,8 @@ class App extends Component {
 						</div>
 
 					</Router>
-					{showMessage && !!message && (
-						<MessageOverlay message={message} instantMessage={instantMessage} setGlobalState={this.setGlobalState}/>
+					{showMessage && !!messages && (
+						<MessageOverlay messages={messages}  setGlobalState={this.setGlobalState}/>
 					) }
 					
 

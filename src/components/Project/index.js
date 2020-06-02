@@ -36,26 +36,15 @@ class ProjectPageBase extends React.Component {
  	this.addStepHandler = this.addStepHandler.bind(this);
  	this.deleteStepHandler = this.deleteStepHandler.bind(this);
  	this.saveChangesHandler = this.saveChangesHandler.bind(this);
- 	this.saveSuccessMsg = this.saveSuccessMsg.bind(this);
- 	this.defaultInstantMsg = this.defaultInstantMsg.bind(this);
+
 
  	
  	//this.onChange = editorState => this.setState({editorState});
  	//console.log("hiya");
 
  }
- saveSuccessMsg = ()=>{
- 	const {authUser} = this.props;
- 	return (
- 		`$${authUser.Username}:<span style='color:orange'>@</span>/:<span style='color:green'>SAVE.GOOD</span>`
- 	);
- }
- defaultInstantMsg = ()=>{
- 	const {authUser} = this.props;
- 	return (
- 		`$${authUser.Username}:<span style='color:orange'>@</span>/:Press any key to continue...`
- 	);
- }
+
+
 
  handleMouseEnter = (target) => {
 
@@ -233,20 +222,43 @@ class ProjectPageBase extends React.Component {
  			console.log("Successfully Saved");
  			this.setState({dirty:false})
  			this.props.setGlobalState({
- 				message:this.saveSuccessMsg(),
- 				instantMessage:this.defaultInstantMsg(),
+ 				messages:[{
+
+ 					html:`SAVE.<span class="green">GOOD</span>`,
+ 					type:true},{
+
+ 					html:`Press any key to continue...`,
+ 					type:false,
+
+ 					}],
+ 				showMessage:true
  			});
  		})
  		.catch(error=>console.log(error));
  	}
  	else{
  		var badFields = Object.keys(validation).filter(field=>!validation[field]);
-	 	for(var i =0;i< badFields.length;i++)
-	 		badFields[i] = `$${authUser.Username}:<span style='color:orange'>@</span>/:${badFields[i]}.<span style='color:red'>ISBAD</span>\n`;
+ 		var messages = [];
+	 	for(var i =0;i< badFields.length;i++){
+
+	 		messages.push({
+				html:`${badFields[i]}.<span class="red">ISBAD</span>`,
+				type:true
+			});
+	 	}
+
+		messages.push({
+			html:`Press any key to continue...`,
+			type:false
+		})
+
+	 		
+	 	
 	 	
  		this.props.setGlobalState({
-			message:badFields.join(''),
-			instantMessage:this.defaultInstantMsg(),
+			messages:messages,
+			showMessage:true
+			
 		});
  	}
 
