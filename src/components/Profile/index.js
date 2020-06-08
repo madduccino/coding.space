@@ -87,7 +87,7 @@ class ProfilePageBase extends React.Component {
 
  componentWillUnmount(){
  	this.props.firebase.profile().off();
- 	this.props.firebase.projects().off();
+ 	this.props.firebase.untutorials().off();
  }
   handleThumbnailUpload(event){
  	var file = event.target.files[0];

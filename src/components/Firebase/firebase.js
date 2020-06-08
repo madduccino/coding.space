@@ -27,9 +27,28 @@ class Firebase {
           .once('value')
           .then(snapshot => {
             const dbUser = snapshot.val();
-
+            if(!dbUser.About)
+              dbUser.About='';
+            if(!dbUser.Age)
+              dbUser.Age='';
+            if(!dbUser.DisplayName)
+              dbUser.DisplayName='';
+            if(!dbUser.Email)
+              dbUser.Email='';
+            if(!dbUser.Notes)
+              dbUser.Notes='';
+            if(!dbUser.Status)
+              dbUser.Status='DRAFT';
+            if(!dbUser.ThumbnailFilename)
+              dbUser.ThumbnailFilename='';
+            if(!dbUser.Username)
+              return;
+            if(!dbUser.key)
+              return;
             if(!dbUser.roles)
               dbUser.roles = {};
+            if(!dbUser.progress)
+              dbUser.progress={};
 
             authUser = {
               uid:authUser.uid,
@@ -54,11 +73,13 @@ class Firebase {
   profile = uid => this.db.ref('db/Profiles/' + uid);
   profiles = () => this.db.ref('db/Profiles');
 
-  project = pid => this.db.ref('db/Projects/' + pid);
-  projects = () => this.db.ref('db/Projects');
+  untutorial = pid => this.db.ref('db/Untutorials/' + pid);
+  untutorials = () => this.db.ref('db/Untutorials');
 
   classes = () => this.db.ref('db/Classes');
   class = cid => this.db.ref('db/Classes/' + cid);
+
+
   //levels = () => this.db.ref('db/Projects/**/Level');
 }
 export default Firebase;

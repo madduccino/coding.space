@@ -20,7 +20,7 @@ class Landing extends React.Component {
 		<div className='section-holder'>
 
 			<section id='scratch'>
-				<a id='scratch-img' href='./scratch' onMouseEnter={this.handleMouseEnter} onMouseLeave={this.handleMouseLeave}><img className='img-responsive large-img' src='./images/2018scratch.png' alt='Scratch'/></a>
+				<a id='scratch-img' href='./launchpad' onMouseEnter={this.handleMouseEnter} onMouseLeave={this.handleMouseLeave}><img className='img-responsive large-img' src='./images/2018scratch.png' alt='Scratch'/></a>
 				<div id='scratch-box' className='black-opaque infobox'>Program your own interactive stories, games, and animations with Scratch
 					-- and share your creations with others in the online community.
 					<p className='info-para green'>We recommend starting here.</p>

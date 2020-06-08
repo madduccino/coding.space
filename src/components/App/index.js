@@ -12,12 +12,12 @@ import PasswordForgetPage from '../PasswordForget';
 import ClassesPage from '../Classes';
 import AccountPage from '../Account';
 import AdminPage from '../Admin';
-import ProjectPage from '../Project';
+import UntutorialPage from '../Untutorial';
 import ProfilePage from '../Profile';
 import ClassPage from '../Class';
 import NewProjectPage from '../NewProject';
 import NewClassPage from '../NewClass';
-import Scratch from '../Scratch';
+import LaunchPad from '../LaunchPad';
 import MessageOverlay from '../MessageOverlay';
 import * as ROUTES from '../../constants/routes';
 import {withAuthentication} from '../Session';
@@ -79,8 +79,8 @@ class App extends Component {
 							<Route exact path={ROUTES.CLASSES} render={(props)=><ClassesPage {...props} setGlobalState={this.setGlobalState} />} />
 							<Route path={ROUTES.ACCOUNT} render={(props)=><AccountPage {...props} setGlobalState={this.setGlobalState} />} />
 							<Route path={ROUTES.ADMIN} render={(props)=><AdminPage {...props} setGlobalState={this.setGlobalState} />} />
-							<Route path={ROUTES.SCRATCH} render={(props)=><Scratch {...props} setGlobalState={this.setGlobalState} />} />
-							<Route path={ROUTES.PROJECT} render={(props)=><ProjectPage {...props} setGlobalState={this.setGlobalState} />} />
+							<Route exact path={ROUTES.LAUNCHPAD} render={(props)=><LaunchPad {...props} setGlobalState={this.setGlobalState} />} />
+							<Route path={ROUTES.UNTUTORIAL} render={(props)=><UntutorialPage {...props} setGlobalState={this.setGlobalState} />} />
 							<Route path={ROUTES.PROFILE} render={(props)=><ProfilePage {...props} setGlobalState={this.setGlobalState} />} />
 							<Route path={ROUTES.CLASS} render={(props)=><ClassPage {...props} setGlobalState={this.setGlobalState} />} />
 							<Route path={ROUTES.NEW_PROJECT} render={(props)=><NewProjectPage {...props} setGlobalState={this.setGlobalState} />} />
