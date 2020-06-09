@@ -59,7 +59,7 @@ class ProfilePageBase extends React.Component {
 		this.setState({
 			profile:snapshot.val()
 		})
-		this.props.firebase.projects().once('value')
+		this.props.firebase.untutorials().once('value')
 			.then(snapshot => {
  				const {key} = this.props.match.params;
  				const projects = Object.values(snapshot.val()).filter(project=>project.Author===key);
