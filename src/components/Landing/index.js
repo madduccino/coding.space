@@ -16,7 +16,7 @@ class Landing extends React.Component {
 	<div>
   <h1>The Coding Space Projects</h1>
 	<div className='container'>
-
+    Hey hey
 		<div className='section-holder'>
 
 			<section id='scratch'>
