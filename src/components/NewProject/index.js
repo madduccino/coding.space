@@ -7,6 +7,7 @@ import {withAuthentication} from '../Session';
 import {withFirebase} from '../Firebase';
 import TCSEditor from '../TCSEditor';
 import { v4 as uuidv4 } from 'uuid';
+import * as ROUTES from '../../constants/routes';
 
 
 
@@ -20,8 +21,8 @@ class NewProjectPageBase extends React.Component {
  		loading:true,
  		uploading:false,
  		uploadPercent:0,
- 		projectRef:null,
- 		project: {
+ 		untutorialRef:null,
+ 		untutorial: {
  			key:uuidv4(),
  			Author:null,
  			Description:'',
@@ -44,9 +45,13 @@ class NewProjectPageBase extends React.Component {
  	//this.handleStatusOnChange = this.handleStatusOnChange.bind(this);
  	this.handleThumbnailUpload = this.handleThumbnailUpload.bind(this);
  	this.handlePTitleOnChange = this.handlePTitleOnChange.bind(this);
+ 	this.handlePTitleOnSave = this.handlePTitleOnSave.bind(this);
  	this.handlePDescriptionOnChange = this.handlePDescriptionOnChange.bind(this);
+ 	this.handlePDescriptionOnSave = this.handlePDescriptionOnSave.bind(this);
  	this.handleLevelOnChange = this.handleLevelOnChange.bind(this);
+ 	this.handleLevelOnSave = this.handleLevelOnSave.bind(this);
  	this.handleStepOnChange = this.handleStepOnChange.bind(this);
+ 	this.handleStepOnSave = this.handleStepOnSave.bind(this);
  	this.addStepHandler = this.addStepHandler.bind(this);
  	this.deleteStepHandler = this.deleteStepHandler.bind(this);
  	this.saveChangesHandler = this.saveChangesHandler.bind(this);
@@ -65,13 +70,13 @@ class NewProjectPageBase extends React.Component {
  };
 
  componentDidMount(){
- 	var pCopy = this.state.project;
+ 	var pCopy = this.state.untutorial;
  	if(this.props.authUser){
 		pCopy.Author = this.props.authUser.key;
 
 	 	this.setState({
-	 		projectRef: this.props.firebase.untutorial(this.state.project.key),
-	 		project:pCopy,
+	 		untutorialRef: this.props.firebase.untutorial(this.state.untutorial.key),
+	 		untutorial:pCopy,
 	 		loading:false,
 
 
@@ -84,11 +89,11 @@ class NewProjectPageBase extends React.Component {
 
  }
  componentWillReceiveProps(props){
- 	if(this.state.project.Author != props.authUser.key){
- 		var pCopy = this.state.project;
+ 	if(this.state.untutorial.Author != props.authUser.key){
+ 		var pCopy = this.state.untutorial;
  		pCopy.Author = props.authUser.key;
  		this.setState({ 
- 			project: pCopy,
+ 			untutorial: pCopy,
  			loading:false,
 
  		})
@@ -102,20 +107,23 @@ class NewProjectPageBase extends React.Component {
 
  };
  componentWillUnmount(){
- 	this.props.firebase.project().off();
+ 	this.props.firebase.untutorial().off();
  }
   handlePTitleOnChange(value){
- 	var pCopy = this.state.project;
+ 	var pCopy = this.state.untutorial;
  	if(value !== pCopy.Title){
  		pCopy.Title = value;
- 		this.setState({project:pCopy});
+ 		this.setState({untutorial:pCopy});
  	}
  	
+ }
+ handlePTitleOnSave(){
+
  }
  handleThumbnailUpload(event){
  	var file = event.target.files[0];
  	var ext = file.name.substring(file.name.lastIndexOf('.') + 1);
- 	var pCopy = this.state.project;
+ 	var pCopy = this.state.untutorial;
  	pCopy.ThumbnailFilename = uuidv4() + '.' + ext;
 
  	var storageRef = this.props.firebase.storage.ref('/public/' + pCopy.Author + '/' + pCopy.ThumbnailFilename);
@@ -134,57 +142,66 @@ class NewProjectPageBase extends React.Component {
 	 	},
 	 	()=>{
 	 		//complete
-	 		this.setState({uploadPercent:0,uploading:false,project:pCopy})
+	 		this.setState({uploadPercent:0,uploading:false,untutorial:pCopy})
 
 	 	})
 
 
  }
  handlePDescriptionOnChange(value){
- 	var pCopy = this.state.project;
+ 	var pCopy = this.state.untutorial;
  	if(value !== pCopy.Description){
  		pCopy.Description = value;
- 		this.setState({project:pCopy});
+ 		this.setState({untutorial:pCopy});
  	}
  	
  }
- handleLevelOnChange(event){
- 	var pCopy = this.state.project;
- 	if(event.target.value !== pCopy.Level){
- 		pCopy.Level = event.target.value;
- 		this.setState({project:pCopy});
+ handlePDescriptionOnSave(){
+
+ }
+ handleLevelOnChange(value){
+ 	var pCopy = this.state.untutorial;
+ 	if(value !== pCopy.Level){
+ 		pCopy.Level = value;
+ 		this.setState({untutorial:pCopy});
  	}
  	
+ }
+ handleLevelOnSave(){
+
  }
  handleStepOnChange(value,step){
- 	var pCopy = this.state.project;
+ 	var pCopy = this.state.untutorial;
  	if(value !== pCopy.steps[step].Description){
  		pCopy.steps[step].Description = value;
- 		this.setState({project:pCopy});
+ 		this.setState({untutorial:pCopy});
  	}
 
  }
+ handleStepOnSave(){
+
+ }
  deleteStepHandler(event,key){
- 	var pCopy = this.state.project;
+ 	var pCopy = this.state.untutorial;
  	delete pCopy.steps[key];
- 	this.setState({project:pCopy});
+ 	this.setState({untutorial:pCopy});
  	console.log("Delete Step");
  	console.log(key);
  }
  addStepHandler(event){
- 	var pCopy = this.state.project;
+ 	var pCopy = this.state.untutorial;
  	pCopy.steps[Math.max(...Object.keys(pCopy.steps)) + 1] = {Description:''};
- 	this.setState({project:pCopy});
+ 	this.setState({untutorial:pCopy});
  	console.log("Add Step");
  }
  saveChangesHandler(event){
 
- 	this.state.projectRef.set({
- 		...this.state.project
+ 	this.state.untutorialRef.set({
+ 		...this.state.untutorial
  	})
  		.then(()=>{
  			console.log("Successfully Saved");
- 			this.props.history.push("/projects/" + this.state.project.key);
+ 			this.props.history.push(ROUTES.LAUNCHPAD + this.state.untutorial.key);
  		})
  		.catch(error=>console.log(error));
  	console.log("Save Changes");
@@ -192,10 +209,10 @@ class NewProjectPageBase extends React.Component {
 
  render(){
  	
- 	const {project, loading} = this.state;
- 	const {Title,Description,Level, steps} = project;
+ 	const {untutorial, loading} = this.state;
+ 	const {Title,Description,Level, steps} = untutorial;
  	const {authUser} = this.props;
- 	const stepCount = Object.keys(project.steps).length;
+ 	const stepCount = Object.keys(untutorial.steps).length;
  	
  	//console.log(Object.keys(project));
  	if(loading)
@@ -210,9 +227,15 @@ class NewProjectPageBase extends React.Component {
      		isInvalid = true;
 	return (
 		<div>
-			<h1>New Project</h1>
+			<h1>New Untutorial</h1>
 			<div className={'container'}>
-				<TCSEditor onEditorChange={this.handlePTitleOnChange} placeholder={'Project Title'} text={project.Title}/>
+				<TCSEditor 
+					disabled={false}
+					type='plain'
+					onEditorChange={this.handlePTitleOnChange} 
+					onEditorSave={this.handlePTitleOnSave}
+					placeholder={'Untutorial Title'} 
+					text={untutorial.Title}/>
 			</div>
 			<div className={'container'}>
 				<h4>Thumbnail</h4>
@@ -222,35 +245,45 @@ class NewProjectPageBase extends React.Component {
 				{this.state.uploading && (
 					<progress value={this.state.uploadPercent} max="100"/>
 				)}
-				{!!project.ThumbnailFilename && !this.state.uploading &&(
-					<LazyImage file={this.props.firebase.storage.ref('/public/' + project.Author + '/' + project.ThumbnailFilename)}/>
+				{!!untutorial.ThumbnailFilename && untutorial.ThumbnailFilename!=='' && !this.state.uploading &&(
+					<LazyImage file={this.props.firebase.storage.ref('/public/' + untutorial.Author + '/' + untutorial.ThumbnailFilename)}/>
 				)}
 				
 			</div>
 			
 			
 			<div className={'container'}>
-				<TCSEditor onEditorChange={this.handlePDescriptionOnChange} placeholder={'Project Description'} text={project.Description}/>
+				<TCSEditor 
+					disabled={false}
+					type='text'
+					onEditorChange={this.handlePDescriptionOnChange} 
+					onEditorSave={this.handlePDescriptionOnSave}
+					placeholder={'Project Description'} 
+					text={untutorial.Description}/>
 			</div>
 			<div className={'container'}>
  					<h4>Level</h4>
  				</div>
 			<div className={'container'}>
-				<select value={Level} onChange={this.handleLevelOnChange}>
-					<option value="1">1</option>
-					<option value="2">2</option>
-					<option value="3">3</option>
-					<option value="4">4</option>
-					<option value="5">5</option>
-					<option value="6">6</option>
-				</select>
+				<TCSEditor 
+					disabled={false}
+					type='select'
+					selectOptions={[1,2,3,4,5,6]}
+					onEditorChange={this.handleLevelOnChange} 
+					onEditorSave={this.handleLevelOnSave}
+					text={untutorial.Level}/>
 				
 			</div>
 			<h3>Steps</h3>
 			<div className={'container'}>
-				{Object.keys(project.steps).map(step => (
+				{Object.keys(untutorial.steps).map(step => (
 					<div>
-					<TCSEditor onEditorChange={(value)=>this.handleStepOnChange(value,step)} placeholder={'Step Description'} text={project.steps[step].Description}/>
+					<TCSEditor 
+						disabled={false}
+						onEditorChange={(value)=>this.handleStepOnChange(value,step)} 
+						onEditorSave={this.handleStepOnSave}
+						placeholder={'Step Description'} 
+						text={untutorial.steps[step].Description}/>
 					{stepCount > 1 && (
 						<button  onClick={(event)=>this.deleteStepHandler(event,step)}>Delete Step</button>
 					)}

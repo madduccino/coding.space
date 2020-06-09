@@ -42,9 +42,13 @@ class NewClassPageBase extends React.Component {
  	//this.handleStatusOnChange = this.handleStatusOnChange.bind(this);
  	this.handleThumbnailUpload = this.handleThumbnailUpload.bind(this);
  	this.handleClassTitleOnChange = this.handleClassTitleOnChange.bind(this);
+ 	this.handleClassTitleOnSave = this.handleClassTitleOnSave.bind(this);
  	this.handleClassDescriptionOnChange = this.handleClassDescriptionOnChange.bind(this);
+ 	this.handleClassDescriptionOnSave = this.handleClassDescriptionOnSave.bind(this);
  	this.handleClassScheduleOnChange = this.handleClassScheduleOnChange.bind(this);
+ 	this.handleClassScheduleOnSave = this.handleClassScheduleOnSave.bind(this);
  	this.handleClassLocationOnChange = this.handleClassLocationOnChange.bind(this);
+ 	this.handleClassLocationOnSave = this.handleClassLocationOnSave.bind(this);
  	
  	this.saveChangesHandler = this.saveChangesHandler.bind(this);
  	
@@ -111,6 +115,9 @@ class NewClassPageBase extends React.Component {
  	}
  	
  }
+ handleClassTitleOnSave(){
+
+ }
    handleClassScheduleOnChange(value){
  	var cCopy = this.state.class;
  	if(value !== cCopy.Schedule){
@@ -118,6 +125,9 @@ class NewClassPageBase extends React.Component {
  		this.setState({class:cCopy});
  	}
  	
+ }
+ handleClassScheduleOnSave(){
+
  }
    handleClassLocationOnChange(value){
  	var cCopy = this.state.class;
@@ -127,6 +137,9 @@ class NewClassPageBase extends React.Component {
  	}
  	
  }
+ handleClassLocationOnSave(){
+
+ }
    handleClassDescriptionOnChange(value){
  	var cCopy = this.state.class;
  	if(value !== cCopy.Description){
@@ -134,6 +147,9 @@ class NewClassPageBase extends React.Component {
  		this.setState({class:cCopy});
  	}
  	
+ }
+ handleClassDescriptionOnSave(){
+
  }
  handleThumbnailUpload(event){
  	var file = event.target.files[0];
@@ -201,7 +217,13 @@ class NewClassPageBase extends React.Component {
 				<h4>Title</h4>
 			</div>
 			<div className={'container'}>
-				<TCSEditor onEditorChange={this.handleClassTitleOnChange} placeholder={'Class Title'} text={clazz.Title}/>
+				<TCSEditor 
+					disabled={false}
+					type='plain'
+					onEditorChange={this.handleClassTitleOnChange} 
+					onEditorSave={this.handleClassTitleOnSave}
+					placeholder={'Class Title'} 
+					text={clazz.Title}/>
 			</div>
 			<div className={'container'}>
 				<h4>Thumbnail</h4>
@@ -221,19 +243,37 @@ class NewClassPageBase extends React.Component {
 				<h4>Description</h4>
 			</div>
 			<div className={'container'}>
-				<TCSEditor onEditorChange={this.handleClassDescriptionOnChange} placeholder={'Class Description'} text={clazz.Description}/>
+				<TCSEditor 
+					disabled={false}
+					type='text'
+					onEditorChange={this.handleClassDescriptionOnChange} 
+					onEditorSave={this.handleClassDescriptionOnSave}
+					placeholder={'Class Description'} 
+					text={clazz.Description}/>
 			</div>
 			<div className={'container'}>
 				<h4>Schedule</h4>
 			</div>
 			<div className={'container'}>
-				<TCSEditor onEditorChange={this.handleClassScheduleOnChange} placeholder={'Class Schedule'} text={clazz.Schedule}/>
+				<TCSEditor 
+					disabled={false}
+					type='text'
+					onEditorChange={this.handleClassScheduleOnChange} 
+					onEditorSave={this.handleClassScheduleOnSave}
+					placeholder={'Class Schedule'} 
+					text={clazz.Schedule}/>
 			</div>
 			<div className={'container'}>
 				<h4>Location</h4>
 			</div>
 			<div className={'container'}>
-				<TCSEditor onEditorChange={this.handleClassLocationOnChange} placeholder={'Class Location'} text={clazz.Location}/>
+				<TCSEditor 
+					disabled={false}
+					type='text'
+					onEditorChange={this.handleClassLocationOnChange} 
+					onEditorSave={this.handleClassLocationOnSave}
+					placeholder={'Class Location'} 
+					text={clazz.Location}/>
 			</div>
 			
 			

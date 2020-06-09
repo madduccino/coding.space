@@ -256,10 +256,10 @@ class UntutorialPageBase extends React.Component {
  	this.setState({errors:errors});
 
  }
- handleStatusOnChange(event){
+ handleStatusOnChange(value){
  	var oCopy = this.state.untutorial;
- 	if(event.target.value !== oCopy.Status){
- 		oCopy.Status = event.target.value;
+ 	if(value !== oCopy.Status){
+ 		oCopy.Status = value;
  		this.setState({untutorial:oCopy,dirty:true});
  		this.validateStatus();
  	}
@@ -280,10 +280,10 @@ class UntutorialPageBase extends React.Component {
  	}
  	this.setState({errors:errors});
  }
- handleLevelOnChange(event){
+ handleLevelOnChange(value){
  	var oCopy = this.state.untutorial;
- 	if(event.target.value !== oCopy.Level){
- 		oCopy.Level = event.target.value;
+ 	if(value !== oCopy.Level){
+ 		oCopy.Level = value;
 	 	const {authUser} = this.props;
 	 	if(authUser && !!authUser.roles['STUDENT'])
 	 		oCopy.Status = 'DRAFT';

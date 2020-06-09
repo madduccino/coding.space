@@ -32,11 +32,17 @@ class ClassPageBase extends React.Component {
 
  	}
  	this.handleClassTitleOnChange = this.handleClassTitleOnChange.bind(this);
+ 	this.handleClassTitleOnSave = this.handleClassTitleOnSave.bind(this);
  	this.handleClassDescriptionOnChange = this.handleClassDescriptionOnChange.bind(this);
+ 	this.handleClassDescriptionOnSave = this.handleClassDescriptionOnSave.bind(this);
  	this.handleClassScheduleOnChange = this.handleClassScheduleOnChange.bind(this);
+ 	this.handleClassScheduleOnSave = this.handleClassScheduleOnSave.bind(this);
  	this.handleClassLocationOnChange = this.handleClassLocationOnChange.bind(this);
+ 	this.handleClassLocationOnSave = this.handleClassLocationOnSave.bind(this);
  	this.handleStatusOnChange = this.handleStatusOnChange.bind(this);
+ 	this.handleStatusOnSave = this.handleStatusOnSave.bind(this);
  	this.handleMembersOnChange = this.handleMembersOnChange.bind(this);
+ 	this.handleMembersOnSave = this.handleMembersOnSave.bind(this);
  	this.deleteClassHandler = this.deleteClassHandler.bind(this);
  	this.saveChangesHandler = this.saveChangesHandler.bind(this);
  	this.handleThumbnailUpload = this.handleThumbnailUpload.bind(this);
@@ -94,6 +100,9 @@ class ClassPageBase extends React.Component {
  	}
  	
  }
+ handleClassTitleOnSave(){
+ 	this.saveChangesHandler();
+ }
  handleClassDescriptionOnChange(value){
  	var cCopy = this.state.clazz;
  	if(value !== cCopy.Description){
@@ -103,6 +112,9 @@ class ClassPageBase extends React.Component {
 	 	this.setState({clazz:cCopy,dirty:true});
  	}
  	
+ }
+ handleClassDescriptionOnSave(){
+ 	this.saveChangesHandler();
  }
  handleClassScheduleOnChange(value){
  	var cCopy = this.state.clazz;
@@ -114,6 +126,9 @@ class ClassPageBase extends React.Component {
  	}
  	
  }
+ handleClassScheduleOnSave(){
+ 	this.saveChangesHandler();
+ }
   handleClassLocationOnChange(value){
  	var cCopy = this.state.clazz;
  	if(value !== cCopy.Location){
@@ -123,13 +138,19 @@ class ClassPageBase extends React.Component {
  	}
  	
  }
- handleStatusOnChange(event){
+ handleClassLocationOnSave(){
+ 	this.saveChangesHandler();
+ }
+ handleStatusOnChange(value){
  	var cCopy = this.state.clazz;
- 	if(event.target.value !== cCopy.Status){
- 		cCopy.Status = event.target.value;
+ 	if(value !== cCopy.Status){
+ 		cCopy.Status = value;
  		this.setState({clazz:cCopy,dirty:true});
  	}
  	
+ }
+ handleStatusOnSave(){
+ 	this.saveChangesHandler();
  }
  handleMembersOnChange(selectedMembers){
 	var cCopy = this.state.clazz;
@@ -139,7 +160,10 @@ class ClassPageBase extends React.Component {
 	}
 
 	 	
-	this.setState({clazz:cCopy,dirty:true});
+	this.setState({clazz:cCopy,dirty:true},this.saveChangesHandler);
+ }
+ handleMembersOnSave(){
+ 	this.saveChangesHandler();
  }
  deleteClassHandler(value){
  	const {key} = this.props.match.params;
@@ -214,110 +238,111 @@ class ClassPageBase extends React.Component {
  		loading;
  	
  	//can edit
-	if(!!authUser && !!authUser.roles['ADMIN']  )
- 	{
- 		//assemble listbox data
- 		const listBoxOptions = [];
- 		const listBoxSelected = [];
- 		if(profiles){
- 			Object.keys(profiles).map(profile=>{
- 				listBoxOptions.push({
- 					label:!!profiles[profile].roles[ROLES.TEACHER] ? profiles[profile].Username.replace('.',' ') + "(TEACHER)" : profiles[profile].Username.replace('.',' '),
- 					value:profiles[profile].key,
- 				})
- 				if(!!clazz.Members[profiles[profile].key])
- 					listBoxSelected.push(profile);
- 			})
- 				
- 		}
- 		
 
- 		return (
- 			<div>
- 				<div className={'container'}>
-					<h4>Class Title</h4>
-				</div>
- 				<div className={'container'}>
- 					<TCSEditor onEditorChange={this.handleClassTitleOnChange} placeholder={'Class Title'} text={clazz.Title}/>
- 				</div>
- 				<select value={clazz.Status} onChange={this.handleStatusOnChange}>
- 					<option value="DRAFT">DRAFT</option>
- 					<option value="APPROVED">APPROVED</option>
- 				</select>
- 				<div className={'container'}>
-					<h4>Thumbnail</h4>
-				</div>
-				<div className={'container'}>
-					<input type="file" onChange={this.handleThumbnailUpload}/>
-					{uploading && (
-						<progress value={uploadPercent} max="100"/>
-					)}
-					{!!clazz.ThumbnailFilename && !uploading &&(
-						<LazyImage file={this.props.firebase.storage.ref('/classes/' + clazz.ThumbnailFilename)}/>
-					)}
-					
-				</div>
-				<div className={'container'}>
-					<h4>Description</h4>
-				</div>
- 				<div className={'container'}>
- 					<TCSEditor onEditorChange={this.handleClassDescriptionOnChange} placeholder={'Class Description'} text={clazz.Description}/>
- 				</div>
- 				<div className={'container'}>
-					<h4>Schedule</h4>
-				</div>
- 				<div className={'container'}>
-					<TCSEditor onEditorChange={(value)=>this.handleClassScheduleOnChange(value)} placeholder={'Schedule Description'} text={clazz.Schedule}/>
- 				</div>
- 				<div className={'container'}>
-					<h4>Location</h4>
-				</div>
- 				<div className={'container'}>
-					<TCSEditor onEditorChange={(value)=>this.handleClassLocationOnChange(value)} placeholder={'Location Description'} text={clazz.Location}/>
- 				</div>
- 				{!!profiles && (
- 					<div className={'container'}>
-						<h4>Students and Teachers</h4>
-						<ListBox options={listBoxOptions} onChange={this.handleMembersOnChange} selected={listBoxSelected}/>
-					</div>
-				)}
+	//assemble listbox data
+	const listBoxOptions = [];
+	const listBoxSelected = [];
+	if(!!profiles){
+		Object.keys(profiles).map(profile=>{
+			listBoxOptions.push({
+				label:!!profiles[profile].roles[ROLES.TEACHER] ? profiles[profile].Username.replace('.',' ') + "(TEACHER)" : profiles[profile].Username.replace('.',' '),
+				value:profiles[profile].key,
+			})
+			if(!!clazz.Members[profiles[profile].key])
+				listBoxSelected.push(profile);
+		})
+			
+	}
+	
 
- 				 {this.state.dirty && (
- 					<button disabled={isInvalid} onClick={this.saveChangesHandler}>Save Changes</button>
- 				)}
- 				<button onClick={this.deleteClassHandler}>Delete Class</button>
- 			</div>
- 		)
-
- 	}
- 	//else if(!!authUser && !!authUser.roles['TEACHER'])
-
-
- 	return (
-			<div>
-	 			<h1  dangerouslySetInnerHTML={{__html:clazz.Title}}/>
-	 			{!!clazz.ThumbnailFilename && (
-	 				<LazyImage file={this.props.firebase.storage.ref('/classes/' + clazz.ThumbnailFilename)}/>
-	 			)}
-				<div className={'container'} dangerouslySetInnerHTML={{__html:clazz.Description}}/>
-				<div className={'container'} dangerouslySetInnerHTML={{__html:clazz.Schedule}}/>
-				<div className={'container'} dangerouslySetInnerHTML={{__html:clazz.Location}}/>
-				{!!authUser && !!authUser.roles[ROLES.TEACHER] && !!profiles && (
-					<div className={'container'}>
-						<h4>Students and Teachers</h4>
-						<ul>
-						{Object.keys(profiles).filter(profile=>!!clazz.Members[profiles[profile].key]).map(profile=>( 
-							<li>
-								<a href={'/profile/' + profiles[profile].key}>{!!profiles[profile].roles[ROLES.TEACHER] ? profiles[profile].Username.replace('.',' ') + "(TEACHER)" : profiles[profile].Username.replace('.',' ')}</a>
-							</li>
-						))}
-						</ul>
-					</div>
-				)}
-				
-
+	return (
+		<div>
+			<div className={'container'}>
+			<h4>Class Title</h4>
+		</div>
+			<div className={'container'}>
+				<TCSEditor 
+					disabled={!(!!authUser && !!authUser.roles['ADMIN'] )}
+					type='plain'
+					onEditorChange={this.handleClassTitleOnChange} 
+					onEditorSave={this.handleClassTitleOnSave}
+					placeholder={'Class Title'} 
+					text={clazz.Title}/>
 			</div>
- 		)
+			<TCSEditor 
+					disabled={!(!!authUser && !!authUser.roles['ADMIN'] )}
+					type='select'
+					selectOptions={['DRAFT','APPROVED']}
+					onEditorChange={this.handleStatusOnChange} 
+					onEditorSave={this.handleStatusOnSave}
+					placeholder={'Class Status'} 
+					text={clazz.Status}/>
+			<div className={'container'}>
+			<h4>Thumbnail</h4>
+		</div>
+		<div className={'container'}>
+			<input type="file" onChange={this.handleThumbnailUpload}/>
+			{uploading && (
+				<progress value={uploadPercent} max="100"/>
+			)}
+			{!!clazz.ThumbnailFilename && !uploading &&(
+				<LazyImage file={this.props.firebase.storage.ref('/classes/' + clazz.ThumbnailFilename)}/>
+			)}
+			
+		</div>
+		<div className={'container'}>
+			<h4>Description</h4>
+		</div>
+			<div className={'container'}>
+				<TCSEditor 
+					disable={!(!!authUser && !!authUser.roles['ADMIN'] )}
+					type='text'
+					onEditorChange={this.handleClassDescriptionOnChange} 
+					onEditorSave={this.handleClassDescriptionOnSave}
+					placeholder={'Class Description'} 
+					text={clazz.Description}/>
+			</div>
+			<div className={'container'}>
+			<h4>Schedule</h4>
+		</div>
+			<div className={'container'}>
+			<TCSEditor 
+				disabled={!(!!authUser && !!authUser.roles['ADMIN'] )}
+				type='text'
+				onEditorChange={(value)=>this.handleClassScheduleOnChange(value)} 
+				onEditorSave={this.handleClassScheduleOnSave}
+				placeholder={'Schedule Description'} 
+				text={clazz.Schedule}/>
+			</div>
+			<div className={'container'}>
+			<h4>Location</h4>
+		</div>
+			<div className={'container'}>
+			<TCSEditor
+				disabled={!(!!authUser && !!authUser.roles['ADMIN'] )}
+				type='text' 
+				onEditorChange={(value)=>this.handleClassLocationOnChange(value)} 
+				onEditorSave={this.handleClassLocationOnSave}
+				placeholder={'Location Description'} 
+				text={clazz.Location}/>
+			</div>
+			{!!profiles && (
+				<div className={'container'}>
+				<h4>Students and Teachers</h4>
+				<ListBox 
+					options={listBoxOptions} 
+					onChange={this.handleMembersOnChange} 
+					selected={listBoxSelected}/>
+			</div>
+		)}
+
+
+			<button onClick={this.deleteClassHandler}>Delete Class</button>
+		</div>
+	)
+
+ 	
+
 }
 }
 
