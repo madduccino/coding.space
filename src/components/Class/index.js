@@ -75,10 +75,6 @@ class ClassPageBase extends React.Component {
 		 		})
  			})
  		
-
- 		
-
- 		
  	})
 
 
@@ -201,8 +197,6 @@ class ClassPageBase extends React.Component {
 
  }
  
-
-
  saveChangesHandler(event){
  	const {key} = this.props.match.params;
  	const {clazz} = this.state;
@@ -254,11 +248,10 @@ class ClassPageBase extends React.Component {
 	
 
 	return (
-		<div>
-			<div className={'container'}>
+	 <section id="clazz">
+		<div className="main">
+			<div>
 			<h4>Class Title</h4>
-		</div>
-			<div className={'container'}>
 				<TCSEditor 
 					disabled={!(!!authUser && !!authUser.roles['ADMIN'] )}
 					type='plain'
@@ -267,6 +260,7 @@ class ClassPageBase extends React.Component {
 					placeholder={'Class Title'} 
 					text={clazz.Title}/>
 			</div>
+			<div>
 			<TCSEditor 
 					disabled={!(!!authUser && !!authUser.roles['ADMIN'] )}
 					type='select'
@@ -275,10 +269,10 @@ class ClassPageBase extends React.Component {
 					onEditorSave={this.handleStatusOnSave}
 					placeholder={'Class Status'} 
 					text={clazz.Status}/>
-			<div className={'container'}>
-			<h4>Thumbnail</h4>
 		</div>
-		<div className={'container'}>
+		<div>
+		<h4>Thumbnail</h4>
+
 			<input type="file" onChange={this.handleThumbnailUpload}/>
 			{uploading && (
 				<progress value={uploadPercent} max="100"/>
@@ -288,10 +282,10 @@ class ClassPageBase extends React.Component {
 			)}
 			
 		</div>
-		<div className={'container'}>
+
+			<div>
 			<h4>Description</h4>
-		</div>
-			<div className={'container'}>
+
 				<TCSEditor 
 					disable={!(!!authUser && !!authUser.roles['ADMIN'] )}
 					type='text'
@@ -300,10 +294,9 @@ class ClassPageBase extends React.Component {
 					placeholder={'Class Description'} 
 					text={clazz.Description}/>
 			</div>
-			<div className={'container'}>
+
+			<div>
 			<h4>Schedule</h4>
-		</div>
-			<div className={'container'}>
 			<TCSEditor 
 				disabled={!(!!authUser && !!authUser.roles['ADMIN'] )}
 				type='text'
@@ -312,10 +305,8 @@ class ClassPageBase extends React.Component {
 				placeholder={'Schedule Description'} 
 				text={clazz.Schedule}/>
 			</div>
-			<div className={'container'}>
+			<div>
 			<h4>Location</h4>
-		</div>
-			<div className={'container'}>
 			<TCSEditor
 				disabled={!(!!authUser && !!authUser.roles['ADMIN'] )}
 				type='text' 
@@ -335,8 +326,9 @@ class ClassPageBase extends React.Component {
 		)}
 
 
-			<button onClick={this.deleteClassHandler}>Delete Class</button>
+			{/* <button onClick={this.deleteClassHandler}>Delete Class</button> */}
 		</div>
+		</section>
 	)
 
  	
