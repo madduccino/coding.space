@@ -4,11 +4,13 @@ import { PasswordForgetLink } from '../PasswordForget';
 import { withFirebase } from '../Firebase';
 import * as ROUTES from '../../constants/routes';
 const SignInPage = () => (
-  <div>
-    <h1>SignIn</h1>
-    <SignInForm />
-    <PasswordForgetLink />
-  </div>
+  <section id="signIn">
+    <div className="main">
+      <h1>Sign In</h1>
+      <SignInForm />
+      <PasswordForgetLink />
+    </div>
+  </section>  
 );
 const INITIAL_STATE = {
   username: '',

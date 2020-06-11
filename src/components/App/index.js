@@ -23,7 +23,7 @@ import * as ROUTES from '../../constants/routes';
 import {withAuthentication} from '../Session';
 import AuthUserContext from '../Session/context';
 import {withFirebase} from '../Firebase';
-import './index.css';
+import '../../index.scss';
 
 
 class App extends Component {
@@ -34,6 +34,7 @@ class App extends Component {
 			showMessage:false,
 			messages:null,
 			authUser:null,
+			showNav: false
 		}
 		this.setGlobalState = this.setGlobalState.bind(this);
 		
@@ -47,6 +48,7 @@ class App extends Component {
 		//console.log(this.state);
 	}
 	componentDidMount(){
+		document.body.addEventListener('click', this.handleClick);
 		this.listener = this.props.firebase.onAuthUserListener(
 			authUser=>{
 				this.setState({ authUser});
@@ -58,10 +60,19 @@ class App extends Component {
 		
 	}
 	componentWillUnmount(){
+		document.body.removeEventListener('click', this.handleClick);
 		this.listener();
 	}
 	
 	
+	handleClick = (e) => {
+		if(e.target.id=="menu" || e.target.parentElement.id=="menu") {
+		  this.setState({showNav: !this.state.showNav})
+		  console.log('what up')
+		} else {
+		  this.setState({showNav: false})
+		}
+	}
 	
 	render(){
 		const {showMessage,messages} = this.state;
@@ -69,9 +80,12 @@ class App extends Component {
 		return (
 				<AuthUserContext.Provider value={this.state.authUser}>
 					<Router>
-						<div>
-							<Route component={Navigation} />
-							<hr />
+						<div id="page-container">
+							<section id="header">
+							  <Route render={(props) => 
+							    <Navigation {...props} showNav={this.state.showNav} />}
+							  />
+							</section>
 							<Route exact path={ROUTES.LANDING} render={(props) =><LandingPage {...this.props} setGlobalState={this.setGlobalState}  />} />
 							<Route path={ROUTES.NEW_USER} render={(props)=><NewUserForm {...props} setGlobalState={this.setGlobalState}/>} />
 							<Route path={ROUTES.SIGN_IN} render={(props)=><SignInPage {...props} setGlobalState={this.setGlobalState} />} />

@@ -1,0 +1,354 @@
+@import url('https://use.typekit.net/eia0pww.css');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+
+$darkgreen: #274548;
+$lightGreen: #93a1a1;
+$darkergreen: rgb(18, 33, 34);
+$lightblue: #9FE2DD;
+$beige: #FBF6EE;
+$orange: #EDC034;
+$darkerOrange: rgb(216, 162, 0);
+$fontSize: 18px;
+$headerFont: 'futura-pt-bold',sans-serif;
+$bodyFont: 'Montserrat';
+$breakpoint-tablet: 768px;
+$breakpoint-phone: 600px;
+
+html,body,#root {
+    height: 100%;
+}
+
+body {
+  background-color: $darkgreen;
+  color: $darkgreen;
+  font-size: $fontSize;
+  font-family: $bodyFont;
+  margin: 0;
+  padding: 0;
+}
+
+h1,h2,h3,h4,h5,h6 {
+    font-family: $headerFont;
+    padding: 0;
+    margin: 0;
+}
+  
+
+h1 {
+    font-size: 6rem;
+    color: #fff;
+    text-shadow: rgb(53, 173, 185) 2px 1px 0px;  
+    text-align: center;
+}
+
+
+
+h2 {
+    font-size: 1.2rem;
+}
+  
+a {
+    text-decoration: none;
+    outline: none;
+    color: $darkgreen;
+}
+  
+button {
+    font-size: $fontSize;
+    font-family: $bodyFont;
+}
+
+#page-container {
+    display: grid;
+    height: 100%;
+    grid-template-rows: 70px 1fr;
+    position: relative;
+}
+
+#header {
+  background-color: #fff;
+
+
+    // z-index:1;
+    // display: flex;
+    // grid-column: span 12;
+    // flex-flow: row wrap;
+    // align-items: center;
+    // padding: 0 1rem;
+    // justify-content: center;
+    width: 100%;
+    .nav {
+      display: grid;
+      line-height: 70px;
+      grid-template-columns: repeat(10,1fr);
+      grid-template-rows: 1fr 1fr;      
+      width:100%;
+      height: 70px;
+      .signIn {
+        grid-row: 1;
+        grid-column: 9/10;
+        width: 100%;
+        background-color: $orange;
+        display: flex;
+        flex-flow: row wrap;
+        justify-content: center;
+        color: #fff;
+        align-content: center;
+        text-align: center;
+        border-radius: 8px;
+        transition: background-color 2s;
+        height: 50px;
+        margin-top: 10px;
+        &:hover {
+           background-color: $darkerOrange;
+        }
+      }
+      a {
+        &:not(.logo) {
+          text-align:right;
+        }
+        &.logo {
+          grid-column: 2 / 6; 
+          img {
+            width: 50px;
+            height: 50px;
+            vertical-align:middle;
+          }
+        }
+      }
+      .hideMenu {
+        display:none;
+      }   
+      .showMenu {
+        display: flex;
+        text-align: left;
+        flex-flow: column wrap;
+        line-height: 1rem;
+        background-color: $lightblue;
+        grid-column: 8/10;
+        grid-row: 2;
+        z-index: 99;
+        button {
+          border-radius: 0;
+          padding: 5px 20px;
+          width: 100%;
+          background-color: $darkerOrange;
+        }
+        a {
+          padding: 5px;
+          text-align:left;
+        }
+        a:hover {
+          background-color: $orange;
+        }
+      }
+      .dropdown {
+        cursor: pointer;
+        text-align: right;
+        grid-column: 9 / 10; 
+        height: 70px;
+        z-index: 99;
+        #menu {
+          display: flex;
+          flex-flow: row wrap;
+          justify-content: flex-end;
+          div {
+          }
+          img {
+            width: 40px;
+            height: 40px;
+            object-fit: contain;
+            margin-right: 10px;
+            margin-top: 15px;
+          }
+        }
+  
+      }
+    }
+}
+
+ button, .button {  
+  color: $beige;
+  border-radius: 4px;
+  display: flex;
+  align-content: center;
+  justify-content: center;
+  flex-flow: column wrap;
+  margin: 0 auto;
+  border: 0;
+  outline: 0;
+  width: 100px;
+  grid-column: 10;
+  cursor: pointer;
+  transition: background-color 2s;
+  &:hover {
+    background-color: $darkerOrange;
+  }
+  // &:active {
+  //  background-color: $darkerOrange;
+  // }
+ }
+
+ button {
+  background-color: $orange;
+
+ }
+.main {
+    // grid-column: span 12;
+    text-align: center;
+    display: flex;
+    flex-flow: column wrap;
+    align-content: center;
+    justify-content: center;
+    color: #fff;
+    height: 100%;
+    a {
+      font-weight: bold;
+      color: $orange;
+    }
+    form {
+     position: relative;
+     display: flex;
+     flex-flow: column wrap;
+     align-content: center;
+     margin: 0 auto;
+    input, button {
+      display: block;
+      margin: 10px auto;
+      padding: 10px 0;
+      font-family: $bodyFont;
+      width: 250px;
+      border: 0;
+      outline: 0;
+    }
+    input {
+      padding-left: 10px;
+    }
+    input[type=checkbox] {
+      display: inline-block;
+      width: auto;
+      margin: 20px 10px;
+    }
+    label {
+      color: $orange;
+      display: inline-block;
+   }  
+    button {
+      width: 260px;
+    }
+    p {
+      color: $lightblue;
+    }
+   }
+}
+  
+#landing {
+  background:url('/images/bg.png') no-repeat;
+  background-size: cover;
+  background-position: 10% 50%;
+  #rocket {
+    top: 50px;
+  }
+  &.main {
+    justify-content: center;
+  }
+}
+
+#signin {
+  .roles {
+    display:flex;
+    flex-flow: row wrap;
+  }
+}
+
+#classes, #profile, #clazz {
+  img {
+    width: 200px;
+    height: 200px;
+  }
+}
+
+
+section:not(#landing):not(#signIn):not(#signup):not(#classes):not(#forget) {
+ .main {
+ color: #fff;
+ display: grid;
+ grid-template-columns: 1fr 1fr;
+
+ padding: 2rem;
+ grid-gap: 2rem;
+ .container {
+ }
+ .quill {
+   color: $darkgreen;
+ }
+}
+}
+
+#classes {
+  a {
+    color: $orange;
+    margin: 20px auto;
+    display: block;
+    text-align: center;
+  }
+ .main {
+   color: #fff;
+   display: grid;
+   grid-template-columns: 1fr 1fr 1fr;
+   img {
+     width: 150px;
+     height: 150px;
+   }
+ }
+}
+
+#signin, #forget, #signup, #signIn {
+  background:url('/images/bg2.png') no-repeat;
+  background-size: cover;
+  background-position: 10% 20%;
+  #rocket {
+    top: -40px;
+    z-index:0;
+  }
+}
+
+#rocket {
+  background:url('/images/roket.png') no-repeat;
+  position: absolute;
+  z-index:99;
+  width: 100px;
+  height: 190px;
+  background-size: contain;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+}
+
+#new-project { 
+  .container {
+    > div {
+      position: relative;
+      margin-bottom: 40px;
+    .project-image {
+      width: 100px;
+      display: block;
+      margin: 20px auto;
+    }  
+    h4 {
+      margin-bottom: 10px;
+    }
+    .delete, .add {
+      background-color: $orange;
+      width: 20px;
+      height: 20px;
+      position: absolute;
+      top: 0;
+      right: 0;
+    }
+    .add {
+      right: 40px;
+    }
+  }
+ }
+}  

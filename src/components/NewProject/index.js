@@ -1,6 +1,4 @@
 import React from 'react';
-import './index.css';
-import './styles.css';
 import LazyImage from '../LazyImage';
 import { AuthUserContext } from '../Session';
 import {withAuthentication} from '../Session';
@@ -226,33 +224,30 @@ class NewProjectPageBase extends React.Component {
      	if(step.Description === '')
      		isInvalid = true;
 	return (
-		<div>
-			<h1>New Untutorial</h1>
+	  <section id="new-project">
+		<h1>New Untutorial</h1>
+		<div className="main">
 			<div className={'container'}>
-				<TCSEditor 
+				<div>
+					<TCSEditor 
 					disabled={false}
 					type='plain'
 					onEditorChange={this.handlePTitleOnChange} 
 					onEditorSave={this.handlePTitleOnSave}
 					placeholder={'Untutorial Title'} 
 					text={untutorial.Title}/>
-			</div>
-			<div className={'container'}>
-				<h4>Thumbnail</h4>
-			</div>
-			<div className={'container'}>
+			    </div>
+			   <div>
+			    <h4>Thumbnail</h4>
 				<input type="file" onChange={this.handleThumbnailUpload}/>
 				{this.state.uploading && (
 					<progress value={this.state.uploadPercent} max="100"/>
 				)}
 				{!!untutorial.ThumbnailFilename && untutorial.ThumbnailFilename!=='' && !this.state.uploading &&(
 					<LazyImage file={this.props.firebase.storage.ref('/public/' + untutorial.Author + '/' + untutorial.ThumbnailFilename)}/>
-				)}
-				
+				)}				
 			</div>
-			
-			
-			<div className={'container'}>
+			<div>
 				<TCSEditor 
 					disabled={false}
 					type='text'
@@ -261,21 +256,18 @@ class NewProjectPageBase extends React.Component {
 					placeholder={'Project Description'} 
 					text={untutorial.Description}/>
 			</div>
-			<div className={'container'}>
- 					<h4>Level</h4>
- 				</div>
-			<div className={'container'}>
+			<div>
+			    <h4>Level</h4>
 				<TCSEditor 
 					disabled={false}
 					type='select'
 					selectOptions={[1,2,3,4,5,6]}
 					onEditorChange={this.handleLevelOnChange} 
 					onEditorSave={this.handleLevelOnSave}
-					text={untutorial.Level}/>
-				
+					text={untutorial.Level}/>	
 			</div>
-			<h3>Steps</h3>
-			<div className={'container'}>
+			<div>
+			    <h3>Steps</h3>
 				{Object.keys(untutorial.steps).map(step => (
 					<div>
 					<TCSEditor 
@@ -290,9 +282,11 @@ class NewProjectPageBase extends React.Component {
 				</div>
 			))}
 			</div>
-			<button onClick={this.addStepHandler}>Add Step</button>
-			<button disabled={isInvalid} onClick={this.saveChangesHandler}>Save Changes</button>
+			</div>
+			{/* <button onClick={this.addStepHandler}>Add Step</button>
+			<button disabled={isInvalid} onClick={this.saveChangesHandler}>Save Changes</button> */}
 		</div>
+	  </section>	
 	)
 
 

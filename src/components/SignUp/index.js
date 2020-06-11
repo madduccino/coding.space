@@ -98,7 +98,8 @@ class NewUserFormBase extends Component {
       name === '';
 
     return (
-
+    <section id="signup">
+       <div className="main"> 
       <form onSubmit={this.onSubmit}>
 	      <input
 	          name="name"
@@ -148,6 +149,8 @@ class NewUserFormBase extends Component {
 	        <button disabled={isInvalid ? true : null} type="submit">Sign Up</button>
 	        {error && <p>{error.message}</p>}
       </form>
+       </div>
+      </section> 
     );
   }
 }

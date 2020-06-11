@@ -18,60 +18,39 @@ class Navigation extends React.Component{
     const {pathname} = this.props.location;
     if(authUser)
       return (
-        <div>
-          <ul>
-            <li>
-              <Link to={ROUTES.LANDING}>Home</Link>
-            </li>
-            <li>
-              <Link to={ROUTES.NEW_PROJECT}>Create a Project!</Link>
-            </li>
-            <li>
-              <Link to={'/profile/' + authUser.uid}>Account</Link>
-            </li>
-
-            
-            
-            <li>
-              <Link to={ROUTES.CLASSES}>Classes</Link>
-            </li>
-
-             
+        <div className="nav">
+            <Link className="logo" to={ROUTES.LANDING}><img src="/images/logo.png" /></Link>
+            <Link to={ROUTES.NEW_PROJECT}>New Project</Link>
+            <Link to={ROUTES.CLASSES}>My Classes</Link>             
             {!!authUser.roles[ROLES.ADMIN] && (
-              
-              <li>
-                <Link to={ROUTES.NEW_USER}>New User</Link>
-              </li>
-            )}
-            <li>
-              <SignOutButton />
-            </li>
-          </ul>
-          {!!authUser&&!!authUser.ThumbnailFilename &&(
-            <LazyImage file={this.props.firebase.storage.ref('/public/' + authUser.key + '/' + authUser.ThumbnailFilename)}/>
-          )}
-          
+                <Link to={ROUTES.NEW_USER}>New User</Link>            
+              )}
+            {!!authUser&&(
+            <div className="dropdown">
+              <div id="menu" className={this.props.showNav ? "highlight" : null}> 
+                {!!authUser.ThumbnailFilename &&(
+                <LazyImage file={this.props.firebase.storage.ref('/public/' + authUser.key + '/' + authUser.ThumbnailFilename)}/>)}
+                <div>{authUser.Username}</div>
+            </div>
+          </div>
+            )} 
+          <div className={this.props.showNav ? "showMenu" : "hideMenu"}> 
+            <Link to={'/profile/' + authUser.uid}>My Account</Link>
+            <SignOutButton />
+          </div>
+       
         </div>
-
+     
 
       )
     return (
 
-        <ul>
-        
-          <li>
-            <Link to={ROUTES.LANDING}>Landing</Link>
-          </li>
-          
+        <div className="nav">
+          <Link className="logo" to={ROUTES.LANDING}><img src="images/logo.png" /></Link>
           {pathname != '/signin' && (
-            <li>
-              <Link to={ROUTES.SIGN_IN}>Sign In</Link>
-            </li>
+          <Link className="signIn" to={ROUTES.SIGN_IN}>Sign In</Link>
           )}
-
-        </ul>
-
-
+        </div>
       )
   }
 }

@@ -1,5 +1,4 @@
 import React from 'react';
-import './index.css';
 
 import LazyImage from '../LazyImage';
 

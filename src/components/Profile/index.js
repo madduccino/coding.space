@@ -1,6 +1,4 @@
 import React from 'react';
-import './index.css';
-import './styles.css';
 import LazyImage from '../LazyImage';
 import { AuthUserContext } from '../Session';
 import {withAuthentication} from '../Session';
@@ -236,7 +234,8 @@ class ProfilePageBase extends React.Component {
  	//can edit
 
 	return (
-		<div>
+	 <section id="profile">	
+		<div className="main">
 			<div className={'container'}>
 				<div classname={'block'}>Display Name</div>
 				<TCSEditor 
@@ -335,6 +334,7 @@ class ProfilePageBase extends React.Component {
 			
 			
 		</div>
+	 </section>	
 	)
 
  	

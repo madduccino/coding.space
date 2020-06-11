@@ -14,7 +14,7 @@ class Footer extends React.Component{
 			return (
 				<div id= "footer">
 
-					<div id="learn-col">
+					{/* <div id="learn-col">
 						<div id="start" className="info-modal" style={{marginRight: 7 + 'px'}}>Where do I start?</div>
 						<a href="./about.html"><div className="info-modal" id="about">About this site</div></a>
 					</div>
@@ -36,7 +36,7 @@ class Footer extends React.Component{
 					
 					<div className="gong">
 						<a href="/gong"><img src="/gong_assets/gong.png" alt="Virtual Gong"/></a>
-					</div>
+					</div> */}
 				</div>	
 			)
 		return null;
