@@ -561,7 +561,7 @@ class UntutorialPageBase extends React.Component {
 
 
 	return (
-		<section id="launchpad">
+		<section id="untutorial">
 		<div className="main">
 			<h2>
 				<TCSEditor 

@@ -257,24 +257,55 @@ button {
   }
 }
 
-
-section:not(#landing):not(#signIn):not(#signup):not(#classes):not(#forget):not(#launchpad) {
+#profile {
+  .field {
+    text-align: center;
+    margin: 10px auto;
+    display: block;
+  }
  .main {
  color: #fff;
  display: grid;
- grid-template-columns: 1fr 1fr;
-
+ grid-template-columns: 1fr 2fr;
  padding: 2rem;
  grid-gap: 2rem;
- .container {
+ .profile-panel {
+  color: $darkgreen;
+  background-color:$lightblue;
+
+  .content {
+    padding: 2rem;
+    border-radius: 4px;
+    .container {
+      margin-bottom: 20px;
+    }
+  }
  }
+ .avatar {
+   img {
+   width: 100px;
+   height: 100px;
+   }
+   input {
+     display: block;
+   }
+   margin-bottom: 40px;
+ }
+ .untutorials {
+  grid-column: span 2;
+  
+ > div {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+}
  .quill {
    color: $darkgreen;
  }
 }
 }
 
-#classes, #profile, #clazz {
+#classes, #profile, #clazz, #launchpad {
   a {
     color: $orange;
     margin: 20px auto;
@@ -285,6 +316,7 @@ section:not(#landing):not(#signIn):not(#signup):not(#classes):not(#forget):not(#
    color: #fff;
    display: grid;
    grid-template-columns: 1fr 1fr 1fr;
+   padding: 2rem;
    img {
      width: 274px;
      height: 226px;

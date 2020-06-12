@@ -235,9 +235,35 @@ class ProfilePageBase extends React.Component {
 
 	return (
 	 <section id="profile">	
+	
+	<TCSEditor 
+					disabled={!(!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===profile.key))}
+					classname={'block'}
+					type='select'
+					selectOptions={['DRAFT','APPROVED']}
+					onEditorChange={this.handleStatusOnChange}
+					onEditorSave={this.handleStatusOnSave}
+					text={profile.Status}/>
 		<div className="main">
-			<div className={'container'}>
-				<div classname={'block'}>Display Name</div>
+			
+		  <div className="profile-panel">
+			<div className="content">
+			  <div className="avatar">
+				{this.state.uploading && (
+					<progress value={this.state.uploadPercent} max="100"/>
+				)}
+				{!!profile.ThumbnailFilename && !this.state.uploading &&(
+					<LazyImage file={this.props.firebase.storage.ref('/public/' + profile.key + '/' + profile.ThumbnailFilename)}/>
+				)}	
+				<input type="file" onChange={this.handleThumbnailUpload}/>
+				</div>	
+				{!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===profile.key) && (
+				<div className={'container'}>
+					<h4>Username</h4>
+					<div className={'block'}>{profile.Username}</div>
+				</div>	
+			)}
+			<h4>Display Name</h4>
 				<TCSEditor 
 					disabled={!(!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===profile.key))}
 					className={'block'} 
@@ -246,34 +272,14 @@ class ProfilePageBase extends React.Component {
 					onEditorSave={this.handleDisplayNameOnSave} 
 					placeholder={'Display Name'} 
 					text={profile.DisplayName}/>
-			</div>
 			{!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===profile.key) && (
 				<div className={'container'}>
-					<div classname={'block'}>Username</div>
-					<div className={'block'}>{profile.Username}</div>
-				</div>
-				
-			)}
-			{!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===profile.key) && (
-				<div className={'container'}>
-					<div classname={'block'}>Email</div>
+					<h4>Email</h4>
 					<div className={'block'}>{profile.Email}</div>
 				</div>
 				
-			)}
-			
-			<div className={'container'}>
-				<TCSEditor 
-					disabled={!(!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===profile.key))}
-					classname={'block'}
-					type='select'
-					selectOptions={['DRAFT','APPROVED']}
-					onEditorChange={this.handleStatusOnChange}
-					onEditorSave={this.handleStatusOnSave}
-					text={profile.Status}/>
-			</div>
-			<div className={'container'}>
-				<div classname={'block'}>About Me</div>
+			)}	
+				<h4>About Me</h4>
 				<TCSEditor 
 					disabled={!(!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===profile.key))}
 					className={'block'} 
@@ -282,22 +288,8 @@ class ProfilePageBase extends React.Component {
 					onEditorSave={this.handlePDescriptionOnSave}
 					placeholder={'About Me'} 
 					text={profile.About}/>
-			</div>
-			<div className={'container'}>
-			<h4>Avatar</h4>
-		</div>
-		<div className={'container'}>
-			<input type="file" onChange={this.handleThumbnailUpload}/>
-			{this.state.uploading && (
-				<progress value={this.state.uploadPercent} max="100"/>
-			)}
-			{!!profile.ThumbnailFilename && !this.state.uploading &&(
-				<LazyImage file={this.props.firebase.storage.ref('/public/' + profile.key + '/' + profile.ThumbnailFilename)}/>
-			)}
 			
-		</div>
-			<div className={'container'}>
-				<div classname={'block'}>My Age</div>
+				<h4>My Age</h4>
 				<TCSEditor 
 					disabled={!(!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===profile.key))}
 					type='text'
@@ -305,10 +297,8 @@ class ProfilePageBase extends React.Component {
 					onEditorSave={this.handleAgeOnSave}
 					placeholder={'I\'m ___ years old!'} 
 					text={profile.Age}/>
-			</div>
 			
-			<div className={'container'}>
-				<div classname={'block'}>Notes</div>
+				<h4>Notes</h4>
 				<TCSEditor 
 					disabled={!(!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===profile.key))}
 				type='text'
@@ -316,23 +306,22 @@ class ProfilePageBase extends React.Component {
 					onEditorSave={this.handleNotesOnSave}
 					placeholder={'Notes'} 
 					text={profile.Notes}/>
+				</div>
 			</div>
-
-			<div className={'container'}>
-				<div classname={'block'}>My Untutorials</div>
+		  	{/* <div classname={'block'}>My Untutorials</div> */}
+		  <div className="untutorials">
+			  <div className="content">
 				{untutorials.map(untutorial => (
-					<div id={untutorial.key} class={'wsite-image wsite-image-border-none project'}>
-					<a href={ROUTES.LAUNCHPAD + untutorial.key} >
+				  <div id={untutorial.key} class={'wsite-image wsite-image-border-none project'}>
+					  <a href={ROUTES.LAUNCHPAD + untutorial.key} >
 						<LazyImage file={this.props.firebase.storage.ref('/public/' + untutorial.Author + '/' + untutorial.ThumbnailFilename)}/>
-					</a>
-					<div>
-						<h4 dangerouslySetInnerHTML={{__html:untutorial.Title}}/>
-					</div>
+					  </a>
+					  <h4 dangerouslySetInnerHTML={{__html:untutorial.Title}}/>
+
 				</div>
 			))}
 			</div>
-			
-			
+			</div>	
 		</div>
 	 </section>	
 	)

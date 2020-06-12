@@ -51,14 +51,13 @@ class LaunchPad extends React.Component {
 		<section id="launchpad">
 			<h1>Launch Pad</h1>
 			<a target="_blank" href="http://scratch.mit.edu/create">
-			<button id="go-to-scratch" class="btn btn-success">
-					Go to Scratch
+			<button id="go-to-scratch" class="btn btn-success">Go to Scratch
 			</button>
 			</a>
 			<div className="main">	
 
-				    {loading && <div>Loading ...</div>}
-					{untutorials.filter(untutorial=>untutorial.Status === 'APPROVED').map(untutorial => (
+		    {loading && <div>Loading ...</div>}
+					{untutorials.filter(untutorial=>untutorial.Status === 'APPROVED').map(untutorial => (		
 						
 						<div id={untutorial.key} class={'wsite-image wsite-image-border-none untutorial'}>
 							<a href={ROUTES.LAUNCHPAD + '/' + untutorial.key} path={'/public/' + untutorial.Author + '/' + untutorial.ThumbnailFilename}>
