@@ -286,7 +286,7 @@ button {
  grid-gap: 2rem;
  .profile-panel {
   color: $darkgreen;
-  background-color:$lightblue;
+  background-color:$beige;
 
   .content {
     padding: 2rem;
@@ -307,7 +307,7 @@ button {
   }
  }
  .avatar {
-   img {
+   img.project-image {
    width: 100px;
    height: 100px;
    }
@@ -347,14 +347,6 @@ button {
      height: 226px;
    }
  }
-}
-
-#launchpad {
-  img {
-    width: 274px;
-    height: 226px;
-  }
-
 }
 
 #signin, #forget, #signup, #signIn {
