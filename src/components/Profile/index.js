@@ -248,7 +248,7 @@ class ProfilePageBase extends React.Component {
 	</div>
 	<div className="main">
 			
-		  <div className="profile-panel">
+		  <div className="side-panel">
 			<div className="content">
 			  <div className="avatar">
 				{this.state.uploading && (
@@ -311,7 +311,7 @@ class ProfilePageBase extends React.Component {
 				</div>
 			</div>
 		  	{/* <div classname={'block'}>My Untutorials</div> */}
-		  <div className="untutorials">
+		  <div className="main-area">
 			  <div className="content">
 				{untutorials.map(untutorial => (
 				  <div id={untutorial.key} class={'wsite-image wsite-image-border-none project'}>

@@ -251,13 +251,13 @@ button {
   }
 }
 
-#classes, #clazz, #launchpad {
+#classes, #launchpad {
   img {
     width: 100%;
   }
 }
 
-#profile {
+#profile, #clazz {
   .approve {
     text-align: center;
     margin-top: 20px;
@@ -284,7 +284,7 @@ button {
  grid-template-columns: 1fr 2fr;
  padding: 2rem;
  grid-gap: 2rem;
- .profile-panel {
+ .side-panel {
   color: $darkgreen;
   background-color:$beige;
 
@@ -316,7 +316,7 @@ button {
    }
    margin-bottom: 40px;
  }
- .untutorials {
+ .main-area {
   grid-column: span 2;
   
  > div {

@@ -249,18 +249,8 @@ class ClassPageBase extends React.Component {
 
 	return (
 	 <section id="clazz">
-		<div className="main">
-			<div>
-			<h4>Class Title</h4>
-				<TCSEditor 
-					disabled={!(!!authUser && !!authUser.roles['ADMIN'] )}
-					type='plain'
-					onEditorChange={this.handleClassTitleOnChange} 
-					onEditorSave={this.handleClassTitleOnSave}
-					placeholder={'Class Title'} 
-					text={clazz.Title}/>
-			</div>
-			<div>
+		<div className="approve"> 
+		  <div>
 			<TCSEditor 
 					disabled={!(!!authUser && !!authUser.roles['ADMIN'] )}
 					type='select'
@@ -269,19 +259,30 @@ class ClassPageBase extends React.Component {
 					onEditorSave={this.handleStatusOnSave}
 					placeholder={'Class Status'} 
 					text={clazz.Status}/>
+		  </div>
 		</div>
-		<div>
-		<h4>Thumbnail</h4>
-
-			<input type="file" onChange={this.handleThumbnailUpload}/>
-			{uploading && (
-				<progress value={uploadPercent} max="100"/>
-			)}
+		<div className="main">
+		  <div className="side-panel">
+			<div className="content">
+			<div className="avatar">
 			{!!clazz.ThumbnailFilename && !uploading &&(
-				<LazyImage file={this.props.firebase.storage.ref('/classes/' + clazz.ThumbnailFilename)}/>
-			)}
-			
-		</div>
+					<LazyImage file={this.props.firebase.storage.ref('/classes/' + clazz.ThumbnailFilename)}/>
+				)}
+				<input type="file" onChange={this.handleThumbnailUpload}/>
+				{uploading && (
+					<progress value={uploadPercent} max="100"/>
+				)}
+			</div>
+			<div>
+			  <h4>Class Title</h4>
+				<TCSEditor 
+					disabled={!(!!authUser && !!authUser.roles['ADMIN'] )}
+					type='plain'
+					onEditorChange={this.handleClassTitleOnChange} 
+					onEditorSave={this.handleClassTitleOnSave}
+					placeholder={'Class Title'} 
+					text={clazz.Title}/>
+			</div>
 
 			<div>
 			<h4>Description</h4>
@@ -315,18 +316,23 @@ class ClassPageBase extends React.Component {
 				placeholder={'Location Description'} 
 				text={clazz.Location}/>
 			</div>
+
+        </div>
+		</div>
+			{/* <button onClick={this.deleteClassHandler}>Delete Class</button> */}
+		<div className="main-area">
+		<h3>Students and Teachers</h3>
+	
 			{!!profiles && (
+
 				<div className={'container'}>
-				<h4>Students and Teachers</h4>
 				<ListBox 
 					options={listBoxOptions} 
 					onChange={this.handleMembersOnChange} 
 					selected={listBoxSelected}/>
 			</div>
 		)}
-
-
-			{/* <button onClick={this.deleteClassHandler}>Delete Class</button> */}
+		</div>
 		</div>
 		</section>
 	)
