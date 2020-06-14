@@ -61,7 +61,7 @@ class TCSEditor extends React.Component {
 				<div className={'field'}>
 
 					<div name={name} dangerouslySetInnerHTML={{__html:text}}/>
-					<button className="edit" onClick={this.handleEdit}>Edit</button>
+					<img className="edit" onClick={this.handleEdit} src="/images/edit.png"/>
 
 				</div>
 			)

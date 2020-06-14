@@ -251,17 +251,32 @@ button {
   }
 }
 
-#classes, #profile, #clazz, #launchpad {
+#classes, #clazz, #launchpad {
   img {
     width: 100%;
   }
 }
 
 #profile {
-  .field {
+  .approve {
     text-align: center;
-    margin: 10px auto;
-    display: block;
+    margin-top: 20px;
+    div {
+      color: $orange;
+      position: relative; 
+      display: inline;
+      padding-right: 20px;
+    }
+  }
+  .field {
+    img {
+      width: 25px;
+      height: auto;
+      cursor: pointer;
+      position: absolute;
+      right: 0;
+      top: 0;
+    }
   }
  .main {
  color: #fff;
@@ -276,8 +291,18 @@ button {
   .content {
     padding: 2rem;
     border-radius: 4px;
+    .field {
+      position: relative;
+      text-align: center;
+      padding: 0 30px;
+      img {
+        position: absolute;
+        right: 0;
+        top: 0;
+      }
+  }
     .container {
-      margin-bottom: 20px;
+      margin: 20px 0;
     }
   }
  }
@@ -317,7 +342,7 @@ button {
    display: grid;
    grid-template-columns: 1fr 1fr 1fr;
    padding: 2rem;
-   img {
+   img:not(.edit) {
      width: 274px;
      height: 226px;
    }
@@ -388,11 +413,12 @@ button {
     position: relative;
     margin: 0 auto;
 .field {
-
+ 
 .edit {
   position: absolute;
   right: 0;
   top: 0;
+ 
   }
 }
 }}

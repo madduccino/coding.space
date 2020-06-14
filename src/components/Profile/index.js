@@ -235,16 +235,18 @@ class ProfilePageBase extends React.Component {
 
 	return (
 	 <section id="profile">	
-	
+	<div class="approve">
+	  <div>
 	<TCSEditor 
-					disabled={!(!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===profile.key))}
-					classname={'block'}
-					type='select'
-					selectOptions={['DRAFT','APPROVED']}
-					onEditorChange={this.handleStatusOnChange}
-					onEditorSave={this.handleStatusOnSave}
-					text={profile.Status}/>
-		<div className="main">
+		disabled={!(!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===profile.key))}
+		classname={'block'}
+		type='select'
+		selectOptions={['DRAFT','APPROVED']}
+		onEditorChange={this.handleStatusOnChange}
+		onEditorSave={this.handleStatusOnSave}
+		text={profile.Status}/></div>
+	</div>
+	<div className="main">
 			
 		  <div className="profile-panel">
 			<div className="content">
