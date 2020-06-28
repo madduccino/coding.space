@@ -358,12 +358,19 @@ button {
   .content {
     background-color: $lightGreen;
     color: $darkgreen;
- 
+   padding: 20px;
     > div { 
     display: grid;
-    background-color: $beige;
     grid-template-columns: 1fr 1fr 1fr;
     margin: 0 20px;
+
+    &:nth-child(even) {
+      background-color: $beige;
+    }
+    &:nth-child(odd) {
+      background-color: #f2e5d0;
+
+    }
    h4 {
       margin-top: 20px;
     }
@@ -382,7 +389,6 @@ button {
       padding: 0;
     
       p {
-        line-height: 0;
         margin: 0;
         display: inline;
         padding: 0;
