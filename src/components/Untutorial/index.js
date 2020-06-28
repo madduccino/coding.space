@@ -524,12 +524,6 @@ class UntutorialPageBase extends React.Component {
 
  }
 
-
-
-
-
-
- 
  render(){
  	
  	const {untutorial, loading, author,project} = this.state;
@@ -562,7 +556,8 @@ class UntutorialPageBase extends React.Component {
 
 	return (
 		<section id="untutorial">
-		<div className="main">
+			
+		  <div className="main">
 			<h2>
 				<TCSEditor 
 					disabled={!(authUser && !!authUser.roles['ADMIN'])}
@@ -679,9 +674,9 @@ class UntutorialPageBase extends React.Component {
 						<div dangerouslySetInnerHTML={{__html:project.steps[step].Comments}} />
 					)}
 					{!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===untutorial.Author) && (
-						<button  
+						<img  
 							onClick={(event)=>this.deleteStepHandler(event,step)}
-							text="Delete Step">Delete Step</button>
+							src="/images/delete.png"/>
 					)}
 					
 				</div>
@@ -689,7 +684,7 @@ class UntutorialPageBase extends React.Component {
 			</div>
 			{!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===untutorial.Author) && (
 				<div className={'container'}>
-	 				<button onClick={this.addStepHandler}>Add Step</button>
+	 				<button onClick={this.addStepHandler}>+</button>
 
 	 				<button onClick={this.deleteProjectHandler}>Delete Untutorial</button>
 				</div>

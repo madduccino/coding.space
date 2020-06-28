@@ -2,12 +2,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
 
 $darkgreen: #274548;
-$lightGreen: #93a1a1;
+$lightGreen:#9FE2DD;
 $darkergreen: rgb(18, 33, 34);
 $lightblue: #9FE2DD;
 $beige: #FBF6EE;
 $orange: #EDC034;
-$darkerOrange: rgb(216, 162, 0);
+$darkerOrange: #d8a200;
 $fontSize: 18px;
 $headerFont: 'futura-pt-bold',sans-serif;
 $bodyFont: 'Montserrat';
@@ -74,6 +74,7 @@ button {
       grid-template-rows: 1fr 1fr;      
       width:100%;
       height: 70px;
+      border-bottom: 5px solid $lightGreen;
       .signIn {
         grid-row: 1;
         grid-column: 9/10;
@@ -287,7 +288,49 @@ button {
  .side-panel {
   color: $darkgreen;
   background-color:$beige;
-
+  .avatar {   
+    position: relative;
+    &:hover {
+      img {
+        opacity: 0.2;
+      }
+      label {
+      display: inline-block;
+      
+      }
+    }
+    img.project-image {
+     width: 100px;
+     height: 100px;
+     object-fit: contain;
+    }
+   
+    //  input {
+    //    position: absolute;
+    //    right:0;
+    //    top:0;
+    //    outline: 0;
+    //    border: 0;
+    //    cursor:pointer;
+    //    background-color: black;
+    //  }
+     .hidden {
+       display: none;
+     }
+     label {
+       cursor: pointer;
+       position: absolute;
+       left: 0;
+       right: 0;
+       top: 31.5px;
+       display: none;
+       width: 23px;
+       height: 19px;
+       margin: 0 auto;
+       background: url('/images/edit.png') no-repeat;
+     }
+     margin-bottom: 40px;
+   }
   .content {
     padding: 2rem;
     border-radius: 4px;
@@ -295,6 +338,10 @@ button {
       position: relative;
       text-align: center;
       padding: 0 30px;
+      h1 {
+        font-size: 2rem;
+        color: $darkgreen;
+      }
       img {
         position: absolute;
         right: 0;
@@ -306,23 +353,48 @@ button {
     }
   }
  }
- .avatar {
-   img.project-image {
-   width: 100px;
-   height: 100px;
-   }
-   input {
-     display: block;
-   }
-   margin-bottom: 40px;
- }
  .main-area {
   grid-column: span 2;
-  
- > div {
+  .content {
+    background-color: $lightGreen;
+    color: $darkgreen;
+ 
+    > div { 
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    background-color: $beige;
+    grid-template-columns: 1fr 1fr 1fr;
+    margin: 0 20px;
+   h4 {
+      margin-top: 20px;
+    }
+    &:nth-child(even) {
+     
+    }
+    &:nth-child(odd) {
+     
+      
+    }
+    h4 {
+      display: flex;
+      flex-flow: column wrap;
+      justify-content: center;
+      margin: 0;
+      padding: 0;
+    
+      p {
+        line-height: 0;
+        margin: 0;
+        display: inline;
+        padding: 0;
+      }
+    }
+    }
+    .title {
+      padding-top: 20px;
+      background-color:$lightGreen;
+    }
   }
+  
 }
  .quill {
    color: $darkgreen;
