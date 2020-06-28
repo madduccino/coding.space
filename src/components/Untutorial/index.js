@@ -50,6 +50,7 @@ class UntutorialPageBase extends React.Component {
  	this.loadProject = this.loadProject.bind(this);
  	this.handleProjectURLOnChange = this.handleProjectURLOnChange.bind(this);
  	this.validateProjectURL = this.validateProjectURL.bind(this);
+ 	this.studentApprove = this.studentApprove.bind(this);
 
 
  	
@@ -99,6 +100,8 @@ class UntutorialPageBase extends React.Component {
  	const {key} = this.props.match.params;
  	if(!!authUser){
  		if(!!authUser.progress[key]){
+ 			if(!authUser.progress[key].steps)
+ 				authUser.progress[key].steps=[];
  			this.setState({project:authUser.progress[key]})
  		}
  		else
@@ -270,7 +273,7 @@ class UntutorialPageBase extends React.Component {
   validateStatus(){
  	const {untutorial,errors} = this.state;
  	const {Status} = untutorial;
- 	if(!["DRAFT","APPROVED"].includes(Status)){
+ 	if(!["DRAFT","FINAL"].includes(Status)){
 		errors['Status'] = 'STATUS.<span class="red">ISINVALID</span>'; 		
  	}
  	else{
@@ -517,10 +520,15 @@ class UntutorialPageBase extends React.Component {
  	console.log("Save Changes");
  }
 
- teacherApprove(step){
 
- }
  studentApprove(step){
+ 	const {project} = this.state;
+ 	var pCopy = project;
+ 	if(!project.steps[step])
+ 		project.steps[step]={Status:{},Comments:''};
+ 	project.steps[step].Status['STUDENT_COMPLETE'] = 'STUDENT_COMPLETE';
+ 	
+ 	this.setState({project:project},this.saveProjectHandler);
 
  }
 
@@ -539,10 +547,13 @@ class UntutorialPageBase extends React.Component {
  		stepCount = Object.keys(untutorial.steps).length;
  	var completeSteps = 0;
  	if(!!project && !!projectSteps) 
- 		completeSteps = projectSteps.filter(step=>!!project.steps[step].Status['STUDENT_COMPLETE']);
- 	var nextStep = 1;
- 	if(!!completeSteps && !!completeSteps)
- 		nextStep = Math.min(Object.keys(untutorial.steps).filter(step=>completeSteps.includes(step)));
+ 		completeSteps = projectSteps.filter(step=>!!project.steps[step].Status && !!project.steps[step].Status['STUDENT_COMPLETE']);
+ 	var nextStep = 0;
+ 	if(!!completeSteps)
+ 		nextStep = Math.min(...Object.keys(untutorial.steps).filter(step=>!completeSteps.includes(step)))+1;
+ 	console.log();
+ 	if(nextStep > stepCount)
+ 		nextStep = 0;
  	
  	
  	
@@ -573,7 +584,7 @@ class UntutorialPageBase extends React.Component {
 				<TCSEditor 
 					disabled={!(authUser && (!!authUser.roles['ADMIN'] || authUser.uid===untutorial.Author))}
 					type={'select'}
-					selectOptions={['DRAFT','APPROVED']}
+					selectOptions={['DRAFT','FINAL']}
 					name={'status'}
 					onEditorChange={this.handleStatusOnChange}
 					onEditorSave={this.handleStatusOnSave}
@@ -606,10 +617,10 @@ class UntutorialPageBase extends React.Component {
 					onClick={this.loadProject}
 					>Work On This Project!</button>
 			)}
-			{!!project && project.Status === 'APPROVED' &&(
+			{!!project && project.Status == 'FINAL' &&(
 			<h2>GREAT JOB! You finished this project!'</h2>
 		)}
-		{!!project && !!project.Status != 'APPROVED' && !!nextStep && (
+		{!!project && project.Status != 'FINAL' && !!nextStep && (
 			<h3>Keep it Up! You're on Step {nextStep}!</h3>
 		)}
 		{!!project && !!project.URL && (
@@ -621,7 +632,7 @@ class UntutorialPageBase extends React.Component {
 		{!!project&& (
 			<div className={'container'}>
 				<TCSEditor
-					disabled={!!project.Status['APPROVED']}
+					disabled={!!project.Status['FINAL']}
 					type={"plain"} 
 					onEditorChange={this.handleProjectURLOnChange} 
 					onEditorSave={this.saveProjectHandler} 
@@ -648,22 +659,25 @@ class UntutorialPageBase extends React.Component {
 			<div className={'container'}>
 				{Object.keys(untutorial.steps).map(step => (
 					<div>
-						{!!project && (
+						{!!project && !!project.steps && (!project.steps[step] || !project.steps[step].Status['STUDENT_COMPLETE']) && (
 							<div>
-								<button
-									disabled={!!project.steps && !!project.steps[step] && !!project.steps[step]['STUDENT_COMPLETE'] && !project.steps[step]['TEACHER_COMPLETE']} 
-									className={!!project.steps && !!project.steps[step] && !project.steps[step]['TEACHER_COMPLETE'] ? 'teacher-complete' : ''} 
-									onClick={this.teacherApprove}
-									text="Teacher Checkup">Teacher Checkup</button>
+
 								<button 
-									disabled={!!project.steps && !!project.steps[step] && !project.steps[step]['STUDENT_COMPLETE'] && !project.steps[step]['TEACHER_COMPLETE']} 
-									className={!!project.steps && !!project.steps[step] && !project.steps[step]['STUDENT_COMPLETE'] ? 'student-complete' : ''} 
-									onClick={this.studentApprove}
+									disabled={false} 
+									onClick={()=>this.studentApprove(step)}
 									text="I Finished!">I Finished!</button>
 							</div>
 					
 						)}
+						{!!project && !!project.steps && !!project.steps[step] && !!project.steps[step].Status['TEACHER_COMPLETE'] && (
+							<div>
+
+								<img src='/public/images/star-yellow.png'/>
+							</div>
+					
+						)}
 						<TCSEditor
+						className={!!project && !!project.steps && !!project.steps[step] && !project.steps[step].Status['STUDENT_COMPLETE'] ? 'student-complete' : ''}
 						disabled={!(!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===untutorial.Author))}
 						type={'text'}
 						onEditorChange={(value)=>this.handleStepOnChange(value,step)} 

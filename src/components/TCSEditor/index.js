@@ -48,17 +48,18 @@ class TCSEditor extends React.Component {
 		this.props.onEditorSave(text);
 	}
 	render(){
+		const {className} = this.props;
 		const {text,type,selectOptions,disabled,placeholder,name, editing} = this.state;
 		if(!!disabled){
 			return (
-				<div className={'field'} >
+				<div className={'field ' + className} >
 					<div name={name} dangerouslySetInnerHTML={{__html:text}}/>
 				</div>
 			)
 		}
 		else if(!disabled && !editing){
 			return (
-				<div className={'field'}>
+				<div className={'field ' + className}>
 
 					<div name={name} dangerouslySetInnerHTML={{__html:text}}/>
 					<img className="edit" onClick={this.handleEdit} src="/images/edit.png"/>
@@ -68,7 +69,7 @@ class TCSEditor extends React.Component {
 		}
 		else if(!disabled && editing && type==='select' && !!selectOptions){
 			return (
-				<div className={'field'} >
+				<div className={'field ' + className} >
 
 					<select value={text} onChange={this.handleSelectChange} onBlur={this.handleSelectChange}>
  						{selectOptions.map(option=>(
@@ -82,7 +83,7 @@ class TCSEditor extends React.Component {
 		}
 		else if(!disabled && editing && type==='plain'){
 			return (
-				<div className={'field'} >
+				<div className={'field ' + className} >
 
 					<input type="text" value={text} onChange={this.handleTextChange} onBlur={this.handleTextChange}/>
  						
@@ -92,7 +93,7 @@ class TCSEditor extends React.Component {
 			)
 		}
 		return (
-			<div className={'field'}>
+			<div className={'field ' + className}>
 
 				<ReactQuill theme={'snow'} placeholder={this.props.placeholder} value={this.state.text} onChange={this.handleChange}/>
 				<button onClick={this.handleSave}>Save</button>

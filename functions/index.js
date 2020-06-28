@@ -62,3 +62,28 @@ exports.createUser = functions.https.onRequest(async(req,res)=>{
 	return 0;
 	
 })
+
+
+
+exports.progressStatus = functions.database.ref('/db/Profiles/{uid}/progress/{pid}/steps')
+	.onUpdate((change)=> {
+		var before = change.before.val();
+		var after = change.after;
+		var afterRef = after.ref;
+		var afterVal = after.val();
+		console.log(afterVal);
+		var studentApproval = true;
+		var teacherApproval = true;
+		for(var i = 0; i < afterVal.length; i++){
+			if(!afterVal[i].Status['STUDENT_COMPLETE'])
+				studentApproval = false;
+			if(!afterVal[i].Status['TEACHER_COMPLETE'])
+				teacherApproval = false;
+		}
+		console.log(afterRef.parent);
+		afterRef.parent.update({Status:
+			studentApproval && teacherApproval ? "FINAL" :
+			studentApproval ? 'PENDING' :
+			'DRAFT'
+		});
+	})

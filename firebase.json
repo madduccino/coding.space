@@ -3,7 +3,6 @@
     "rules": "database.rules.json"
   },
   "functions": {
-
     "source": "functions"
   },
   "hosting": {
@@ -26,5 +25,16 @@
   },
   "storage": {
     "rules": "storage.rules"
+  },
+  "emulators": {
+    "functions": {
+      "port": 5001
+    },
+    "database": {
+      "port": 9000
+    },
+    "hosting": {
+      "port": 5000
+    }
   }
 }
