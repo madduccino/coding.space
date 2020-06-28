@@ -75,45 +75,46 @@ class LaunchPad extends React.Component {
 		<section id="launchpad">
 			<h1>Launch Pad</h1>
 			<a target="_blank" href="http://scratch.mit.edu/create">
-			<button id="go-to-scratch" class="btn btn-success">Go to Scratch
-			</button>
+				<button id="go-to-scratch" class="btn btn-success">Go to Scratch
+				</button>
 			</a>
 			<div className="main">	
 
 
-			   <h2>Level 1</h2>
-			   <div class="level">
-				    {loading && <div>Loading ...</div>}
-				    {selectedFilters.length != Object.keys(FILTER).length && (
-						<select onChange={this.categoryFilterOnChange}>
-					    	{Object.keys(FILTER).filter(f=>!selectedFilters.includes(f)).map(filterName=><option value={filterName}>{filterName}</option>)}
-					    </select>
-				    )}
-				    
-				    <input type='text' onChange={this.textFilterOnChange} placeholder="Search..."/>
-				    {selectedFilters.length > 0 && (
-				    	<div className={'container'}>
-				    		{selectedFilters.map(f=>(
-				    			<a onClick={()=>this.filterOnClick(f)}>{f}</a>
-				    		))}
-				    	</div>
-				    )}
-					{untutorials.filter(untutorial=>
-						untutorial.Status === 'APPROVED' && 
-						(filter.length === 0 || filter.filter(f=>Object.keys(untutorial.Categories).includes(f)).length > 0) &&
-						untutorial.Title.toLowerCase().includes(textFilter.toLowerCase())).map(untutorial => (
 
-						
-						<div id={untutorial.key} class={'wsite-image wsite-image-border-none untutorial'}>
-							<a href={ROUTES.LAUNCHPAD + '/' + untutorial.key} path={'/public/' + untutorial.Author + '/' + untutorial.ThumbnailFilename}>
-								<LazyImage key={untutorial.key} file={this.props.firebase.storage.ref('/public/' + untutorial.Author + '/' + untutorial.ThumbnailFilename)}/>
-							</a>
-							<div>
-								<h4 dangerouslySetInnerHTML={{__html:untutorial.Title}}/>
-							</div>
+
+			    {loading && <div>Loading ...</div>}
+			    {selectedFilters.length != Object.keys(FILTER).length && (
+					<select onChange={this.categoryFilterOnChange}>
+				    	{Object.keys(FILTER).filter(f=>!selectedFilters.includes(f)).map(filterName=><option value={filterName}>{filterName}</option>)}
+				    </select>
+			    )}
+			    
+			    <input type='text' onChange={this.textFilterOnChange} placeholder="Search..."/>
+			    {selectedFilters.length > 0 && (
+			    	<div className={'container'}>
+			    		{selectedFilters.map(f=>(
+			    			<a onClick={()=>this.filterOnClick(f)}>{f}</a>
+			    		))}
+			    	</div>
+			    )}
+				{untutorials.filter(untutorial=>
+					untutorial.Status === 'APPROVED' && 
+					(filter.length === 0 || filter.filter(f=>Object.keys(untutorial.Categories).includes(f)).length > 0) &&
+					untutorial.Title.toLowerCase().includes(textFilter.toLowerCase())).map(untutorial => (
+
+					
+					<div id={untutorial.key} class={'wsite-image wsite-image-border-none untutorial'}>
+						<a href={ROUTES.LAUNCHPAD + '/' + untutorial.key} path={'/public/' + untutorial.Author + '/' + untutorial.ThumbnailFilename}>
+							<LazyImage key={untutorial.key} file={this.props.firebase.storage.ref('/public/' + untutorial.Author + '/' + untutorial.ThumbnailFilename)}/>
+						</a>
+						<div>
+							<h4 dangerouslySetInnerHTML={{__html:untutorial.Title}}/>
 						</div>
-					))}
-			   </div>
+					</div>
+				))}
+			</div>
+
 
     </section>
 	)

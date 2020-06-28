@@ -63,26 +63,27 @@ exports.createUser = functions.https.onRequest(async(req,res)=>{
 	
 })
 
-exports.approveProgress = functions.https.onRequest(async(req,res)=>{
 
-	headers(req,res);
 
-	if(req.method !== "POST"){
-		res.status(400).send("Unsupported");
-		return 0;
-	}
-
-	const username = req.body.username;
-	const pass = req.body.password;
-	const userid = req.body.userid;
-	const untut = req.body.untut;
-	const step = req.body.step;
-	const comments = req.body.comments;
-
-	admin.auth().signInWithEmailAndPassword('students+'+username+'@thecodingspace.com',password)
-		.then(()=>{
-			functions.database.ref('db/Profiles/'+userid+'/progress/'+untut+'/'+step)
-				.set({Comments:comments,Status:{...STATUS,TEACHER_COMPLETE:"TEACHER_COMPLETE"}})
-		})
-		.catch()
-})
+exports.progressStatus = functions.database.ref('/db/Profiles/{uid}/progress/{pid}/steps')
+	.onUpdate((change)=> {
+		var before = change.before.val();
+		var after = change.after;
+		var afterRef = after.ref;
+		var afterVal = after.val();
+		console.log(afterVal);
+		var studentApproval = true;
+		var teacherApproval = true;
+		for(var i = 0; i < afterVal.length; i++){
+			if(!afterVal[i].Status['STUDENT_COMPLETE'])
+				studentApproval = false;
+			if(!afterVal[i].Status['TEACHER_COMPLETE'])
+				teacherApproval = false;
+		}
+		console.log(afterRef.parent);
+		afterRef.parent.update({Status:
+			studentApproval && teacherApproval ? "FINAL" :
+			studentApproval ? 'PENDING' :
+			'DRAFT'
+		});
+	})
