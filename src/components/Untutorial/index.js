@@ -519,7 +519,9 @@ class UntutorialPageBase extends React.Component {
  	console.log("Save Changes");
  }
 
- teacherApprove(step){
+ teacherApprove(username, password, untutorial, step){
+
+ 	//var credential = firebaseauth().EmailPasswordAuthProvider.credential('students+'+username+'@thecodingspace.com',password);
 
  }
  studentApprove(step){

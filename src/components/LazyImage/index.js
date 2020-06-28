@@ -14,7 +14,7 @@ class LazyImage extends React.Component{
     			})
 
 		this.state = {
-			loaded: false,
+			loading: true,
 			url: '/images/loading.gif',	
 			guid: guid
 
@@ -24,14 +24,21 @@ class LazyImage extends React.Component{
 		
 		this.props.file.getDownloadURL()
 			.then(url=>{
-				document.querySelector('#' + this.state.guid).src = url;
+				this.setState({loading:false,url:url}) ;
 			})
 	}
+	componentWillReceiveProps(){
+		/*this.props.file.getDownloadURL()
+			.then(url=>{
+				this.state({loading:false,url:url}) ;
+			})*/
+	}
+
 
 	render(){
-		const {guid} = this.state;
+		const {guid,url} = this.state;
 		return (
-			<img className={'project-image'} id={guid} src={'/images/loading.gif'}/>
+			<img key={guid} className={'project-image'} id={guid} src={url}/>
 		)
 	}
 }

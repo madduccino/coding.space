@@ -62,3 +62,27 @@ exports.createUser = functions.https.onRequest(async(req,res)=>{
 	return 0;
 	
 })
+
+exports.approveProgress = functions.https.onRequest(async(req,res)=>{
+
+	headers(req,res);
+
+	if(req.method !== "POST"){
+		res.status(400).send("Unsupported");
+		return 0;
+	}
+
+	const username = req.body.username;
+	const pass = req.body.password;
+	const userid = req.body.userid;
+	const untut = req.body.untut;
+	const step = req.body.step;
+	const comments = req.body.comments;
+
+	admin.auth().signInWithEmailAndPassword('students+'+username+'@thecodingspace.com',password)
+		.then(()=>{
+			functions.database.ref('db/Profiles/'+userid+'/progress/'+untut+'/'+step)
+				.set({Comments:comments,Status:{...STATUS,TEACHER_COMPLETE:"TEACHER_COMPLETE"}})
+		})
+		.catch()
+})
