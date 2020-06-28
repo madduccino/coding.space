@@ -1,6 +1,4 @@
 import React from 'react';
-import './index.css';
-import './styles.css';
 import LazyImage from '../LazyImage';
 import { AuthUserContext } from '../Session';
 import {withAuthentication} from '../Session';
@@ -565,8 +563,9 @@ class UntutorialPageBase extends React.Component {
 
 
 	return (
-		<div>
-			<h1 >
+		<section id="untutorial">
+		<div className="main">
+			<h2>
 				<TCSEditor 
 					disabled={!(authUser && !!authUser.roles['ADMIN'])}
 					type={'text'}
@@ -575,7 +574,7 @@ class UntutorialPageBase extends React.Component {
 					onEditorSave={this.handleTitleOnSave}
 					placeholder={'Step Description'} 
 					text={untutorial.Title} />
-			</h1>
+			</h2>
 			<div className={'container'}>
 				<h3>by: <a href={'/profile/' + untutorial.Author} dangerouslySetInnerHTML={{__html:author.DisplayName}}/></h3>
 				<TCSEditor 
@@ -589,10 +588,8 @@ class UntutorialPageBase extends React.Component {
 					text={untutorial.Status} />
 
 			</div>
-			<div className={'container'}>
-			<h4>Thumbnail</h4>
-		</div>
 		<div className={'container'}>
+		    <h4>Thumbnail</h4>
 			<input type="file" onChange={this.handleThumbnailUpload}/>
 			{this.state.uploading && (
 				<progress value={this.state.uploadPercent} max="100"/>
@@ -701,6 +698,7 @@ class UntutorialPageBase extends React.Component {
 			)}
 			
 		</div>
+		</section>
 	)
 
 }

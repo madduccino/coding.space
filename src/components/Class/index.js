@@ -1,6 +1,4 @@
 import React from 'react';
-import './index.css';
-import './styles.css';
 import LazyImage from '../LazyImage';
 import { AuthUserContext } from '../Session';
 import {withAuthentication} from '../Session';
@@ -76,10 +74,6 @@ class ClassPageBase extends React.Component {
 		 			loading:false,
 		 		})
  			})
- 		
-
- 		
-
  		
  	})
 
@@ -203,8 +197,6 @@ class ClassPageBase extends React.Component {
 
  }
  
-
-
  saveChangesHandler(event){
  	const {key} = this.props.match.params;
  	const {clazz} = this.state;
@@ -256,19 +248,9 @@ class ClassPageBase extends React.Component {
 	
 
 	return (
-		<div>
-			<div className={'container'}>
-			<h4>Class Title</h4>
-		</div>
-			<div className={'container'}>
-				<TCSEditor 
-					disabled={!(!!authUser && !!authUser.roles['ADMIN'] )}
-					type='plain'
-					onEditorChange={this.handleClassTitleOnChange} 
-					onEditorSave={this.handleClassTitleOnSave}
-					placeholder={'Class Title'} 
-					text={clazz.Title}/>
-			</div>
+	 <section id="clazz">
+		<div className="approve"> 
+		  <div>
 			<TCSEditor 
 					disabled={!(!!authUser && !!authUser.roles['ADMIN'] )}
 					type='select'
@@ -277,23 +259,34 @@ class ClassPageBase extends React.Component {
 					onEditorSave={this.handleStatusOnSave}
 					placeholder={'Class Status'} 
 					text={clazz.Status}/>
-			<div className={'container'}>
-			<h4>Thumbnail</h4>
+		  </div>
 		</div>
-		<div className={'container'}>
-			<input type="file" onChange={this.handleThumbnailUpload}/>
-			{uploading && (
-				<progress value={uploadPercent} max="100"/>
-			)}
+		<div className="main">
+		  <div className="side-panel">
+			<div className="content">
+			<div className="avatar">
 			{!!clazz.ThumbnailFilename && !uploading &&(
-				<LazyImage file={this.props.firebase.storage.ref('/classes/' + clazz.ThumbnailFilename)}/>
-			)}
-			
-		</div>
-		<div className={'container'}>
+					<LazyImage file={this.props.firebase.storage.ref('/classes/' + clazz.ThumbnailFilename)}/>
+				)}
+				<input type="file" onChange={this.handleThumbnailUpload}/>
+				{uploading && (
+					<progress value={uploadPercent} max="100"/>
+				)}
+			</div>
+			<div>
+			  <h4>Class Title</h4>
+				<TCSEditor 
+					disabled={!(!!authUser && !!authUser.roles['ADMIN'] )}
+					type='plain'
+					onEditorChange={this.handleClassTitleOnChange} 
+					onEditorSave={this.handleClassTitleOnSave}
+					placeholder={'Class Title'} 
+					text={clazz.Title}/>
+			</div>
+
+			<div>
 			<h4>Description</h4>
-		</div>
-			<div className={'container'}>
+
 				<TCSEditor 
 					disable={!(!!authUser && !!authUser.roles['ADMIN'] )}
 					type='text'
@@ -302,10 +295,9 @@ class ClassPageBase extends React.Component {
 					placeholder={'Class Description'} 
 					text={clazz.Description}/>
 			</div>
-			<div className={'container'}>
+
+			<div>
 			<h4>Schedule</h4>
-		</div>
-			<div className={'container'}>
 			<TCSEditor 
 				disabled={!(!!authUser && !!authUser.roles['ADMIN'] )}
 				type='text'
@@ -314,10 +306,8 @@ class ClassPageBase extends React.Component {
 				placeholder={'Schedule Description'} 
 				text={clazz.Schedule}/>
 			</div>
-			<div className={'container'}>
+			<div>
 			<h4>Location</h4>
-		</div>
-			<div className={'container'}>
 			<TCSEditor
 				disabled={!(!!authUser && !!authUser.roles['ADMIN'] )}
 				type='text' 
@@ -326,19 +316,25 @@ class ClassPageBase extends React.Component {
 				placeholder={'Location Description'} 
 				text={clazz.Location}/>
 			</div>
+
+        </div>
+		</div>
+			{/* <button onClick={this.deleteClassHandler}>Delete Class</button> */}
+		<div className="main-area">
+		<h3>Students and Teachers</h3>
+	
 			{!!profiles && (
+
 				<div className={'container'}>
-				<h4>Students and Teachers</h4>
 				<ListBox 
 					options={listBoxOptions} 
 					onChange={this.handleMembersOnChange} 
 					selected={listBoxSelected}/>
 			</div>
 		)}
-
-
-			<button onClick={this.deleteClassHandler}>Delete Class</button>
 		</div>
+		</div>
+		</section>
 	)
 
  	

@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactQuill from 'react-quill';
-import './quill.snow.css';
+import './quill.snow.scss';
 
 
 
@@ -61,7 +61,7 @@ class TCSEditor extends React.Component {
 				<div className={'field'}>
 
 					<div name={name} dangerouslySetInnerHTML={{__html:text}}/>
-					<button onClick={this.handleEdit}>Edit</button>
+					<img className="edit" onClick={this.handleEdit} src="/images/edit.png"/>
 
 				</div>
 			)

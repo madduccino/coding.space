@@ -1,5 +1,4 @@
 import React from 'react';
-import './index.css';
 
 import LazyImage from '../LazyImage';
 
@@ -73,17 +72,14 @@ class LaunchPad extends React.Component {
 
  	//console.log("hiya")
  	return (
-		<div>
-			<div style={{padding:30 + 'px',marginLeft:0 + 'px',marginRight:0 + 'px',textAlign:'center'}}>
-			   <h1>Launch Pad</h1>
-			</div>
+		<section id="launchpad">
+			<h1>Launch Pad</h1>
 			<a target="_blank" href="http://scratch.mit.edu/create">
-				<button id="go-to-scratch" class="btn btn-success">
-					Go to Scratch
-				</button>
+			<button id="go-to-scratch" class="btn btn-success">Go to Scratch
+			</button>
 			</a>
-			
-			<div id="level1" class="level-container">
+			<div className="main">	
+
 
 			   <h2>Level 1</h2>
 			   <div class="level">
@@ -106,6 +102,7 @@ class LaunchPad extends React.Component {
 						untutorial.Status === 'APPROVED' && 
 						(filter.length === 0 || filter.filter(f=>Object.keys(untutorial.Categories).includes(f)).length > 0) &&
 						untutorial.Title.toLowerCase().includes(textFilter.toLowerCase())).map(untutorial => (
+
 						
 						<div id={untutorial.key} class={'wsite-image wsite-image-border-none untutorial'}>
 							<a href={ROUTES.LAUNCHPAD + '/' + untutorial.key} path={'/public/' + untutorial.Author + '/' + untutorial.ThumbnailFilename}>
@@ -117,10 +114,8 @@ class LaunchPad extends React.Component {
 						</div>
 					))}
 			   </div>
-			</div>
 
-		</div>
-
+    </section>
 	)
 }
 }

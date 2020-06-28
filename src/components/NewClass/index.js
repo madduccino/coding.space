@@ -1,6 +1,4 @@
 import React from 'react';
-import './index.css';
-import './styles.css';
 import LazyImage from '../LazyImage';
 import { AuthUserContext } from '../Session';
 import {withAuthorization} from '../Session';
