@@ -568,8 +568,9 @@ class UntutorialPageBase extends React.Component {
 	return (
 		<section id="untutorial">
 			
-		  <div className="main">
-			<h2>
+	<div className="main">
+		<div className="container">
+				<h2>
 				<TCSEditor 
 					disabled={!(authUser && !!authUser.roles['ADMIN'])}
 					type={'text'}
@@ -578,9 +579,11 @@ class UntutorialPageBase extends React.Component {
 					onEditorSave={this.handleTitleOnSave}
 					placeholder={'Step Description'} 
 					text={untutorial.Title} />
-			</h2>
-			<div className={'container'}>
-				<h3>by: <a href={'/profile/' + untutorial.Author} dangerouslySetInnerHTML={{__html:author.DisplayName}}/></h3>
+			  </h2>
+			  <h3>by: <a href={'/profile/' + untutorial.Author} dangerouslySetInnerHTML={{__html:author.DisplayName}}/></h3>
+			</div>
+		{/* <div className={'container'}>
+		
 				<TCSEditor 
 					disabled={!(authUser && (!!authUser.roles['ADMIN'] || authUser.uid===untutorial.Author))}
 					type={'select'}
@@ -591,8 +594,8 @@ class UntutorialPageBase extends React.Component {
 					placeholder={'Status'} 
 					text={untutorial.Status} />
 
-			</div>
-		<div className={'container'}>
+			</div> */}
+		 <div className={'container'}>
 		    <h4>Thumbnail</h4>
 			<input type="file" onChange={this.handleThumbnailUpload}/>
 			{this.state.uploading && (
@@ -601,7 +604,7 @@ class UntutorialPageBase extends React.Component {
 			{!!untutorial.ThumbnailFilename && !this.state.uploading &&(
 				<LazyImage file={this.props.firebase.storage.ref('/public/' + untutorial.Author + '/' + untutorial.ThumbnailFilename)}/>
 			)}
-			
+
 		</div>
 			<div className={'container'}>
 				<TCSEditor 
@@ -612,6 +615,7 @@ class UntutorialPageBase extends React.Component {
 				placeholder={'Untutorial Description'} 
 				text={untutorial.Description}/>
 			</div>
+		<div className="workOnProject">
 			{!!authUser && !project && (
 				<button
 					onClick={this.loadProject}
@@ -629,6 +633,8 @@ class UntutorialPageBase extends React.Component {
 				<a href={project.URL}>{project.URL}</a>
 			</div>
 		)}
+		</div>
+	
 		{!!project&& (
 			<div className={'container'}>
 				<TCSEditor

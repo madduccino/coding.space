@@ -21,11 +21,6 @@ class ProfilePageBase extends React.Component {
  		uploading:false,
  		uploadPercent:0,
  		dirty:false,
-
-
-
-
-
  	}
  	this.handleNotesOnChange = this.handleNotesOnChange.bind(this);
  	this.handleNotesOnSave = this.handleNotesOnSave.bind(this);
@@ -324,7 +319,7 @@ class ProfilePageBase extends React.Component {
 					  {/* <a href={ROUTES.LAUNCHPAD + untutorial.key} >
 						<LazyImage file={this.props.firebase.storage.ref('/public/' + untutorial.Author + '/' + untutorial.ThumbnailFilename)}/>
 					  </a> */}
-					  <a href={ROUTES.LAUNCHPAD + untutorial.key}><h4 dangerouslySetInnerHTML={{__html:untutorial.Title}}/></a>
+					  <a href={ROUTES.LAUNCHPAD + '/'+  untutorial.key}><h4 dangerouslySetInnerHTML={{__html:untutorial.Title}}/></a>
 					  <h4>Published</h4>
 					  <h4>View</h4>
 				</div>

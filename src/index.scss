@@ -32,14 +32,21 @@ h1,h2,h3,h4,h5,h6 {
     padding: 0;
     margin: 0;
 }
-  
+ 
 
 h1 {
     font-size: 6rem;
     color: #fff;
     text-shadow: rgb(53, 173, 185) 2px 1px 0px;  
     text-align: center;
+   
 }
+
+#landing h1 {
+  margin-top: -5rem;
+  margin-bottom: 0.5rem;
+}
+
 
 
 h2 {
@@ -159,7 +166,7 @@ button {
 }
 
  button, .button {  
-  color: $beige;
+  color: $beige !important;
   border-radius: 4px;
   display: flex;
   align-content: center;
@@ -169,9 +176,14 @@ button {
   border: 0;
   outline: 0;
   width: 100px;
+  padding: 10px;
   grid-column: 10;
+  background-color: $orange;
   cursor: pointer;
   transition: background-color 2s;
+  a {
+    color: #fff;
+  }
   &:hover {
     background-color: $darkerOrange;
   }
@@ -179,6 +191,7 @@ button {
   //  background-color: $darkerOrange;
   // }
  }
+
 
  button {
   background-color: $orange;
@@ -256,6 +269,11 @@ button {
   img {
     width: 100%;
   }
+}
+
+.launch {
+  background-color: $orange;
+  color: #fff;
 }
 
 #profile, #clazz {
@@ -427,6 +445,36 @@ button {
  }
 }
 
+#untutorial {
+  .main {
+    margin-top: 20px;
+ 
+    .container {
+      max-width: 400px;
+      position: relative;
+      margin: 10px auto;
+    h2 {
+      font-size: 3rem;
+    }
+      .field {
+        position: relative;
+    
+      img {
+        position: absolute;
+        top: 0;
+        right: -60px;
+        cursor: pointer;
+      }
+      .workOnProject {
+        grid-row-start: 2;
+      }
+    
+    }
+    
+  }
+  }
+}
+
 #signin, #forget, #signup, #signIn {
   background:url('/images/bg2.png') no-repeat;
   background-size: cover;
@@ -478,6 +526,22 @@ button {
 }  
 
 #launchpad {
+  .main {
+    align-content: start;
+  }
+  .filter {
+   display:flex;
+   flex-flow: row wrap;
+   justify-content: center;
+  }
+  .filter-categories {
+    text-align: center;
+    a {
+      display: inline-block;
+      margin-right: 20px;
+      cursor: pointer;
+    }
+  }
   .container {
     width: 50%;
     position: relative;
@@ -488,7 +552,6 @@ button {
   position: absolute;
   right: 0;
   top: 0;
- 
   }
-}
+ }
 }}
