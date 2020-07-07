@@ -2,12 +2,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
 
 $darkgreen: #274548;
-$lightGreen: #93a1a1;
+$lightGreen:#9FE2DD;
 $darkergreen: rgb(18, 33, 34);
 $lightblue: #9FE2DD;
 $beige: #FBF6EE;
 $orange: #EDC034;
-$darkerOrange: rgb(216, 162, 0);
+$darkerOrange: #d8a200;
 $fontSize: 18px;
 $headerFont: 'futura-pt-bold',sans-serif;
 $bodyFont: 'Montserrat';
@@ -32,14 +32,21 @@ h1,h2,h3,h4,h5,h6 {
     padding: 0;
     margin: 0;
 }
-  
+ 
 
 h1 {
     font-size: 6rem;
     color: #fff;
     text-shadow: rgb(53, 173, 185) 2px 1px 0px;  
     text-align: center;
+   
 }
+
+#landing h1 {
+  margin-top: -5rem;
+  margin-bottom: 0.5rem;
+}
+
 
 
 h2 {
@@ -74,6 +81,7 @@ button {
       grid-template-rows: 1fr 1fr;      
       width:100%;
       height: 70px;
+      border-bottom: 5px solid $lightGreen;
       .signIn {
         grid-row: 1;
         grid-column: 9/10;
@@ -158,7 +166,7 @@ button {
 }
 
  button, .button {  
-  color: $beige;
+  color: $beige !important;
   border-radius: 4px;
   display: flex;
   align-content: center;
@@ -168,9 +176,14 @@ button {
   border: 0;
   outline: 0;
   width: 100px;
+  padding: 10px;
   grid-column: 10;
+  background-color: $orange;
   cursor: pointer;
   transition: background-color 2s;
+  a {
+    color: #fff;
+  }
   &:hover {
     background-color: $darkerOrange;
   }
@@ -178,6 +191,7 @@ button {
   //  background-color: $darkerOrange;
   // }
  }
+
 
  button {
   background-color: $orange;
@@ -257,6 +271,11 @@ button {
   }
 }
 
+.launch {
+  background-color: $orange;
+  color: #fff;
+}
+
 #profile, #clazz {
   .approve {
     text-align: center;
@@ -287,7 +306,49 @@ button {
  .side-panel {
   color: $darkgreen;
   background-color:$beige;
-
+  .avatar {   
+    position: relative;
+    &:hover {
+      img {
+        opacity: 0.2;
+      }
+      label {
+      display: inline-block;
+      
+      }
+    }
+    img.project-image {
+     width: 100px;
+     height: 100px;
+     object-fit: contain;
+    }
+   
+    //  input {
+    //    position: absolute;
+    //    right:0;
+    //    top:0;
+    //    outline: 0;
+    //    border: 0;
+    //    cursor:pointer;
+    //    background-color: black;
+    //  }
+     .hidden {
+       display: none;
+     }
+     label {
+       cursor: pointer;
+       position: absolute;
+       left: 0;
+       right: 0;
+       top: 31.5px;
+       display: none;
+       width: 23px;
+       height: 19px;
+       margin: 0 auto;
+       background: url('/images/edit.png') no-repeat;
+     }
+     margin-bottom: 40px;
+   }
   .content {
     padding: 2rem;
     border-radius: 4px;
@@ -295,6 +356,10 @@ button {
       position: relative;
       text-align: center;
       padding: 0 30px;
+      h1 {
+        font-size: 2rem;
+        color: $darkgreen;
+      }
       img {
         position: absolute;
         right: 0;
@@ -306,23 +371,54 @@ button {
     }
   }
  }
- .avatar {
-   img.project-image {
-   width: 100px;
-   height: 100px;
-   }
-   input {
-     display: block;
-   }
-   margin-bottom: 40px;
- }
  .main-area {
   grid-column: span 2;
-  
- > div {
+  .content {
+    background-color: $lightGreen;
+    color: $darkgreen;
+   padding: 20px;
+    > div { 
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr;
+    margin: 0 20px;
+
+    &:nth-child(even) {
+      background-color: $beige;
+    }
+    &:nth-child(odd) {
+      background-color: #f2e5d0;
+
+    }
+   h4 {
+      margin-top: 20px;
+    }
+    &:nth-child(even) {
+     
+    }
+    &:nth-child(odd) {
+     
+      
+    }
+    h4 {
+      display: flex;
+      flex-flow: column wrap;
+      justify-content: center;
+      margin: 0;
+      padding: 0;
+    
+      p {
+        margin: 0;
+        display: inline;
+        padding: 0;
+      }
+    }
+    }
+    .title {
+      padding-top: 20px;
+      background-color:$lightGreen;
+    }
   }
+  
 }
  .quill {
    color: $darkgreen;
@@ -347,6 +443,36 @@ button {
      height: 226px;
    }
  }
+}
+
+#untutorial {
+  .main {
+    margin-top: 20px;
+ 
+    .container {
+      max-width: 400px;
+      position: relative;
+      margin: 10px auto;
+    h2 {
+      font-size: 3rem;
+    }
+      .field {
+        position: relative;
+    
+      img {
+        position: absolute;
+        top: 0;
+        right: -60px;
+        cursor: pointer;
+      }
+      .workOnProject {
+        grid-row-start: 2;
+      }
+    
+    }
+    
+  }
+  }
 }
 
 #signin, #forget, #signup, #signIn {
@@ -400,6 +526,22 @@ button {
 }  
 
 #launchpad {
+  .main {
+    align-content: start;
+  }
+  .filter {
+   display:flex;
+   flex-flow: row wrap;
+   justify-content: center;
+  }
+  .filter-categories {
+    text-align: center;
+    a {
+      display: inline-block;
+      margin-right: 20px;
+      cursor: pointer;
+    }
+  }
   .container {
     width: 50%;
     position: relative;
@@ -410,7 +552,6 @@ button {
   position: absolute;
   right: 0;
   top: 0;
- 
   }
-}
+ }
 }}

@@ -74,15 +74,11 @@ class LaunchPad extends React.Component {
  	return (
 		<section id="launchpad">
 			<h1>Launch Pad</h1>
-			<a target="_blank" href="http://scratch.mit.edu/create">
+			{/* <a target="_blank" href="http://scratch.mit.edu/create">
 				<button id="go-to-scratch" class="btn btn-success">Go to Scratch
 				</button>
-			</a>
-			<div className="main">	
-
-
-
-
+			</a> */}
+			<div className="filter">
 			    {loading && <div>Loading ...</div>}
 			    {selectedFilters.length != Object.keys(FILTER).length && (
 					<select onChange={this.categoryFilterOnChange}>
@@ -91,20 +87,24 @@ class LaunchPad extends React.Component {
 			    )}
 			    
 			    <input type='text' onChange={this.textFilterOnChange} placeholder="Search..."/>
+				</div>	
+
 			    {selectedFilters.length > 0 && (
-			    	<div className={'container'}>
+			    	<div className="filter-categories">
 			    		{selectedFilters.map(f=>(
 			    			<a onClick={()=>this.filterOnClick(f)}>{f}</a>
 			    		))}
 			    	</div>
-			    )}
+			    )}	
+			<div className="main">	
+
 				{untutorials.filter(untutorial=>
 					untutorial.Status === 'APPROVED' && 
 					(filter.length === 0 || filter.filter(f=>Object.keys(untutorial.Categories).includes(f)).length > 0) &&
 					untutorial.Title.toLowerCase().includes(textFilter.toLowerCase())).map(untutorial => (
 
 					
-					<div id={untutorial.key} class={'wsite-image wsite-image-border-none untutorial'}>
+					<div id={untutorial.key}>
 						<a href={ROUTES.LAUNCHPAD + '/' + untutorial.key} path={'/public/' + untutorial.Author + '/' + untutorial.ThumbnailFilename}>
 							<LazyImage key={untutorial.key} file={this.props.firebase.storage.ref('/public/' + untutorial.Author + '/' + untutorial.ThumbnailFilename)}/>
 						</a>

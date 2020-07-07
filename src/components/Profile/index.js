@@ -21,11 +21,6 @@ class ProfilePageBase extends React.Component {
  		uploading:false,
  		uploadPercent:0,
  		dirty:false,
-
-
-
-
-
  	}
  	this.handleNotesOnChange = this.handleNotesOnChange.bind(this);
  	this.handleNotesOnSave = this.handleNotesOnSave.bind(this);
@@ -257,7 +252,8 @@ class ProfilePageBase extends React.Component {
 				{!!profile.ThumbnailFilename && !this.state.uploading &&(
 					<LazyImage file={this.props.firebase.storage.ref('/public/' + profile.key + '/' + profile.ThumbnailFilename)}/>
 				)}	
-				<input type="file" onChange={this.handleThumbnailUpload}/>
+				<input className="hidden" id="files" type="file" onChange={this.handleThumbnailUpload}/>
+                <label for="files"></label>
 				</div>	
 				{!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===profile.key) && (
 				<div className={'container'}>
@@ -313,14 +309,21 @@ class ProfilePageBase extends React.Component {
 		  	{/* <div classname={'block'}>My Untutorials</div> */}
 		  <div className="main-area">
 			  <div className="content">
+			   <div className="title">
+				   <h4>Project</h4>
+			   <h4>Status</h4>
+			   <h4>View</h4>
+			   </div>
 				{untutorials.map(untutorial => (
-				  <div id={untutorial.key} class={'wsite-image wsite-image-border-none project'}>
-					  <a href={ROUTES.LAUNCHPAD + untutorial.key} >
+				  <div id={untutorial.key}>
+					  {/* <a href={ROUTES.LAUNCHPAD + untutorial.key} >
 						<LazyImage file={this.props.firebase.storage.ref('/public/' + untutorial.Author + '/' + untutorial.ThumbnailFilename)}/>
-					  </a>
-					  <h4 dangerouslySetInnerHTML={{__html:untutorial.Title}}/>
-
+					  </a> */}
+					  <a href={ROUTES.LAUNCHPAD + '/'+  untutorial.key}><h4 dangerouslySetInnerHTML={{__html:untutorial.Title}}/></a>
+					  <h4>Published</h4>
+					  <h4>View</h4>
 				</div>
+			
 			))}
 			</div>
 			</div>	

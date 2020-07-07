@@ -18,10 +18,10 @@ class Landing extends React.Component {
 
  	return (
 	<section id="landing">
-	 <div id="rocket"></div>
-	 
+	 <div id="rocket"></div>	 
 	  <div className="main">
-        <h1>My Coding Space</h1>
+		  <h1>My Coding Space</h1>
+		  <Link className="button" to={ROUTES.LAUNCHPAD}>Launch</Link>
 	  </div>
 	</section>
 	)
