@@ -250,7 +250,7 @@ createResource(){
 	 	})
  		.then(()=>{
  			console.log("Successfully Created");
- 			window.location = ROUTES.RESOURCES + key;
+ 			window.location = ROUTES.RESOURCE_HOME + '/' + key;
  			/*this.props.setGlobalState({
  				messages:[{
 
