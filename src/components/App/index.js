@@ -16,6 +16,7 @@ import UntutorialPage from '../Untutorial';
 import ProfilePage from '../Profile';
 import ClassPage from '../Class';
 import NewProjectPage from '../NewProject';
+import ResourcePage from '../Resources';
 import NewClassPage from '../NewClass';
 import LaunchPad from '../LaunchPad';
 import MessageOverlay from '../MessageOverlay';
@@ -94,6 +95,8 @@ class App extends Component {
 							<Route path={ROUTES.ACCOUNT} render={(props)=><AccountPage {...props} setGlobalState={this.setGlobalState} />} />
 							<Route path={ROUTES.ADMIN} render={(props)=><AdminPage {...props} setGlobalState={this.setGlobalState} />} />
 							<Route exact path={ROUTES.LAUNCHPAD} render={(props)=><LaunchPad {...props} setGlobalState={this.setGlobalState} />} />
+							<Route exact path={ROUTES.RESOURCE_HOME} render={(props)=><ResourcePage {...props} default={'GqrsER3FnGgSZwyTYgkkDdyyty92'} setGlobalState={this.setGlobalState} />} />
+							<Route path={ROUTES.RESOURCES} render={(props)=><ResourcePage {...props} default={'GqrsER3FnGgSZwyTYgkkDdyyty92'} setGlobalState={this.setGlobalState} />} />
 							<Route path={ROUTES.UNTUTORIAL} render={(props)=><UntutorialPage {...props} setGlobalState={this.setGlobalState} />} />
 							<Route path={ROUTES.PROFILE} render={(props)=><ProfilePage {...props} setGlobalState={this.setGlobalState} />} />
 							<Route path={ROUTES.CLASS} render={(props)=><ClassPage {...props} setGlobalState={this.setGlobalState} />} />

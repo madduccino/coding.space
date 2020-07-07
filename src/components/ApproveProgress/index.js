@@ -77,7 +77,11 @@ class ApproveProgress extends Component {
 					{lines.map(message=>(
 						<tr>
 							<td className={'line-marker'}>$<span className={'orange'}>@</span>{user.Username}::></td>
-							<td className={'line ' + (message.type ? 'type' : '')} dangerouslySetInnerHTML={{__html:message.html}}/>
+							<td className={'line ' + (message.type ? 'type' : '')} dangerouslySetInnerHTML={{__html:message.html}}>
+								{!!message.field && (
+									<input type='text' onKeyDown='window.parent.submitUsername'/>
+								)}
+							</td>
 						</tr>
 					))}
 				</table>

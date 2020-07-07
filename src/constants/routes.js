@@ -11,3 +11,5 @@ export const UNTUTORIAL = '/launchpad/:key';
 export const PROFILE = '/profile/:key';
 export const NEW_PROJECT = '/new_project'
 export const NEW_CLASS = '/new_class'
+export const RESOURCES = '/resources/:key'
+export const RESOURCE_HOME = '/resources'

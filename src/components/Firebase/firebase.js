@@ -80,6 +80,10 @@ class Firebase {
   class = cid => this.db.ref('db/Classes/' + cid);
 
 
+  resources = () => this.db.ref('db/Resources' );
+  resource = rid => this.db.ref('db/Resources/' + rid);
+
+
   //levels = () => this.db.ref('db/Projects/**/Level');
 }
 export default Firebase;
