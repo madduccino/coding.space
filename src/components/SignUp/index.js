@@ -130,22 +130,22 @@ class NewUserFormBase extends Component {
 	          type="password"
 	          placeholder="Confirm Password"
 	        />
+          <div className="labels">
           <label>
-            Admin:
             <input
               type="checkbox"
               name="isAdmin"
-
               onChange={this.onCheckboxChange}/>
+              Admin
           </label>
           <label>
-            Teacher:
             <input
               type="checkbox"
               name="isTeacher"
-              
               onChange={this.onCheckboxChange}/>
+              Teacher
           </label>
+          </div>
 	        <button disabled={isInvalid ? true : null} type="submit">Sign Up</button>
 	        {error && <p>{error.message}</p>}
       </form>

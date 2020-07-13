@@ -498,6 +498,13 @@
     }
   }
 
+  #signup {
+    labels {
+      display: flex;
+      flex-flow: row wrap;    
+    }
+  } 
+
   #rocket {
     background:url('/images/roket.png') no-repeat;
     position: absolute;

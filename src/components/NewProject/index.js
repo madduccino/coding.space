@@ -289,7 +289,7 @@ class NewProjectPageBase extends React.Component {
 						addStepHandler={this.addStepHandler}
 						stepCount={stepCount}
 						step={step}
-						type='steparoo'
+						type='steparoo'	
 						deleteSteppedy={(event,step)=>this.deleteStepHandler(event,step)}
 						/>
 				</div>
