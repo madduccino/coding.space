@@ -566,9 +566,9 @@ class UntutorialPageBase extends React.Component {
 
 
 	return (
-		<section id="untutorial">
-			
-	<div className="main">
+	<section id="untutorial">
+		<div className="main">
+		<div className="side-panel">		
 		<div className="container">
 				<h2>
 				<TCSEditor 
@@ -662,6 +662,8 @@ class UntutorialPageBase extends React.Component {
 
 			
 		</div>
+		</div>
+        <div className="main-area">
 			<div className={'container'}>
 				{Object.keys(untutorial.steps).map(step => (
 					<div>
@@ -694,9 +696,7 @@ class UntutorialPageBase extends React.Component {
 						<div dangerouslySetInnerHTML={{__html:project.steps[step].Comments}} />
 					)}
 					{!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===untutorial.Author) && (
-						<img  
-							onClick={(event)=>this.deleteStepHandler(event,step)}
-							src="/images/delete.png"/>
+						<img onClick={(event)=>this.deleteStepHandler(event,step)} src="/images/delete.png"/>
 					)}
 					
 				</div>
@@ -710,6 +710,7 @@ class UntutorialPageBase extends React.Component {
 				</div>
 			)}
 			
+		</div>
 		</div>
 		</section>
 	)

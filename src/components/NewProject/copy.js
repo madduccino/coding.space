@@ -35,9 +35,7 @@ class NewProjectPageBase extends React.Component {
  			}
 
  		},
- 		valid:false,
-
-
+ 		valid:false
 
  	}
  	//this.handleStatusOnChange = this.handleStatusOnChange.bind(this);
@@ -52,8 +50,8 @@ class NewProjectPageBase extends React.Component {
  	this.handleStepOnSave = this.handleStepOnSave.bind(this);
  	this.addStepHandler = this.addStepHandler.bind(this);
  	this.deleteStepHandler = this.deleteStepHandler.bind(this);
- 	this.saveChangesHandler = this.saveChangesHandler.bind(this);
- 	
+	this.saveChangesHandler = this.saveChangesHandler.bind(this);
+	this.handleDropdown = this.handleDropdown.bind(this); 
  	//this.onChange = editorState => this.setState({editorState});
  	//console.log("hiya");
 
@@ -205,9 +203,13 @@ class NewProjectPageBase extends React.Component {
  	console.log("Save Changes");
  }
 
+handleDropdown() {
+
+}
+
  render(){
  	
- 	const {untutorial, loading} = this.state;
+ 	const {untutorial, loading, dropdown} = this.state;
  	const {Title,Description,Level, steps} = untutorial;
  	const {authUser} = this.props;
  	const stepCount = Object.keys(untutorial.steps).length;
@@ -271,13 +273,10 @@ class NewProjectPageBase extends React.Component {
 					onEditorChange={this.handleLevelOnChange} 
 					onEditorSave={this.handleLevelOnSave}
 					text={untutorial.Level}/>	
-			 </div>
-            </div>
-           </div>
+			</div>
+</div></div>
 			<div className="main-area">
-					<h1>New Untutorial
-				    <button onClick={this.handleSave}>Save</button>
-					</h1>
+			    <h3>Steps</h3>
 				{Object.keys(untutorial.steps).map(step => (
 					<div className="step">
 					<TCSEditor 
@@ -286,14 +285,19 @@ class NewProjectPageBase extends React.Component {
 						onEditorSave={this.handleStepOnSave}
 						placeholder={'Step Description'} 
 						text={untutorial.steps[step].Description}
+						type='steparoo'
 						addStepHandler={this.addStepHandler}
 						stepCount={stepCount}
-						step={step}
-						type='steparoo'
-						deleteSteppedy={(event,step)=>this.deleteStepHandler(event,step)}
+						deleteStepHandler={(event,step)=>this.deleteStepHandler(event,step)}
 						/>
+					{/* {stepCount > 1 && (
+						
+					)} */}
+				
+
 				</div>
 			))}
+			<button disabled={isInvalid} onClick={this.saveChangesHandler}>Save Changes</button>
 			</div>
 			</div>
 			

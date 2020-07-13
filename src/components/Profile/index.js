@@ -241,8 +241,7 @@ class ProfilePageBase extends React.Component {
 		onEditorSave={this.handleStatusOnSave}
 		text={profile.Status}/></div>
 	</div>
-	<div className="main">
-			
+	<div className="main">		
 		  <div className="side-panel">
 			<div className="content">
 			  <div className="avatar">
@@ -310,7 +309,7 @@ class ProfilePageBase extends React.Component {
 		  <div className="main-area">
 			  <div className="content">
 			   <div className="title">
-				   <h4>Project</h4>
+			   <h4>Project</h4>
 			   <h4>Status</h4>
 			   <h4>View</h4>
 			   </div>
