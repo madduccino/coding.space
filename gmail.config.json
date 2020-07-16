@@ -1,0 +1,6 @@
+{
+  "clientId": "<CLIENT_ID>",
+  "apiKey": "<API_KEY>",
+  "scope": "https://www.googleapis.com/auth/gmail.readonly",
+  "discoveryDocs": ["https://www.googleapis.com/discovery/v1/apis/gmail/v1/rest"]
+}
