@@ -25,9 +25,6 @@ class Navigation extends React.Component{
             {!!authUser.roles[ROLES.ADMIN] && (
                 <Link to={ROUTES.NEW_USER}>New User</Link>            
               )}
-            {(!!authUser.roles[ROLES.ADMIN] || !!authUser.roles[ROLES.TEACHER]) && (
-              <Link to={ROUTES.RESOURCE_HOME}>Resources</Link>
-            )}
             {!!authUser&&(
             <div className="dropdown">
               <div id="menu" className={this.props.showNav ? "highlight" : null}> 
@@ -39,6 +36,9 @@ class Navigation extends React.Component{
             )} 
           <div className={this.props.showNav ? "showMenu" : "hideMenu"}> 
             <Link to={'/profile/' + authUser.uid}>My Account</Link>
+            {(!!authUser.roles[ROLES.ADMIN] || !!authUser.roles[ROLES.TEACHER]) && (
+              <Link to={ROUTES.RESOURCE_HOME}>Resources</Link>
+            )}
             <SignOutButton />
           </div>
        

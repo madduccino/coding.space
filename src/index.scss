@@ -1,557 +1,656 @@
-@import url('https://use.typekit.net/eia0pww.css');
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+  @import url('https://use.typekit.net/eia0pww.css');
+  @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
 
-$darkgreen: #274548;
-$lightGreen:#9FE2DD;
-$darkergreen: rgb(18, 33, 34);
-$lightblue: #9FE2DD;
-$beige: #FBF6EE;
-$orange: #EDC034;
-$darkerOrange: #d8a200;
-$fontSize: 18px;
-$headerFont: 'futura-pt-bold',sans-serif;
-$bodyFont: 'Montserrat';
-$breakpoint-tablet: 768px;
-$breakpoint-phone: 600px;
+  $darkgreen: #274548;
+  $lightGreen:#9FE2DD;
+  $darkergreen: rgb(18, 33, 34);
+  $lightblue: #9FE2DD;
+  $beige: #FBF6EE;
+  $orange: #EDC034;
+  $darkerOrange: #d8a200;
+  $fontSize: 18px;
+  $headerFont: 'futura-pt-bold',sans-serif;
+  $bodyFont: 'Montserrat';
+  $breakpoint-tablet: 768px;
+  $breakpoint-phone: 600px;
 
-html,body,#root {
-    height: 100%;
-}
+  html,body,#root {
+      height: 100%;
+  }
 
-body {
-  background-color: $darkgreen;
-  color: $darkgreen;
-  font-size: $fontSize;
-  font-family: $bodyFont;
-  margin: 0;
-  padding: 0;
-}
-
-h1,h2,h3,h4,h5,h6 {
-    font-family: $headerFont;
-    padding: 0;
-    margin: 0;
-}
- 
-
-h1 {
-    font-size: 6rem;
-    color: #fff;
-    text-shadow: rgb(53, 173, 185) 2px 1px 0px;  
-    text-align: center;
-   
-}
-
-#landing h1 {
-  margin-top: -5rem;
-  margin-bottom: 0.5rem;
-}
-
-
-
-h2 {
-    font-size: 1.2rem;
-}
-  
-a {
-    text-decoration: none;
-    outline: none;
+  body {
+    background-color: $darkgreen;
     color: $darkgreen;
-}
-  
-button {
     font-size: $fontSize;
     font-family: $bodyFont;
-}
+    margin: 0;
+    padding: 0;
+  }
 
-#page-container {
-    display: grid;
-    height: 100%;
-    grid-template-rows: 70px 1fr;
-    position: relative;
-}
+  h1,h2,h3,h4,h5,h6 {
+      font-family: $headerFont;
+      padding: 0;
+      margin: 0;
+  }
+  
 
-#header {
-  background-color: #fff;
-    width: 100%;
-    .nav {
+  h1 {
+      font-size: 6rem;
+      color: #fff;
+      text-shadow: rgb(53, 173, 185) 2px 1px 0px;  
+      text-align: center;
+    
+  }
+
+  #landing h1 {
+    margin-top: -5rem;
+    margin-bottom: 0.5rem;
+  }
+
+
+
+  h2 {
+      font-size: 1.2rem;
+  }
+    
+  a {
+      text-decoration: none;
+      outline: none;
+      color: $darkgreen;
+  }
+    
+  button {
+      font-size: $fontSize;
+      font-family: $bodyFont;
+  }
+
+  #page-container {
       display: grid;
-      line-height: 70px;
-      grid-template-columns: repeat(10,1fr);
-      grid-template-rows: 1fr 1fr;      
-      width:100%;
-      height: 70px;
-      border-bottom: 5px solid $lightGreen;
-      .signIn {
-        grid-row: 1;
-        grid-column: 9/10;
-        width: 100%;
-        background-color: $orange;
-        display: flex;
-        flex-flow: row wrap;
-        justify-content: center;
-        color: #fff;
-        align-content: center;
-        text-align: center;
-        border-radius: 8px;
-        transition: background-color 2s;
-        height: 50px;
-        margin-top: 10px;
-        &:hover {
-           background-color: $darkerOrange;
-        }
-      }
-      a {
-        &:not(.logo) {
-          text-align:right;
-        }
-        &.logo {
-          grid-column: 2 / 6; 
-          img {
-            width: 50px;
-            height: 50px;
-            vertical-align:middle;
-          }
-        }
-      }
-      .hideMenu {
-        display:none;
-      }   
-      .showMenu {
-        display: flex;
-        text-align: left;
-        flex-flow: column wrap;
-        line-height: 1rem;
-        background-color: $lightblue;
-        grid-column: 8/10;
-        grid-row: 2;
-        z-index: 99;
-        button {
-          border-radius: 0;
-          padding: 5px 20px;
-          width: 100%;
-          background-color: $darkerOrange;
-        }
-        a {
-          padding: 5px;
-          text-align:left;
-        }
-        a:hover {
-          background-color: $orange;
-        }
-      }
-      .dropdown {
-        cursor: pointer;
-        text-align: right;
-        grid-column: 9 / 10; 
+      height: 100%;
+      grid-template-rows: 70px 1fr;
+      position: relative;
+  }
+
+  #header {
+    background-color: #fff;
+      width: 100%;
+      .nav {
+        display: grid;
+        line-height: 70px;
+        grid-template-columns: repeat(10,1fr);
+        grid-template-rows: 1fr 1fr;      
+        width:100%;
         height: 70px;
-        z-index: 99;
-        #menu {
+        border-bottom: 5px solid $lightGreen;
+        .signIn {
+          grid-row: 1;
+          grid-column: 9/10;
+          width: 100%;
+          background-color: $orange;
           display: flex;
           flex-flow: row wrap;
-          justify-content: flex-end;
-          div {
-          }
-          img {
-            width: 40px;
-            height: 40px;
-            object-fit: contain;
-            margin-right: 10px;
-            margin-top: 15px;
+          justify-content: center;
+          color: #fff;
+          align-content: center;
+          text-align: center;
+          border-radius: 8px;
+          transition: background-color 2s;
+          height: 50px;
+          margin-top: 10px;
+          &:hover {
+            background-color: $darkerOrange;
           }
         }
-  
+        a {
+          &:not(.logo) {
+            text-align:right;
+          }
+          &.logo {
+            grid-column: 2 / 6; 
+            img {
+              width: 50px;
+              height: 50px;
+              vertical-align:middle;
+            }
+          }
+        }
+        .hideMenu {
+          display:none;
+        }   
+        .showMenu {
+          display: flex;
+          text-align: left;
+          flex-flow: column wrap;
+          line-height: 1rem;
+          background-color: $lightblue;
+          grid-column: 8/10;
+          grid-row: 2;
+          z-index: 99;
+          button {
+            border-radius: 0;
+            padding: 5px 20px;
+            width: 100%;
+            background-color: $darkerOrange;
+          }
+          a {
+            padding: 5px;
+            text-align:left;
+          }
+          a:hover {
+            background-color: $orange;
+          }
+        }
+        .dropdown {
+          cursor: pointer;
+          text-align: right;
+          grid-column: 9 / 10; 
+          height: 70px;
+          z-index: 99;
+          #menu {
+            display: flex;
+            flex-flow: row wrap;
+            justify-content: flex-end;
+            img {
+              width: 40px;
+              height: 40px;
+              object-fit: contain;
+              margin-right: 10px;
+              margin-top: 15px;
+            }
+          }
+    
+        }
       }
-    }
-}
-
- button, .button {  
-  color: $beige !important;
-  border-radius: 4px;
-  display: flex;
-  align-content: center;
-  justify-content: center;
-  flex-flow: column wrap;
-  margin: 0 auto;
-  border: 0;
-  outline: 0;
-  width: 100px;
-  padding: 10px;
-  grid-column: 10;
-  background-color: $orange;
-  cursor: pointer;
-  transition: background-color 2s;
-  a {
-    color: #fff;
   }
-  &:hover {
-    background-color: $darkerOrange;
-  }
-  // &:active {
-  //  background-color: $darkerOrange;
-  // }
- }
 
-
- button {
-  background-color: $orange;
-
- }
-.main {
-    // grid-column: span 12;
-    text-align: center;
+  button, .button {  
+    color: $beige !important;
+    border-radius: 4px;
     display: flex;
-    flex-flow: column wrap;
     align-content: center;
     justify-content: center;
-    color: #fff;
-    height: 100%;
+    flex-flow: column wrap;
+    margin: 0 auto;
+    border: 0;
+    outline: 0;
+    width: 100px;
+    padding: 10px;
+    grid-column: 10;
+    background-color: $orange;
+    cursor: pointer;
+    transition: background-color 2s;
     a {
-      font-weight: bold;
-      color: $orange;
+      color: #fff;
     }
-    form {
-     position: relative;
-     display: flex;
-     flex-flow: column wrap;
-     align-content: center;
-     margin: 0 auto;
-    input, button {
-      display: block;
-      margin: 10px auto;
-      padding: 10px 0;
-      font-family: $bodyFont;
-      width: 250px;
-      border: 0;
-      outline: 0;
-    }
-    input {
-      padding-left: 10px;
-    }
-    input[type=checkbox] {
-      display: inline-block;
-      width: auto;
-      margin: 20px 10px;
-    }
-    label {
-      color: $orange;
-      display: inline-block;
-   }  
-    button {
-      width: 260px;
-    }
-    p {
-      color: $lightblue;
-    }
-   }
-}
-  
-#landing {
-  background:url('/images/bg.png') no-repeat;
-  background-size: cover;
-  background-position: 10% 50%;
-  #rocket {
-    top: 50px;
-  }
-  &.main {
-    justify-content: center;
-  }
-}
-
-#signin {
-  .roles {
-    display:flex;
-    flex-flow: row wrap;
-  }
-}
-
-#classes, #launchpad {
-  img {
-    width: 100%;
-  }
-}
-
-.launch {
-  background-color: $orange;
-  color: #fff;
-}
-
-#profile, #clazz {
-  .approve {
-    text-align: center;
-    margin-top: 20px;
-    div {
-      color: $orange;
-      position: relative; 
-      display: inline;
-      padding-right: 20px;
-    }
-  }
-  .field {
-    img {
-      width: 25px;
-      height: auto;
-      cursor: pointer;
-      position: absolute;
-      right: 0;
-      top: 0;
-    }
-  }
- .main {
- color: #fff;
- display: grid;
- grid-template-columns: 1fr 2fr;
- padding: 2rem;
- grid-gap: 2rem;
- .side-panel {
-  color: $darkgreen;
-  background-color:$beige;
-  .avatar {   
-    position: relative;
     &:hover {
-      img {
-        opacity: 0.2;
+      background-color: $darkerOrange;
+    }
+    // &:active {
+    //  background-color: $darkerOrange;
+    // }
+  }
+
+
+  button {
+    background-color: $orange;
+
+  }
+  .main {
+      // grid-column: span 12;
+      text-align: center;
+      display: flex;
+      flex-flow: column wrap;
+      align-content: center;
+      justify-content: center;
+      color: #fff;
+      height: 100%;
+      a {
+        font-weight: bold;
+        color: $orange;
+      }
+      form {
+      position: relative;
+      display: flex;
+      flex-flow: column wrap;
+      align-content: center;
+      margin: 0 auto;
+      input, button {
+        display: block;
+        margin: 10px auto;
+        padding: 10px 0;
+        font-family: $bodyFont;
+        width: 250px;
+        border: 0;
+        outline: 0;
+      }
+      input {
+        padding-left: 10px;
+      }
+      input[type=checkbox] {
+        display: inline-block;
+        width: auto;
+        margin: 20px 10px;
       }
       label {
-      display: inline-block;
+        color: $orange;
+        display: inline-block;
+    }  
+      button {
+        width: 260px;
+      }
+      p {
+        color: $lightblue;
+      }
+    }
+  }
+    
+  #landing {
+    background:url('/images/bg.png') no-repeat;
+    background-size: cover;
+    background-position: 10% 50%;
+    #rocket {
+      top: 50px;
+    }
+    &.main {
+      justify-content: center;
+    }
+  }
+
+  #signin {
+    .roles {
+      display:flex;
+      flex-flow: row wrap;
+    }
+  }
+
+  #classes, #launchpad {
+    img {
+      width: 100%;
+    }
+  }
+
+  .launch {
+    background-color: $orange;
+    color: #fff;
+  }
+
+  #profile, #clazz, #untutorial, #new-project {
+    .approve {
+      text-align: center;
+      margin-top: 20px;
+      div {
+        color: $orange;
+        position: relative; 
+        display: inline;
+        padding-right: 20px;
+      }
+    }
+  .main {
+  color: #fff;
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  padding: 2rem;
+  grid-gap: 2rem;
+  .side-panel {
+    color: $darkgreen;
+    background-color:$beige;
+    padding: 40px;
+    img.project-image {
+      width: 100px;
+      height: 100px;
+      object-fit: contain;
+    }
+    .avatar {   
+      position: relative;
+      &:hover {
+        img {
+          opacity: 0.2;
+        }
+        label {
+        display: inline-block;
+        
+        }
+      }
+
+    
+      //  input {
+      //    position: absolute;
+      //    right:0;
+      //    top:0;
+      //    outline: 0;
+      //    border: 0;
+      //    cursor:pointer;
+      //    background-color: black;
+      //  }
+      .hidden {
+        display: none;
+      }
+      label {
+        cursor: pointer;
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 31.5px;
+        display: none;
+        width: 23px;
+        height: 19px;
+        margin: 0 auto;
+        background: url('/images/edit.png') no-repeat;
+      }
+      margin-bottom: 40px;
+    }
+    .content {
+      padding: 2rem;
+      border-radius: 4px;
+      .field {
+        position: relative;
+        text-align: center;
+        padding: 0 30px;
+        h1 {
+          font-size: 2rem;
+          color: $darkgreen;
+        }
+        img {
+          position: absolute;
+          right: 0;
+          top: 0;
+        }
+    }
+      .container {
+        margin: 20px 0;
+      }
+    }
+  }
+  .main-area {
+    // grid-column: span 2;
+    position: relative;
+    .content {
+      background-color: $lightGreen;
+      color: $darkgreen;
+    padding: 20px;
+      > div { 
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      margin: 0 20px;
+      .field {
+        img {
+          width: 25px;
+          height: auto;
+          cursor: pointer;
+          position: absolute;
+          right: 0;
+          top: 0;
+        }
+      }
+      &:nth-child(even) {
+        background-color: $beige;
+      }
+      &:nth-child(odd) {
+        background-color: #f2e5d0;
+
+      }
+    h4 {
+        margin-top: 20px;
+      }
+      &:nth-child(even) {
       
       }
-    }
-    img.project-image {
-     width: 100px;
-     height: 100px;
-     object-fit: contain;
-    }
-   
-    //  input {
-    //    position: absolute;
-    //    right:0;
-    //    top:0;
-    //    outline: 0;
-    //    border: 0;
-    //    cursor:pointer;
-    //    background-color: black;
-    //  }
-     .hidden {
-       display: none;
-     }
-     label {
-       cursor: pointer;
-       position: absolute;
-       left: 0;
-       right: 0;
-       top: 31.5px;
-       display: none;
-       width: 23px;
-       height: 19px;
-       margin: 0 auto;
-       background: url('/images/edit.png') no-repeat;
-     }
-     margin-bottom: 40px;
-   }
-  .content {
-    padding: 2rem;
-    border-radius: 4px;
-    .field {
-      position: relative;
-      text-align: center;
-      padding: 0 30px;
-      h1 {
-        font-size: 2rem;
-        color: $darkgreen;
+      &:nth-child(odd) {
+      
+        
       }
-      img {
+      h4 {
+        display: flex;
+        flex-flow: column wrap;
+        justify-content: center;
+        margin: 0;
+        padding: 0;
+      
+        p {
+          margin: 0;
+          display: inline;
+          padding: 0;
+        }
+      }
+      }
+      .title {
+        padding-top: 20px;
+        background-color:$lightGreen;
+      }
+    }
+    
+  }
+  .quill {
+    color: $darkgreen;
+  }
+  }
+  }
+  
+
+
+  #classes, #profile, #clazz, #launchpad {
+    a {
+      color: $orange;
+      margin: 20px auto;
+      display: block;
+      text-align: center;
+    }
+  .main {
+    color: #fff;
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    padding: 2rem;
+    img:not(.edit) {
+      width: 274px;
+      height: 226px;
+    }
+  }
+  }
+
+#launchpad, #classes {
+  .main {
+    color: #fff;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-gap: 2rem;
+    padding: 2rem;
+    align-content: start;
+  }
+}
+
+  #untutorial {
+    .main {
+      margin-top: 20px;
+  
+      .container {
+        max-width: 400px;
+        position: relative;
+        margin: 10px auto;
+      h2 {
+        font-size: 3rem;
+      }
+        .field {
+          position: relative;
+      
+        img {
+          position: absolute;
+          top: 0;
+          right: -30px;
+          cursor: pointer;
+        }
+        .workOnProject {
+          grid-row-start: 2;
+        }
+      
+      }
+      
+    }
+    }
+  }
+
+  #signin, #forget, #signup, #signIn {
+    background:url('/images/bg2.png') no-repeat;
+    background-size: cover;
+    background-position: 10% 20%;
+    #rocket {
+      top: -40px;
+      z-index:0;
+    }
+  }
+
+  #signup {
+    labels {
+      display: flex;
+      flex-flow: row wrap;    
+    }
+  } 
+
+  #rocket {
+    background:url('/images/roket.png') no-repeat;
+    position: absolute;
+    z-index:99;
+    width: 100px;
+    height: 190px;
+    background-size: contain;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+  }
+
+  #new-project { 
+    .side-panel { 
+      .container {
+      > div {
+        h4 {
+          position: relative;
+        }
+        position: relative;
+        margin-bottom: 40px;
+      }
+      .edit {
         position: absolute;
         right: 0;
         top: 0;
-      }
-  }
-    .container {
-      margin: 20px 0;
-    }
-  }
- }
- .main-area {
-  grid-column: span 2;
-  .content {
-    background-color: $lightGreen;
-    color: $darkgreen;
-   padding: 20px;
-    > div { 
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    margin: 0 20px;
-
-    &:nth-child(even) {
-      background-color: $beige;
-    }
-    &:nth-child(odd) {
-      background-color: #f2e5d0;
-
-    }
-   h4 {
-      margin-top: 20px;
-    }
-    &:nth-child(even) {
-     
-    }
-    &:nth-child(odd) {
-     
-      
-    }
-    h4 {
-      display: flex;
-      flex-flow: column wrap;
-      justify-content: center;
-      margin: 0;
-      padding: 0;
-    
-      p {
-        margin: 0;
-        display: inline;
-        padding: 0;
-      }
-    }
-    }
-    .title {
-      padding-top: 20px;
-      background-color:$lightGreen;
-    }
-  }
-  
-}
- .quill {
-   color: $darkgreen;
- }
-}
-}
-
-#classes, #profile, #clazz, #launchpad {
-  a {
-    color: $orange;
-    margin: 20px auto;
-    display: block;
-    text-align: center;
-  }
- .main {
-   color: #fff;
-   display: grid;
-   grid-template-columns: 1fr 1fr 1fr;
-   padding: 2rem;
-   img:not(.edit) {
-     width: 274px;
-     height: 226px;
-   }
- }
-}
-
-#untutorial {
-  .main {
-    margin-top: 20px;
- 
-    .container {
-      max-width: 400px;
-      position: relative;
-      margin: 10px auto;
-    h2 {
-      font-size: 3rem;
-    }
-      .field {
-        position: relative;
-    
-      img {
-        position: absolute;
-        top: 0;
-        right: -60px;
         cursor: pointer;
       }
-      .workOnProject {
-        grid-row-start: 2;
+    }
+    }
+    .main-area {
+      h1 {
+        font-size: 3rem;
+        position: relative;
+        display: inline;
+        button {
+          position: absolute;
+          right: 0;
+          top: 0;
+          width: 55px;
+          height: 25px;
+          right: -80px;
+        }
       }
-    
-    }
-    
-  }
-  }
-}
-
-#signin, #forget, #signup, #signIn {
-  background:url('/images/bg2.png') no-repeat;
-  background-size: cover;
-  background-position: 10% 20%;
-  #rocket {
-    top: -40px;
-    z-index:0;
-  }
-}
-
-#rocket {
-  background:url('/images/roket.png') no-repeat;
-  position: absolute;
-  z-index:99;
-  width: 100px;
-  height: 190px;
-  background-size: contain;
-  left: 0;
-  right: 0;
-  margin: 0 auto;
-}
-
-#new-project { 
-  .container {
-    > div {
+    .step {
       position: relative;
-      margin-bottom: 40px;
-    .project-image {
-      width: 100px;
-      display: block;
-      margin: 20px auto;
-    }  
-    h4 {
-      margin-bottom: 10px;
-    }
-    .delete, .add {
-      background-color: $orange;
-      width: 20px;
-      height: 20px;
-      position: absolute;
-      top: 0;
-      right: 0;
-    }
-    .add {
-      right: 40px;
-    }
-  }
- }
-}  
+      max-width: 600px;
+      height: 100px;
+      color: $darkgreen;
+      padding: 10px;
+      border-radius: 4px;
+      margin: 20px auto 60px;
+      min-height: 200px;
+      background-color: $lightGreen;
+      .field {
+        height:100%;
+        background-color: #fff;
+        border-radius: 4px;
+        overflow: auto;
+        .step-text {
+          margin-right: 90px;
+        }
+        .done {
+          position: absolute;
+          bottom: -50px;
+          left: 0;
+          font-size: 16px;
+          right: 0;
+          width: auto;
+          background-color: $lightGreen;
+          color: $darkgreen !important;
+          font-weight: bold;
+        }
+      }
+      .gear {
+        position: absolute;
+        top:20px;
+        right: 30px;
+        cursor: pointer;
+        z-index:999;
+      }
+      .dropdown {
+        position: absolute;
+        right: 0;
+        width: 80px;
+        background-color: $lightGreen;
+        right: 0;
+        padding-right: 30px;
+        height: 100%;
+        top: 0;
+        font-size: 16px;
+        cursor: pointer;
+        .edit {
+          position: absolute;
+          top: 60px;
+          right: 30px;
+          text-align: right;
 
-#launchpad {
-  .main {
-    align-content: start;
-  }
-  .filter {
-   display:flex;
-   flex-flow: row wrap;
-   justify-content: center;
-  }
-  .filter-categories {
-    text-align: center;
-    a {
-      display: inline-block;
-      margin-right: 20px;
-      cursor: pointer;
+        }
+        .add {
+          position: absolute;
+          top: 90px;
+          right: 30px;
+          text-align: right;
+        }
+        .del {
+          position: absolute;
+          right: 0px;
+          top: 120px;
+          right: 30px;
+          text-align: right;
+
+        } 
+      }
+    }
+ 
+   }
+  }  
+
+  #launchpad {
+    .main {
+      align-content: start;
+    }
+    .filter {
+    display:flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    }
+    .filter-categories {
+      text-align: center;
+      a {
+        display: inline-block;
+        margin-right: 20px;
+        cursor: pointer;
+      }
+    }
+    .container {
+      width: 50%;
+      position: relative;
+      margin: 0 auto;
+  .field {
+  
+  .edit {
+    position: absolute;
+    right: 0;
+    top: 0;
     }
   }
-  .container {
-    width: 50%;
-    position: relative;
-    margin: 0 auto;
-.field {
- 
-.edit {
-  position: absolute;
-  right: 0;
-  top: 0;
-  }
- }
-}}
+  }}

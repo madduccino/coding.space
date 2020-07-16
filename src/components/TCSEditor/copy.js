@@ -22,7 +22,6 @@ class TCSEditor extends React.Component {
 		this.handleSave = this.handleSave.bind(this);
 		this.handleSelectChange = this.handleSelectChange.bind(this);
 		this.handleTextChange = this.handleTextChange.bind(this);
-		this.handleSave = this.handleSave.bind(this);
 		this.showDropdown = this.showDropdown.bind(this);
 	}
 	handleChange = value => {
@@ -37,6 +36,7 @@ class TCSEditor extends React.Component {
 		this.setState({text:event.target.value});
 		this.props.onEditorChange(event.target.value);
 	}
+	
 	componentWillReceiveProps(props){
 		//if(this.state.text != props.text)
 		this.setState({...this.props,...props});
@@ -46,14 +46,18 @@ class TCSEditor extends React.Component {
 		this.setState({editing:!editing});
 	}
 	handleSave(){
-		const {editing,text,dropdown} = this.state;
-		this.setState({editing:!editing,dropdown:false});
+		const {editing,text} = this.state;
+		this.setState({editing:!editing});
 		this.props.onEditorSave(text);
-		
 	}
 	showDropdown() {
 		const {dropdown} = this.state;
 		this.setState({dropdown:!dropdown})
+		if (dropdown) {
+			console.log('hey')
+		} else {
+			console.log('heyo')
+		}
 	}
 
 	render(){
@@ -69,30 +73,26 @@ class TCSEditor extends React.Component {
 		else if(!disabled && !editing){
 			if (this.props.type==='steparoo') {
 				return (
-				  <div className={'field ' + className}>
+					<div className={'field ' + className}>
 	
-				    <div className="step-text" name={name} dangerouslySetInnerHTML={{__html:text}}/>
+						<div name={name} dangerouslySetInnerHTML={{__html:text}}/>
+						{!dropdown && (<img className="edit" onClick={this.showDropdown} src="/images/gear.png"/>)}
+						{dropdown &&  (
+						<div>
+					<img className="edit" onClick={this.handleEdit} src="/images/edit.png"/>
 
-				    <img className="gear" onClick={this.showDropdown} src="/images/gear.png"/>
-					{dropdown && (
-					<div className="dropdown">
-						 <div className="edit" onClick={this.handleEdit}>Edit</div>
-
-				          <div className="add" onClick={this.props.addStepHandler}>Add Step</div>
-					    
-					
-					{this.props.stepCount > 1 && (
-					    <img className="del" onClick={event=>this.props.deleteSteppedy(event,this.props.step,this.props.dropdown)} src="/images/delete.png"/> 
-				    )}  
-</div>)}
-			    </div>
-			  )
+						<button className="add" onClick={this.props.addStepHandler}>+</button>
+						</div>)}
+						{this.props.stepCount > 1 && (
+					    <img onClick={this.props.deleteStepHandler} src="/images/delete.png"/> 
+						)}
+					</div>
+				)
 			}
 			return (
 				<div className={'field ' + className}>
 
 					<div name={name} dangerouslySetInnerHTML={{__html:text}}/>
-				
 					<img className="edit" onClick={this.handleEdit} src="/images/edit.png"/>
 
 				</div>
@@ -107,6 +107,7 @@ class TCSEditor extends React.Component {
  							<option value={option}>{option}</option>
  						))}
  					</select>
+					<button onClick={this.handleSave}>Save</button>
 
 				</div>
 			)
@@ -126,7 +127,7 @@ class TCSEditor extends React.Component {
 			<div className={'field ' + className}>
 
 				<ReactQuill theme={'snow'} placeholder={this.props.placeholder} value={this.state.text} onChange={this.handleChange}/>
-				<button className="done" onClick={this.handleSave}>Done</button>
+				<button onClick={this.handleSave}>Save</button>
 			</div>
 			)
 	}
