@@ -68,7 +68,9 @@ class NewProjectPageBase extends React.Component {
  };
 
  componentDidMount(){
- 	var pCopy = this.state.untutorial;
+	 var pCopy = this.state.untutorial;
+	 document.body.addEventListener('click', this.handleClick);
+
  	if(this.props.authUser){
 		pCopy.Author = this.props.authUser.key;
 
@@ -105,7 +107,9 @@ class NewProjectPageBase extends React.Component {
 
  };
  componentWillUnmount(){
- 	this.props.firebase.untutorial().off();
+	 this.props.firebase.untutorial().off();
+	 document.body.removeEventListener('click', this.handleClick);
+
  }
   handlePTitleOnChange(value){
  	var pCopy = this.state.untutorial;
@@ -189,7 +193,7 @@ class NewProjectPageBase extends React.Component {
  addStepHandler(event){
  	var pCopy = this.state.untutorial;
  	pCopy.steps[Math.max(...Object.keys(pCopy.steps)) + 1] = {Description:''};
- 	this.setState({untutorial:pCopy});
+	 this.setState({untutorial:pCopy});
  	console.log("Add Step");
  }
  saveChangesHandler(event){
@@ -204,6 +208,15 @@ class NewProjectPageBase extends React.Component {
  		.catch(error=>console.log(error));
  	console.log("Save Changes");
  }
+ handleClick = (e) => {
+
+	if(e.target.className=="gear") {
+		console.log('yo')
+	  this.setState({dropdown: !this.dropdown})
+	} else {
+	  this.setState({dropdown: !this.dropdown})
+		}
+}
 
  render(){
  	
@@ -225,7 +238,6 @@ class NewProjectPageBase extends React.Component {
      		isInvalid = true;
 	return (
 	  <section id="new-project">
-		{/* <h1>New Untutorial</h1> */}
 		<div className="main">
 			<div className="side-panel">
 			  <div className={'container'}>
@@ -275,8 +287,8 @@ class NewProjectPageBase extends React.Component {
             </div>
            </div>
 			<div className="main-area">
-					<h1>New Untutorial
-				    <button onClick={this.handleSave}>Save</button>
+
+					<h1>{untutorial.Title}
 					</h1>
 				{Object.keys(untutorial.steps).map(step => (
 					<div className="step">
@@ -289,11 +301,13 @@ class NewProjectPageBase extends React.Component {
 						addStepHandler={this.addStepHandler}
 						stepCount={stepCount}
 						step={step}
-						type='steparoo'	
+						type='steparoo'		
 						deleteSteppedy={(event,step)=>this.deleteStepHandler(event,step)}
 						/>
 				</div>
 			))}
+						<button onClick={this.handleSave}>Save My Work</button>
+
 			</div>
 			</div>
 			

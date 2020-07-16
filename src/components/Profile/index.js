@@ -230,17 +230,6 @@ class ProfilePageBase extends React.Component {
 
 	return (
 	 <section id="profile">	
-	<div class="approve">
-	  <div>
-	<TCSEditor 
-		disabled={!(!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===profile.key))}
-		classname={'block'}
-		type='select'
-		selectOptions={['DRAFT','APPROVED']}
-		onEditorChange={this.handleStatusOnChange}
-		onEditorSave={this.handleStatusOnSave}
-		text={profile.Status}/></div>
-	</div>
 	<div className="main">		
 		  <div className="side-panel">
 			<div className="content">
@@ -307,6 +296,18 @@ class ProfilePageBase extends React.Component {
 			</div>
 		  	{/* <div classname={'block'}>My Untutorials</div> */}
 		  <div className="main-area">
+		  <div class="approve">
+	  <div>
+	   <TCSEditor 
+		  disabled={!(!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===profile.key))}
+		  classname={'block'}
+		  type='select'
+		  selectOptions={['DRAFT','APPROVED']}
+		  onEditorChange={this.handleStatusOnChange}
+		  onEditorSave={this.handleStatusOnSave}
+		  text={profile.Status}/>
+		</div>
+	  </div>
 			  <div className="content">
 			   <div className="title">
 			   <h4>Project</h4>
@@ -318,7 +319,9 @@ class ProfilePageBase extends React.Component {
 					  {/* <a href={ROUTES.LAUNCHPAD + untutorial.key} >
 						<LazyImage file={this.props.firebase.storage.ref('/public/' + untutorial.Author + '/' + untutorial.ThumbnailFilename)}/>
 					  </a> */}
-					  <a href={ROUTES.LAUNCHPAD + '/'+  untutorial.key}><h4 dangerouslySetInnerHTML={{__html:untutorial.Title}}/></a>
+					  <a href={ROUTES.LAUNCHPAD + '/'+  untutorial.key}
+					  ><h4 dangerouslySetInnerHTML={{__html:untutorial.Thumbnail}}/>
+					  </a>
 					  <h4>Published</h4>
 					  <h4>View</h4>
 				</div>

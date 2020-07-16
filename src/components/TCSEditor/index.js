@@ -15,7 +15,8 @@ class TCSEditor extends React.Component {
 			placeholder:props.placeholder,
 			name:props.name,
 			editing:false,
-			dropdown:false
+			dropdown:false,
+			editme: true
 		}
 		this.handleChange = this.handleChange.bind(this);
 		this.handleEdit = this.handleEdit.bind(this);
@@ -46,8 +47,11 @@ class TCSEditor extends React.Component {
 		this.setState({editing:!editing});
 	}
 	handleSave(){
-		const {editing,text,dropdown} = this.state;
+		const {editing,text,dropdown,editme} = this.state;
 		this.setState({editing:!editing,dropdown:false});
+		if (text.length>0) {
+			this.setState({editme:false})
+		}
 		this.props.onEditorSave(text);
 		
 	}
@@ -58,7 +62,7 @@ class TCSEditor extends React.Component {
 
 	render(){
 		const {className} = this.props;
-		const {text,type,selectOptions,disabled,placeholder,name,editing,dropdown} = this.state;
+		const {text,type,selectOptions,disabled,placeholder,name,editing,dropdown,editme} = this.state;
 		if(!!disabled){
 			return (
 				<div className={'field ' + className} >
@@ -70,21 +74,24 @@ class TCSEditor extends React.Component {
 			if (this.props.type==='steparoo') {
 				return (
 				  <div className={'field ' + className}>
-	
+				   {editme && (
+				   <p className="desc">Click the gear to edit this text!</p>
+				   )}
 				    <div className="step-text" name={name} dangerouslySetInnerHTML={{__html:text}}/>
 
-				    <img className="gear" onClick={this.showDropdown} src="/images/gear.png"/>
-					{dropdown && (
-					<div className="dropdown">
-						 <div className="edit" onClick={this.handleEdit}>Edit</div>
-
-				          <div className="add" onClick={this.props.addStepHandler}>Add Step</div>
-					    
+				      <img className="gear" onClick={this.showDropdown} src="/images/gear.png"/>
 					
+					{dropdown && (
+					  <div className="dropdown">
+						
+						<div className="edit" onClick={this.handleEdit}>Edit Text</div>
+				        <div className="add" onClick={this.props.addStepHandler}>Add Step</div>
+					    
+
 					{this.props.stepCount > 1 && (
 					    <img className="del" onClick={event=>this.props.deleteSteppedy(event,this.props.step,this.props.dropdown)} src="/images/delete.png"/> 
 				    )}  
-</div>)}
+                  </div>)}
 			    </div>
 			  )
 			}

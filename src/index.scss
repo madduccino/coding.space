@@ -33,7 +33,6 @@
       margin: 0;
   }
   
-
   h1 {
       font-size: 6rem;
       color: #fff;
@@ -46,8 +45,6 @@
     margin-top: -5rem;
     margin-bottom: 0.5rem;
   }
-
-
 
   h2 {
       font-size: 1.2rem;
@@ -190,20 +187,13 @@
     // }
   }
 
-
   button {
     background-color: $orange;
 
   }
   .main {
-      // grid-column: span 12;
-      text-align: center;
-      display: flex;
-      flex-flow: column wrap;
-      align-content: center;
-      justify-content: center;
-      color: #fff;
-      height: 100%;
+   
+
       a {
         font-weight: bold;
         color: $orange;
@@ -244,16 +234,24 @@
     }
   }
     
-  #landing {
+  #landing, #signup, #signIn {
     background:url('/images/bg.png') no-repeat;
     background-size: cover;
     background-position: 10% 50%;
+    
     #rocket {
       top: 50px;
     }
-    &.main {
+    .main {
+      grid-column: span 12;
+      text-align: center;
+      display: flex;
+      flex-flow: column wrap;
+      align-content: center;
       justify-content: center;
-    }
+      color: #fff;
+      height: 100%;
+    } 
   }
 
   #signin {
@@ -288,13 +286,14 @@
   .main {
   color: #fff;
   display: grid;
-  grid-template-columns: 1fr 2fr;
-  padding: 2rem;
+  grid-template-columns: 1fr 3fr;
   grid-gap: 2rem;
+  height: 100%;
   .side-panel {
     color: $darkgreen;
     background-color:$beige;
-    padding: 40px;
+    margin-top: 5px;
+    padding-top: 60px;
     img.project-image {
       width: 100px;
       height: 100px;
@@ -311,8 +310,6 @@
         
         }
       }
-
-    
       //  input {
       //    position: absolute;
       //    right:0;
@@ -340,7 +337,6 @@
       margin-bottom: 40px;
     }
     .content {
-      padding: 2rem;
       border-radius: 4px;
       .field {
         position: relative;
@@ -417,8 +413,7 @@
         padding-top: 20px;
         background-color:$lightGreen;
       }
-    }
-    
+    } 
   }
   .quill {
     color: $darkgreen;
@@ -426,8 +421,6 @@
   }
   }
   
-
-
   #classes, #profile, #clazz, #launchpad {
     a {
       color: $orange;
@@ -438,13 +431,12 @@
   .main {
     color: #fff;
     display: grid;
-    grid-template-columns: 1fr 2fr;
-    padding: 2rem;
+    grid-template-columns: 1fr 3fr;
     img:not(.edit) {
       width: 274px;
       height: 226px;
     }
-  }
+   }
   }
 
 #launchpad, #classes {
@@ -559,6 +551,12 @@
       margin: 20px auto 60px;
       min-height: 200px;
       background-color: $lightGreen;
+      .desc {
+        position:absolute;
+        top: 35%;
+        left: 0;
+        right: 0;
+      }
       .field {
         height:100%;
         background-color: #fff;
