@@ -1,11 +1,13 @@
 import React from 'react';
 import LazyImage from '../LazyImage';
+import EmailLoader from '../EmailLoader';
 import { AuthUserContext } from '../Session';
 import {withAuthentication} from '../Session';
 import {withFirebase} from '../Firebase';
 import TCSEditor from '../TCSEditor';
 import { v4 as uuidv4 } from 'uuid';
 import * as ROUTES from '../../constants/routes';
+import gmailApi from 'react-gmail'
 
 
 
@@ -306,6 +308,16 @@ class ProfilePageBase extends React.Component {
 					text={profile.Notes}/>
 				</div>
 			</div>
+			{!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===profile.key) && (
+				<div className='email'>
+					<div className='content'>
+						<div className="title">
+							<h4>Email</h4>
+						</div>
+						<EmailLoader label={profile.Username}/>
+					</div>
+				</div>
+			)}
 		  	{/* <div classname={'block'}>My Untutorials</div> */}
 		  <div className="main-area">
 			  <div className="content">

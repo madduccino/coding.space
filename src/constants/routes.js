@@ -13,3 +13,4 @@ export const NEW_PROJECT = '/new_project'
 export const NEW_CLASS = '/new_class'
 export const RESOURCES = '/resources/:key'
 export const RESOURCE_HOME = '/resources'
+export const GMAIL_WEBSERVICE = 'https://script.google.com/macros/s/AKfycbwsPknVjy79bpFItel6pry6khfvlHWT3UKuY3tQNqnldRVaXHc0/exec';
