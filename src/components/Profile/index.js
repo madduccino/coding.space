@@ -9,7 +9,11 @@ import { v4 as uuidv4 } from 'uuid';
 import * as ROUTES from '../../constants/routes';
 import gmailApi from 'react-gmail'
 
-
+ const TAB = {
+ 	PROGRESS:0,
+ 	UNTUTORIALS:1,
+ 	EMAIL:2
+ }
 
 class ProfilePageBase extends React.Component {
 
@@ -19,10 +23,12 @@ class ProfilePageBase extends React.Component {
  		authUser:null,
  		loading:true,
  		untutorials: {},
+ 		progress:{},
  		profile:{},
  		uploading:false,
  		uploadPercent:0,
  		dirty:false,
+ 		tab:TAB.PROGRESS,
  	}
  	this.handleNotesOnChange = this.handleNotesOnChange.bind(this);
  	this.handleNotesOnSave = this.handleNotesOnSave.bind(this);
@@ -60,7 +66,8 @@ class ProfilePageBase extends React.Component {
  	const {key} = this.props.match.params;
  	this.props.firebase.profile(key).on('value',snapshot => {
 		this.setState({
-			profile:snapshot.val()
+			profile:snapshot.val(),
+			progress:Object.values(snapshot.val().progress),
 		})
 		this.props.firebase.untutorials().once('value')
 			.then(snapshot => {
@@ -220,7 +227,7 @@ class ProfilePageBase extends React.Component {
 
  render(){
  	
- 	const {untutorials, loading, profile} = this.state;
+ 	const {untutorials,progress, loading, profile, tab} = this.state;
  	const {authUser} = this.props;
  	const {key} = this.props.match.params;
  	
@@ -235,6 +242,7 @@ class ProfilePageBase extends React.Component {
 	<div className="main">		
 		  <div className="side-panel">
 			<div className="content">
+
 			  <div className="avatar">
 				{this.state.uploading && (
 					<progress value={this.state.uploadPercent} max="100"/>
@@ -244,7 +252,7 @@ class ProfilePageBase extends React.Component {
 				)}	
 				<input className="hidden" id="files" type="file" onChange={this.handleThumbnailUpload}/>
                 <label for="files"></label>
-				</div>	
+			  </div>	
 				{!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===profile.key) && (
 				<div className={'container'}>
 					<h4>Username</h4>
@@ -296,12 +304,65 @@ class ProfilePageBase extends React.Component {
 					text={profile.Notes}/>
 				</div>
 			</div>
-			{!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===profile.key) && (
-				<div className='email'>
-					<div className='content'>
-						<div className="title">
-							<h4>Email</h4>
+			
+				
+			
+		  	{/* <div classname={'block'}>My Untutorials</div> */}
+		  <div className="main-area">
+		  	  <div className="tabs">
+		  	  	<div className="tab progress">
+		  	  	  <h3 onClick={()=>this.setState({tab:TAB.PROGRESS})}>Projects</h3>
+		  	  	  {(!tab || tab==TAB.PROGRESS) && (
+		  	  	  	<div className="content tab-content">
+						   <div className="title">
+						   <h4>Project</h4>
+						   <h4>Status</h4>
+						   <h4>View</h4>
+						   </div>
+							{progress.map(project => (
+							  <div id={project.key}>
+								  {/* <a href={ROUTES.LAUNCHPAD + untutorial.key} >
+									<LazyImage file={this.props.firebase.storage.ref('/public/' + untutorial.Author + '/' + untutorial.ThumbnailFilename)}/>
+								  </a> */}
+								  <a href={project.URL}><h4 dangerouslySetInnerHTML={{__html:project.Title}}/></a>
+								  <h4>{project.Status}</h4>
+								  <a href={project.URL}><h4>View</h4></a>
+							</div>
+						
+						))}
 						</div>
+		  	  	  )}
+		  	  	</div>
+		  	  	<div className="tab untutorials">
+		  	  		<h3 onClick={()=>this.setState({tab:TAB.UNTUTORIALS})}>Untutorials</h3>
+			  	  	  {tab==TAB.UNTUTORIALS && (
+			  	  	  	<div className="content tab-content">
+						   <div className="title">
+						   <h4>Untutorial</h4>
+						   <h4>Status</h4>
+						   <h4>View</h4>
+						   </div>
+							{untutorials.map(untutorial => (
+							  <div id={untutorial.key}>
+								  {/* <a href={ROUTES.LAUNCHPAD + untutorial.key} >
+									<LazyImage file={this.props.firebase.storage.ref('/public/' + untutorial.Author + '/' + untutorial.ThumbnailFilename)}/>
+								  </a> */}
+								  <a href={ROUTES.LAUNCHPAD + '/'+  untutorial.key}><h4 dangerouslySetInnerHTML={{__html:untutorial.Title}}/></a>
+								  <h4>{untutorial.Status}</h4>
+								  <a href={ROUTES.LAUNCHPAD + '/'+  untutorial.key}><h4>View</h4></a>
+							</div>
+						
+						))}
+						</div>
+			  	  	  )}
+
+		  	  	</div>
+		  	  	{!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===profile.key) && (
+		  	  	<div className="tab email">
+		  	  	  <h3 onClick={()=>this.setState({tab:TAB.EMAIL})}>Email</h3>
+		  	  	  {tab==TAB.EMAIL && (
+		  	  	  	<div className='content tab-content'>
+
 						<EmailLoader label={profile.Username}/>
 					</div>
 				</div>
