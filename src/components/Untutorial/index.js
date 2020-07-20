@@ -50,6 +50,8 @@ class UntutorialPageBase extends React.Component {
  	this.loadProject = this.loadProject.bind(this);
  	this.handleProjectURLOnChange = this.handleProjectURLOnChange.bind(this);
  	this.validateProjectURL = this.validateProjectURL.bind(this);
+ 	this.handleProjectTitleOnChange = this.handleProjectTitleOnChange.bind(this);
+ 	this.validateProjectTitle = this.validateProjectTitle.bind(this);
  	this.studentApprove = this.studentApprove.bind(this);
 
 
@@ -110,6 +112,7 @@ class UntutorialPageBase extends React.Component {
 				Status:"DRAFT",
 				ThumbnailFilename:'',
 				URL:'',
+				Title:'',
 				steps:[],
 				key:key
 		}})
@@ -345,6 +348,34 @@ class UntutorialPageBase extends React.Component {
 	}
 	this.setState({errors:errors});
 }
+ handleProjectTitleOnChange(value){
+ 	const {untutorial,project} = this.state;
+ 	const {authUser} = this.props;
+
+ 	if(value !== project.Title){
+ 		project.Title = value;
+ 		this.validateProjectTitle();
+ 		this.setState({project:project});
+ 	}
+ }
+ validateProjectTitle(){
+ 	const {untutorial,errors,project} = this.state;
+ 	const {authUser} = this.props;
+ 	
+ 	
+ 	if(project.Title===''){
+ 		errors['PROJECT_TITLE'] = 'PROJECT_TITLE.<span class="red">ISREQUIRED</span>'; 		
+ 	}
+ 	else if(project.Title.length < 10){
+
+		errors['PROJECT_TITLE'] = 'PROJECT_TITLE.<span class="red">ISTOOSHORT</span>';
+	}
+ 	else{
+ 		delete errors['PROJECT_TITLE'];
+ 	}
+ 	this.setState({errors:errors});
+
+ }
  handleProjectURLOnChange(value){
  	const {untutorial,project} = this.state;
  	const {authUser} = this.props;
@@ -629,13 +660,25 @@ class UntutorialPageBase extends React.Component {
 		)}
 		{!!project && !!project.URL && (
 			<div className={'container'}>
-				<h4>Your Project</h4>
+				<h4>{project.Title}</h4>
 				<a href={project.URL}>{project.URL}</a>
 			</div>
 		)}
 		</div>
-	
+		{!!project&&(
+			<div className={'container'}>
+				<TCSEditor
+					disabled={!!project.Status['FINAL']}
+					type={"plain"} 
+					onEditorChange={this.handleProjectTitleOnChange} 
+					onEditorSave={this.saveProjectHandler} 
+					placeholder={'Project Title'} 
+					text={project.Title}/>
+				
+			</div>
+		)}
 		{!!project&& (
+			
 			<div className={'container'}>
 				<TCSEditor
 					disabled={!!project.Status['FINAL']}
