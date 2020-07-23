@@ -13,7 +13,10 @@
   $bodyFont: 'Montserrat';
   $breakpoint-tablet: 768px;
   $breakpoint-phone: 600px;
-
+  @keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
   html,body,#root {
       height: 100%;
   }
@@ -71,6 +74,8 @@
   #header {
     background-color: #fff;
       width: 100%;
+      border-bottom: 5px solid $lightGreen;
+
       .nav {
         display: grid;
         line-height: 70px;
@@ -78,7 +83,6 @@
         grid-template-rows: 1fr 1fr;      
         width:100%;
         height: 70px;
-        border-bottom: 5px solid $lightGreen;
         .signIn {
           grid-row: 1;
           grid-column: 9/10;
@@ -192,8 +196,6 @@
 
   }
   .main {
-   
-
       a {
         font-weight: bold;
         color: $orange;
@@ -230,6 +232,101 @@
       }
       p {
         color: $lightblue;
+      }
+    }
+    .main-content {
+      .tab-labels {
+        text-align: center;
+        list-style: none;
+        padding: 0;
+        line-height: 35px;
+        height: 37px;
+        overflow: hidden;
+        font-size: 12px;
+        position: relative;
+        div {
+          border: 1px solid #AAA;
+          background: #D1D1D1;
+          background: linear-gradient(top, #ECECEC 50%, #D1D1D1 100%);
+          display: inline-block;
+          position:relative;
+          z-index: 0;
+          border-bottom-left-radius: 6px;
+          border-bottom-right-radius: 6px;
+          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4), inset 0 1px 0 #FFF;
+          text-shadow: 0 1px #FFF;
+          margin: 0 -5px;
+          padding: 0 30px;
+          &.selected {
+            background: #FFF;
+            color: #333;
+            z-index: 2;
+            border-top-color: #FFF;
+            &:before {
+              box-shadow: 2px 0px 0 #FFF;
+            }
+            &:after {
+              box-shadow: -2px 0px 0 #FFF;
+            }
+          }
+          &:before,&:after {
+           border: 1px solid #AAA;
+           position: absolute;
+           top: -1px;
+            width: 6px;
+            height: 6px;
+            content: "";
+          }
+          &:before {
+            left: -7px;
+            border-top-right-radius: 6px;
+            border-width: 1px 1px 0px 0px;
+            box-shadow: 2px 0px 0 #ECECEC;
+          }
+          &:after {
+            right: -7px;
+            border-top-left-radius: 6px;
+            border-width: 1px 0px 0px 1px;
+            box-shadow: -2px 0px 0 #ECECEC;
+          }
+        }        
+        h3 {
+          cursor: pointer;
+        }
+        &:before {
+          position: absolute;
+          content: "";
+          width: 100%;
+          top: 0;
+          left: 0;
+          border-top: 1px solid #AAA;
+          z-index: 1;
+        }
+      }
+      .email {
+        h1,h2,h3,h4,h5,h6,button,ul,li {
+          color: initial;
+          font-size: initial;
+          text-shadow: initial;
+        }
+        word-wrap: break-word;
+
+      }
+      .status {
+        width: 15px;
+        height: 15px;
+        border-radius: 50%;
+        text-align: center;
+        &.yellow {
+    
+        background-color:$orange;
+        background: radial-gradient(circle, $orange,$darkerOrange);
+        }
+        &.green {
+          background-color:rgb(80, 221, 15);
+
+          background:radial-gradient(circle, rgb(6, 177, 83),rgb(3, 107, 50));
+        }
       }
     }
   }
@@ -287,54 +384,109 @@
   color: #fff;
   display: grid;
   grid-template-columns: 1fr 3fr;
-  grid-gap: 2rem;
   height: 100%;
-  .side-panel {
-    color: $darkgreen;
+  background-color: #fff;
+  color: $darkgreen;
+  .sidebar {
+    color: #fff;
     background-color:$beige;
-    margin-top: 5px;
-    padding-top: 60px;
-    img.project-image {
-      width: 100px;
-      height: 100px;
-      object-fit: contain;
+    padding: 60px 20px;
+    background-color: $darkgreen;
+    max-width: 275px;
+    word-wrap: break-word;
+    button {
+      padding: 0 6px;
+      width: auto;
+      margin: 4px auto;
+    }
+    h1 {
+      font-size: 1.4rem;
+      color: $darkgreen;
+      text-shadow: none;
+    }
+    p {
+      margin: 0;
+      padding: 0;
+    }
+    span {
+      font-size: 0.8rem;
+    }
+    h4 {
+      background-color: $lightGreen;
+      color: $darkgreen;
+      border-top-right-radius: 4px;
+      border-top-left-radius: 4px;
+      margin-top: 20px;
+      padding: 10px 40px;
+      text-align: center;
+    }
+    .field {
+      position: relative;
+      font-size: 2rem;
+      line-height: 2rem;
+      font-size: 1rem;
+      border-bottom-right-radius: 4px;
+      border-bottom-left-radius: 4px;
+      color: $darkgreen;
+      background-color: #fff;
+      padding-bottom: 1px;
+      .edit, .done {
+        top: -40px;
+        right: 0;
+        position: absolute;
+      }
+      &.display-name {
+        font-size: 2rem;
+        margin-top: 10px;
+        font-family: $headerFont;
+        line-height: 2rem;
+        position: relative;
+        background-color: $darkgreen;
+        color: #fff;
+        text-align: center; 
+        .edit {
+          top: 0;
+          right: 30px;
+        }
+      }
+      > div:not(.quill) {
+        padding: 10px 40px;
+      }
     }
     .avatar {   
       position: relative;
-      &:hover {
-        img {
-          opacity: 0.2;
-        }
-        label {
-        display: inline-block;
-        
-        }
-      }
-      //  input {
-      //    position: absolute;
-      //    right:0;
-      //    top:0;
-      //    outline: 0;
-      //    border: 0;
-      //    cursor:pointer;
-      //    background-color: black;
-      //  }
-      .hidden {
-        display: none;
+      text-align: center;
+      img.project-image {
+        width: 100px;
+        height: 100px;
+        object-fit: contain;
       }
       label {
         cursor: pointer;
         position: absolute;
         left: 0;
         right: 0;
-        top: 31.5px;
+        top: 0;
         display: none;
-        width: 23px;
-        height: 19px;
+        width: 100px;
+        height: 100px;
         margin: 0 auto;
         background: url('/images/edit.png') no-repeat;
+        background-position: 50% 50%;
       }
-      margin-bottom: 40px;
+      &:hover {
+        img {
+          opacity: 0.2;
+        }
+        label {
+        display: inline-block;
+        }
+      }
+      .hidden {
+        //display: none;
+   
+      }
+
     }
     .content {
       border-radius: 4px;
@@ -357,17 +509,18 @@
       }
     }
   }
-  .main-area {
+  .main-content {
+    color: $darkgreen;
+    position: relative;
     // grid-column: span 2;
     position: relative;
     .content {
-      background-color: $lightGreen;
-      color: $darkgreen;
-    padding: 20px;
       > div { 
       display: grid;
       grid-template-columns: 1fr 1fr 1fr;
-      margin: 0 20px;
+      div {
+        margin: 20px auto;
+      } 
       .field {
         img {
           width: 25px;
@@ -378,30 +531,7 @@
           top: 0;
         }
       }
-      &:nth-child(even) {
-        background-color: $beige;
-      }
-      &:nth-child(odd) {
-        background-color: #f2e5d0;
-
-      }
-    h4 {
-        margin-top: 20px;
-      }
-      &:nth-child(even) {
-      
-      }
-      &:nth-child(odd) {
-      
-        
-      }
       h4 {
-        display: flex;
-        flex-flow: column wrap;
-        justify-content: center;
-        margin: 0;
-        padding: 0;
-      
         p {
           margin: 0;
           display: inline;
@@ -411,14 +541,15 @@
       }
       .title {
         padding-top: 20px;
-        background-color:$lightGreen;
+        text-align: center;
+        // background-color:$lightGreen;
       }
     } 
   }
-  .quill {
-    color: $darkgreen;
-  }
-  }
+    .quill {
+      color: $darkgreen;
+    }
+   }
   }
   
   #classes, #profile, #clazz, #launchpad {
@@ -509,8 +640,19 @@
     margin: 0 auto;
   }
 
+
+
+      .edit {
+        position: absolute;
+        right: 0;
+        top: 0;
+        cursor: pointer;
+        z-index: 999;
+      }
+
+
   #new-project { 
-    .side-panel { 
+    .sidebar { 
       .container {
       > div {
         h4 {
@@ -519,15 +661,10 @@
         position: relative;
         margin-bottom: 40px;
       }
-      .edit {
-        position: absolute;
-        right: 0;
-        top: 0;
-        cursor: pointer;
-      }
+
     }
     }
-    .main-area {
+    .content {
       h1 {
         font-size: 3rem;
         position: relative;
@@ -651,4 +788,14 @@
     top: 0;
     }
   }
-  }}
+  }
+}
+
+#profile {
+  a {
+    color: $darkgreen;
+  }
+  .tab-content {
+  
+  }
+}

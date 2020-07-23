@@ -262,7 +262,7 @@ class ClassPageBase extends React.Component {
 		  </div>
 		</div>
 		<div className="main">
-		  <div className="side-panel">
+		  <div className="sidebar">
 			<div className="content">
 			<div className="avatar">
 			{!!clazz.ThumbnailFilename && !uploading &&(
@@ -320,7 +320,7 @@ class ClassPageBase extends React.Component {
         </div>
 		</div>
 			{/* <button onClick={this.deleteClassHandler}>Delete Class</button> */}
-		<div className="main-area">
+		<div className="content">
 		<h3>Students and Teachers</h3>
 	
 			{!!profiles && (

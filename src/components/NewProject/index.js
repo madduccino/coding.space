@@ -239,7 +239,7 @@ class NewProjectPageBase extends React.Component {
 	return (
 	  <section id="new-project">
 		<div className="main">
-			<div className="side-panel">
+			<div className="sidebar">
 			  <div className={'container'}>
 			     <h4>Project Title</h4>	
 				  <div>
@@ -286,7 +286,7 @@ class NewProjectPageBase extends React.Component {
 			 </div>
             </div>
            </div>
-			<div className="main-area">
+			<div className="content">
 
 					<h1>{untutorial.Title}
 					</h1>
