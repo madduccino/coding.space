@@ -345,7 +345,6 @@ class ProfilePageBase extends React.Component {
 						   </div>
 							{untutorials.map(untutorial => (
 							  <div id={untutorial.key}>
-								  
 								  {/* <a href={ROUTES.LAUNCHPAD + untutorial.key} >
 									<LazyImage file={this.props.firebase.storage.ref('/public/' + untutorial.Author + '/' + untutorial.ThumbnailFilename)}/>
 								  </a> */}
