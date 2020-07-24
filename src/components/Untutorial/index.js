@@ -604,7 +604,7 @@ class UntutorialPageBase extends React.Component {
 	return (
 	<section id="untutorial">
 		<div className="main">
-		<div className="side-panel">		
+		<div className="sidebar">		
 		<div className="container">
 				<h2>
 				<TCSEditor 
@@ -618,7 +618,7 @@ class UntutorialPageBase extends React.Component {
 			  </h2>
 			  <h3>by: <a href={'/profile/' + untutorial.Author} dangerouslySetInnerHTML={{__html:author.DisplayName}}/></h3>
 			</div>
-		{/* <div className={'container'}>
+		<div className={'container'}>
 		
 				<TCSEditor 
 					disabled={!(authUser && (!!authUser.roles['ADMIN'] || authUser.uid===untutorial.Author))}
@@ -630,8 +630,8 @@ class UntutorialPageBase extends React.Component {
 					placeholder={'Status'} 
 					text={untutorial.Status} />
 
-			</div> */}
-		 <div className={'container'}>
+			</div> 
+		<div className={'container'}>
 		    <h4>Thumbnail</h4>
 			<input type="file" onChange={this.handleThumbnailUpload}/>
 			{this.state.uploading && (
@@ -642,7 +642,7 @@ class UntutorialPageBase extends React.Component {
 			)}
 
 		</div>
-			<div className={'container'}>
+		<div className={'container'}>
 				<TCSEditor 
 				disabled={!(authUser && (!!authUser.roles['ADMIN'] || authUser.uid===untutorial.Author))}
 				type={'text'}
@@ -659,6 +659,7 @@ class UntutorialPageBase extends React.Component {
 					>Work On This Project!</button>
 			)}
 			{!!project && project.Status == 'FINAL' &&(
+
 				<h2>GREAT JOB! You finished this project!'</h2>
 			)}
 			{!!project && project.Status != 'FINAL' && !!nextStep && (
@@ -706,9 +707,10 @@ class UntutorialPageBase extends React.Component {
 				text={untutorial.Level}/>
 
 			
+
 		</div>
 		</div>
-        <div className="main-area">
+        <div className="content">
 			<div className={'container'}>
 				{Object.keys(untutorial.steps).map(step => (
 					<div>
@@ -720,14 +722,12 @@ class UntutorialPageBase extends React.Component {
 									onClick={()=>this.studentApprove(step)}
 									text="I Finished!">I Finished!</button>
 							</div>
-					
 						)}
 						{!!project && !!project.steps && !!project.steps[step] && !!project.steps[step].Status['TEACHER_COMPLETE'] && (
 							<div>
 
 								<img src='/public/images/star-yellow.png'/>
 							</div>
-					
 						)}
 						<TCSEditor
 						className={!!project && !!project.steps && !!project.steps[step] && !project.steps[step].Status['STUDENT_COMPLETE'] ? 'student-complete' : ''}
@@ -750,7 +750,6 @@ class UntutorialPageBase extends React.Component {
 			{!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===untutorial.Author) && (
 				<div className={'container'}>
 	 				<button onClick={this.addStepHandler}>+</button>
-
 	 				<button onClick={this.deleteProjectHandler}>Delete Untutorial</button>
 				</div>
 			)}

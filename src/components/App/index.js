@@ -69,7 +69,6 @@ class App extends Component {
 	handleClick = (e) => {
 		if(e.target.id=="menu" || e.target.parentElement.id=="menu") {
 		  this.setState({showNav: !this.state.showNav})
-		  console.log('what up')
 		} else {
 		  this.setState({showNav: false})
 		}

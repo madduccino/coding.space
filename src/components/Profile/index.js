@@ -294,21 +294,8 @@ class ProfilePageBase extends React.Component {
 
 	return (
 	 <section id="profile">	
-	<div class="approve">
-	  <div>
-	<TCSEditor 
-		disabled={!(!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===profile.key))}
-		classname={'block'}
-		type='select'
-		selectOptions={['DRAFT','APPROVED']}
-		onEditorChange={this.handleStatusOnChange}
-		onEditorSave={this.handleStatusOnSave}
-		text={profile.Status}/></div>
-	</div>
 	<div className="main">		
-		  <div className="side-panel">
-			<div className="content">
-
+		<div className="sidebar">
 			  <div className="avatar">
 				{this.state.uploading && (
 					<progress value={this.state.uploadPercent} max="100"/>
@@ -318,29 +305,25 @@ class ProfilePageBase extends React.Component {
 				)}	
 				<input className="hidden" id="files" type="file" onChange={this.handleThumbnailUpload}/>
                 <label for="files"></label>
-			  </div>	
-				{!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===profile.key) && (
-				<div className={'container'}>
-					<h4>Username</h4>
-					<div className={'block'}>{profile.Username}</div>
-				</div>	
-			)}
-			<h4>Display Name</h4>
-				<TCSEditor 
+			  </div>
+			  <TCSEditor 
 					disabled={!(!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===profile.key))}
-					className={'block'} 
+					className='display-name' 
 					type='plain'
 					onEditorChange={this.handleDisplayNameOnChange} 
 					onEditorSave={this.handleDisplayNameOnSave} 
 					placeholder={'Display Name'} 
-					text={profile.DisplayName}/>
-			{!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===profile.key) && (
+					text={profile.DisplayName}/>	
+				{!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===profile.key) && (
 				<div className={'container'}>
-					<h4>Email</h4>
-					<div className={'block'}>{profile.Email}</div>
-				</div>
-				
-			)}	
+					<h4>Account information</h4>
+					<div className="field">
+					<div className={'block'}><strong>Login</strong><br/> {profile.Username}</div>
+					<div className={'block'}><strong>Email</strong><br/> {profile.Email}</div>
+					</div>
+				</div>	
+			)}
+	
 				<h4>About Me</h4>
 				<TCSEditor 
 					disabled={!(!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===profile.key))}
@@ -368,14 +351,23 @@ class ProfilePageBase extends React.Component {
 					onEditorSave={this.handleNotesOnSave}
 					placeholder={'Notes'} 
 					text={profile.Notes}/>
-				</div>
 			</div>
-			
-				
-			
-		  	{/* <div classname={'block'}>My Untutorials</div> */}
-		  <div className="main-area">
+		<div className="main-content">
+		<div className="tab-labels">
+			<div className={this.state.tab===TAB.PROGRESS ? 'selected' : ''}>
+				<h3 onClick={()=>this.setState({tab:TAB.PROGRESS})}>Progress</h3>
+			</div>
+			<div className={this.state.tab===TAB.UNTUTORIALS ? 'selected' : ''}>
+				<h3 onClick={()=>this.setState({tab:TAB.UNTUTORIALS})}>Untutorials</h3>
+			</div>
+			{!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===profile.key) && (
+			<div className={this.state.tab===TAB.EMAIL ? 'selected' : ''}>
+				<h3 onClick={()=>this.setState({tab:TAB.EMAIL})}>Email</h3>
+			</div>
+			)}
+		</div>
 		  	  <div className="tabs">
+
 		  	  {!!progress && progress.length > 0 && (
 				<div className="tab progress">
 		  	  	  <h3 onClick={()=>this.setState({tab:TAB.PROGRESS})}>Projects</h3>
@@ -396,7 +388,7 @@ class ProfilePageBase extends React.Component {
 										<LazyImage file={this.props.firebase.storage.ref('/public/' + untutorial.Author + '/' + untutorial.ThumbnailFilename)}/>
 									  </a> */}
 									  <a href={project.URL}><h4 dangerouslySetInnerHTML={{__html:project.Title}}/></a>
-									  <h4>{project.Status}</h4>
+									  <h4 className={project.Status === 'APPROVED' ? 'green status' : 'yellow status'}>{project.Status}</h4>
 									  <a href={project.URL}><h4>View</h4></a>
 								</div>
 
@@ -404,6 +396,7 @@ class ProfilePageBase extends React.Component {
 			  	  	  		))}
 						</div>
 						  
+
 						
 						))}
 						</div>
@@ -413,21 +406,21 @@ class ProfilePageBase extends React.Component {
 		  	  )}
 		  	  	
 		  	  	<div className="tab untutorials">
-		  	  		<h3 onClick={()=>this.setState({tab:TAB.UNTUTORIALS})}>Untutorials</h3>
 			  	  	  {tab==TAB.UNTUTORIALS && (
 			  	  	  	<div className="content tab-content">
 						   <div className="title">
-						   <h4>Untutorial</h4>
+						   <h4>Title</h4>
 						   <h4>Status</h4>
 						   <h4>View</h4>
 						   </div>
 							{untutorials.sort().map(untutorial => (
 							  <div id={untutorial.key}>
+								  
 								  {/* <a href={ROUTES.LAUNCHPAD + untutorial.key} >
 									<LazyImage file={this.props.firebase.storage.ref('/public/' + untutorial.Author + '/' + untutorial.ThumbnailFilename)}/>
 								  </a> */}
 								  <a href={ROUTES.LAUNCHPAD + '/'+  untutorial.key}><h4 dangerouslySetInnerHTML={{__html:untutorial.Title}}/></a>
-								  <h4>{untutorial.Status}</h4>
+								  <div><h4 className={untutorial.Status === 'APPROVED' ? 'green status' : 'yellow status'}></h4></div>
 								  <a href={ROUTES.LAUNCHPAD + '/'+  untutorial.key}><h4>View</h4></a>
 							</div>
 						
@@ -438,7 +431,6 @@ class ProfilePageBase extends React.Component {
 		  	  	</div>
 		  	  	{!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===profile.key) && (
 		  	  	<div className="tab email">
-		  	  	  <h3 onClick={()=>this.setState({tab:TAB.EMAIL})}>Email</h3>
 		  	  	  {tab==TAB.EMAIL && (
 		  	  	  	<div className='content tab-content'>
 
@@ -454,11 +446,7 @@ class ProfilePageBase extends React.Component {
 		</div>
 	 </section>	
 	)
-
- 	
-
- 	
-}
+  }
 }
 
 
