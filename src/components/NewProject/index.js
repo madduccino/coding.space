@@ -19,6 +19,7 @@ class NewProjectPageBase extends React.Component {
  		loading:true,
  		uploading:false,
  		uploadPercent:0,
+ 		errors:{},
  		untutorialRef:null,
  		untutorial: {
  			key:uuidv4(),
@@ -42,14 +43,22 @@ class NewProjectPageBase extends React.Component {
  	}
  	//this.handleStatusOnChange = this.handleStatusOnChange.bind(this);
  	this.handleThumbnailUpload = this.handleThumbnailUpload.bind(this);
+
  	this.handlePTitleOnChange = this.handlePTitleOnChange.bind(this);
+ 	this.validatePTitle = this.validatePTitle.bind(this);
  	this.handlePTitleOnSave = this.handlePTitleOnSave.bind(this);
+
  	this.handlePDescriptionOnChange = this.handlePDescriptionOnChange.bind(this);
+ 	this.validatePDescription = this.validatePDescription.bind(this);
  	this.handlePDescriptionOnSave = this.handlePDescriptionOnSave.bind(this);
+
  	this.handleLevelOnChange = this.handleLevelOnChange.bind(this);
+ 	this.validateLevel = this.validateLevel.bind(this);
  	this.handleLevelOnSave = this.handleLevelOnSave.bind(this);
  	this.handleStepOnChange = this.handleStepOnChange.bind(this);
+ 	this.validateStep = this.validateStep.bind(this);
  	this.handleStepOnSave = this.handleStepOnSave.bind(this);
+
  	this.addStepHandler = this.addStepHandler.bind(this);
  	this.deleteStepHandler = this.deleteStepHandler.bind(this);
  	this.saveChangesHandler = this.saveChangesHandler.bind(this);
@@ -68,22 +77,18 @@ class NewProjectPageBase extends React.Component {
  };
 
  componentDidMount(){
-	 var pCopy = this.state.untutorial;
-	 document.body.addEventListener('click', this.handleClick);
 
- 	if(this.props.authUser){
-		pCopy.Author = this.props.authUser.key;
-
-	 	this.setState({
-	 		untutorialRef: this.props.firebase.untutorial(this.state.untutorial.key),
-	 		untutorial:pCopy,
-	 		loading:false,
+ 	var pCopy = this.state.untutorial;
+ 	document.body.addEventListener('click', this.handleClick);
+ 	this.setState({
+ 		untutorialRef: this.props.firebase.untutorial(this.state.untutorial.key),
+ 		untutorial:pCopy,
+ 		loading:false,
 
 
-	 		
-	 	})
+ 		
+ 	})
 
- 	}
  	
 
 
@@ -116,11 +121,29 @@ class NewProjectPageBase extends React.Component {
  	if(value !== pCopy.Title){
  		pCopy.Title = value;
  		this.setState({untutorial:pCopy});
+ 		this.validatePTitle();
  	}
  	
  }
+ validatePTitle(){
+ 	const {untutorial,errors} = this.state;
+ 	const {authUser} = this.props;
+ 	
+ 	
+ 	if(untutorial.Title===''){
+ 		errors['UNTUTORIAL_TITLE'] = 'UNTUTORIAL_TITLE.<span class="red">ISREQUIRED</span>'; 		
+ 	}
+ 	else if(untutorial.Title.length < 10){
+
+		errors['UNTUTORIAL_TITLE'] = 'UNTUTORIAL_TITLE.<span class="red">ISTOOSHORT</span>';
+	}
+ 	else{
+ 		delete errors['UNTUTORIAL_TITLE'];
+ 	}
+ 	this.setState({errors:errors});
+ }
  handlePTitleOnSave(){
-   console.log('hello')
+   //console.log('hello')
  }
  handleThumbnailUpload(event){
  	var file = event.target.files[0];
@@ -158,6 +181,23 @@ class NewProjectPageBase extends React.Component {
  	}
  	
  }
+ validatePDescription(){
+ 	const {untutorial,errors} = this.state;
+ 	const {authUser} = this.props;
+ 	
+ 	
+ 	if(untutorial.Description===''){
+ 		errors['UNTUTORIAL_DESCRIPTION'] = 'UNTUTORIAL_DESCRIPTION.<span class="red">ISREQUIRED</span>'; 		
+ 	}
+ 	else if(untutorial.Description.length < 20){
+
+		errors['UNTUTORIAL_DESCRIPTION'] = 'UNTUTORIAL_DESCRIPTION.<span class="red">ISTOOSHORT</span>';
+	}
+ 	else{
+ 		delete errors['UNTUTORIAL_DESCRIPTION'];
+ 	}
+ 	this.setState({errors:errors});
+ }
  handlePDescriptionOnSave(){
 
  }
@@ -169,6 +209,21 @@ class NewProjectPageBase extends React.Component {
  	}
  	
  }
+ validateLevel(){
+ 	const {untutorial,errors} = this.state;
+ 	const {Level} = untutorial;
+ 	if(isNaN(Level)){
+		errors['LEVEL'] = 'LEVEL.<span class="red">ISINVALID</span>'; 		
+ 	}
+ 	if(![1,2,3,4,5,6].includes(Level)){
+
+ 		errors['LEVEL'] = 'LEVEL.<span class="red">ISOUTSIDERANGE</span>';
+ 	}
+ 	else{
+ 		delete errors['LEVEL'];
+ 	}
+ 	this.setState({errors:errors});
+ }
  handleLevelOnSave(){
 
  }
@@ -179,6 +234,22 @@ class NewProjectPageBase extends React.Component {
  		this.setState({untutorial:pCopy});
  	}
 
+ }
+ validateStep(index){
+ 	const {untutorial,errors} = this.state;
+	const Step = untutorial.steps[index];
+	const text = Step.Description.replace(/<(.|\n)*?>/g, '').trim();
+	if(text===''){
+	errors['STEP'+index] = 'STEP.<span class="orange">'+index+'</span>.<span class="red">ISREQUIRED</span>'; 		
+	}
+	if(text.length < 20){
+
+		errors['STEP'+index] = 'STEP.<span class="orange">'+index+'</span>.<span class="red">ISTOOSHORT</span>';
+	}
+	else{
+		delete errors['STEP' + index];
+	}
+	this.setState({errors:errors});
  }
  handleStepOnSave(){
 
@@ -197,16 +268,67 @@ class NewProjectPageBase extends React.Component {
  	console.log("Add Step");
  }
  saveChangesHandler(event){
+ 	
+ 	const {untutorial, loading, errors} = this.state;
+ 	const {Title,Description, Level, steps} = untutorial;
+ 	const {authUser} = this.props;
 
- 	this.state.untutorialRef.set({
- 		...this.state.untutorial
- 	})
+ 	const stepCount = (!!untutorial&& !!untutorial.steps) ? Object.keys(untutorial.steps).length : 0;
+	
+ 	if(Object.values(errors).length === 0){
+ 		untutorial.LastModified = Date.now();
+ 		untutorial.Author = authUser.key;
+ 		this.props.firebase.untutorial(untutorial.key).set({
+	 		...untutorial
+	 	})
  		.then(()=>{
  			console.log("Successfully Saved");
- 			this.props.history.push(ROUTES.LAUNCHPAD + this.state.untutorial.key);
+ 			this.props.history.push(ROUTES.LAUNCHPAD + '/' + this.state.untutorial.key);
+
+ 			/*this.props.setGlobalState({
+ 				messages:[{
+
+ 					html:`SAVE.<span class="green">GOOD</span>`,
+ 					type:true},{
+
+ 					html:`Press any key to continue...`,
+ 					type:false,
+
+ 					}],
+ 				showMessage:true
+ 			});*/
  		})
  		.catch(error=>console.log(error));
+ 	}
+ 	else{
+ 		var badFields = Object.keys(errors);
+ 		var messages = [];
+	 	for(var i =0;i< badFields.length;i++){
+
+	 		messages.push({
+				html:errors[badFields[i]],
+				type:true
+			});
+	 	}
+
+		messages.push({
+			html:`Press any key to continue...`,
+			type:false
+		})
+
+	 		
+	 	
+	 	
+ 		this.props.setGlobalState({
+			messages:messages,
+			showMessage:true
+			
+		});
+ 	}
+
+ 	
  	console.log("Save Changes");
+
  }
  handleClick = (e) => {
 
@@ -241,7 +363,7 @@ class NewProjectPageBase extends React.Component {
 		<div className="main">
 			<div className="sidebar">
 			  <div className={'container'}>
-			     <h4>Project Title</h4>	
+			     <h4>Untutorial Title</h4>	
 				  <div>
 					<TCSEditor 
 					disabled={false}
@@ -264,14 +386,14 @@ class NewProjectPageBase extends React.Component {
 				)}				
 			</div>
 			</div>
-			<h4>Project Description</h4>
+			<h4>Untutorial Description</h4>
 			<div>
 				<TCSEditor 
 					disabled={false}
 					type='text'
 					onEditorChange={this.handlePDescriptionOnChange} 
 					onEditorSave={this.handlePDescriptionOnSave}
-					placeholder={'Project Description'} 
+					placeholder={'Untutorial Description'} 
 					text={untutorial.Description}/>
 			</div>
 			<h4>Level</h4>
@@ -286,9 +408,11 @@ class NewProjectPageBase extends React.Component {
 			 </div>
             </div>
            </div>
-			<div className="content">
 
-					<h1>{untutorial.Title}
+			<div className="content">
+					<h1>New Untutorial
+				    <button onClick={this.saveChangesHandler}>Save</button>
+
 					</h1>
 				{Object.keys(untutorial.steps).map(step => (
 					<div className="step">

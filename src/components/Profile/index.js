@@ -14,6 +14,12 @@ import gmailApi from 'react-gmail'
  	UNTUTORIALS:1,
  	EMAIL:2
  }
+ const groupBy = function(xs, key) {
+  return xs.reduce(function(rv, x) {
+    (rv[x[key]] = rv[x[key]] || []).push(x);
+    return rv;
+  }, {});
+};
 
 class ProfilePageBase extends React.Component {
 
@@ -212,16 +218,62 @@ class ProfilePageBase extends React.Component {
  	this.saveChangesHandler();
  }
  saveChangesHandler(event){
+ 	const {untutorial, loading, author,errors} = this.state;
+ 	const {Title,Description, Level, steps} = untutorial;
+ 	const {authUser} = this.props;
  	const {key} = this.props.match.params;
-
- 	this.props.firebase.profile(key).set({
- 		...this.state.profile
- 	})
+ 	const stepCount = (!!untutorial&& !!untutorial.steps) ? Object.keys(untutorial.steps).length : 0;
+	
+ 	if(Object.values(errors).length === 0){
+ 		untutorial.LastModified = Date.now();
+ 		this.props.firebase.untutorial(key).set({
+	 		...this.state.untutorial
+	 	})
  		.then(()=>{
  			console.log("Successfully Saved");
  			this.setState({dirty:false})
+ 			/*this.props.setGlobalState({
+ 				messages:[{
+
+ 					html:`SAVE.<span class="green">GOOD</span>`,
+ 					type:true},{
+
+ 					html:`Press any key to continue...`,
+ 					type:false,
+
+ 					}],
+ 				showMessage:true
+ 			});*/
  		})
  		.catch(error=>console.log(error));
+ 	}
+ 	else{
+ 		var badFields = Object.keys(errors);
+ 		var messages = [];
+	 	for(var i =0;i< badFields.length;i++){
+
+	 		messages.push({
+				html:errors[badFields[i]],
+				type:true
+			});
+	 	}
+
+		messages.push({
+			html:`Press any key to continue...`,
+			type:false
+		})
+
+	 		
+	 	
+	 	
+ 		this.props.setGlobalState({
+			messages:messages,
+			showMessage:true
+			
+		});
+ 	}
+
+ 	
  	console.log("Save Changes");
  }
 
@@ -230,6 +282,9 @@ class ProfilePageBase extends React.Component {
  	const {untutorials,progress, loading, profile, tab} = this.state;
  	const {authUser} = this.props;
  	const {key} = this.props.match.params;
+ 	var progressLevels = null;
+ 	if(!!progress && progress.length > 0)
+ 		progressLevels = groupBy(progress,'Level');
  	
  	//console.log(Object.keys(project));
  	if(loading)
@@ -312,29 +367,44 @@ class ProfilePageBase extends React.Component {
 			)}
 		</div>
 		  	  <div className="tabs">
-		  	  	<div className="tab progress">
+
+		  	  {!!progress && progress.length > 0 && (
+				<div className="tab progress">
+		  	  	  <h3 onClick={()=>this.setState({tab:TAB.PROGRESS})}>Projects</h3>
 		  	  	  {(!tab || tab==TAB.PROGRESS) && (
 		  	  	  	<div className="content tab-content">
-						   <div className="title">
-						   <h4>Title</h4>
-						   <h4>Status</h4>
-						   <h4>View</h4>
-						   </div>
-							{progress.map(project => (
-							  <div id={project.key}>
-								  {/* <a href={ROUTES.LAUNCHPAD + untutorial.key} >
-									<LazyImage file={this.props.firebase.storage.ref('/public/' + untutorial.Author + '/' + untutorial.ThumbnailFilename)}/>
-								  </a> */}
-								  <a href={project.URL}><h4 dangerouslySetInnerHTML={{__html:project.Title}}/></a>
-								  {/* <h4>{project.Status}</h4> */}
-								  <div><h4 className={project.Status === 'APPROVED' ? 'green status' : 'yellow status'}></h4></div>
-								  <a href={project.URL}><h4>View</h4></a>
-							</div>
+		  	  	  		{Object.keys(progressLevels).map(group=>(
+		  	  	  			<div>
+			  	  	  		   <h3>Level {group}</h3>
+							   <div className="title">
+
+							   <h4>Project</h4>
+							   <h4>Status</h4>
+							   <h4>View</h4>
+							   </div>
+								{progressLevels[group].map(project => (
+								  <div id={project.key}>
+									  {/* <a href={ROUTES.LAUNCHPAD + untutorial.key} >
+										<LazyImage file={this.props.firebase.storage.ref('/public/' + untutorial.Author + '/' + untutorial.ThumbnailFilename)}/>
+									  </a> */}
+									  <a href={project.URL}><h4 dangerouslySetInnerHTML={{__html:project.Title}}/></a>
+									  <h4 className={project.Status === 'APPROVED' ? 'green status' : 'yellow status'}>{project.Status}</h4>
+									  <a href={project.URL}><h4>View</h4></a>
+								</div>
+
+
+			  	  	  		))}
+						</div>
+						  
+
 						
 						))}
 						</div>
 		  	  	  )}
 		  	  	</div>
+
+		  	  )}
+		  	  	
 		  	  	<div className="tab untutorials">
 			  	  	  {tab==TAB.UNTUTORIALS && (
 			  	  	  	<div className="content tab-content">
@@ -343,7 +413,7 @@ class ProfilePageBase extends React.Component {
 						   <h4>Status</h4>
 						   <h4>View</h4>
 						   </div>
-							{untutorials.map(untutorial => (
+							{untutorials.sort().map(untutorial => (
 							  <div id={untutorial.key}>
 								  {/* <a href={ROUTES.LAUNCHPAD + untutorial.key} >
 									<LazyImage file={this.props.firebase.storage.ref('/public/' + untutorial.Author + '/' + untutorial.ThumbnailFilename)}/>

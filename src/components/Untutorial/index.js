@@ -185,7 +185,7 @@ class UntutorialPageBase extends React.Component {
 	 	},
 	 	()=>{
 	 		//complete
-	 		this.setState({uploadPercent:0,uploading:false,project:oCopy})
+	 		this.setState({uploadPercent:0,uploading:false,project:oCopy},this.saveChangesHandler)
 
 	 	})
 
@@ -291,8 +291,10 @@ class UntutorialPageBase extends React.Component {
 	 	const {authUser} = this.props;
 	 	if(authUser && !!authUser.roles['STUDENT'])
 	 		oCopy.Status = 'DRAFT';
-	 	this.setState({untutorial:oCopy,dirty:true});
 	 	this.validateLevel();
+
+	 	this.setState({untutorial:oCopy,dirty:true});
+	 	
  	}
  	
  	
@@ -413,7 +415,7 @@ class UntutorialPageBase extends React.Component {
  	if(authUser && !!authUser.roles['STUDENT'])
  		oCopy.Status = 'DRAFT';
  	delete oCopy.steps[key];
- 	this.setState({untutorial:oCopy,dirty:true});
+ 	this.setState({untutorial:oCopy,dirty:true},this.saveChangesHandler);
  	console.log("Delete Step");
  	console.log(key);
  }
@@ -423,7 +425,7 @@ class UntutorialPageBase extends React.Component {
  	if(authUser && !!authUser.roles['STUDENT'])
  		oCopy.Status = 'DRAFT';
  	oCopy.steps[Math.max(...Object.keys(oCopy.steps)) + 1] = {Description:''};
- 	this.setState({untutorial:oCopy,dirty:true});
+ 	this.setState({untutorial:oCopy,dirty:true},this.saveChangesHandler);
  	console.log("Add Step");
  }
  deleteProjectHandler(value){
@@ -441,8 +443,9 @@ class UntutorialPageBase extends React.Component {
  	const stepCount = (!!untutorial&& !!untutorial.steps) ? Object.keys(untutorial.steps).length : 0;
 	
  	if(Object.values(errors).length === 0){
+ 		untutorial.LastModified = Date.now();
  		this.props.firebase.untutorial(key).set({
-	 		...this.state.untutorial
+	 		...untutorial
 	 	})
  		.then(()=>{
  			console.log("Successfully Saved");
@@ -500,6 +503,8 @@ class UntutorialPageBase extends React.Component {
  
 	
  	if(Object.values(errors).length === 0){
+ 		project.Level = untutorial.Level;
+ 		project.LastModified = Date.now();
  		this.props.firebase.profile(authUser.uid).child('progress').child(untutorial.key).set({
 	 		...project
 	 	})
@@ -646,6 +651,7 @@ class UntutorialPageBase extends React.Component {
 				placeholder={'Untutorial Description'} 
 				text={untutorial.Description}/>
 			</div>
+
 		<div className="workOnProject">
 			{!!authUser && !project && (
 				<button
@@ -653,55 +659,55 @@ class UntutorialPageBase extends React.Component {
 					>Work On This Project!</button>
 			)}
 			{!!project && project.Status == 'FINAL' &&(
-			<h2>GREAT JOB! You finished this project!'</h2>
-		)}
-		{!!project && project.Status != 'FINAL' && !!nextStep && (
-			<h3>Keep it Up! You're on Step {nextStep}!</h3>
-		)}
-		{!!project && !!project.URL && (
-			<div className={'container'}>
-				<h4>{project.Title}</h4>
-				<a href={project.URL}>{project.URL}</a>
-			</div>
-		)}
+
+				<h2>GREAT JOB! You finished this project!'</h2>
+			)}
+			{!!project && project.Status != 'FINAL' && !!nextStep && (
+				<h3>Keep it Up! You're on Step {nextStep}!</h3>
+			)}
+			{!!project&&(
+				<div className={'container'}>
+					<h4>Project Title</h4>
+					<TCSEditor
+						disabled={!!project.Status['FINAL']}
+						type={"plain"} 
+						onEditorChange={this.handleProjectTitleOnChange} 
+						onEditorSave={this.saveProjectHandler} 
+						placeholder={'Project Title'} 
+						text={project.Title}/>
+					
+				</div>
+			)}
+			{!!project&& (
+				
+				<div className={'container'}>
+					<h4>Project URL</h4>
+					<TCSEditor
+						disabled={!!project.Status['FINAL']}
+						type={"plain"} 
+						onEditorChange={this.handleProjectURLOnChange} 
+						onEditorSave={this.saveProjectHandler} 
+						placeholder={'Project URL'} 
+						text={project.URL}/>
+					
+				</div>
+			)}
 		</div>
-		{!!project&&(
-			<div className={'container'}>
-				<TCSEditor
-					disabled={!!project.Status['FINAL']}
-					type={"plain"} 
-					onEditorChange={this.handleProjectTitleOnChange} 
-					onEditorSave={this.saveProjectHandler} 
-					placeholder={'Project Title'} 
-					text={project.Title}/>
-				
-			</div>
-		)}
-		{!!project&& (
-			
 		<div className={'container'}>
-				<TCSEditor
-					disabled={!!project.Status['FINAL']}
-					type={"plain"} 
-					onEditorChange={this.handleProjectURLOnChange} 
-					onEditorSave={this.saveProjectHandler} 
-					placeholder={'Project URL'} 
-					text={project.URL}/>
-				
-			</div>
-		)}
-		<div className={'container'}>
-				<h3>Level</h3>
+			<h3>Level</h3>
 		</div>
 		<div className={'container'} >
-				<TCSEditor 
-					disabled={!(authUser && (!!authUser.roles['ADMIN'] || authUser.uid===untutorial.Author))}
-					type={'select'}
-					selectOptions={["1","2","3","4","5","6"]}
-					onEditorChange={this.handleLevelOnChange}
-					onEditorSave={this.handleLevelOnSave}
-					placeholder={'Level'} 
-					text={untutorial.Level}/>
+			<TCSEditor 
+				disabled={!(authUser && (!!authUser.roles['ADMIN'] || authUser.uid===untutorial.Author))}
+				type={'select'}
+				selectOptions={["1","2","3","4","5","6"]}
+				onEditorChange={this.handleLevelOnChange}
+				onEditorSave={this.handleLevelOnSave}
+				placeholder={'Level'} 
+				text={untutorial.Level}/>
+
+			
+
 		</div>
 		</div>
         <div className="content">
