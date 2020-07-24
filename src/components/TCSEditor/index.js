@@ -107,6 +107,7 @@ class TCSEditor extends React.Component {
  							<option value={option}>{option}</option>
  						))}
  					</select>
+ 					<button onClick={this.handleSave}>Save</button>
 
 				</div>
 			)
