@@ -71,9 +71,10 @@ class ProfilePageBase extends React.Component {
 
  	const {key} = this.props.match.params;
  	this.props.firebase.profile(key).on('value',snapshot => {
+ 		var snap = snapshot.val();
 		this.setState({
-			profile:snapshot.val(),
-			progress:Object.values(snapshot.val().progress),
+			profile:snap,
+			progress: !!snap.progress ? Object.values(snap.progress) : {},
 		})
 		this.props.firebase.untutorials().once('value')
 			.then(snapshot => {
@@ -130,7 +131,7 @@ class ProfilePageBase extends React.Component {
 	 	},
 	 	()=>{
 	 		//complete
-	 		this.setState({uploadPercent:0,uploading:false,profile:pCopy,dirty:true})
+	 		this.setState({uploadPercent:0,uploading:false,profile:pCopy,dirty:true},this.saveChangesHandler)
 
 	 	})
 
@@ -218,62 +219,15 @@ class ProfilePageBase extends React.Component {
  	this.saveChangesHandler();
  }
  saveChangesHandler(event){
- 	const {untutorial, loading, author,errors} = this.state;
- 	const {Title,Description, Level, steps} = untutorial;
- 	const {authUser} = this.props;
  	const {key} = this.props.match.params;
- 	const stepCount = (!!untutorial&& !!untutorial.steps) ? Object.keys(untutorial.steps).length : 0;
-	
- 	if(Object.values(errors).length === 0){
- 		untutorial.LastModified = Date.now();
- 		this.props.firebase.untutorial(key).set({
-	 		...this.state.untutorial
-	 	})
+ 	this.props.firebase.profile(key).set({
+ 		...this.state.profile
+ 	})
  		.then(()=>{
  			console.log("Successfully Saved");
  			this.setState({dirty:false})
- 			/*this.props.setGlobalState({
- 				messages:[{
-
- 					html:`SAVE.<span class="green">GOOD</span>`,
- 					type:true},{
-
- 					html:`Press any key to continue...`,
- 					type:false,
-
- 					}],
- 				showMessage:true
- 			});*/
  		})
  		.catch(error=>console.log(error));
- 	}
- 	else{
- 		var badFields = Object.keys(errors);
- 		var messages = [];
-	 	for(var i =0;i< badFields.length;i++){
-
-	 		messages.push({
-				html:errors[badFields[i]],
-				type:true
-			});
-	 	}
-
-		messages.push({
-			html:`Press any key to continue...`,
-			type:false
-		})
-
-	 		
-	 	
-	 	
- 		this.props.setGlobalState({
-			messages:messages,
-			showMessage:true
-			
-		});
- 	}
-
- 	
  	console.log("Save Changes");
  }
 
@@ -368,7 +322,7 @@ class ProfilePageBase extends React.Component {
 		</div>
 		  	  <div className="tabs">
 
-		  	  {!!progress && progress.length > 0 && (
+		  	  {!!progress && Object.keys(progress).length > 0 && (
 				<div className="tab progress">
 		  	  	  <h3 onClick={()=>this.setState({tab:TAB.PROGRESS})}>Projects</h3>
 		  	  	  {(!tab || tab==TAB.PROGRESS) && (
@@ -404,30 +358,37 @@ class ProfilePageBase extends React.Component {
 		  	  	</div>
 
 		  	  )}
-		  	  	
-		  	  	<div className="tab untutorials">
-			  	  	  {tab==TAB.UNTUTORIALS && (
-			  	  	  	<div className="content tab-content">
-						   <div className="title">
-						   <h4>Title</h4>
-						   <h4>Status</h4>
-						   <h4>View</h4>
-						   </div>
-							{untutorials.sort().map(untutorial => (
-							  <div id={untutorial.key}>
-								  {/* <a href={ROUTES.LAUNCHPAD + untutorial.key} >
-									<LazyImage file={this.props.firebase.storage.ref('/public/' + untutorial.Author + '/' + untutorial.ThumbnailFilename)}/>
-								  </a> */}
-								  <a href={ROUTES.LAUNCHPAD + '/'+  untutorial.key}><h4 dangerouslySetInnerHTML={{__html:untutorial.Title}}/></a>
-								  <div><h4 className={untutorial.Status === 'APPROVED' ? 'green status' : 'yellow status'}></h4></div>
-								  <a href={ROUTES.LAUNCHPAD + '/'+  untutorial.key}><h4>View</h4></a>
+		  	  	{!!untutorials && untutorials.length > 0 && (
+					<div className="tab untutorials">
+				  	  	  {tab==TAB.UNTUTORIALS && (
+				  	  	  	<div className="content tab-content">
+							   <div className="title">
+							   <h4>Title</h4>
+							   <h4>Status</h4>
+							   <h4>View</h4>
+							   </div>
+								{untutorials
+									.sort()
+									.filter(untutorial=>!!authUser.roles['ADMIN'] || authUser.uid===profile.key || untutorial.Status==='APPROVED')
+									.map(untutorial => (
+								  <div id={untutorial.key}>
+									  
+									  {/* <a href={ROUTES.LAUNCHPAD + untutorial.key} >
+										<LazyImage file={this.props.firebase.storage.ref('/public/' + untutorial.Author + '/' + untutorial.ThumbnailFilename)}/>
+									  </a> */}
+									  <a href={ROUTES.LAUNCHPAD + '/'+  untutorial.key}><h4 dangerouslySetInnerHTML={{__html:untutorial.Title}}/></a>
+									  <div><h4 className={untutorial.Status === 'APPROVED' ? 'green status' : 'yellow status'}></h4></div>
+									  <a href={ROUTES.LAUNCHPAD + '/'+  untutorial.key}><h4>View</h4></a>
+								</div>
+							
+							))}
 							</div>
-						
-						))}
-						</div>
-			  	  	  )}
+				  	  	  )}
 
-		  	  	</div>
+			  	  	</div>
+
+		  	  	)}
+		  	  	
 		  	  	{!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===profile.key) && (
 		  	  	<div className="tab email">
 		  	  	  {tab==TAB.EMAIL && (
