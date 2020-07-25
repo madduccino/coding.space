@@ -623,7 +623,7 @@ class UntutorialPageBase extends React.Component {
 				<TCSEditor 
 					disabled={!(authUser && (!!authUser.roles['ADMIN'] || authUser.uid===untutorial.Author))}
 					type={'select'}
-					selectOptions={['DRAFT','FINAL']}
+					selectOptions={['DRAFT','APPROVED']}
 					name={'status'}
 					onEditorChange={this.handleStatusOnChange}
 					onEditorSave={this.handleStatusOnSave}

@@ -57,6 +57,21 @@ class NewUserFormBase extends Component {
                 ThumbnailFilename:'',
                 Status:'DRAFT',
               })
+              .then(res=>{
+                this.props.setGlobalState({
+                  messages:[{
+
+                    html:`CREATE.<span class="green">GOOD</span>`,
+                    type:true},{
+
+                    html:`Press any key to continue...`,
+                    type:false,
+
+                    }],
+                  showMessage:true
+                });
+
+              })
           });
           
         })
