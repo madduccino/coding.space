@@ -243,66 +243,68 @@ class ProfilePageBase extends React.Component {
  	//can edit
 
 	return (
-	 <section id="profile">	
-	 <div className="main">		
-		<div className="sidebar">
-		<div className={this.state.tab===TAB.PROFILE ? 'selected' : ''}>
-			<h3 onClick={()=>this.setState({tab:TAB.PROFILE})}>Profile</h3>
-			</div>
-			<div className={this.state.tab===TAB.PROGRESS ? 'selected' : ''}>
-				<h3 onClick={()=>this.setState({tab:TAB.PROGRESS})}>Progress</h3>
-			</div>
-			<div className={this.state.tab===TAB.UNTUTORIALS ? 'selected' : ''}>
-				<h3 onClick={()=>this.setState({tab:TAB.UNTUTORIALS})}>Untutorials</h3>
-			</div>
-			{!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===profile.key) && (
-			<div className={this.state.tab===TAB.EMAIL ? 'selected' : ''}>
-				<h3 onClick={()=>this.setState({tab:TAB.EMAIL})}>Email</h3>
-			</div>
-			)}
+		<section id="profile">	
+	 	<div className="main">		
+			<div className="sidebar">
 
-
-			</div>
-	<div className="main-content">
-			<div className="tab-labels">
-		
-		</div>
-
-			<div className="tabs">
-				{(tab==TAB.PROFILE) && (
-		  	  <div className="tab profile">	
-
-			<div className="avatar">
-				{this.state.uploading && (
-					<progress value={this.state.uploadPercent} max="100"/>
+				<div className={this.state.tab===TAB.PROFILE ? 'selected' : ''}>
+				<h3 onClick={()=>this.setState({tab:TAB.PROFILE})}>Profile</h3>
+				</div>
+				<div className={this.state.tab===TAB.PROGRESS ? 'selected' : ''}>
+					<h3 onClick={()=>this.setState({tab:TAB.PROGRESS})}>Progress</h3>
+				</div>
+				<div className={this.state.tab===TAB.UNTUTORIALS ? 'selected' : ''}>
+					<h3 onClick={()=>this.setState({tab:TAB.UNTUTORIALS})}>Untutorials</h3>
+				</div>
+				{!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===profile.key) && (
+				<div className={this.state.tab===TAB.EMAIL ? 'selected' : ''}>
+					<h3 onClick={()=>this.setState({tab:TAB.EMAIL})}>Email</h3>
+				</div>
 				)}
-				{!!profile.ThumbnailFilename && !this.state.uploading &&(
-					<LazyImage file={this.props.firebase.storage.ref('/public/' + profile.key + '/' + profile.ThumbnailFilename)}/>
-				)}	
-				<input className="hidden" id="files" type="file" onChange={this.handleThumbnailUpload}/>
-                <label for="files"></label>
-			  </div>
-			  <h4>Display Name</h4>
-			  <TCSEditor 
-					disabled={!(!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===profile.key))}
-					className='display-name' 
-					type='plain'
-					onEditorChange={this.handleDisplayNameOnChange} 
-					onEditorSave={this.handleDisplayNameOnSave} 
-					placeholder={'Display Name'} 
-					text={profile.DisplayName}/>	
-					{!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===profile.key) && (
-				
 
 
-
-				<>
+			</div>
+			<div className="main-content">
+				<div className="tabs">
+				{(tab==TAB.PROFILE) && (
+		  	  		<div className="tab profile">	
+						<div className="avatar">
+							{this.state.uploading && (
+								<progress value={this.state.uploadPercent} max="100"/>
+							)}
+							{!!profile.ThumbnailFilename && !this.state.uploading &&(
+								<LazyImage file={this.props.firebase.storage.ref('/public/' + profile.key + '/' + profile.ThumbnailFilename)}/>
+							)}
+								{!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===profile.key) && (
+								<label for="files" className="upload">
+								<input id="files" type="file" onChange={this.handleThumbnailUpload}/>
+							</label>
+								)}
+			 			</div>
+						{/* <div>
+			
+	
+			
+						</div>	 */}
+									{!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===profile.key) && (
+						<>
 
 					<div><strong>Login</strong><br/> {profile.Username}</div>
 					<div><strong>Email</strong><br/> {profile.Email}</div>
 				</>	
-			)}	
-			  	<div><h4>My Age</h4>
+						)}
+						<div>
+						<h4>Display Name</h4>
+						 <TCSEditor 
+						 disabled={!(!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===profile.key))}
+						className='display-name' 
+						type='plain'
+						onEditorChange={this.handleDisplayNameOnChange} 
+						onEditorSave={this.handleDisplayNameOnSave} 
+						placeholder={'Display Name'} 
+						text={profile.DisplayName}/>
+						</div>
+			  		<div><h4>My Age</h4>
 				<TCSEditor 
 					disabled={!(!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===profile.key))}
 					type='text'
@@ -310,7 +312,7 @@ class ProfilePageBase extends React.Component {
 					onEditorSave={this.handleAgeOnSave}
 					placeholder={'I\'m ___ years old!'} 
 					text={profile.Age}/></div>
-				<div>
+					<div>
 					<h4>About Me</h4>
 				<TCSEditor 
 					disabled={!(!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===profile.key))}
@@ -321,41 +323,41 @@ class ProfilePageBase extends React.Component {
 					placeholder={'About Me'} 
 					text={profile.About}/>
 					</div>
-				<h4>Notes</h4>
-				<TCSEditor 
+					<h4>Notes</h4>
+					<TCSEditor 
 					disabled={!(!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===profile.key))}
 				type='text'
 					onEditorChange={this.handleNotesOnChange} 
 					onEditorSave={this.handleNotesOnSave}
 					placeholder={'Notes'} 
 					text={profile.Notes}/>
-			  </div>	
-
+			  		</div>	
 				)}
-			  {!!progress && Object.keys(progress).length > 0 && (
-				<div className="tab progress">
-		  	  	  {(!tab || tab==TAB.PROGRESS) && (
-		  	  	  	<div className="content tab-content">
-		  	  	  		{Object.keys(progressLevels).map(group=>(
-		  	  	  		<>
-							<h3>Level {group}</h3>
-							{progressLevels[group].map(project => (
-							<div id={project.key}>
-								<a href={project.URL}><h4 dangerouslySetInnerHTML={{__html:project.Title}}/></a>
-								<div className="status"><h4 className={project.Status === 'APPROVED' ? 'green' : 
-								project.Status === 'PENDING' ? 'yellow' :
-								'red'}></h4></div>
-								<a className="center" href={project.URL}><h4>View</h4></a>
+			  	{!!progress && Object.keys(progress).length > 0 && (
+					<div className="tab progress">
+		  	  	  		{(!tab || tab==TAB.PROGRESS) && (
+		  	  	  			<div className="content tab-content">
+		  	  	  				{Object.keys(progressLevels).map(group=>(
+		  	  	  					<>
+										<Accordion group={group} text = {
+											progressLevels[group].map(project => (
+											<div id={project.key}>
+												<a href={project.URL}><h4 dangerouslySetInnerHTML={{__html:project.Title}}/></a>
+												<div className="status">
+													<h4 className={project.Status === 'APPROVED' ? 'green' : project.Status === 'PENDING' ? 'yellow' :'red'}></h4>
+												</div>
+												<a className="center" href={project.URL}><h4>View</h4></a>
+											</div>
+			  	  	  						))
+							  			}/>	
+									</>
+								))}
 							</div>
-			  	  	  		))}
-						</>
-						))}
-					</div>
-		  	  	  )}
-		  	  	</div>
-		  	  )}
-		  	  {!!untutorials && untutorials.length > 0 && (
-				<div className="tab untutorials">
+		  	  	  		)}
+		  	  		</div>
+		  		)}
+		  	  	{!!untutorials && untutorials.length > 0 && (
+					<div className="tab untutorials">
 				  	{tab==TAB.UNTUTORIALS && (
 				  	  	<div className="content tab-content">
 							   <div className="title">
@@ -381,9 +383,9 @@ class ProfilePageBase extends React.Component {
 							</div>
 				  	)}
 				</div>
-		  	   )}	
+		  	  	)}	
 		  	    {!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===profile.key) && (
-		  	  	<div className="tab email">
+		  	  		<div className="tab email">
 		  	  	  {tab==TAB.EMAIL && (
 		  	  	  	<div className='content tab-content'>
 
@@ -393,12 +395,32 @@ class ProfilePageBase extends React.Component {
 
 		  	  	</div>
 		  	  	)}
-		  	  </div>
+		  	</div>
 		</div>	
-	</div>
+		</div>
 	</section>	
 	)
   }
+}
+
+class Accordion extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			collapsed: false
+		}
+	}
+	render() {
+		const {collapsed} = this.state;
+		return(
+			<>
+			<h3 className={collapsed? 'down' : 'up'} onClick={()=> this.setState({collapsed: !collapsed})}>Level {this.props.group}</h3>
+			{!collapsed && (
+				<>{this.props.text}</>
+			)}
+			</>
+		)
+	}
 }
 
 const ProfilePage = withFirebase(withAuthentication(ProfilePageBase));
