@@ -12,7 +12,8 @@ import gmailApi from 'react-gmail'
  const TAB = {
  	PROGRESS:0,
  	UNTUTORIALS:1,
- 	EMAIL:2
+	 EMAIL:2,
+	 PROFILE: 3
  }
  const groupBy = function(xs, key) {
   return xs.reduce(function(rv, x) {
@@ -34,7 +35,7 @@ class ProfilePageBase extends React.Component {
  		uploading:false,
  		uploadPercent:0,
  		dirty:false,
- 		tab:TAB.PROGRESS,
+ 		tab:TAB.PROFILE,
  	}
  	this.handleNotesOnChange = this.handleNotesOnChange.bind(this);
  	this.handleNotesOnSave = this.handleNotesOnSave.bind(this);
@@ -57,15 +58,12 @@ class ProfilePageBase extends React.Component {
  	//console.log("hiya");
 
  }
-
- 
  handleMouseEnter = (target) => {
 
  	if(this.state.canEdit){
  		return; //replace control with rich text editor
  	}
- };
-
+ }
  componentDidMount(){
  	//console.log(this.authUser);
 
@@ -101,7 +99,6 @@ class ProfilePageBase extends React.Component {
 
 
  }
-
  componentWillUnmount(){
  	this.props.firebase.profile().off();
  	this.props.firebase.untutorials().off();
@@ -137,7 +134,6 @@ class ProfilePageBase extends React.Component {
 
 
  }
-
  handlePTitleOnChange(value){
  	var pCopy = this.state.profile;
  	if(value !== pCopy.Title){
@@ -248,66 +244,11 @@ class ProfilePageBase extends React.Component {
 
 	return (
 	 <section id="profile">	
-	<div className="main">		
+	 <div className="main">		
 		<div className="sidebar">
-			  <div className="avatar">
-				{this.state.uploading && (
-					<progress value={this.state.uploadPercent} max="100"/>
-				)}
-				{!!profile.ThumbnailFilename && !this.state.uploading &&(
-					<LazyImage file={this.props.firebase.storage.ref('/public/' + profile.key + '/' + profile.ThumbnailFilename)}/>
-				)}	
-				<input className="hidden" id="files" type="file" onChange={this.handleThumbnailUpload}/>
-                <label for="files"></label>
-			  </div>
-			  <TCSEditor 
-					disabled={!(!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===profile.key))}
-					className='display-name' 
-					type='plain'
-					onEditorChange={this.handleDisplayNameOnChange} 
-					onEditorSave={this.handleDisplayNameOnSave} 
-					placeholder={'Display Name'} 
-					text={profile.DisplayName}/>	
-				{!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===profile.key) && (
-				<div className={'container'}>
-					<h4>Account information</h4>
-					<div className="field">
-					<div className={'block'}><strong>Login</strong><br/> {profile.Username}</div>
-					<div className={'block'}><strong>Email</strong><br/> {profile.Email}</div>
-					</div>
-				</div>	
-			)}
-	
-				<h4>About Me</h4>
-				<TCSEditor 
-					disabled={!(!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===profile.key))}
-					className={'block'} 
-					type='text'
-					onEditorChange={this.handlePDescriptionOnChange} 
-					onEditorSave={this.handlePDescriptionOnSave}
-					placeholder={'About Me'} 
-					text={profile.About}/>
-			
-				<h4>My Age</h4>
-				<TCSEditor 
-					disabled={!(!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===profile.key))}
-					type='text'
-					onEditorChange={this.handleAgeOnChange} 
-					onEditorSave={this.handleAgeOnSave}
-					placeholder={'I\'m ___ years old!'} 
-					text={profile.Age}/>
-			
-				<h4>Notes</h4>
-				<TCSEditor 
-					disabled={!(!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===profile.key))}
-				type='text'
-					onEditorChange={this.handleNotesOnChange} 
-					onEditorSave={this.handleNotesOnSave}
-					placeholder={'Notes'} 
-					text={profile.Notes}/>
+		<div className={this.state.tab===TAB.PROFILE ? 'selected' : ''}>
+			<h3 onClick={()=>this.setState({tab:TAB.PROFILE})}>Profile</h3>
 			</div>
-		<div className="main-content">
-		<div className="tab-labels">
 			<div className={this.state.tab===TAB.PROGRESS ? 'selected' : ''}>
 				<h3 onClick={()=>this.setState({tab:TAB.PROGRESS})}>Progress</h3>
 			</div>
@@ -319,49 +260,104 @@ class ProfilePageBase extends React.Component {
 				<h3 onClick={()=>this.setState({tab:TAB.EMAIL})}>Email</h3>
 			</div>
 			)}
-		</div>
-		  	  <div className="tabs">
 
-		  	  {!!progress && Object.keys(progress).length > 0 && (
+
+			</div>
+	<div className="main-content">
+			<div className="tab-labels">
+		
+		</div>
+
+			<div className="tabs">
+				{(tab==TAB.PROFILE) && (
+		  	  <div className="tab profile">	
+
+			<div className="avatar">
+				{this.state.uploading && (
+					<progress value={this.state.uploadPercent} max="100"/>
+				)}
+				{!!profile.ThumbnailFilename && !this.state.uploading &&(
+					<LazyImage file={this.props.firebase.storage.ref('/public/' + profile.key + '/' + profile.ThumbnailFilename)}/>
+				)}	
+				<input className="hidden" id="files" type="file" onChange={this.handleThumbnailUpload}/>
+                <label for="files"></label>
+			  </div>
+			  <h4>Display Name</h4>
+			  <TCSEditor 
+					disabled={!(!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===profile.key))}
+					className='display-name' 
+					type='plain'
+					onEditorChange={this.handleDisplayNameOnChange} 
+					onEditorSave={this.handleDisplayNameOnSave} 
+					placeholder={'Display Name'} 
+					text={profile.DisplayName}/>	
+					{!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===profile.key) && (
+				
+
+
+
+				<>
+
+					<div><strong>Login</strong><br/> {profile.Username}</div>
+					<div><strong>Email</strong><br/> {profile.Email}</div>
+				</>	
+			)}	
+			  	<div><h4>My Age</h4>
+				<TCSEditor 
+					disabled={!(!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===profile.key))}
+					type='text'
+					onEditorChange={this.handleAgeOnChange} 
+					onEditorSave={this.handleAgeOnSave}
+					placeholder={'I\'m ___ years old!'} 
+					text={profile.Age}/></div>
+				<div>
+					<h4>About Me</h4>
+				<TCSEditor 
+					disabled={!(!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===profile.key))}
+					className={'block'} 
+					type='text'
+					onEditorChange={this.handlePDescriptionOnChange} 
+					onEditorSave={this.handlePDescriptionOnSave}
+					placeholder={'About Me'} 
+					text={profile.About}/>
+					</div>
+				<h4>Notes</h4>
+				<TCSEditor 
+					disabled={!(!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===profile.key))}
+				type='text'
+					onEditorChange={this.handleNotesOnChange} 
+					onEditorSave={this.handleNotesOnSave}
+					placeholder={'Notes'} 
+					text={profile.Notes}/>
+			  </div>	
+
+				)}
+			  {!!progress && Object.keys(progress).length > 0 && (
 				<div className="tab progress">
-		  	  	  <h3 onClick={()=>this.setState({tab:TAB.PROGRESS})}>Projects</h3>
 		  	  	  {(!tab || tab==TAB.PROGRESS) && (
 		  	  	  	<div className="content tab-content">
 		  	  	  		{Object.keys(progressLevels).map(group=>(
-		  	  	  			<div>
-			  	  	  		   <h3>Level {group}</h3>
-							   <div className="title">
-
-							   <h4>Project</h4>
-							   <h4>Status</h4>
-							   <h4>View</h4>
-							   </div>
-								{progressLevels[group].map(project => (
-								  <div id={project.key}>
-									  {/* <a href={ROUTES.LAUNCHPAD + untutorial.key} >
-										<LazyImage file={this.props.firebase.storage.ref('/public/' + untutorial.Author + '/' + untutorial.ThumbnailFilename)}/>
-									  </a> */}
-									  <a href={project.URL}><h4 dangerouslySetInnerHTML={{__html:project.Title}}/></a>
-									  <h4 className={project.Status === 'APPROVED' ? 'green status' : 'yellow status'}>{project.Status}</h4>
-									  <a href={project.URL}><h4>View</h4></a>
-								</div>
-
-
+		  	  	  		<>
+							<h3>Level {group}</h3>
+							{progressLevels[group].map(project => (
+							<div id={project.key}>
+								<a href={project.URL}><h4 dangerouslySetInnerHTML={{__html:project.Title}}/></a>
+								<div className="status"><h4 className={project.Status === 'APPROVED' ? 'green' : 
+								project.Status === 'PENDING' ? 'yellow' :
+								'red'}></h4></div>
+								<a className="center" href={project.URL}><h4>View</h4></a>
+							</div>
 			  	  	  		))}
-						</div>
-						  
-
-						
+						</>
 						))}
-						</div>
+					</div>
 		  	  	  )}
 		  	  	</div>
-
 		  	  )}
-		  	  	{!!untutorials && untutorials.length > 0 && (
-					<div className="tab untutorials">
-				  	  	  {tab==TAB.UNTUTORIALS && (
-				  	  	  	<div className="content tab-content">
+		  	  {!!untutorials && untutorials.length > 0 && (
+				<div className="tab untutorials">
+				  	{tab==TAB.UNTUTORIALS && (
+				  	  	<div className="content tab-content">
 							   <div className="title">
 							   <h4>Title</h4>
 							   <h4>Status</h4>
@@ -383,13 +379,10 @@ class ProfilePageBase extends React.Component {
 							
 							))}
 							</div>
-				  	  	  )}
-
-			  	  	</div>
-
-		  	  	)}
-		  	  	
-		  	  	{!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===profile.key) && (
+				  	)}
+				</div>
+		  	   )}	
+		  	    {!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===profile.key) && (
 		  	  	<div className="tab email">
 		  	  	  {tab==TAB.EMAIL && (
 		  	  	  	<div className='content tab-content'>
@@ -401,14 +394,12 @@ class ProfilePageBase extends React.Component {
 		  	  	</div>
 		  	  	)}
 		  	  </div>
-			  
-			</div>	
-		</div>
-	 </section>	
+		</div>	
+	</div>
+	</section>	
 	)
   }
 }
-
 
 const ProfilePage = withFirebase(withAuthentication(ProfilePageBase));
 
