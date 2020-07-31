@@ -16,6 +16,7 @@ import UntutorialPage from '../Untutorial';
 import ProfilePage from '../Profile';
 import ClassPage from '../Class';
 import NewProjectPage from '../NewProject';
+import Simulator from '../Simulator';
 import ResourcePage from '../Resources';
 import NewClassPage from '../NewClass';
 import LaunchPad from '../LaunchPad';
@@ -100,6 +101,7 @@ class App extends Component {
 							<Route path={ROUTES.PROFILE} render={(props)=><ProfilePage {...props} setGlobalState={this.setGlobalState} />} />
 							<Route path={ROUTES.CLASS} render={(props)=><ClassPage {...props} setGlobalState={this.setGlobalState} />} />
 							<Route path={ROUTES.NEW_PROJECT} render={(props)=><NewProjectPage {...props} setGlobalState={this.setGlobalState} />} />
+							<Route path={ROUTES.SIMULATOR} render={(props)=><Simulator {...props} setGlobalState={this.setGlobalState} />} />
 							<Route path={ROUTES.NEW_CLASS} render={(props)=><NewClassPage {...props} setGlobalState={this.setGlobalState} />} />
 							{this.state.showFooter &&
 								<Footer showFooter={this.state.showFooter} />

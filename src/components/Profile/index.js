@@ -72,10 +72,13 @@ class ProfilePageBase extends React.Component {
  	const {key} = this.props.match.params;
  	this.props.firebase.profile(key).on('value',snapshot => {
  		var snap = snapshot.val();
+ 		if(!snap.Notes)
+			snap.Notes = '';
 		this.setState({
 			profile:snap,
 			progress: !!snap.progress ? Object.values(snap.progress) : {},
 		})
+		
 		this.props.firebase.untutorials().once('value')
 			.then(snapshot => {
  				const {key} = this.props.match.params;
@@ -300,7 +303,8 @@ class ProfilePageBase extends React.Component {
 				<h4>Notes</h4>
 				<TCSEditor 
 					disabled={!(!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===profile.key))}
-				type='text'
+					className={'block'}
+					type='text'
 					onEditorChange={this.handleNotesOnChange} 
 					onEditorSave={this.handleNotesOnSave}
 					placeholder={'Notes'} 
@@ -308,12 +312,16 @@ class ProfilePageBase extends React.Component {
 			</div>
 		<div className="main-content">
 		<div className="tab-labels">
-			<div className={this.state.tab===TAB.PROGRESS ? 'selected' : ''}>
-				<h3 onClick={()=>this.setState({tab:TAB.PROGRESS})}>Progress</h3>
-			</div>
-			<div className={this.state.tab===TAB.UNTUTORIALS ? 'selected' : ''}>
-				<h3 onClick={()=>this.setState({tab:TAB.UNTUTORIALS})}>Untutorials</h3>
-			</div>
+			{!!progress && Object.keys(progress).length > 0 && (
+				<div className={this.state.tab===TAB.PROGRESS ? 'selected' : ''}>
+					<h3 onClick={()=>this.setState({tab:TAB.PROGRESS})}>Progress</h3>
+				</div>
+			)}
+			{!!untutorials && untutorials.length > 0 && (
+				<div className={this.state.tab===TAB.UNTUTORIALS ? 'selected' : ''}>
+					<h3 onClick={()=>this.setState({tab:TAB.UNTUTORIALS})}>Untutorials</h3>
+				</div>
+			)}
 			{!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===profile.key) && (
 			<div className={this.state.tab===TAB.EMAIL ? 'selected' : ''}>
 				<h3 onClick={()=>this.setState({tab:TAB.EMAIL})}>Email</h3>
