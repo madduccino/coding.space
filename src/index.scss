@@ -76,47 +76,42 @@
   }
 
   #header {
-    background-color: #fff;
+      background-color: #fff;
       width: 100%;
       border-bottom: 5px solid $lightGreen;
-
+      display: flex;
+      .logo {
+        display: flex;
+        flex-flow: column wrap;
+        justify-content: center;
+        margin: 0 40px;
+        img {
+          width: 50px;
+          height: 50px;
+        }
+      }
       .nav {
-        display: grid;
+        display: flex;
         line-height: 70px;
-        grid-template-columns: repeat(10,1fr);
-        grid-template-rows: 1fr 1fr;      
         width:100%;
         height: 70px;
+        flex-flow: row wrap;
+        justify-content: flex-end;
         .signIn {
-          grid-row: 1;
-          grid-column: 9/10;
-          width: 100%;
-          background-color: $orange;
-          display: flex;
-          flex-flow: row wrap;
-          justify-content: center;
           color: #fff;
-          align-content: center;
           text-align: center;
           border-radius: 8px;
           transition: background-color 2s;
-          height: 50px;
-          margin-top: 10px;
+          background-color: $orange;
+          padding: 10px 20px;
           &:hover {
             background-color: $darkerOrange;
           }
         }
-        a {
+       > a {
+          margin: 0 20px;
           &:not(.logo) {
             text-align:right;
-          }
-          &.logo {
-            grid-column: 2 / 5; 
-            img {
-              width: 50px;
-              height: 50px;
-              vertical-align:middle;
-            }
           }
         }
         .hideMenu {
@@ -128,9 +123,23 @@
           flex-flow: column wrap;
           line-height: 1rem;
           background-color: $lightblue;
-          grid-column: 8/10;
-          grid-row: 2;
           z-index: 99;
+          position: absolute;
+          top: 70px;
+          margin: 0 40px 0 0;
+          &:before {
+            // width: 0; 
+            // height: 0; 
+            // border-left: 20px solid transparent;
+            // border-right: 20px solid transparent;
+            // border-bottom: 20px solid $lightGreen;
+            // top: -20px;
+            // right: 0;
+            // position: absolute;
+            // content: "";
+            // z-index: 0;
+            // cursor: pointer;
+          }
           button {
             border-radius: 0;
             padding: 5px 20px;
@@ -138,8 +147,9 @@
             background-color: $darkerOrange;
           }
           a {
-            padding: 5px;
+            padding: 10px 40px;
             text-align:left;
+            z-index: 1;
           }
           a:hover {
             background-color: $orange;
@@ -148,13 +158,17 @@
         .dropdown {
           cursor: pointer;
           text-align: right;
-          grid-column: 8 / 10; 
           height: 70px;
           z-index: 99;
+          margin: 0 40px;
           #menu {
             display: flex;
             flex-flow: row wrap;
             justify-content: flex-end;
+            padding: 0 5px;
+            &.highlight {
+              background-color: $lightGreen;
+            }
             img {
               width: 40px;
               height: 40px;
@@ -162,8 +176,20 @@
               margin-right: 10px;
               margin-top: 15px;
             }
+            &:after {
+            width: 0; 
+            height: 0; 
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            border-top: 5px solid $darkgreen;
+            content: "";
+            cursor: pointer;
+            margin: 35px 0 0 5px;
+            }
+            &:hover {
+              background-color: $lightGreen;
+            }
           }
-    
         }
       }
   }
@@ -416,11 +442,7 @@
         }
       }
       }
-      .title {
-        padding-top: 20px;
-        text-align: center;
-        // background-color:$lightGreen;
-      }
+
     } 
   }
     .quill {
@@ -780,7 +802,7 @@
         width: 100px;
         height: 100px;
         border: 1px solid #ccc;
-        margin: 0 auto;
+        margin: 0 auto 40px;
         padding: 20px;
         border-radius: 50%;
         img {
@@ -874,9 +896,14 @@
       }
     }
      .tab-content {
+       .title {
+         background-color: $lightGreen;
+         text-align: center;
+         border: 3px solid #7ae2da;
+       }
         > div {
-          background-color: #fff9e4;
-          border-bottom: 1px solid #fbf0cd; 
+          background-color: $beige;
+          border-bottom: 1px solid #f3eddb;
           padding: 10px;
         }
      }

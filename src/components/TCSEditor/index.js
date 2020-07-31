@@ -2,8 +2,6 @@ import React from 'react';
 import ReactQuill from 'react-quill';
 import './quill.snow.scss';
 
-
-
 class TCSEditor extends React.Component {
 	constructor(props){
 		super(props);
@@ -71,30 +69,6 @@ class TCSEditor extends React.Component {
 			)
 		}
 		else if(!disabled && !editing){
-			if (this.props.type==='steparoo') {
-				return (
-				  <div className={'field ' + className}>
-				   {editme && (
-				   <p className="desc">Click the gear to edit this text!</p>
-				   )}
-				    <div className="step-text" name={name} dangerouslySetInnerHTML={{__html:text}}/>
-
-				      <img className="gear" onClick={this.showDropdown} src="/images/gear.png"/>
-					
-					{dropdown && (
-					  <div className="dropdown">
-						
-						<div className="edit" onClick={this.handleEdit}>Edit Text</div>
-				        <div className="add" onClick={this.props.addStepHandler}>Add Step</div>
-					    
-
-					{this.props.stepCount > 1 && (
-					    <img className="del" onClick={event=>this.props.deleteSteppedy(event,this.props.step,this.props.dropdown)} src="/images/delete.png"/> 
-				    )}  
-                  </div>)}
-			    </div>
-			  )
-			}
 			return (
 				<div className={'field ' + className}>
 

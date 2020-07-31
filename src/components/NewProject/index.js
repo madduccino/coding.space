@@ -67,15 +67,12 @@ class NewProjectPageBase extends React.Component {
  	//console.log("hiya");
 
  }
-
- 
  handleMouseEnter = (target) => {
 
  	if(this.state.canEdit){
  		return; //replace control with rich text editor
  	}
  };
-
  componentDidMount(){
 
  	var pCopy = this.state.untutorial;
@@ -83,14 +80,8 @@ class NewProjectPageBase extends React.Component {
  	this.setState({
  		untutorialRef: this.props.firebase.untutorial(this.state.untutorial.key),
  		untutorial:pCopy,
- 		loading:false,
-
-
- 		
+ 		loading:false,	
  	})
-
- 	
-
 
  }
  componentWillReceiveProps(props){
@@ -105,16 +96,12 @@ class NewProjectPageBase extends React.Component {
  	}
  		
  }
- onChange = event => {
-    
+ onChange = event => {  
   	this.setState({ [event.target.name]: event.target.value });
-    
-
  };
  componentWillUnmount(){
 	 this.props.firebase.untutorial().off();
 	 document.body.removeEventListener('click', this.handleClick);
-
  }
   handlePTitleOnChange(value){
  	var pCopy = this.state.untutorial;
@@ -123,13 +110,10 @@ class NewProjectPageBase extends React.Component {
  		this.setState({untutorial:pCopy});
  		this.validatePTitle();
  	}
- 	
  }
  validatePTitle(){
  	const {untutorial,errors} = this.state;
  	const {authUser} = this.props;
- 	
- 	
  	if(untutorial.Title===''){
  		errors['UNTUTORIAL_TITLE'] = 'UNTUTORIAL_TITLE.<span class="red">ISREQUIRED</span>'; 		
  	}
@@ -445,7 +429,6 @@ class NewProjectPageBase extends React.Component {
  	
 	}
 }
-
 
 const NewProjectPage = withFirebase(withAuthentication(NewProjectPageBase));
 

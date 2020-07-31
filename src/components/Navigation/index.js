@@ -5,6 +5,7 @@ import * as ROUTES from '../../constants/routes';
 import * as ROLES from '../../constants/roles';
 import { AuthUserContext, withAuthentication } from '../Session';
 import LazyImage from '../LazyImage';
+import logo from './logo.png'
 
 class Navigation extends React.Component{
   constructor(props){
@@ -18,8 +19,9 @@ class Navigation extends React.Component{
     const {pathname} = this.props.location;
     if(authUser)
       return (
+        <>
+        <Link className="logo" to={ROUTES.LANDING}><img src={logo} /></Link>
         <div className="nav">
-            <Link className="logo" to={ROUTES.LANDING}><img src="/images/logo.png" /></Link>
             <Link to={ROUTES.NEW_PROJECT}>New Project</Link>
             <Link to={ROUTES.CLASSES}>My Classes</Link>             
             {!!authUser.roles[ROLES.ADMIN] && (
@@ -39,21 +41,22 @@ class Navigation extends React.Component{
             {(!!authUser.roles[ROLES.ADMIN] || !!authUser.roles[ROLES.TEACHER]) && (
               <Link to={ROUTES.RESOURCE_HOME}>Resources</Link>
             )}
+            <Link to={'/launchpad'}>Launchpad</Link>
             <SignOutButton />
           </div>
        
         </div>
-     
-
+        </>
       )
     return (
-
-        <div className="nav">
-          <Link className="logo" to={ROUTES.LANDING}><img src="images/logo.png" /></Link>
+      <>
+      <Link className="logo" to={ROUTES.LANDING}><img src={logo} /></Link>
+      <div className="nav">
           {pathname != '/signin' && (
-          <Link className="signIn" to={ROUTES.SIGN_IN}>Sign In</Link>
+          <Link to={ROUTES.SIGN_IN}><span className="signIn">Sign In</span></Link>
           )}
         </div>
+        </>
       )
   }
 }

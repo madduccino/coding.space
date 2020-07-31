@@ -244,14 +244,13 @@ class ProfilePageBase extends React.Component {
 
 	return (
 		<section id="profile">	
-	 	<div className="main">		
+	 	  <div className="main">		
 			<div className="sidebar">
-
 				<div className={this.state.tab===TAB.PROFILE ? 'selected' : ''}>
 				<h3 onClick={()=>this.setState({tab:TAB.PROFILE})}>Profile</h3>
 				</div>
 				<div className={this.state.tab===TAB.PROGRESS ? 'selected' : ''}>
-					<h3 onClick={()=>this.setState({tab:TAB.PROGRESS})}>Progress</h3>
+					<h3 onClick={()=>this.setState({tab:TAB.PROGRESS})}>Projects</h3>
 				</div>
 				<div className={this.state.tab===TAB.UNTUTORIALS ? 'selected' : ''}>
 					<h3 onClick={()=>this.setState({tab:TAB.UNTUTORIALS})}>Untutorials</h3>
@@ -261,8 +260,6 @@ class ProfilePageBase extends React.Component {
 					<h3 onClick={()=>this.setState({tab:TAB.EMAIL})}>Email</h3>
 				</div>
 				)}
-
-
 			</div>
 			<div className="main-content">
 				<div className="tabs">
@@ -281,11 +278,6 @@ class ProfilePageBase extends React.Component {
 							</label>
 								)}
 			 			</div>
-						{/* <div>
-			
-	
-			
-						</div>	 */}
 									{!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===profile.key) && (
 						<>
 
@@ -370,13 +362,9 @@ class ProfilePageBase extends React.Component {
 									.filter(untutorial=>!!authUser.roles['ADMIN'] || authUser.uid===profile.key || untutorial.Status==='APPROVED')
 									.map(untutorial => (
 								  <div id={untutorial.key}>
-									  
-									  {/* <a href={ROUTES.LAUNCHPAD + untutorial.key} >
-										<LazyImage file={this.props.firebase.storage.ref('/public/' + untutorial.Author + '/' + untutorial.ThumbnailFilename)}/>
-									  </a> */}
 									  <a href={ROUTES.LAUNCHPAD + '/'+  untutorial.key}><h4 dangerouslySetInnerHTML={{__html:untutorial.Title}}/></a>
-									  <div><h4 className={untutorial.Status === 'APPROVED' ? 'green status' : 'yellow status'}></h4></div>
-									  <a href={ROUTES.LAUNCHPAD + '/'+  untutorial.key}><h4>View</h4></a>
+									  <div className="center"><h4 className={untutorial.Status === 'APPROVED' ? 'green status' : 'yellow status'}></h4>{untutorial.Status}</div>
+									  <a className="center" href={ROUTES.LAUNCHPAD + '/'+  untutorial.key}><h4>View</h4></a>
 								</div>
 							
 							))}
