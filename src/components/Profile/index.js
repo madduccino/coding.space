@@ -69,7 +69,9 @@ class ProfilePageBase extends React.Component {
 
  	const {key} = this.props.match.params;
  	this.props.firebase.profile(key).on('value',snapshot => {
- 		var snap = snapshot.val();
+		 var snap = snapshot.val();
+		 if(!snap.Notes)
+		   snap.Notes='';
 		this.setState({
 			profile:snap,
 			progress: !!snap.progress ? Object.values(snap.progress) : {},
@@ -272,11 +274,11 @@ class ProfilePageBase extends React.Component {
 							{!!profile.ThumbnailFilename && !this.state.uploading &&(
 								<LazyImage file={this.props.firebase.storage.ref('/public/' + profile.key + '/' + profile.ThumbnailFilename)}/>
 							)}
-								{!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===profile.key) && (
+							{!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===profile.key) && (
 								<label for="files" className="upload">
-								<input id="files" type="file" onChange={this.handleThumbnailUpload}/>
-							</label>
-								)}
+									<input id="files" type="file" onChange={this.handleThumbnailUpload}/>
+								</label>
+							)}
 			 			</div>
 									{!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===profile.key) && (
 						<>

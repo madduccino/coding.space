@@ -73,7 +73,6 @@ class LaunchPad extends React.Component {
  	//console.log("hiya")
  	return (
 		<section id="launchpad">
-			<h1>Launch Pad</h1>
 			{/* <a target="_blank" href="http://scratch.mit.edu/create">
 				<button id="go-to-scratch" class="btn btn-success">Go to Scratch
 				</button>
@@ -88,7 +87,6 @@ class LaunchPad extends React.Component {
 			    
 			    <input type='text' onChange={this.textFilterOnChange} placeholder="Search..."/>
 				</div>	
-
 			    {selectedFilters.length > 0 && (
 			    	<div className="filter-categories">
 			    		{selectedFilters.map(f=>(
@@ -97,27 +95,25 @@ class LaunchPad extends React.Component {
 			    	</div>
 			    )}	
 			<div className="main">	
-
 				{untutorials.filter(untutorial=>
 					untutorial.Status === 'APPROVED' && 
 					(filter.length === 0 || filter.filter(f=>Object.keys(untutorial.Categories).includes(f)).length > 0) &&
 					untutorial.Title.toLowerCase().includes(textFilter.toLowerCase())).map(untutorial => (
-
-					
-					<div id={untutorial.key}>
-						<a href={ROUTES.LAUNCHPAD + '/' + untutorial.key} path={'/public/' + untutorial.Author + '/' + untutorial.ThumbnailFilename}>
+				
+						<a id={untutorial.key} href={ROUTES.LAUNCHPAD + '/' + untutorial.key} path={'/public/' + untutorial.Author + '/' + untutorial.ThumbnailFilename}>
 							<LazyImage key={untutorial.key} file={this.props.firebase.storage.ref('/public/' + untutorial.Author + '/' + untutorial.ThumbnailFilename)}/>
-						</a>
+						
 						<div>
-							<h4 dangerouslySetInnerHTML={{__html:untutorial.Title}}/>
+							<h2 dangerouslySetInnerHTML={{__html:untutorial.Title}}/>
+							<div dangerouslySetInnerHTML={{__html:untutorial.Description}}/>
 						</div>
-					</div>
+					</a>
 				))}
 			</div>
 
 
     </section>
 	)
-}
+  }
 }
 export default withFirebase(LaunchPad);

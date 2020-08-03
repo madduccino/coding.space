@@ -41,7 +41,7 @@ class Navigation extends React.Component{
             {(!!authUser.roles[ROLES.ADMIN] || !!authUser.roles[ROLES.TEACHER]) && (
               <Link to={ROUTES.RESOURCE_HOME}>Resources</Link>
             )}
-            <Link to={'/launchpad'}>Launchpad</Link>
+            <Link to={'/launchpad'}>Launch Pad</Link>
             <SignOutButton />
           </div>
        

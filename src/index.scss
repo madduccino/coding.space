@@ -41,7 +41,6 @@
       color: #fff;
       text-shadow: rgb(53, 173, 185) 2px 1px 0px;  
       text-align: center;
-    
   }
 
   #landing h1 {
@@ -68,6 +67,11 @@
     text-align: center;
   }
 
+  .title {
+    font-size: 2rem;
+    font-family: $headerFont;
+  }
+  
   #page-container {
       display: grid;
       height: 100%;
@@ -110,6 +114,10 @@
         }
        > a {
           margin: 0 20px;
+          &:hover {
+            border-top: 4px solid $lightGreen;
+   
+          }
           &:not(.logo) {
             text-align:right;
           }
@@ -167,7 +175,7 @@
             justify-content: flex-end;
             padding: 0 5px;
             &.highlight {
-              background-color: $lightGreen;
+              border-top: 4px solid $lightGreen;
             }
             img {
               width: 40px;
@@ -187,7 +195,7 @@
             margin: 35px 0 0 5px;
             }
             &:hover {
-              background-color: $lightGreen;
+              border-top: 4px solid $lightGreen;
             }
           }
         }
@@ -297,7 +305,6 @@
 
   #classes, #launchpad {
     img {
-      width: 100%;
     }
   }
 
@@ -331,7 +338,8 @@
     background-color: $darkgreen;
     word-wrap: break-word;
     > div {
-      padding: 5px 60px;
+      padding: 0 20px;
+      margin-bottom: 40px;
     }
     button {
       padding: 0 6px;
@@ -361,17 +369,17 @@
     }
     .field {
       position: relative;
-      font-size: 2rem;
-      line-height: 2rem;
-      font-size: 1rem;
-      border-bottom-right-radius: 4px;
-      border-bottom-left-radius: 4px;
-      color: $darkgreen;
-      background-color: #fff;
-      padding-bottom: 1px;
+      border:1px;
+      // font-size: 2rem;
+      // line-height: 2rem;
+      // font-size: 1rem;
+      // border-bottom-right-radius: 4px;
+      // border-bottom-left-radius: 4px;
+      // color: $darkgreen;
+      // background-color: #fff;
+      // padding-bottom: 1px;
       .edit, .done {
-        top: -40px;
-        right: 0;
+        right: 10px;
         position: absolute;
       }
       &.display-name {
@@ -387,9 +395,6 @@
           top: 0;
           right: 30px;
         }
-      }
-      > div:not(.quill) {
-        padding: 10px 40px;
       }
     }
   
@@ -419,12 +424,27 @@
     position: relative;
     // grid-column: span 2;
     position: relative;
+    .container {
+      .field {
+        position: relative;
+        margin: 40px;
+        background-color: $beige;
+        padding: 10px 40px;
+        border-radius: 8px; 
+        font-weight: bold;
+        .edit {
+          right: 20px;
+          top: 20px;
+        }
+      }
+    }
     .content {
       > div { 
       display: grid;
       grid-template-columns: 1fr 1fr 1fr;
-  
       .field {
+        position: 2px solid red;
+
         img {
           width: 25px;
           height: auto;
@@ -453,12 +473,12 @@
 
   #classes, #profile, #clazz, #launchpad {
   .main {
-    color: #fff;
-    display: grid;
-    grid-template-columns: 1fr 4fr;
+    // color: #fff;
+    // display: grid;
+    // grid-template-columns: 1fr 4fr;
     img:not(.edit) {
-      width: 274px;
-      height: 226px;
+      // width: 274px;
+      // height: 226px;
     }
    }
   }
@@ -467,42 +487,64 @@
     .main {
       color: #fff;
       display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      grid-gap: 2rem;
-      padding: 2rem;
-      align-content: start;
+      grid-template-columns: repeat(4,1fr);
+      grid-gap: 3rem;
+      margin: 40px;
+      > a {
+        background-color: #fff;
+        border-radius: 8px;
+        color: $darkgreen;
+        img {
+            width: 100%;
+            object-fit: contain;
+        }
+        > div {
+          padding: 0 20px;
+          font-size: 1rem;
+          font-family: $bodyFont;
+          font-weight: 300;
+          p {
+          line-height: 1.6rem;
+          }
+        }
+      }
     }
   }
 
   #untutorial {
-    .main {
-      margin-top: 20px;
+    img {
+      max-width: 100%;
+      object-fit: contain;
+      }
+    }
+    // .main {
+    //   margin-top: 20px;
   
-      .container {
-        max-width: 400px;
-        position: relative;
-        margin: 10px auto;
-      h2 {
-        font-size: 3rem;
-      }
-        .field {
-          position: relative;
+    //   .container {
+    //     max-width: 400px;
+    //     position: relative;
+    //     margin: 10px auto;
+    //   h2 {
+    //     font-size: 3rem;
+    //   }
+    //     .field {
+    //       position: relative;
       
-        img {
-          position: absolute;
-          top: 0;
-          right: -30px;
-          cursor: pointer;
-        }
-        .workOnProject {
-          grid-row-start: 2;
-        }
+    //     img {
+    //       position: absolute;
+    //       top: 0;
+    //       right: -30px;
+    //       cursor: pointer;
+    //     }
+    //     .workOnProject {
+    //       grid-row-start: 2;
+    //     }
       
-      }
+    //   }
       
-    }
-    }
-  }
+    // }
+    // }
+  
 
   #signin, #forget, #signup, #signIn {
     background:url('/images/bg2.png') no-repeat;
@@ -585,10 +627,10 @@
         right: 0;
       }
       .field {
-        height:100%;
-        background-color: #fff;
-        border-radius: 4px;
-        overflow: auto;
+        // height:100%;
+        // background-color: #fff;
+        // border-radius: 4px;
+        // overflow: auto;
         .step-text {
           margin-right: 90px;
         }
@@ -650,13 +692,12 @@
   }  
 
   #launchpad {
-    .main {
-      align-content: start;
-    }
+    margin-top: 10px;
     .filter {
     display:flex;
     flex-flow: row wrap;
     justify-content: center;
+    margin-top: 30px;
     }
     .filter-categories {
       text-align: center;
@@ -796,50 +837,7 @@
         }
     }
     .profile {
-      .avatar {   
-        position: relative;
-        text-align: center;
-        width: 100px;
-        height: 100px;
-        border: 1px solid #ccc;
-        margin: 0 auto 40px;
-        padding: 20px;
-        border-radius: 50%;
-        img {
-          width: 100px;
-          height: 100px;
-          left: 0;
-          right: 0;
-          margin: 0 auto;
-          object-fit: contain;
-          position: absolute;
-          
-        }
-        input[type="file"] {
-         display: none;
-        }
-        .upload {
-          display: inline-block;
-          cursor: pointer;
-          width: 100px;
-          height: 100px;
-          position: absolute;
-          left: 0;
-          right: 0;
-          margin: 0 auto;
-          padding: 5px;
-          &:after {
-            content: "Edit";
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background-color: #000;
-            color: #fff;
-          }
-        }
-    
-      }
+     
       > div {
         // display: grid;
         // grid-template-columns: 1fr 1fr;
@@ -910,5 +908,77 @@
     }
   }
 
+  #simulator {
+    background-color: #fff;
+    .coding-area {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+    }
+  }
 
- 
+  .thumbnail, .avatar {   
+    position: relative;
+    text-align: center;
+
+   
+    margin: 0 auto 40px;
+    img {
+      left: 0;
+      right: 0;
+      margin: 0 auto;
+      object-fit: contain;
+      
+    }
+    input[type="file"] {
+     display: none;
+    }
+    .upload {
+      display: inline-block;
+      cursor: pointer;
+    
+      position: absolute;
+      left: 0;
+      right: 0;
+      margin: 0 auto;
+     
+      z-index: 1;
+      &:after {
+        content: "Edit";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background-color: #000;
+        color: #fff;
+      }
+    }
+
+  }
+
+  .avatar {
+    width: 100px;
+    height: 100px;
+    border: 1px solid #ccc;
+    border-radius: 50%;
+    padding: 20px;
+    img {
+      width: 100px;
+      height: 100px;
+      position: absolute;
+    }
+    .upload {
+    width: 100px;
+    height: 100px;
+    padding: 5px;
+    }
+  }
+
+  .thumbnail {
+    width: 300px;
+    height: 150px;
+    .upload {
+      bottom: 0;
+      width: 300px;
+      height: 150px;
+    }
+  }

@@ -39,6 +39,9 @@ class Firebase {
               dbUser.Notes='';
             if(!dbUser.Status)
               dbUser.Status='DRAFT';
+            if(!dbUser.snippets){
+              dbUser.snippets={};
+            }
             if(!dbUser.ThumbnailFilename)
               dbUser.ThumbnailFilename='';
             if(!dbUser.Username)

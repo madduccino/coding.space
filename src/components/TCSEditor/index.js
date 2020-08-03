@@ -80,37 +80,36 @@ class TCSEditor extends React.Component {
 			)
 		}
 		else if(!disabled && editing && type==='select' && !!selectOptions){
-			return (
-				<div className={'field ' + className} >
+			// return (
+			// 	<div className={'field ' + className} >
 
-					<select value={text} onChange={this.handleSelectChange} onBlur={this.handleSelectChange}>
- 						{selectOptions.map(option=>(
- 							<option value={option}>{option}</option>
- 						))}
- 					</select>
- 					<button onClick={this.handleSave}>Save</button>
+			// 		<select value={text} onChange={this.handleSelectChange} onBlur={this.handleSelectChange}>
+ 			// 			{selectOptions.map(option=>(
+ 			// 				<option value={option}>{option}</option>
+ 			// 			))}
+ 			// 		</select>
+ 			// 		<button onClick={this.handleSave}>Save</button>
 
-				</div>
-			)
+			// 	</div>
+			// )
 		}
 		else if(!disabled && editing && type==='plain'){
-			return (
-				<div className={'field ' + className} >
+			// return (
+			// 	<div className={'field ' + className} >
 
-					<input type="text" value={text} onChange={this.handleTextChange} onBlur={this.handleTextChange}/>
+			// 		<input type="text" value={text} onChange={this.handleTextChange} onBlur={this.handleTextChange}/>
  						
-					<button onClick={this.handleSave}>Save</button>
+			// 		<button onClick={this.handleSave}>Save</button>
 
-				</div>
-			)
+			// 	</div>
+			// )
 		}
-		return (
-			<div className={'field ' + className}>
-
-				<ReactQuill theme={'snow'} placeholder={this.props.placeholder} value={this.state.text} onChange={this.handleChange}/>
-				<button className="done" onClick={this.handleSave}>Done</button>
-			</div>
-			)
+		// return (
+		// 	<div className={'field ' + className}>
+		// 		<ReactQuill theme={'snow'} placeholder={this.props.placeholder} value={this.state.text} onChange={this.handleChange}/>
+		// 		<button className="done" onClick={this.handleSave}>Done</button>
+		// 	</div>
+		// )
 	}
 }
 export default TCSEditor;
