@@ -243,7 +243,7 @@ class JetFuel extends React.Component {
 						<TCSEditor 
 							disabled={false}
 							className='new-question-body' 
-							type='plain'
+							type='rich'
 							editing={true}
 							onEditorChange={this.onQuestionBodyChange} 
 							onEditorSave={this.onQuestionSave}
