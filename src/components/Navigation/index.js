@@ -21,7 +21,8 @@ class Navigation extends React.Component{
         <div className="nav">
             <Link className="logo" to={ROUTES.LANDING}><img src="/images/logo.png" /></Link>
             <Link to={ROUTES.NEW_PROJECT}>New Project</Link>
-            <Link to={ROUTES.CLASSES}>My Classes</Link>             
+            <Link to={ROUTES.CLASSES}>My Classes</Link>       
+            <Link to={ROUTES.JETFURL}>Jet Fuel</Link>      
             {!!authUser.roles[ROLES.ADMIN] && (
                 <Link to={ROUTES.NEW_USER}>New User</Link>            
               )}

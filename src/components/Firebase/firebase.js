@@ -86,6 +86,9 @@ class Firebase {
   resources = () => this.db.ref('db/Resources' );
   resource = rid => this.db.ref('db/Resources/' + rid);
 
+  questions = () => this.db.ref('db/Questions');
+  question = qid => this.db.ref('db/Questions/' + qid);
+
 
   //levels = () => this.db.ref('db/Projects/**/Level');
 }

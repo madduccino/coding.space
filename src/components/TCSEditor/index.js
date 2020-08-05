@@ -16,6 +16,7 @@ class TCSEditor extends React.Component {
 			name:props.name,
 			editing:false,
 			dropdown:false,
+			save:true,
 			editme: true
 		}
 		this.handleChange = this.handleChange.bind(this);
@@ -61,8 +62,9 @@ class TCSEditor extends React.Component {
 	}
 
 	render(){
+
 		const {className} = this.props;
-		const {text,type,selectOptions,disabled,placeholder,name,editing,dropdown,editme} = this.state;
+		const {text,type,selectOptions,disabled,placeholder,name,editing,dropdown,editme, save} = this.state;
 		if(!!disabled){
 			return (
 				<div className={'field ' + className} >
@@ -114,7 +116,10 @@ class TCSEditor extends React.Component {
  							<option value={option}>{option}</option>
  						))}
  					</select>
- 					<button onClick={this.handleSave}>Save</button>
+ 					{save && (
+ 						<button onClick={this.handleSave}>Save</button>
+ 					)}
+ 					
 
 				</div>
 			)
@@ -124,8 +129,10 @@ class TCSEditor extends React.Component {
 				<div className={'field ' + className} >
 
 					<input type="text" value={text} onChange={this.handleTextChange} onBlur={this.handleTextChange}/>
- 						
-					<button onClick={this.handleSave}>Save</button>
+ 					{save && (
+ 						<button onClick={this.handleSave}>Save</button>
+ 					)}
+					
 
 				</div>
 			)
@@ -134,7 +141,10 @@ class TCSEditor extends React.Component {
 			<div className={'field ' + className}>
 
 				<ReactQuill theme={'snow'} placeholder={this.props.placeholder} value={this.state.text} onChange={this.handleChange}/>
-				<button className="done" onClick={this.handleSave}>Done</button>
+				{save && (
+					<button className="done" onClick={this.handleSave}>Done</button>
+				)}
+				
 			</div>
 			)
 	}
