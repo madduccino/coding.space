@@ -10,7 +10,7 @@ import AceEditor from "react-ace";
 import { v4 as uuidv4 } from 'uuid';
 import "ace-builds/src-noconflict/mode-javascript";
 import "ace-builds/src-noconflict/mode-html";
-import "ace-builds/src-noconflict/mode-css";
+// import "ace-builds/src-noc onflict/mode-css";
 import "ace-builds/src-noconflict/theme-twilight";
 
 
@@ -25,7 +25,7 @@ class Simulator extends React.Component {
  		errors:{},
  		code: '// type your code...',
  		html: '<!--type your html...-->',
- 		css: '//type your css...'
+ 		css: '/*type your css...*/'
  		
  	}
 
@@ -186,6 +186,7 @@ saveFilenameOnChange(value){
  					))}
  				</div>
  			</div>
+			 <div className="coding-area">
  			<AceEditor
  				placeholder="Type your code here..."
  				mode="javascript"
@@ -228,6 +229,7 @@ saveFilenameOnChange(value){
 			    enableLiveAutocompletion={true}
 			    enableSnippets={true}
  				/>
+				 </div>
  			<div id="render-space">
  				<iframe sandbox="allow-scripts" srcdoc={renderBody}/>
 
