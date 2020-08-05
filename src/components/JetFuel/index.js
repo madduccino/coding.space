@@ -59,6 +59,7 @@ class JetFuel extends React.Component {
  			...questionsObj[key],
  			key:key,
  		}))
+
  		this.props.firebase.profiles().once('value')
  			.then(snapshot2=>{
  				const profiles = snapshot2.val();
@@ -211,7 +212,7 @@ class JetFuel extends React.Component {
 
 				{questions.filter(question=>
 					question.Status === 'APPROVED' && 
-					(filter.length === 0 || filter.filter(f=>Object.keys(question.Tags).includes(f)).length > 0) &&
+					(filter.length === 0 || filter.filter(f=>!!question.tags && Object.keys(question.tags).includes(f)).length > 0) &&
 					question.Title.toLowerCase().includes(textFilter.toLowerCase())).map(question => (
 
 					
