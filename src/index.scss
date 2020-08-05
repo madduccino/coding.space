@@ -303,11 +303,6 @@
     }
   }
 
-  #classes, #launchpad {
-    img {
-    }
-  }
-
   .launch {
     background-color: $orange;
     color: #fff;
@@ -324,162 +319,150 @@
         padding-right: 20px;
       }
     }
-  .main {
-  color: #fff;
-  display: grid;
-  grid-template-columns: 1fr 3fr;
-  height: 100%;
-  background-color: #fff;
-  color: $darkgreen;
-  .sidebar {
-    color: #fff;
-    background-color:$beige;
-    padding: 60px 0;
-    background-color: $darkgreen;
-    word-wrap: break-word;
-    > div {
-      padding: 0 20px;
-      margin-bottom: 40px;
-    }
-    button {
-      padding: 0 6px;
-      width: auto;
-      margin: 4px auto;
-    }
-    h1 {
-      font-size: 1.4rem;
-      color: $darkgreen;
-      text-shadow: none;
-    }
-    p {
-      margin: 0;
-      padding: 0;
-    }
-    span {
-      font-size: 0.8rem;
-    }
-    h4 {
-      margin-top: 20px;
-      padding: 10px 40px;
-      text-align: center;
-    }
-    .field {
-      position: relative;
-      border:1px;
-      // font-size: 2rem;
-      // line-height: 2rem;
-      // font-size: 1rem;
-      // border-bottom-right-radius: 4px;
-      // border-bottom-left-radius: 4px;
-      // color: $darkgreen;
-      // background-color: #fff;
-      // padding-bottom: 1px;
-      .edit, .done {
-        right: 10px;
-        position: absolute;
-      }
-      &.display-name {
-        font-size: 2rem;
-        margin-top: 10px;
-        font-family: $headerFont;
-        line-height: 2rem;
-        position: relative;
-        background-color: $darkgreen;
-        color: #fff;
-        text-align: center; 
-        .edit {
-          top: 0;
-          right: 30px;
-        }
-      }
-    }
-  
-    .content {
-      border-radius: 4px;
-      .field {
-        position: relative;
-        text-align: center;
-        padding: 0 30px;
-        h1 {
-          font-size: 2rem;
-          color: $darkgreen;
-        }
-        img {
-          position: absolute;
-          right: 0;
-          top: 0;
-        }
-    }
-      .container {
-        margin: 20px 0;
-      }
-    }
-  }
-  .main-content {
-    color: $darkgreen;
-    position: relative;
-    // grid-column: span 2;
-    position: relative;
-    .container {
-      .field {
-        position: relative;
-        margin: 40px;
-        background-color: $beige;
-        padding: 10px 40px;
-        border-radius: 8px; 
-        font-weight: bold;
-        .edit {
-          right: 20px;
-          top: 20px;
-        }
-      }
-    }
-    .content {
-      > div { 
+    .main {
+      color: #fff;
       display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      .field {
-        position: 2px solid red;
-
-        img {
-          width: 25px;
-          height: auto;
-          cursor: pointer;
-          position: absolute;
-          right: 0;
-          top: 0;
-        }
+      grid-template-columns: 1fr 3fr;
+      height: 100%;
+      background-color: #fff;
+      color: $darkgreen;
+    .sidebar {
+      color: #fff;
+      background-color:$beige;
+      padding: 60px 0;
+      background-color: $darkgreen;
+      word-wrap: break-word;
+      > div {
+        padding: 0 20px;
+        margin-bottom: 40px;
+      }
+      button {
+        padding: 0 6px;
+        width: auto;
+        margin: 4px auto;
+      }
+      h1 {
+        font-size: 1.4rem;
+        color: $darkgreen;
+        text-shadow: none;
+      }
+      p {
+        margin: 0;
+        padding: 0;
+      }
+      span {
+        font-size: 0.8rem;
       }
       h4 {
-        p {
-          margin: 0;
-          display: inline;
-          padding: 0;
+        margin-top: 20px;
+        padding: 10px 40px;
+        text-align: center;
+      }
+      .field {
+        position: relative;
+        border:1px;
+        // font-size: 2rem;
+        // line-height: 2rem;
+        // font-size: 1rem;
+        // border-bottom-right-radius: 4px;
+        // border-bottom-left-radius: 4px;
+        // color: $darkgreen;
+        // background-color: #fff;
+        // padding-bottom: 1px;
+        .edit, .done {
+          right: 10px;
+          position: absolute;
+        }
+        &.display-name {
+          font-size: 2rem;
+          margin-top: 10px;
+          font-family: $headerFont;
+          line-height: 2rem;
+          position: relative;
+          background-color: $darkgreen;
+          color: #fff;
+          text-align: center; 
+          .edit {
+            top: 0;
+            right: 30px;
+          }
         }
       }
+    
+      .content {
+        border-radius: 4px;
+        .field {
+          position: relative;
+          text-align: center;
+          padding: 0 30px;
+          h1 {
+            font-size: 2rem;
+            color: $darkgreen;
+          }
+          img {
+            position: absolute;
+            right: 0;
+            top: 0;
+          }
       }
+        .container {
+          margin: 20px 0;
+        }
+      }
+    }
+    .main-content {
+      color: $darkgreen;
+      position: relative;
+      // grid-column: span 2;
+      position: relative;
+      .container {
+        .field {
+          position: relative;
+          margin: 40px;
+          background-color: $beige;
+          padding: 10px 40px;
+          border-radius: 8px; 
+          font-weight: bold;
+          .edit {
+            right: 20px;
+            top: 20px;
+          }
+        }
+      }
+      .content {
+        > div { 
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        .field {
+          position: 2px solid red;
 
-    } 
-  }
+          img {
+            width: 25px;
+            height: auto;
+            cursor: pointer;
+            position: absolute;
+            right: 0;
+            top: 0;
+          }
+        }
+        h4 {
+          p {
+            margin: 0;
+            display: inline;
+            padding: 0;
+          }
+        }
+        }
+
+      } 
+    }
     .quill {
       color: $darkgreen;
     }
    }
   }
 
-  #classes, #profile, #clazz, #launchpad {
-  .main {
-    // color: #fff;
-    // display: grid;
-    // grid-template-columns: 1fr 4fr;
-    img:not(.edit) {
-      // width: 274px;
-      // height: 226px;
-    }
-   }
-  }
-
-  #launchpad, #classes {
+  #launchpad {
     .main {
       color: #fff;
       display: grid;
@@ -500,12 +483,40 @@
           font-family: $bodyFont;
           font-weight: 300;
           p {
-          line-height: 1.6rem;
+           line-height: 1.6rem;
           }
         }
       }
     }
   }
+
+#classes {
+  a {
+    color: $orange;
+    text-align: center;
+  }
+  .main {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  a {
+    color: $orange;
+    width: 200px;
+    height: 300px;
+    background-color: white;
+    margin: 40px;
+    text-align: center;
+    border-radius: 8px;
+    img {
+      max-width:100%;
+      height: 100px;
+      margin: 0 auto;
+      display: block;
+      object-fit: contain;
+    }
+  }
+ }
+}
 
   #untutorial {
     img {
@@ -689,6 +700,12 @@
 
   #launchpad {
     margin-top: 10px;
+    a {
+      display: inline-block;
+      margin-right: 20px;
+      cursor: pointer;
+      color: $orange;
+    }
     .filter {
     display:flex;
     flex-flow: row wrap;
@@ -697,11 +714,7 @@
     }
     .filter-categories {
       text-align: center;
-      a {
-        display: inline-block;
-        margin-right: 20px;
-        cursor: pointer;
-      }
+
     }
     .container {
       width: 50%;
@@ -977,4 +990,24 @@
       width: 300px;
       height: 150px;
     }
+  }
+
+  #new-class {
+    color: #fff;
+    .main-area {
+      max-width: 600px;
+      margin: 0 auto;
+    .container {
+      display: grid;
+      position: relative;
+      margin: 20px auto;
+      grid-template-columns: 1fr 2fr;
+    }
+    .thumbnail {
+      margin-top: 20px;
+      .upload {
+        border: 1px solid #ccc;
+      }
+    }  
+  }
   }

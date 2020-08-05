@@ -279,14 +279,13 @@ class ProfilePageBase extends React.Component {
 									<input id="files" type="file" onChange={this.handleThumbnailUpload}/>
 								</label>
 							)}
-			 			</div>
-									{!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===profile.key) && (
-						<>
-
-					<div><strong>Login</strong><br/> {profile.Username}</div>
-					<div><strong>Email</strong><br/> {profile.Email}</div>
-				</>	
-						)}
+			 				</div>
+							{!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===profile.key) && (
+							<>
+								<div><strong>Login</strong><br/> {profile.Username}</div>
+								<div><strong>Email</strong><br/> {profile.Email}</div>
+							</>	
+							)}
 						<div>
 						<h4>Display Name</h4>
 						 <TCSEditor 

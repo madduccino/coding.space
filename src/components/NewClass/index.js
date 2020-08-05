@@ -209,12 +209,23 @@ class NewClassPageBase extends React.Component {
       Location === '';
      
 	return (
-		<div>
+		<section id="new-class">
+		<div className="main">
 			<h1>New Class</h1>
-			<div className={'container'}>
-				<h4>Title</h4>
+			<div className="main-area">
+			<div className='thumbnail'>
+				{this.state.uploading && (
+						<progress value={this.state.uploadPercent} max="100"/>
+					)}	
+					{!!clazz.ThumbnailFilename && !this.state.uploading &&(
+						<LazyImage file={this.props.firebase.storage.ref('/classes/' + clazz.ThumbnailFilename)}/>
+					)}
+					<label className="upload" for="files">
+						<input id="files" type="file" onChange={this.handleThumbnailUpload}/>
+					</label>
 			</div>
-			<div className={'container'}>
+				<div className={'container'}>
+				<h4>Title</h4>
 				<TCSEditor 
 					disabled={false}
 					type='plain'
@@ -223,24 +234,10 @@ class NewClassPageBase extends React.Component {
 					placeholder={'Class Title'} 
 					text={clazz.Title}/>
 			</div>
-			<div className={'container'}>
-				<h4>Thumbnail</h4>
-			</div>
-			<div className={'container'}>
-				<input type="file" onChange={this.handleThumbnailUpload}/>
-				{this.state.uploading && (
-					<progress value={this.state.uploadPercent} max="100"/>
-				)}
-				{!!clazz.ThumbnailFilename && !this.state.uploading &&(
-					<LazyImage file={this.props.firebase.storage.ref('/classes/' + clazz.ThumbnailFilename)}/>
-				)}
-				
-			</div>
-			
-			<div className={'container'}>
+				<div className={'container'}>
 				<h4>Description</h4>
 			</div>
-			<div className={'container'}>
+				<div className={'container'}>
 				<TCSEditor 
 					disabled={false}
 					type='text'
@@ -249,10 +246,10 @@ class NewClassPageBase extends React.Component {
 					placeholder={'Class Description'} 
 					text={clazz.Description}/>
 			</div>
-			<div className={'container'}>
+				<div className={'container'}>
 				<h4>Schedule</h4>
 			</div>
-			<div className={'container'}>
+				<div className={'container'}>
 				<TCSEditor 
 					disabled={false}
 					type='text'
@@ -261,10 +258,10 @@ class NewClassPageBase extends React.Component {
 					placeholder={'Class Schedule'} 
 					text={clazz.Schedule}/>
 			</div>
-			<div className={'container'}>
+				<div className={'container'}>
 				<h4>Location</h4>
 			</div>
-			<div className={'container'}>
+				<div className={'container'}>
 				<TCSEditor 
 					disabled={false}
 					type='text'
@@ -273,11 +270,11 @@ class NewClassPageBase extends React.Component {
 					placeholder={'Class Location'} 
 					text={clazz.Location}/>
 			</div>
-			
-			
+			</div>
 			
 			<button disabled={isInvalid} onClick={this.saveChangesHandler}>Save Changes</button>
 		</div>
+		</section>
 	)
 
 
