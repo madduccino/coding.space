@@ -239,17 +239,20 @@ class NewProjectPageBase extends React.Component {
 						placeholder={'Untutorial Title'} 
 						text={untutorial.Title}/>
 			   		 </div>
+						<h4>Add Image</h4>
+
 			   <div className="thumbnail">
-			    <h4>Thumbnail</h4>
-				<div className="upload">
-				<input type="file" onChange={this.handleThumbnailUpload}/>
+
 				{this.state.uploading && (
 					<progress value={this.state.uploadPercent} max="100"/>
 				)}
 				{!!untutorial.ThumbnailFilename && untutorial.ThumbnailFilename!=='' && !this.state.uploading &&(
 					<LazyImage file={this.props.firebase.storage.ref('/public/' + untutorial.Author + '/' + untutorial.ThumbnailFilename)}/>
-				)}	
-				</div>			
+				)}
+				<label for="files" className="upload">
+				<input id="files" type="file" onChange={this.handleThumbnailUpload}/>
+				</label>
+	
 			</div>
 			<div>
 				<h4>Description</h4>

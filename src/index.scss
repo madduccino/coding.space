@@ -182,7 +182,7 @@
               height: 40px;
               object-fit: contain;
               margin-right: 10px;
-              margin-top: 15px;
+              margin-top:  15px;
             }
             &:after {
             width: 0; 
@@ -512,7 +512,7 @@
     }
     .quill {
       color: $darkgreen;
-      max-width: 400px;
+      max-width: 525px;
       border: 1px solid #D1D1D1;
       border-radius: 4px;
     }
@@ -532,7 +532,6 @@
         color: $darkgreen;
         img {
             width: 100%;
-            object-fit: contain;
         }
         > div {
           padding: 0 20px;
@@ -771,10 +770,8 @@
     .step {
       position: relative;
       max-width: 600px;
-      height: 100px;
       color: $darkgreen;
       border-radius: 4px;
-      min-height: 200px;
     .desc {
         position:absolute;
         top: 35%;
@@ -1117,15 +1114,12 @@
   .thumbnail, .avatar {   
     position: relative;
     text-align: center;
-
-   
     margin: 0 auto 40px;
     img {
       left: 0;
       right: 0;
       margin: 0 auto;
       object-fit: contain;
-      
     }
     input[type="file"] {
      display: none;
@@ -1133,12 +1127,10 @@
     .upload {
       display: inline-block;
       cursor: pointer;
-    
       position: absolute;
       left: 0;
       right: 0;
       margin: 0 auto;
-     
       z-index: 1;
       &:after {
         content: "Edit";
@@ -1174,14 +1166,23 @@
   .thumbnail {
     width: 200px;
     height: 150px;
-    border: 1px solid #ccc;
     margin: 0;
+    margin-top: 5px;
     // width: 300px;
     // height: 150px;
+    img {
+      width: 200px;
+      height: 150px;
+      object-fit: cover;
+    }
     .upload {
       bottom: 0;
       // width: 300px;
       // height: 150px;
+      width: 200px;
+      height: 150px;
+      display: block;
+      border:1px solid black;
     }
   }
 
