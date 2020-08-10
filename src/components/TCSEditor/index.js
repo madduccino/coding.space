@@ -68,9 +68,9 @@ class TCSEditor extends React.Component {
 		else if(!disabled && !editing){
 			return (
 				<div className={'field ' + className}>
-
+             
 					<div name={name} dangerouslySetInnerHTML={{__html:text}}/>
-					<img className="edit" onClick={this.handleEdit} src="/images/edit.png"/>
+					<button onClick={this.handleEdit}>Edit</button>
 
 				</div>
 			)

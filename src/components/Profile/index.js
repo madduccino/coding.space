@@ -248,6 +248,7 @@ class ProfilePageBase extends React.Component {
 		<section id="profile">	
 	 	  <div className="main">		
 			<div className="sidebar">
+				<div className="sidebar-content">
 				<div className={this.state.tab===TAB.PROFILE ? 'selected' : ''}>
 				<h3 onClick={()=>this.setState({tab:TAB.PROFILE})}>Profile</h3>
 				</div>
@@ -262,6 +263,7 @@ class ProfilePageBase extends React.Component {
 					<h3 onClick={()=>this.setState({tab:TAB.EMAIL})}>Email</h3>
 				</div>
 				)}
+			</div>
 			</div>
 			<div className="main-content">
 				<div className="tabs">

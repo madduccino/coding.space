@@ -33,8 +33,6 @@ class Question extends React.Component {
  	this.deleteQuestion = this.deleteQuestion.bind(this);
 
  }
- 
-
  tagSelectionOnChange(event){
  	const {question} = this.state;
  	if(!Object.keys(question.tags).includes(event.target.value)){
@@ -44,7 +42,6 @@ class Question extends React.Component {
  	}
  	
  }
-
  tagOnClick(text){
  	const {question} = this.state;
  	if(Object.keys(question.tags).includes(text))
@@ -55,7 +52,6 @@ class Question extends React.Component {
  	}
 
  }
-
  componentDidMount(){
 
  	const {key} = this.props.match.params;
@@ -205,25 +201,21 @@ class Question extends React.Component {
 	
  }
  render(){
- 	
  	const {question,profiles, loading, replyBody} = this.state;
  	const {authUser} = this.props;
- 	
-
-
  	//console.log("hiya")
  	if(loading)
  		return <div>Loading ...</div>
  	return (
-
-
 		<section id="question">
-			{!!authUser && !!authUser.roles['ADMIN'] && (
 
+			<div className="main">
+				<div className="sidebar">
+				{!!authUser && !!authUser.roles['ADMIN'] && (
 				<button onClick={this.deleteQuestion}>Delete Question (ADMIN)</button>
 			)}
-			<h1 dangerouslySetInnerHTML={{__html:question.Title}} />
-
+				<h2 dangerouslySetInnerHTML={{__html:question.Title}} />
+		
 			<div className="tags">
 			    
 			    {!!authUser && (!!authUser.roles['ADMIN'] || !!authUser.roles['TEACHER']) && !Object.keys(question.tags).every(tag=>Object.keys(FILTERS).includes(tag)) && (
@@ -241,14 +233,15 @@ class Question extends React.Component {
 		    			<a onClick={()=>(!!authUser.roles['ADMIN'] || !!authUser.roles['TEACHER']) && this.tagOnClick(f)}>{f}</a>
 		    		))}
 		    	</div>
-		    )}	
-			<div className="main">	
+		    )}
+					</div>	
+			<div className="main-content">	
 
 				{!!question && (
 
 					
 					<div id={question.key}>
-						<h3 dangerouslySetInnerHTML={{__html:question.Title}}/>
+						<h1 dangerouslySetInnerHTML={{__html:question.Title}}/>
 						{!!question.replies && Object.keys(question.replies).sort(reply=>question.replies[reply].Date).reverse().map(reply=>(
 							<div class="reply" id={question.replies[reply].key}>
 								<div class="author">{profiles[question.replies[reply].Author].DisplayName}</div>
@@ -283,13 +276,9 @@ class Question extends React.Component {
 				)}
 			</div>
 
-
+			</div>
     	</section>
-
-		
-	
 	)
-
-}
+  }
 }
 export default withFirebase(withAuthentication(Question));
