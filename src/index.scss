@@ -721,6 +721,7 @@
   }
 
   #new-project { 
+    .main {
     .sidebar { 
       .container {
       > div {
@@ -733,7 +734,7 @@
 
     }
     }
-    .content {
+    .main-content {
       h1 {
         font-size: 3rem;
         position: relative;
@@ -747,41 +748,66 @@
           right: -80px;
         }
       }
+      h3 {
+        font-size: 48px;
+        margin-bottom: 40px;
+      }
+      .toolbar {
+        position: fixed;
+        bottom: 50px;
+        right: 50px;
+        display: flex;
+        flex-flow: row wrap;
+        padding: 10px;
+        border:1px solid #ccc;
+        background-color: $lightGreen;
+        text-align: center;
+        button {
+          width: auto;
+          margin: 10px;
+          color: $darkgreen;
+        }
+      }
     .step {
       position: relative;
       max-width: 600px;
       height: 100px;
       color: $darkgreen;
-      padding: 10px;
       border-radius: 4px;
-      margin: 20px auto 60px;
       min-height: 200px;
-      background-color: $lightGreen;
-      .desc {
+    .desc {
         position:absolute;
         top: 35%;
         left: 0;
         right: 0;
       }
+      button {
+        position: absolute;
+        top: 0;
+        right: 0;
+        top: 50px;
+        font-size: 14px;
+        width: 50px;
+        
+      }
       .field {
+        position: relative;
+        height: 100px;
+        background-color: #fff;
+        
         // height:100%;
         // background-color: #fff;
         // border-radius: 4px;
         // overflow: auto;
+        padding: 0;
+       margin: 0;
+       button {
+        top: 0;
+       }
         .step-text {
           margin-right: 90px;
         }
-        .done {
-          position: absolute;
-          bottom: -50px;
-          left: 0;
-          font-size: 16px;
-          right: 0;
-          width: auto;
-          background-color: $lightGreen;
-          color: $darkgreen !important;
-          font-weight: bold;
-        }
+
       }
       .gear {
         position: absolute;
@@ -826,6 +852,7 @@
     }
  
    }
+  }
   }  
 
   #launchpad {
@@ -1145,6 +1172,10 @@
   }
 
   .thumbnail {
+    width: 200px;
+    height: 150px;
+    border: 1px solid #ccc;
+    margin: 0;
     // width: 300px;
     // height: 150px;
     .upload {
