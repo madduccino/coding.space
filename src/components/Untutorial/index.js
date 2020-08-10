@@ -269,7 +269,7 @@ class UntutorialPageBase extends React.Component {
 	validateStatus(){
 		const {untutorial,errors} = this.state;
 		const {Status} = untutorial;
-		if(!["DRAFT","FINAL"].includes(Status)){
+		if(!["DRAFT","APPROVED"].includes(Status)){
 			errors['Status'] = 'STATUS.<span class="red">ISINVALID</span>'; 		
 		}
 		else{
