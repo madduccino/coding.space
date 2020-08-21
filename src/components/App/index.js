@@ -10,8 +10,6 @@ import NewUserForm from '../SignUp';
 import SignInPage from '../SignIn';
 import PasswordForgetPage from '../PasswordForget';
 import ClassesPage from '../Classes';
-import AccountPage from '../Account';
-import AdminPage from '../Admin';
 import UntutorialPage from '../Untutorial';
 import ProfilePage from '../Profile';
 import ClassPage from '../Class';
@@ -97,8 +95,6 @@ class App extends Component {
 							<Route path={ROUTES.SIGN_IN} render={(props)=><SignInPage {...props} setGlobalState={this.setGlobalState} />} />
 							<Route path={ROUTES.PASSWORD_FORGET} render={(props)=><PasswordForgetPage {...props} setGlobalState={this.setGlobalState} />} />
 							<Route exact path={ROUTES.CLASSES} render={(props)=><ClassesPage {...props} setGlobalState={this.setGlobalState} />} />
-							<Route path={ROUTES.ACCOUNT} render={(props)=><AccountPage {...props} setGlobalState={this.setGlobalState} />} />
-							<Route path={ROUTES.ADMIN} render={(props)=><AdminPage {...props} setGlobalState={this.setGlobalState} />} />
 							<Route exact path={ROUTES.LAUNCHPAD} render={(props)=><LaunchPad {...props} setGlobalState={this.setGlobalState} />} />
 							<Route exact path={ROUTES.UNIVERSE} render={(props)=><Universe {...props} setGlobalState={this.setGlobalState} />} />
 							<Route path={ROUTES.UNIVERSE_PUBLISH} render={(props)=><UniversePublish {...props} setGlobalState={this.setGlobalState} />} />

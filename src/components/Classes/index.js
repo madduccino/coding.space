@@ -16,6 +16,7 @@ class ClassesPageBase extends React.Component {
  	this.state = {
  		authUser:null,
  		loading:true,
+ 		classFilter:false,
  		classes: {},
 
 
@@ -27,6 +28,7 @@ class ClassesPageBase extends React.Component {
  	this.addStepHandler = this.addStepHandler.bind(this);
  	this.deleteStepHandler = this.deleteStepHandler.bind(this);
  	this.saveChangesHandler = this.saveChangesHandler.bind(this);
+ 	this.onClassFilterChange = this.onClassFilterChange.bind(this);
  	
  	//this.onChange = editorState => this.setState({editorState});
  	//console.log("hiya");
@@ -47,8 +49,10 @@ class ClassesPageBase extends React.Component {
  	const {key} = this.props.match.params;
  	this.props.firebase.classes().on('value',snapshot => {
  		const classes = snapshot.val();
+ 		const {authUser} = this.props;
 		this.setState({
 			classes:classes,
+			classFilter: (!!authUser ? true: false),
 			loading:false,
 		})
 		
@@ -60,6 +64,12 @@ class ClassesPageBase extends React.Component {
 
  componentWillUnmount(){
  	this.props.firebase.classes().off();
+ }
+ onClassFilterChange(){
+ 	const {classFilter} = this.state;
+ 	this.setState({classFilter:!classFilter});
+
+
  }
  handlePDescriptionOnChange(value){
 
@@ -79,7 +89,7 @@ class ClassesPageBase extends React.Component {
 
  render(){
  	
- 	const {classes, loading} = this.state;
+ 	const {classes, classFilter,loading} = this.state;
  	const {authUser} = this.props;
  	//const {key} = this.props.match.params;
  	
@@ -93,17 +103,23 @@ class ClassesPageBase extends React.Component {
 			{!!authUser && !!authUser.roles['ADMIN'] && (
 					<a className="button" href={ROUTES.NEW_CLASS}>New Class</a>
 				)}
+			<input type="checkbox" checked={classFilter} onClick={this.onClassFilterChange}/><label>Your Class Only</label>
 			<div className="main">
-					    {loading && <div>Loading ...</div>}
-						{Object.keys(classes).filter(clazz=>classes[clazz].Status==='APPROVED' || (!!authUser && !!authUser.roles['ADMIN'])).map(clazz => (	
+					    
+						{Object.values(classes)
+							.filter(clazz=>
+								(classFilter ? 
+									(clazz.Status==='APPROVED' && Object.keys(clazz.Members).includes(authUser.uid)) :
+									(clazz.Status==='APPROVED')) ||
+								(!!authUser && !!authUser.roles['ADMIN'])).map(clazz => (	
 								<>
-								<a id={clazz.key} href={'/classes/' + clazz} path={'/classes/' + classes[clazz].ThumbnailFilename}>
-									<LazyImage file={this.props.firebase.storage.ref('/classes/' + classes[clazz].ThumbnailFilename)}/>
+								<a id={clazz.key} href={'/classes/' + clazz.key} path={'/classes/' + clazz.ThumbnailFilename}>
+									<LazyImage file={this.props.firebase.storage.ref('/classes/' + clazz.ThumbnailFilename)}/>
 								
 							 <div>
 									<h4 className={'container'} dangerouslySetInnerHTML={{__html:clazz.Title}}/>
 									{!!authUser && !!authUser.roles['ADMIN'] && clazz.Status != 'APPROVED' && (
-										<h5>DRAFT</h5>
+										<h5>{clazz.Status}</h5>
 									)}
 								</div> 
 								</a>

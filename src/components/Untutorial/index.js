@@ -396,6 +396,14 @@ class UntutorialPageBase extends React.Component {
 		else{
 			var badFields = Object.keys(errors);
 			var messages = [];
+			messages.push({
+				html:`<span class="green">Saving</span>...`,
+				type:true
+			})
+			messages.push({
+				html:`<span class="red">ERROR!</span>`,
+				type:false
+			})
 			for(var i =0;i< badFields.length;i++){
 
 				messages.push({

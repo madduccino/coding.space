@@ -19,6 +19,7 @@ class ClassPageBase extends React.Component {
  	this.state = {
  		authUser:null,
  		loading:true,
+ 		errors:{},
  		clazz: {},
  		profiles:null,
  		selectedMembers:{},
@@ -30,16 +31,22 @@ class ClassPageBase extends React.Component {
 
  	}
  	this.handleClassTitleOnChange = this.handleClassTitleOnChange.bind(this);
+ 	this.handleClassTitleValidate = this.handleClassTitleValidate.bind(this);
  	this.handleClassTitleOnSave = this.handleClassTitleOnSave.bind(this);
  	this.handleClassDescriptionOnChange = this.handleClassDescriptionOnChange.bind(this);
+ 	this.handleClassDescriptionValidate = this.handleClassDescriptionValidate.bind(this);
  	this.handleClassDescriptionOnSave = this.handleClassDescriptionOnSave.bind(this);
  	this.handleClassScheduleOnChange = this.handleClassScheduleOnChange.bind(this);
+ 	this.handleClassScheduleValidate = this.handleClassScheduleValidate.bind(this);
  	this.handleClassScheduleOnSave = this.handleClassScheduleOnSave.bind(this);
  	this.handleClassLocationOnChange = this.handleClassLocationOnChange.bind(this);
+ 	this.handleClassLocationValidate = this.handleClassLocationValidate.bind(this);
  	this.handleClassLocationOnSave = this.handleClassLocationOnSave.bind(this);
  	this.handleStatusOnChange = this.handleStatusOnChange.bind(this);
+ 	this.handleStatusValidate = this.handleStatusValidate.bind(this);
  	this.handleStatusOnSave = this.handleStatusOnSave.bind(this);
  	this.handleMembersOnChange = this.handleMembersOnChange.bind(this);
+ 	this.handleMembersValidate = this.handleMembersValidate.bind(this);
  	this.handleMembersOnSave = this.handleMembersOnSave.bind(this);
  	this.deleteClassHandler = this.deleteClassHandler.bind(this);
  	this.saveChangesHandler = this.saveChangesHandler.bind(this);
@@ -82,7 +89,7 @@ class ClassPageBase extends React.Component {
 
  componentWillUnmount(){
  	this.props.firebase.class().off();
- 	this.props.firebase.profiles().off();
+ 	
  }
  handleClassTitleOnChange(value){
  	var cCopy = this.state.clazz;
@@ -90,9 +97,21 @@ class ClassPageBase extends React.Component {
  		cCopy.Title = value;
 	 
 	 	
-	 	this.setState({clazz:cCopy,dirty:true});
+	 	this.setState({clazz:cCopy,dirty:true},this.handleClassTitleValidate);
  	}
  	
+ }
+ handleClassTitleValidate(){
+ 	const {clazz,errors} = this.state;
+ 	if(clazz.Title.length == 0){
+ 		errors["Title"] = 'TITLE.<span class="red">ISREQUIRED</span>'; 		
+ 	}
+ 	else if(clazz.Title.length <= 5){
+ 		errors["Title"] = 'TITLE.<span class="red">ISTOOSHORT</span>'; 		
+ 	}
+ 	else delete errors["Title"];
+ 	this.setState({errors:errors});
+
  }
  handleClassTitleOnSave(){
  	this.saveChangesHandler();
@@ -103,9 +122,21 @@ class ClassPageBase extends React.Component {
  		cCopy.Description = value;
 	 	
 	 	
-	 	this.setState({clazz:cCopy,dirty:true});
+	 	this.setState({clazz:cCopy,dirty:true},this.handleClassDescriptionValidate);
  	}
  	
+ }
+ handleClassDescriptionValidate(){
+	const {clazz,errors} = this.state;
+	const text = clazz.Description.replace(/<(.|\n)*?>/g, '').trim();
+ 	if(text.length == 0){
+ 		errors["Description"] = 'DESCRIPTION.<span class="red">ISREQUIRED</span>'; 		
+ 	}
+ 	else if(text.length <= 20){
+ 		errors["Description"] = 'DESCRIPTION.<span class="red">ISTOOSHORT</span>'; 		
+ 	}
+ 	else delete errors["Description"];
+ 	this.setState({errors:errors});
  }
  handleClassDescriptionOnSave(){
  	this.saveChangesHandler();
@@ -116,9 +147,21 @@ class ClassPageBase extends React.Component {
  		cCopy.Schedule = value;
 	 	
 	 	
-	 	this.setState({clazz:cCopy,dirty:true});
+	 	this.setState({clazz:cCopy,dirty:true},this.handleClassScheduleValidate);
  	}
  	
+ }
+ handleClassScheduleValidate(){
+ 	const {clazz,errors} = this.state;
+ 	const text = clazz.Schedule.replace(/<(.|\n)*?>/g, '').trim();
+ 	if(text.length == 0){
+ 		errors["Schedule"] = 'SCHEDULE.<span class="red">ISREQUIRED</span>'; 		
+ 	}
+ 	else if(text.length <= 20){
+ 		errors["Schedule"] = 'SCHEDULE.<span class="red">ISTOOSHORT</span>'; 		
+ 	}
+ 	else delete errors["Schedule"];
+ 	this.setState({errors:errors});
  }
  handleClassScheduleOnSave(){
  	this.saveChangesHandler();
@@ -128,9 +171,21 @@ class ClassPageBase extends React.Component {
  	if(value !== cCopy.Location){
  		cCopy.Location = value;
 	 	
-	 	this.setState({clazz:cCopy,dirty:true});
+	 	this.setState({clazz:cCopy,dirty:true},this.handleClassLocationValidate);
  	}
  	
+ }
+ handleClassLocationValidate(){
+ 	const {clazz,errors} = this.state;
+ 	const text = clazz.Location.replace(/<(.|\n)*?>/g, '').trim();
+ 	if(text.length == 0){
+ 		errors["Location"] = 'LOCATION.<span class="red">ISREQUIRED</span>'; 		
+ 	}
+ 	else if(text.length <= 10){
+ 		errors["Location"] = 'LOCATION.<span class="red">ISTOOSHORT</span>'; 		
+ 	}
+ 	else delete errors["Location"];
+ 	this.setState({errors:errors});
  }
  handleClassLocationOnSave(){
  	this.saveChangesHandler();
@@ -139,9 +194,21 @@ class ClassPageBase extends React.Component {
  	var cCopy = this.state.clazz;
  	if(value !== cCopy.Status){
  		cCopy.Status = value;
- 		this.setState({clazz:cCopy,dirty:true});
+ 		this.setState({clazz:cCopy,dirty:true}/*,this.handleStatusValidate*/);
  	}
  	
+ }
+ handleStatusValidate(){
+ 	const {clazz,errors} = this.state;
+ 	const text = clazz.Status.replace(/<(.|\n)*?>/g, '').trim();
+ 	if(text.length == 0){
+ 		errors["Location"] = 'LOCATION.<span class="red">ISREQUIRED</span>'; 		
+ 	}
+ 	else if(text.length <= 10){
+ 		errors["Location"] = 'LOCATION.<span class="red">ISTOOSHORT</span>'; 		
+ 	}
+ 	else delete errors["Location"];
+ 	this.setState({errors:errors});
  }
  handleStatusOnSave(){
  	this.saveChangesHandler();
@@ -154,7 +221,17 @@ class ClassPageBase extends React.Component {
 	}
 
 	 	
-	this.setState({clazz:cCopy,dirty:true},this.saveChangesHandler);
+	this.setState({clazz:cCopy,dirty:true},()=>{this.handleMembersValidate();this.saveChangesHandler()});
+ }
+ handleMembersValidate(){
+ 	const {clazz,errors} = this.state;
+ 	
+ 	if(Object.keys(clazz.Members).length == 0){
+ 		errors["Members"] = 'CLASS.<span class="red">NEEDSASTUDENT</span>'; 		
+ 	}
+ 
+ 	else delete errors["Members"];
+ 	this.setState({errors:errors});
  }
  handleMembersOnSave(){
  	this.saveChangesHandler();
@@ -199,17 +276,55 @@ class ClassPageBase extends React.Component {
  
  saveChangesHandler(event){
  	const {key} = this.props.match.params;
- 	const {clazz} = this.state;
-
- 	
- 	this.props.firebase.class(key).set({
- 		...clazz
- 	})
+ 	const {clazz,errors} = this.state;
+ 	if(Object.keys(errors).length == 0){
+ 		clazz.LastModified = Date.now();
+ 		this.props.firebase.class(key).set({
+ 			...clazz
+ 		})
  		.then(()=>{
  			console.log("Successfully Saved");
  			this.setState({dirty:false})
  		})
  		.catch(error=>console.log(error));
+ 	}
+ 	else{
+ 		var badFields = Object.keys(errors);
+		var messages = [];
+		messages.push({
+			html:`<span class="green">Saving</span>...`,
+			type:true
+		})
+		messages.push({
+			html:`<span class="red">ERROR!</span>`,
+			type:false
+		})
+		for(var i =0;i< badFields.length;i++){
+
+			messages.push({
+				html:errors[badFields[i]],
+				type:true
+			});
+		}
+
+		messages.push({
+			html:`Press any key to continue...`,
+			type:false
+		})
+
+			
+		
+		
+		this.props.setGlobalState({
+			messages:messages,
+			showMessage:true
+			
+		});
+
+ 	}
+
+ 	
+ 	
  	console.log("Save Changes");
  }
 

@@ -13,7 +13,7 @@ class JetFuel extends React.Component {
  constructor(props){
  	super(props);
  	this.state = {
- 		loading:false,
+ 		loading:true,
  		questions: [],
  		profiles:[],
  		filter:[],
@@ -36,8 +36,11 @@ class JetFuel extends React.Component {
 
  categoryFilterOnChange(event){
  	const {filter} = this.state;
- 	filter.push(event.target.value);
- 	this.setState({filter:filter});
+ 	if(event.target.value != '-1'){
+ 		filter.push(event.target.value);
+ 		this.setState({filter:filter});
+ 	}
+ 	
  }
  textFilterOnChange(event){
 
@@ -82,7 +85,7 @@ class JetFuel extends React.Component {
  	const {authUser} = this.props;
  	if(questionTitle !== value){
  		if(value.length < 10){
- 			errors["QUESTION_TITLE_LENGTH"] = 'QUESTION.TITLE.LENGTH.<span class="red">ISTOOSHORT</span>';
+ 			errors["QUESTION_TITLE_LENGTH"] = 'Q.TITLE.LENGTH.<span class="red">ISTOOSHORT</span>';
  		}
  		else
  			delete errors["QUESTION_TITLE_LENGTH"];
@@ -97,7 +100,7 @@ class JetFuel extends React.Component {
  	const {authUser} = this.props;
  	if(questionBody !== value){
  		if(value.length < 20){
- 			errors["QUESTION_BODY_LENGTH"] = 'QUESTION.BODY.LENGTH.<span class="red">ISTOOSHORT</span>';
+ 			errors["QUESTION_BODY_LENGTH"] = 'Q.BDY.LENGTH.<span class="red">ISTOOSHORT</span>';
  		}
  		else
  			delete errors["QUESTION_BODY_LENGTH"];
@@ -153,28 +156,36 @@ class JetFuel extends React.Component {
 	else{
 
 		var badFields = Object.keys(errors);
- 		var messages = [];
-	 	for(var i =0;i< badFields.length;i++){
-
-	 		messages.push({
-				html:errors[badFields[i]],
+			var messages = [];
+			messages.push({
+				html:`<span class="green">Saving</span>...`,
 				type:true
-			});
-	 	}
+			})
+			messages.push({
+				html:`<span class="red">ERROR!</span>`,
+				type:false
+			})
+			for(var i =0;i< badFields.length;i++){
 
-		messages.push({
-			html:`Press any key to continue...`,
-			type:false
-		})
+				messages.push({
+					html:errors[badFields[i]],
+					type:true
+				});
+			}
 
-	 		
-	 	
-	 	
- 		this.props.setGlobalState({
-			messages:messages,
-			showMessage:true
+			messages.push({
+				html:`Press any key to continue...`,
+				type:false
+			})
+
+				
 			
-		});
+			
+			this.props.setGlobalState({
+				messages:messages,
+				showMessage:true
+				
+			});
 	}
 
  }
@@ -183,7 +194,8 @@ class JetFuel extends React.Component {
  	const {questions,profiles, loading, filter, textFilter,questionTitle,questionBody} = this.state;
  	const selectedFilters = Object.keys(FILTERS).filter(v=>filter.includes(v));
  	const {authUser} = this.props;
-
+ 	if(loading)
+ 		return (<div>Loading...</div>);
 
  	//console.log("hiya")
  	return (
@@ -193,9 +205,9 @@ class JetFuel extends React.Component {
 			<div className="main">
        		 <div className="sidebar">
 				<div className="filter">
-					{loading && <div>Loading ...</div>}
 					{selectedFilters.length != Object.keys(FILTERS).length && (
 						<select onChange={this.categoryFilterOnChange}>
+							<option value="-1">Filter...</option>
 							{Object.keys(FILTERS).filter(f=>!selectedFilters.includes(f)).map(filterName=><option value={filterName}>{filterName}</option>)}
 						</select>
 					)}
