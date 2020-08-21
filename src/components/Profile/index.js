@@ -248,6 +248,7 @@ class ProfilePageBase extends React.Component {
 		<section id="profile">	
 	 	  <div className="main">		
 			<div className="sidebar">
+				<div className="sidebar-content">
 				<div className={this.state.tab===TAB.PROFILE ? 'selected' : ''}>
 				<h3 onClick={()=>this.setState({tab:TAB.PROFILE})}>Profile</h3>
 				</div>
@@ -262,6 +263,7 @@ class ProfilePageBase extends React.Component {
 					<h3 onClick={()=>this.setState({tab:TAB.EMAIL})}>Email</h3>
 				</div>
 				)}
+			</div>
 			</div>
 			<div className="main-content">
 				<div className="tabs">
@@ -279,14 +281,13 @@ class ProfilePageBase extends React.Component {
 									<input id="files" type="file" onChange={this.handleThumbnailUpload}/>
 								</label>
 							)}
-			 			</div>
-									{!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===profile.key) && (
-						<>
-
-					<div><strong>Login</strong><br/> {profile.Username}</div>
-					<div><strong>Email</strong><br/> {profile.Email}</div>
-				</>	
-						)}
+			 				</div>
+							{!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===profile.key) && (
+							<>
+								<div><strong>Login</strong><br/> {profile.Username}</div>
+								<div><strong>Email</strong><br/> {profile.Email}</div>
+							</>	
+							)}
 						<div>
 						<h4>Display Name</h4>
 						 <TCSEditor 
@@ -336,11 +337,15 @@ class ProfilePageBase extends React.Component {
 										<Accordion group={group} text = {
 											progressLevels[group].map(project => (
 											<div id={project.key}>
-												<a href={project.URL}><h4 dangerouslySetInnerHTML={{__html:project.Title}}/></a>
+												<a href={ROUTES.LAUNCHPAD + '/'+  project.key}>
+													<h4 dangerouslySetInnerHTML={{__html:project.Title}}/></a>
 												<div className="status">
 													<h4 className={project.Status === 'APPROVED' ? 'green' : project.Status === 'PENDING' ? 'yellow' :'red'}></h4>
 												</div>
-												<a className="center" href={project.URL}><h4>View</h4></a>
+												{project.URL && (
+													 <a target="_blank" className="center" href={project.URL}><h4>View</h4></a>
+													)	}
+													
 											</div>
 			  	  	  						))
 							  			}/>	

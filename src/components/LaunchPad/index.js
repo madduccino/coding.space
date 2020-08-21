@@ -99,10 +99,8 @@ class LaunchPad extends React.Component {
 					untutorial.Status === 'APPROVED' && 
 					(filter.length === 0 || filter.filter(f=>Object.keys(untutorial.Categories).includes(f)).length > 0) &&
 					untutorial.Title.toLowerCase().includes(textFilter.toLowerCase())).map(untutorial => (
-				
 						<a id={untutorial.key} href={ROUTES.LAUNCHPAD + '/' + untutorial.key} path={'/public/' + untutorial.Author + '/' + untutorial.ThumbnailFilename}>
 							<LazyImage key={untutorial.key} file={this.props.firebase.storage.ref('/public/' + untutorial.Author + '/' + untutorial.ThumbnailFilename)}/>
-						
 						<div>
 							<h2 dangerouslySetInnerHTML={{__html:untutorial.Title}}/>
 							<div dangerouslySetInnerHTML={{__html:untutorial.Description}}/>

@@ -227,8 +227,10 @@ class NewProjectPageBase extends React.Component {
 	  <section id="new-project">
 		<div className="main">
 			<div className="sidebar">
-				<div className={'container'}>
+				<div className="sidebar-content">
+					<div className={'container'}>
 					<div>
+					<h4>Title</h4>
 						<TCSEditor 
 						disabled={false}
 						type='plain'
@@ -237,15 +239,20 @@ class NewProjectPageBase extends React.Component {
 						placeholder={'Untutorial Title'} 
 						text={untutorial.Title}/>
 			   		 </div>
-			   <div>
-			    <h4>Thumbnail</h4>
-				<input type="file" onChange={this.handleThumbnailUpload}/>
+						<h4>Add Image</h4>
+
+			   <div className="thumbnail">
+
 				{this.state.uploading && (
 					<progress value={this.state.uploadPercent} max="100"/>
 				)}
 				{!!untutorial.ThumbnailFilename && untutorial.ThumbnailFilename!=='' && !this.state.uploading &&(
 					<LazyImage file={this.props.firebase.storage.ref('/public/' + untutorial.Author + '/' + untutorial.ThumbnailFilename)}/>
-				)}				
+				)}
+				<label for="files" className="upload">
+				<input id="files" type="file" onChange={this.handleThumbnailUpload}/>
+				</label>
+	
 			</div>
 			<div>
 				<h4>Description</h4>
@@ -269,12 +276,13 @@ class NewProjectPageBase extends React.Component {
 			</div>
 	
 			</div>
+				</div>
 			</div>
 			<div className="main-content">
-			<div className="container">
+				<div className="container">
 			    <h3>Steps</h3>
 				{Object.keys(untutorial.steps).map(step => (
-					<div>
+					<div className="step">
 					<TCSEditor 
 						disabled={false}
 						onEditorChange={(value)=>this.handleStepOnChange(value,step)} 
@@ -282,13 +290,15 @@ class NewProjectPageBase extends React.Component {
 						placeholder={'Step Description'} 
 						text={untutorial.steps[step].Description}/>
 					{stepCount > 1 && (
-						<button  onClick={(event)=>this.deleteStepHandler(event,step)}>Delete Step</button>
+						<button onClick={(event)=>this.deleteStepHandler(event,step)}>Delete</button>
 					)}
 				</div>
 			))}
 			</div>
-			<button onClick={this.addStepHandler}>Add Step</button>
-			<button disabled={isInvalid} onClick={this.saveChangesHandler}>Save Changes</button> 
+			<div className="toolbar">
+				<button onClick={this.addStepHandler}>+</button>
+			<button disabled={isInvalid} onClick={this.saveChangesHandler}>Save</button> 
+			</div>
 			</div>
 		</div>
 	  </section>	

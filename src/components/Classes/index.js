@@ -91,26 +91,25 @@ class ClassesPageBase extends React.Component {
 		 <section id="classes">
 			<h1>My Classes</h1>
 			{!!authUser && !!authUser.roles['ADMIN'] && (
-					<a href={ROUTES.NEW_CLASS}>New Class</a>
+					<a className="button" href={ROUTES.NEW_CLASS}>New Class</a>
 				)}
 			<div className="main">
-				
 					    {loading && <div>Loading ...</div>}
 						{Object.keys(classes).filter(clazz=>classes[clazz].Status==='APPROVED' || (!!authUser && !!authUser.roles['ADMIN'])).map(clazz => (	
-							<div id={clazz.key} class={'wsite-image wsite-image-border-none project'}>
-								<a href={'/classes/' + clazz} path={'/classes/' + classes[clazz].ThumbnailFilename}>
+								<>
+								<a id={clazz.key} href={'/classes/' + clazz} path={'/classes/' + classes[clazz].ThumbnailFilename}>
 									<LazyImage file={this.props.firebase.storage.ref('/classes/' + classes[clazz].ThumbnailFilename)}/>
-								</a>
-								<div>
+								
+							 <div>
 									<h4 className={'container'} dangerouslySetInnerHTML={{__html:clazz.Title}}/>
 									{!!authUser && !!authUser.roles['ADMIN'] && clazz.Status != 'APPROVED' && (
 										<h5>DRAFT</h5>
 									)}
-								</div>
-							</div>
+								</div> 
+								</a>
+							</>
 						))}
 				   </div>
-			
 			</section>
 			)
  	

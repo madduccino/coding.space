@@ -188,48 +188,27 @@ class JetFuel extends React.Component {
  	//console.log("hiya")
  	return (
 		<section id="jetfuel">
-			<h1>JetFuel Q&A</h1>
+						
 
-			<div className="filter">
-			    {loading && <div>Loading ...</div>}
-			    {selectedFilters.length != Object.keys(FILTERS).length && (
-					<select onChange={this.categoryFilterOnChange}>
-				    	{Object.keys(FILTERS).filter(f=>!selectedFilters.includes(f)).map(filterName=><option value={filterName}>{filterName}</option>)}
-				    </select>
-			    )}
-			    
-			    <input type='text' onChange={this.textFilterOnChange} placeholder="Search..."/>
+			<div className="main">
+       		 <div className="sidebar">
+				<div className="filter">
+					{loading && <div>Loading ...</div>}
+					{selectedFilters.length != Object.keys(FILTERS).length && (
+						<select onChange={this.categoryFilterOnChange}>
+							{Object.keys(FILTERS).filter(f=>!selectedFilters.includes(f)).map(filterName=><option value={filterName}>{filterName}</option>)}
+						</select>
+					)}
+			    	<input type='text' onChange={this.textFilterOnChange} placeholder="Search..."/>
 				</div>	
-
 			    {selectedFilters.length > 0 && (
 			    	<div className="filter-categories">
 			    		{selectedFilters.map(f=>(
 			    			<a onClick={()=>this.filterOnClick(f)}>{f}</a>
 			    		))}
 			    	</div>
-			    )}	
-			<div className="main">	
-
-				{questions.filter(question=>
-					question.Status === 'APPROVED' && 
-					(filter.length === 0 || filter.filter(f=>!!question.tags && Object.keys(question.tags).includes(f)).length > 0) &&
-					question.Title.toLowerCase().includes(textFilter.toLowerCase())).map(question => (
-
-					
-					<div id={question.key}>
-						<a href={ROUTES.JETFUEL + '/' + question.key} >
-							<div class="title" dangerouslySetInnerHTML={{__html:question.Title}}/>
-							<div class="last-reply">{profiles[Object.values(question.replies).sort(reply=>reply.Date)[0].Author].DisplayName}</div>
-							<div class="count">{Object.keys(question.replies).length}</div>
-							<div class="last-reply-date">{new Date(question.LastModified).toDateString()}</div>
-						</a>
-
-
-					</div>
-				))}
-			</div>
-
-			{!!authUser  &&(
+			    )}
+							{!!authUser  &&(
 				<div id="new-question">
 						<h3>Have a Question?</h3>
 						<TCSEditor 
@@ -255,7 +234,27 @@ class JetFuel extends React.Component {
 
 				</div>
 			)}
+			</div>	
+			<div className="main-content">	
+			<h1>JetFuel Q&A</h1>
+				{questions.filter(question=>
+					question.Status === 'APPROVED' && 
+					(filter.length === 0 || filter.filter(f=>!!question.tags && Object.keys(question.tags).includes(f)).length > 0) &&
+					question.Title.toLowerCase().includes(textFilter.toLowerCase())).map(question => (
 
+					<div id={question.key}>
+						<a href={ROUTES.JETFUEL + '/' + question.key} >
+							<div class="title" dangerouslySetInnerHTML={{__html:question.Title}}/>
+							<div class="last-reply">{profiles[Object.values(question.replies).sort(reply=>reply.Date)[0].Author].DisplayName}</div>
+							<div class="count">{Object.keys(question.replies).length}</div>
+							<div class="last-reply-date">{new Date(question.LastModified).toDateString()}</div>
+						</a>
+					</div>
+				))}
+			</div>
+
+
+			</div>
 
     </section>
 	)
