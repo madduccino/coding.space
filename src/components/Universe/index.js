@@ -13,7 +13,8 @@ class Universe extends React.Component {
  	super(props);
  	this.state = {
  		loading:false,
- 		untutorials: [],
+ 		projects: [],
+ 		projectKeys:[],
  		filter:[],
  		textFilter:'',
  		
@@ -46,43 +47,44 @@ class Universe extends React.Component {
 
  }
  componentDidMount(){
- 	this.setState({ loading: true });
+ 	const {projects} = this.state;
 
- 	this.props.firebase.untutorials().on('value', snapshot => {
- 		const untutsObj = snapshot.val();
- 		const untutorials = Object.keys(untutsObj).map(key =>({
- 			...untutsObj[key],
- 			pid:key,
- 		}))
- 		this.setState({
- 			untutorials: untutorials,
- 			loading:false,
+
+ 	this.props.firebase.projects().on('child_added', snapshot => {
+ 		const project = snapshot.val();
+ 		
+ 		this.props.firebase.profile(project.Author).once('value', snapshot2 => {
+ 			project.Author = snapshot2.val();
+ 			projects.push(project);
+ 			this.setState({
+ 				projects: projects,
+ 			
+ 			})
  		})
+
+ 		
+
+ 		
  	})
  	
  }
  componentWillUnmount(){
- 	this.props.firebase.untutorials().off();
+ 	this.props.firebase.projects().off();
  }
  render(){
  	
- 	const {untutorials, loading, filter, textFilter} = this.state;
+ 	const {projects, loading, filter, textFilter} = this.state;
  	const selectedFilters = Object.keys(FILTER).filter(v=>filter.includes(v));
 
 
  	//console.log("hiya")
  	return (
-		<section id="launchpad">
-			<h1>Launch Pad</h1>
-			<a target="_blank" href="http://scratch.mit.edu/create">
+		<section id="universe">
+			{/* <a target="_blank" href="http://scratch.mit.edu/create">
 				<button id="go-to-scratch" class="btn btn-success">Go to Scratch
 				</button>
-			</a>
-			<div className="main">	
-
-
-
-
+			</a> */}
+			<div className="filter">
 			    {loading && <div>Loading ...</div>}
 			    {selectedFilters.length != Object.keys(FILTER).length && (
 					<select onChange={this.categoryFilterOnChange}>
@@ -91,33 +93,35 @@ class Universe extends React.Component {
 			    )}
 			    
 			    <input type='text' onChange={this.textFilterOnChange} placeholder="Search..."/>
+				</div>	
 			    {selectedFilters.length > 0 && (
-			    	<div className={'container'}>
+			    	<div className="filter-categories">
 			    		{selectedFilters.map(f=>(
 			    			<a onClick={()=>this.filterOnClick(f)}>{f}</a>
 			    		))}
 			    	</div>
-			    )}
-				{untutorials.filter(untutorial=>
-					untutorial.Status === 'APPROVED' && 
-					(filter.length === 0 || filter.filter(f=>Object.keys(untutorial.Categories).includes(f)).length > 0) &&
-					untutorial.Title.toLowerCase().includes(textFilter.toLowerCase())).map(untutorial => (
-
-					
-					<div id={untutorial.key} class={'wsite-image wsite-image-border-none untutorial'}>
-						<a href={ROUTES.LAUNCHPAD + '/' + untutorial.key} path={'/public/' + untutorial.Author + '/' + untutorial.ThumbnailFilename}>
-							<LazyImage key={untutorial.key} file={this.props.firebase.storage.ref('/public/' + untutorial.Author + '/' + untutorial.ThumbnailFilename)}/>
-						</a>
+			    )}	
+			<div className="main">	
+				{projects.filter(project=>
+					project.Status === 'APPROVED' && 
+					(filter.length === 0 || filter.filter(f=>Object.keys(project.Categories).includes(f)).length > 0) && 
+					(project.Title.toLowerCase().includes(textFilter.toLowerCase()) || project.Author.DisplayName.toLowerCase().includes(textFilter.toLowerCase())))
+					.map(project => (
+				
+						<a id={project.key} href={project.URL} path={'/public/' + project.Author.key + '/' + project.ThumbnailFilename}>
+							<LazyImage key={project.key} file={this.props.firebase.storage.ref('/public/' + project.Author.key + '/' + project.ThumbnailFilename)}/>
+						
 						<div>
-							<h4 dangerouslySetInnerHTML={{__html:untutorial.Title}}/>
+							<h2 dangerouslySetInnerHTML={{__html:project.Title}}/>
+							<div dangerouslySetInnerHTML={{__html:project.Description}}/>
 						</div>
-					</div>
+					</a>
 				))}
 			</div>
 
 
     </section>
 	)
+  }
 }
-}
-export default withFirebase(LaunchPad);
+export default withFirebase(Universe);

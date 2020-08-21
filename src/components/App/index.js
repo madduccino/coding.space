@@ -18,10 +18,13 @@ import ClassPage from '../Class';
 import NewProjectPage from '../NewProject';
 import Simulator from '../Simulator';
 import JetFuel from '../JetFuel';
+import ProgressReviews from '../ProgressReviews';
 import Question from '../Question';
 import ResourcePage from '../Resources';
 import NewClassPage from '../NewClass';
 import LaunchPad from '../LaunchPad';
+import Universe from '../Universe';
+import UniversePublish from '../UniversePublish';
 import MessageOverlay from '../MessageOverlay';
 import * as ROUTES from '../../constants/routes';
 import {withAuthentication} from '../Session';
@@ -97,6 +100,8 @@ class App extends Component {
 							<Route path={ROUTES.ACCOUNT} render={(props)=><AccountPage {...props} setGlobalState={this.setGlobalState} />} />
 							<Route path={ROUTES.ADMIN} render={(props)=><AdminPage {...props} setGlobalState={this.setGlobalState} />} />
 							<Route exact path={ROUTES.LAUNCHPAD} render={(props)=><LaunchPad {...props} setGlobalState={this.setGlobalState} />} />
+							<Route exact path={ROUTES.UNIVERSE} render={(props)=><Universe {...props} setGlobalState={this.setGlobalState} />} />
+							<Route path={ROUTES.UNIVERSE_PUBLISH} render={(props)=><UniversePublish {...props} setGlobalState={this.setGlobalState} />} />
 							<Route exact path={ROUTES.RESOURCE_HOME} render={(props)=><ResourcePage {...props} default={'GqrsER3FnGgSZwyTYgkkDdyyty92'} setGlobalState={this.setGlobalState} />} />
 							<Route path={ROUTES.RESOURCES} render={(props)=><ResourcePage {...props} default={'GqrsER3FnGgSZwyTYgkkDdyyty92'} setGlobalState={this.setGlobalState} />} />
 							<Route path={ROUTES.UNTUTORIAL} render={(props)=><UntutorialPage {...props} setGlobalState={this.setGlobalState} />} />
@@ -104,6 +109,7 @@ class App extends Component {
 							<Route path={ROUTES.CLASS} render={(props)=><ClassPage {...props} setGlobalState={this.setGlobalState} />} />
 							<Route path={ROUTES.NEW_PROJECT} render={(props)=><NewProjectPage {...props} setGlobalState={this.setGlobalState} />} />
 							<Route path={ROUTES.SIMULATOR} render={(props)=><Simulator {...props} setGlobalState={this.setGlobalState} />} />
+							<Route path={ROUTES.PROGRESSREVIEWS} render={(props)=><ProgressReviews {...props} setGlobalState={this.setGlobalState} />} />
 							<Route exact path={ROUTES.JETFUEL} render={(props)=><JetFuel {...props} setGlobalState={this.setGlobalState} />} />
 							<Route path={ROUTES.QUESTION} render={(props)=><Question {...props} setGlobalState={this.setGlobalState} />} />
 							<Route path={ROUTES.NEW_CLASS} render={(props)=><NewClassPage {...props} setGlobalState={this.setGlobalState} />} />

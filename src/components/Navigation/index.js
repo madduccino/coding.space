@@ -22,12 +22,17 @@ class Navigation extends React.Component{
         <>
         <Link className="logo" to={ROUTES.LANDING}><img src={logo} /></Link>
         <div className="nav">
-            <Link to={ROUTES.NEW_PROJECT}>New Project</Link>
+            <Link to={ROUTES.UNIVERSE}>Universe</Link>
+            <Link to={ROUTES.NEW_PROJECT}>New Untutorial</Link>
             <Link to={ROUTES.CLASSES}>My Classes</Link>       
-            <Link to={ROUTES.JETFUEL}>Jet Fuel</Link>      
+            <Link to={ROUTES.JETFUEL}>Jet Fuel</Link>   
+            <Link to={ROUTES.SIMULATOR}>Simulator</Link>   
             {!!authUser.roles[ROLES.ADMIN] && (
                 <Link to={ROUTES.NEW_USER}>New User</Link>            
               )}
+            {!!authUser.roles[ROLES.TEACHER] && (
+              <Link to={ROUTES.PROGRESSREVIEWS}>Student Progress</Link>
+            )}
             {!!authUser&&(
             <div className="dropdown">
               <div id="menu" className={this.props.showNav ? "highlight" : null}> 
@@ -51,6 +56,7 @@ class Navigation extends React.Component{
       )
     return (
       <>
+
       <Link className="logo" to={ROUTES.LANDING}><img src={logo} /></Link>
       <div className="nav">
           {pathname != '/signin' && (

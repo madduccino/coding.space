@@ -12,11 +12,10 @@ class UntutorialPageBase extends React.Component {
 		super(props);
 		this.state = {
 			authUser:null,
-			author:null,
 			loading:true,
 			untutorial: {},
 			errors:{},
-			project:null,
+			progress:null,
 			dirty:false,
 			uploading:false,
 			uploadPercent:0,
@@ -24,7 +23,7 @@ class UntutorialPageBase extends React.Component {
 
 
 		}
-		this.deleteProjectHandler = this.deleteProjectHandler.bind(this);
+		
 		this.handleStatusOnChange = this.handleStatusOnChange.bind(this);
 		this.handleStatusOnSave = this.handleStatusOnSave.bind(this);
 		this.handleThumbnailUpload = this.handleThumbnailUpload.bind(this);
@@ -39,17 +38,14 @@ class UntutorialPageBase extends React.Component {
 		this.addStepHandler = this.addStepHandler.bind(this);
 		this.deleteStepHandler = this.deleteStepHandler.bind(this);
 		this.saveChangesHandler = this.saveChangesHandler.bind(this);
-		this.saveProjectHandler = this.saveProjectHandler.bind(this);
+		this.saveProgressHandler = this.saveProgressHandler.bind(this);
 		this.validateTitle = this.validateTitle.bind(this);
 		this.validateStatus = this.validateStatus.bind(this);
 		this.validateDescription = this.validateDescription.bind(this);
 		this.validateLevel = this.validateLevel.bind(this);
 		this.validateStep = this.validateStep.bind(this);
-		this.loadProject = this.loadProject.bind(this);
-		this.handleProjectURLOnChange = this.handleProjectURLOnChange.bind(this);
-		this.validateProjectURL = this.validateProjectURL.bind(this);
-		this.handleProjectTitleOnChange = this.handleProjectTitleOnChange.bind(this);
-		this.validateProjectTitle = this.validateProjectTitle.bind(this);
+		this.loadProgress = this.loadProgress.bind(this);
+
 		this.studentApprove = this.studentApprove.bind(this);
 
 
@@ -74,10 +70,9 @@ class UntutorialPageBase extends React.Component {
 			this.props.firebase.profile(untutorial.Author).once('value')
 				.then(snapshot2 => {
 					const author = snapshot2.val();
-
+					untutorial.Author = author;
 					this.setState({
 						untutorial: untutorial,
-						author:author,
 						loading:false,
 					})
 				})
@@ -91,25 +86,37 @@ class UntutorialPageBase extends React.Component {
 
 
 	}
-	loadProject(){
+	loadProgress(){
 		const {authUser} = this.props;
+		const {untutorial} = this.state;
 		const {key} = this.props.match.params;
 		if(!!authUser){
-			if(!!authUser.progress[key]){
-				if(!authUser.progress[key].steps)
-					authUser.progress[key].steps=[];
-				this.setState({project:authUser.progress[key]})
-			}
-			else
+			this.props.firebase.progress(authUser.uid,untutorial.key).on('value', snapshot => {
+				if(snapshot.exists()){
+					let progress = snapshot.val();
+					if(!progress.steps)
+						progress.steps = {};
+					this.setState({progress:progress});
+				} else {
+					let progress = {
+						Status:"DRAFT",
+						steps:{},
+						LastModified:Date.now(),
+						profile:authUser.uid,
+						untut:key
+					}
+					snapshot.ref.set({...progress})
+					.then(()=>{
+						this.setState({progress:progress});
+					})
+					
+
+				}
+				
+			})
 			
-				this.setState({project:{
-					Status:"DRAFT",
-					ThumbnailFilename:'',
-					URL:'',
-					Title:'',
-					steps:[],
-					key:key
-			}})
+			
+				
 			
 			
 		}
@@ -131,7 +138,7 @@ class UntutorialPageBase extends React.Component {
 			oCopy.Status = 'DRAFT';
 		oCopy.ThumbnailFilename = uuidv4() + '.' + ext;
 
-		var storageRef = this.props.firebase.storage.ref('/public/' + oCopy.Author + '/' + oCopy.ThumbnailFilename);
+		var storageRef = this.props.firebase.storage.ref('/public/' + oCopy.Author.key + '/' + oCopy.ThumbnailFilename);
 		var task = storageRef.put(file);
 
 		task.on('state_changed',
@@ -153,37 +160,7 @@ class UntutorialPageBase extends React.Component {
 
 
 	}
-	handleProjectThumbnailUpload(event){
-		
-		var file = event.target.files[0];
-		var ext = file.name.substring(file.name.lastIndexOf('.') + 1);
-		var oCopy = this.state.project;
-		const {authUser} = this.props;
 
-		oCopy.ThumbnailFilename = uuidv4() + '.' + ext;
-
-		var storageRef = this.props.firebase.storage.ref('/public/' + authUser.uid + '/' + oCopy.ThumbnailFilename);
-		var task = storageRef.put(file);
-
-		task.on('state_changed',
-			(snapshot)=>{
-				//update
-				var percentage = 100 * snapshot.bytesTransferred / snapshot.totalBytes;
-				this.setState({uploadPercent:percentage,uploading:true})
-
-			},(error)=>{
-				//error
-				console.log(error);
-				this.setState({uploadPercent:0,uploading:false})
-			},
-			()=>{
-				//complete
-				this.setState({uploadPercent:0,uploading:false,project:oCopy},this.saveChangesHandler)
-
-			})
-
-
-	}
 	handleTitleOnChange(value){
 		var oCopy = this.state.untutorial;
 		if(value !== oCopy.Title){
@@ -342,48 +319,7 @@ class UntutorialPageBase extends React.Component {
 		}
 		this.setState({errors:errors});
 	}
-	handleProjectTitleOnChange(value){
-		const {untutorial,project} = this.state;
-		const {authUser} = this.props;
-
-		if(value !== project.Title){
-			project.Title = value;
-			this.validateProjectTitle();
-			this.setState({project:project});
-		}
-	}
-	validateProjectTitle(){
-		const {untutorial,errors,project} = this.state;
-		const {authUser} = this.props;
-		
-		
-		if(project.Title===''){
-			errors['PROJECT_TITLE'] = 'PROJECT_TITLE.<span class="red">ISREQUIRED</span>'; 		
-		}
-		else if(project.Title.length < 10){
-
-			errors['PROJECT_TITLE'] = 'PROJECT_TITLE.<span class="red">ISTOOSHORT</span>';
-		}
-		else{
-			delete errors['PROJECT_TITLE'];
-		}
-		this.setState({errors:errors});
-
-	}
-	handleProjectURLOnChange(value){
-		const {untutorial,project} = this.state;
-		const {authUser} = this.props;
-		
-
-		if(value !== project.URL){
-			project.URL = value;
-
-			
-			this.validateProjectURL();
-			this.setState({project:project});
-		}
-
-	}
+	
 	validateProjectURL(){
 		const {untutorial,errors,project} = this.state;
 		const {authUser} = this.props;
@@ -427,7 +363,7 @@ class UntutorialPageBase extends React.Component {
 	}
 	saveChangesHandler(event){
 
-		const {untutorial, loading, author,errors} = this.state;
+		const {untutorial,  loading, author,errors} = this.state;
 		const {Title,Description, Level, steps} = untutorial;
 		const {authUser} = this.props;
 		const {key} = this.props.match.params;
@@ -485,19 +421,19 @@ class UntutorialPageBase extends React.Component {
 		
 		console.log("Save Changes");
 	}
-	saveProjectHandler(event){
+	saveProgressHandler(event){
 
-		const {untutorial,errors, project} = this.state;
+		const {untutorial,errors, progress} = this.state;
 
 		const {authUser} = this.props;
 		const {key} = this.props.match.params;
 	
 		
 		if(Object.values(errors).length === 0){
-			project.Level = untutorial.Level;
-			project.LastModified = Date.now();
-			this.props.firebase.profile(authUser.uid).child('progress').child(untutorial.key).set({
-				...project
+			//progress.Level = untutorial.Level;
+			progress.LastModified = Date.now();
+			this.props.firebase.progress(authUser.uid,untutorial.key).set({
+				...progress
 			})
 			.then(()=>{
 				console.log("Successfully Saved Progress");
@@ -547,34 +483,36 @@ class UntutorialPageBase extends React.Component {
 		console.log("Save Changes");
 	}
 	studentApprove(step){
-		const {project} = this.state;
-		var pCopy = project;
-		if(!project.steps[step])
-			project.steps[step]={Status:{},Comments:''};
-		project.steps[step].Status['STUDENT_COMPLETE'] = 'STUDENT_COMPLETE';
+		const {progress} = this.state;
+		var pCopy = progress;
+		if(!progress.steps[step])
+			progress.steps[step]={Status:'PENDING',Comments:''};
+		progress.steps[step].Status = 'PENDING';
+
 		
-		this.setState({project:project},this.saveProjectHandler);
+		
+		this.setState({progress:progress},this.saveProgressHandler);
 
 	}
 	render(){
 		
-		const {untutorial, loading, author,project} = this.state;
+		const {untutorial, loading, author,progress} = this.state;
 		const {Title,Description, Level, steps} = untutorial;
 		const {authUser} = this.props;
 		const {key} = this.props.match.params;
 
-		var projectSteps = [];
-		if(!!project && !!project.steps)
-			projectSteps = Object.keys(project.steps);
+		var progressSteps = null;
+		if(!!progress)
+			progressSteps = Object.keys(progress.steps);
 		var stepCount = 0;
 		if(!!untutorial && !!untutorial.steps)
 			stepCount = Object.keys(untutorial.steps).length;
-		var completeSteps = 0;
-		if(!!project && !!projectSteps) 
-			completeSteps = projectSteps.filter(step=>!!project.steps[step].Status && !!project.steps[step].Status['STUDENT_COMPLETE']);
+		var studentCompleteSteps = 0;
+		if(!!progress && !!progressSteps) 
+			studentCompleteSteps = progressSteps.filter(step=>progress.steps[step].Status=='PENDING');
 		var nextStep = 0;
-		if(!!completeSteps)
-			nextStep = Math.min(...Object.keys(untutorial.steps).filter(step=>!completeSteps.includes(step)))+1;
+		if(!!studentCompleteSteps)
+			nextStep = Math.min(...Object.keys(untutorial.steps).filter(step=>!studentCompleteSteps.includes(step)))+1;
 		console.log();
 		if(nextStep > stepCount)
 			nextStep = 0;
@@ -588,72 +526,58 @@ class UntutorialPageBase extends React.Component {
 
 		//can edit
 
-       console.log('hi')
 		return (
 			<section id="untutorial">
 				<div className="main">
 					<div className="sidebar">	
 						<div className="workOnProject">
-							{!!authUser && !project && (
+							{!!authUser && !progress && (
 								<button
-								onClick={this.loadProject}>Work On This Project!</button>
+								onClick={this.loadProgress}>Work On This Project!</button>
 							)}
-							{!!project && project.Status == 'FINAL' &&(
-								<h2>GREAT JOB! You finished this project!'</h2>
+							{!!progress && progress.Status == 'APPROVED' &&(
+								<div>
+									<h3>GREAT JOB! You finished this project!'</h3>
+									<button onClick={()=>window.location = ROUTES.UNIVERSE + '/' + progress.untut}>Publish to the UNIVERSE!</button>
+								</div>
 							)}
-							{!!project && project.Status != 'FINAL' && !!nextStep && (
+							{!!progress && progress.Status == 'PENDING' && (
+								<h3>Your teacher is reviewing your project! Take it easy!</h3>
+							)}
+							{!!progress && progress.Status == 'DRAFT' && !!nextStep && (
 								<h3>Keep it Up! You're on Step {nextStep}!</h3>
 							)}
-							{!!project&&(
-							<div className={'container'}>
-							 <h4>Project Title</h4>
-							 <TCSEditor
-							disabled={!!project.Status['FINAL']}
-							type={"plain"} 
-							onEditorChange={this.handleProjectTitleOnChange} 
-							onEditorSave={this.saveProjectHandler} 
-							placeholder={'Project Title'} 
-							text={project.Title}/>
+							
+				
 						</div>
-					)}
-				{!!project&& (
-					<div className={'container'}>
-						<h4>Project URL</h4>
-						<TCSEditor
-							disabled={!!project.Status['FINAL']}
-							type={"plain"} 
-							onEditorChange={this.handleProjectURLOnChange} 
-							onEditorSave={this.saveProjectHandler} 
-							placeholder={'Project URL'} 
-							text={project.URL}/>
+						{!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===untutorial.Author.key) && (
+							<div className={'container'}>
+								<TCSEditor 
+									disabled={!(authUser && (!!authUser.roles['ADMIN'] || authUser.uid===untutorial.Author.key))}
+									type={'select'}
+									selectOptions={['DRAFT','APPROVED']}
+									name={'status'}
+									onEditorChange={this.handleStatusOnChange}
+									onEditorSave={this.handleStatusOnSave}
+									placeholder={'Status'} 
+									text={`Status: ${untutorial.Status}`} />
+							</div> 
+
+						)}
 						
-					</div>
-				)}
-			</div>
 						<div className={'container'}>
 							<TCSEditor 
-							disabled={!(authUser && (!!authUser.roles['ADMIN'] || authUser.uid===untutorial.Author))}
-							type={'select'}
-							selectOptions={['DRAFT','APPROVED']}
-							name={'status'}
-							onEditorChange={this.handleStatusOnChange}
-							onEditorSave={this.handleStatusOnSave}
-							placeholder={'Status'} 
-							text={`Status: ${untutorial.Status}`} />
-						</div> 
-						<div className={'container'}>
-						<TCSEditor 
-						disabled={!(authUser && !!authUser.roles['ADMIN'])}
-						type={'text'}
-						className={'title'}
-						name={'title'}
-						onEditorChange={this.handleTitleOnChange}
-						onEditorSave={this.handleTitleOnSave}
-						placeholder={'Step Description'} 
-						text={untutorial.Title} />
+								disabled={!(authUser && !!authUser.roles['ADMIN'])}
+								type={'text'}
+								className={'title'}
+								name={'title'}
+								onEditorChange={this.handleTitleOnChange}
+								onEditorSave={this.handleTitleOnSave}
+								placeholder={'Step Description'} 
+								text={untutorial.Title} />
 						</div>
 						<div className="thumbnail">
-							{!!authUser && (		
+							{!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===untutorial.Author.key) && (		
 								<label for="files" className="upload">
 									<input id="files" type="file" onChange={this.handleThumbnailUpload}/>
 								</label>
@@ -662,12 +586,12 @@ class UntutorialPageBase extends React.Component {
 								<progress value={this.state.uploadPercent} max="100"/>
 							)}
 							{!!untutorial.ThumbnailFilename && !this.state.uploading &&(
-								<LazyImage file={this.props.firebase.storage.ref('/public/' + untutorial.Author + '/' + untutorial.ThumbnailFilename)}/>
+								<LazyImage file={this.props.firebase.storage.ref('/public/' + untutorial.Author.key + '/' + untutorial.ThumbnailFilename)}/>
 							)}
 						</div>	
 						<div className={'container'} >
 							<TCSEditor 
-							disabled={!(authUser && (!!authUser.roles['ADMIN'] || authUser.uid===untutorial.Author))}
+							disabled={!(authUser && (!!authUser.roles['ADMIN'] || authUser.uid===untutorial.Author.key))}
 							type={'select'}
 							selectOptions={["1","2","3","4","5","6"]}
 							onEditorChange={this.handleLevelOnChange}
@@ -676,11 +600,11 @@ class UntutorialPageBase extends React.Component {
 							text={`Level ${untutorial.Level}`}/>
 						</div>
 						<div className={'container'}>
-							<h3>by: <a href={'/profile/' + untutorial.Author} dangerouslySetInnerHTML={{__html:author.DisplayName}}/></h3>
+							<h3>by: <a href={'/profile/' + untutorial.Author.key} dangerouslySetInnerHTML={{__html:untutorial.Author.DisplayName}}/></h3>
 						</div>
 						<div className={'container'}>
 							<TCSEditor 
-							disabled={!(authUser && (!!authUser.roles['ADMIN'] || authUser.uid===untutorial.Author))}
+							disabled={!(authUser && (!!authUser.roles['ADMIN'] || authUser.uid===untutorial.Author.key))}
 							type={'text'}
 							onEditorChange={this.handleDescriptionOnChange}
 							onEditorSave={this.handleDescriptionOnSave}
@@ -694,28 +618,37 @@ class UntutorialPageBase extends React.Component {
 						<div className={'container'}>
 							{Object.keys(untutorial.steps).map(step => (
 							<>
-								{!!project && !!project.steps && (!project.steps[step] || !project.steps[step].Status['STUDENT_COMPLETE']) && (
+								{!!progress && (!progress.steps[step] || progress.steps[step].Status == 'DRAFT') && (
 									<div>
-									<button 
-										disabled={false} 
-										onClick={()=>this.studentApprove(step)}
-										text="I Finished!">I Finished!</button>
+										{!!progress.steps[step] && progress.steps[step].Status == 'DRAFT' && (
+											<div>{progress.steps[step].Comments}</div>
+										)}
+										
+										<button 
+											disabled={false} 
+											onClick={()=>this.studentApprove(step)}
+											text="I Finished!">I Finished!</button>
 									</div>
-							)}
-							{!!project && !!project.steps && !!project.steps[step] && !!project.steps[step].Status['TEACHER_COMPLETE'] && (
-								<div>
+								)}
+								{!!progress && !!progress.steps[step] && progress.steps[step].Status == 'PENDING' && (
+									<div>
 
-									<img src='/public/images/star-yellow.png'/>
-								</div>
-							)}
+										<img src='/images/coin.gif'/>
+									</div>
+								)}
+								{!!progress && !!progress.steps[step] && progress.steps[step].Status == 'APPROVED' && (
+									<div>
+
+										<img src='/images/star-yellow.png'/>
+									</div>
+								)}
 							<TCSEditor
-							className={!!project && !!project.steps && !!project.steps[step] && !project.steps[step].Status['STUDENT_COMPLETE'] ? 'student-complete' : ''}
-							disabled={!(!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===untutorial.Author))}
-							type={'text'}
-							onEditorChange={(value)=>this.handleStepOnChange(value,step)} 
-							onEditorSave={(value)=>this.handleStepOnSave(value,step)} 
-							placeholder={'Step Description'} 
-							text={untutorial.steps[step].Description}/> 
+								disabled={!(!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===untutorial.Author.key))}
+								type={'text'}
+								onEditorChange={(value)=>this.handleStepOnChange(value,step)} 
+								onEditorSave={(value)=>this.handleStepOnSave(value,step)} 
+								placeholder={'Step Description'} 
+								text={untutorial.steps[step].Description}/> 
 						{/* {!!project && !!project.steps && !!project.steps[step] && !!project.steps[step].Comments && (
 							<div dangerouslySetInnerHTML={{__html:project.steps[step].Comments}} />
 						)} */}

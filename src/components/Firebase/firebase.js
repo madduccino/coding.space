@@ -89,6 +89,12 @@ class Firebase {
   questions = () => this.db.ref('db/Questions');
   question = qid => this.db.ref('db/Questions/' + qid);
 
+  projects = () => this.db.ref('db/Projects');
+  project = pid => this.db.ref('db/Projects/' + pid);
+
+  progresses = (uid) => this.db.ref('db/Progress/' + uid);
+  progress = (uid,unid) => this.db.ref('db/Progress/' + uid + '/' + unid);
+
 
   //levels = () => this.db.ref('db/Projects/**/Level');
 }
