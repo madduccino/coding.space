@@ -552,16 +552,18 @@ class UntutorialPageBase extends React.Component {
 								onEditorSave={this.handleTitleOnSave}
 								placeholder={'Step Description'} 
 								text={untutorial.Title} />
-								<TCSEditor 
-								disabled={!(authUser && (!!authUser.roles['ADMIN'] || authUser.uid===untutorial.Author.key))}
-								type={'select'}
-								selectOptions={['DRAFT','APPROVED']}
-								name={'status'}
-								className={untutorial.Status === 'APPROVED' ? 'approved' : 'draft'}
-								onEditorChange={this.handleStatusOnChange}
-								onEditorSave={this.handleStatusOnSave}
-								placeholder={'Status'} 
-								text={untutorial.Status} />
+								{!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===untutorial.Author.key) && (		
+									<TCSEditor 
+									disabled={!(authUser && (!!authUser.roles['ADMIN'] || authUser.uid===untutorial.Author.key))}
+									type={'select'}
+									selectOptions={['DRAFT','APPROVED']}
+									name={'status'}
+									className={untutorial.Status === 'APPROVED' ? 'approved' : 'draft'}
+									onEditorChange={this.handleStatusOnChange}
+									onEditorSave={this.handleStatusOnSave}
+									placeholder={'Status'} 
+									text={untutorial.Status} />
+								)}
 							</div>
 							<div className="container">
 								<div className="thumbnail">
