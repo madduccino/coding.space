@@ -662,7 +662,7 @@ class UntutorialPageBase extends React.Component {
 										onEditorSave={(value)=>this.handleStepOnSave(value,step)} 
 										placeholder={'Step Description'} 
 										text={untutorial.steps[step].Description}/> 
-										{!!progress.steps[step] && progress.steps[step].Comments != '' && (
+										{!!progress && !!progress.steps[step] && progress.steps[step].Comments != '' && (
 											<div className={'comments'}>{progress.steps[step].Comments}</div>
 										)}
 								</div>
