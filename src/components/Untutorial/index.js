@@ -587,11 +587,13 @@ class UntutorialPageBase extends React.Component {
 										<LazyImage file={this.props.firebase.storage.ref('/public/' + untutorial.Author.key + '/' + untutorial.ThumbnailFilename)}/>
 									)}
 								</div>	
+								{untutorial.Author.Status === 'APPROVED' &&(
+									<div className={'container'}>
+										<h3>by: <a href={'/profile/' + untutorial.Author.key} dangerouslySetInnerHTML={{__html:untutorial.Author.DisplayName}}/></h3>
 
-								<div className={'container'}>
-									<h3>by: <a href={'/profile/' + untutorial.Author.key} dangerouslySetInnerHTML={{__html:untutorial.Author.DisplayName}}/></h3>
-
-								</div>
+									</div>
+								)}
+								
 								<div className={'container'}>
 									<TCSEditor 
 									disabled={!(authUser && (!!authUser.roles['ADMIN'] || authUser.uid===untutorial.Author.key))}

@@ -121,6 +121,7 @@ class ResourcePageBase extends React.Component {
  	
  	
  }
+
  handleTitleOnSave(value){
  	this.saveChangesHandler();
  }

@@ -25,7 +25,7 @@ class NewUserFormBase extends Component {
   }
 
   onSubmit = event => {
-    const { name, username, passwordOne, isAdmin, isTeacher } = this.state;
+    const { name, username, passwordOne, isAdmin, isTeacher, errors } = this.state;
     const roles = {};
     if(isAdmin) roles[ROLES.ADMIN] = ROLES.ADMIN;
     if(isTeacher) roles[ROLES.TEACHER] = ROLES.TEACHER;
@@ -76,6 +76,12 @@ class NewUserFormBase extends Component {
           
         })
         .catch((response)=>{
+          this.props.setGlobalState({
+            messages:[{
+              html:response,
+              type:true
+            }]
+          })
           console.log(response);
           //this.setState({ error: response.body.json().error });
         })

@@ -20,7 +20,15 @@ class NewClassPageBase extends React.Component {
  		uploadPercent:0,
  		classRef:null,
  		Author:null,
- 		class: {
+ 		errors:{
+ 			"Title" : 'TITLE.<span class="red">ISREQUIRED</span>',
+ 			"Schedule" : 'SCHEDULE.<span class="red">ISREQUIRED</span>',
+ 			"Location" : 'LOCATION.<span class="red">ISREQUIRED</span>',
+ 			"Description" : 'DESCRIPTION.<span class="red">ISREQUIRED</span>',
+ 			"Thumbnail" : 'THUMBNAIL.<span class="red">ISREQUIRED</span>'		
+
+ 		},
+ 		clazz: {
  			key:uuidv4(),
  			Description:'',
  			Schedule:'',
@@ -39,13 +47,18 @@ class NewClassPageBase extends React.Component {
  	}
  	//this.handleStatusOnChange = this.handleStatusOnChange.bind(this);
  	this.handleThumbnailUpload = this.handleThumbnailUpload.bind(this);
+ 	this.handleThumbnailValidate = this.handleThumbnailValidate.bind(this);
  	this.handleClassTitleOnChange = this.handleClassTitleOnChange.bind(this);
+ 	this.handleClassTitleValidate = this.handleClassTitleValidate.bind(this);
  	this.handleClassTitleOnSave = this.handleClassTitleOnSave.bind(this);
  	this.handleClassDescriptionOnChange = this.handleClassDescriptionOnChange.bind(this);
+ 	this.handleClassDescriptionValidate = this.handleClassDescriptionValidate.bind(this);
  	this.handleClassDescriptionOnSave = this.handleClassDescriptionOnSave.bind(this);
  	this.handleClassScheduleOnChange = this.handleClassScheduleOnChange.bind(this);
+ 	this.handleClassScheduleValidate = this.handleClassScheduleValidate.bind(this);
  	this.handleClassScheduleOnSave = this.handleClassScheduleOnSave.bind(this);
  	this.handleClassLocationOnChange = this.handleClassLocationOnChange.bind(this);
+ 	this.handleClassLocationValidate = this.handleClassLocationValidate.bind(this);
  	this.handleClassLocationOnSave = this.handleClassLocationOnSave.bind(this);
  	
  	this.saveChangesHandler = this.saveChangesHandler.bind(this);
@@ -64,14 +77,14 @@ class NewClassPageBase extends React.Component {
  };
 
  componentDidMount(){
- 	var cCopy = this.state.class;
+ 	var cCopy = this.state.clazz;
  	if(this.props.authUser){
 		cCopy.Author = this.props.authUser.key;
 		cCopy.Members[cCopy.Author] = cCopy.Author;
 
 	 	this.setState({
-	 		classRef: this.props.firebase.class(this.state.class.key),
-	 		class:cCopy,
+	 		classRef: this.props.firebase.class(this.state.clazz.key),
+	 		clazz:cCopy,
 	 		loading:false,
 
 
@@ -84,12 +97,12 @@ class NewClassPageBase extends React.Component {
 
  }
  componentWillReceiveProps(props){
- 	if(this.state.class.Author != props.authUser.key){
- 		var cCopy = this.state.class;
+ 	if(this.state.clazz.Author != props.authUser.key){
+ 		var cCopy = this.state.clazz;
  		cCopy.Author = props.authUser.key;
  		cCopy.Members[cCopy.Author] = cCopy.Author;
  		this.setState({ 
- 			class: cCopy,
+ 			clazz: cCopy,
  			loading:false,
 
  		})
@@ -106,45 +119,94 @@ class NewClassPageBase extends React.Component {
  	this.props.firebase.class().off();
  }
   handleClassTitleOnChange(value){
- 	var cCopy = this.state.class;
+ 	var cCopy = this.state.clazz;
  	if(value !== cCopy.Title){
  		cCopy.Title = value;
- 		this.setState({class:cCopy});
+ 		this.setState({clazz:cCopy}, this.handleClassTitleValidate);
  	}
  	
+ }
+ handleClassTitleValidate(){
+ 	const {clazz,errors} = this.state;
+ 	if(clazz.Title.length == 0){
+ 		errors["Title"] = 'TITLE.<span class="red">ISREQUIRED</span>'; 		
+ 	}
+ 	else if(clazz.Title.length <= 5){
+ 		errors["Title"] = 'TITLE.<span class="red">ISTOOSHORT</span>'; 		
+ 	}
+ 	else delete errors["Title"];
+ 	this.setState({errors:errors});
+
  }
  handleClassTitleOnSave(){
 
  }
    handleClassScheduleOnChange(value){
- 	var cCopy = this.state.class;
+ 	var cCopy = this.state.clazz;
  	if(value !== cCopy.Schedule){
  		cCopy.Schedule = value;
- 		this.setState({class:cCopy});
+ 		this.setState({clazz:cCopy},this.handleClassScheduleValidate);
  	}
  	
+ }
+
+ handleClassScheduleValidate(){
+	const {clazz,errors} = this.state;
+ 	const text = clazz.Schedule.replace(/<(.|\n)*?>/g, '').trim();
+ 	if(text.length == 0){
+ 		errors["Schedule"] = 'SCHEDULE.<span class="red">ISREQUIRED</span>'; 		
+ 	}
+ 	else if(text.length <= 20){
+ 		errors["Schedule"] = 'SCHEDULE.<span class="red">ISTOOSHORT</span>'; 		
+ 	}
+ 	else delete errors["Schedule"];
+ 	this.setState({errors:errors});
  }
  handleClassScheduleOnSave(){
 
  }
    handleClassLocationOnChange(value){
- 	var cCopy = this.state.class;
+ 	var cCopy = this.state.clazz;
  	if(value !== cCopy.Location){
  		cCopy.Location = value;
- 		this.setState({class:cCopy});
+ 		this.setState({clazz:cCopy},this.handleClassLocationValidate);
  	}
  	
+ }
+ handleClassLocationValidate(){
+	const {clazz,errors} = this.state;
+ 	const text = clazz.Location.replace(/<(.|\n)*?>/g, '').trim();
+ 	if(text.length == 0){
+ 		errors["Location"] = 'LOCATION.<span class="red">ISREQUIRED</span>'; 		
+ 	}
+ 	else if(text.length <= 10){
+ 		errors["Location"] = 'LOCATION.<span class="red">ISTOOSHORT</span>'; 		
+ 	}
+ 	else delete errors["Location"];
+ 	this.setState({errors:errors});
  }
  handleClassLocationOnSave(){
 
  }
    handleClassDescriptionOnChange(value){
- 	var cCopy = this.state.class;
+ 	var cCopy = this.state.clazz;
  	if(value !== cCopy.Description){
  		cCopy.Description = value;
- 		this.setState({class:cCopy});
+ 		this.setState({clazz:cCopy},this.handleClassDescriptionValidate);
  	}
  	
+ }
+ handleClassDescriptionValidate(){
+	const {clazz,errors} = this.state;
+	const text = clazz.Description.replace(/<(.|\n)*?>/g, '').trim();
+ 	if(text.length == 0){
+ 		errors["Description"] = 'DESCRIPTION.<span class="red">ISREQUIRED</span>'; 		
+ 	}
+ 	else if(text.length <= 20){
+ 		errors["Description"] = 'DESCRIPTION.<span class="red">ISTOOSHORT</span>'; 		
+ 	}
+ 	else delete errors["Description"];
+ 	this.setState({errors:errors});
  }
  handleClassDescriptionOnSave(){
 
@@ -152,7 +214,7 @@ class NewClassPageBase extends React.Component {
  handleThumbnailUpload(event){
  	var file = event.target.files[0];
  	var ext = file.name.substring(file.name.lastIndexOf('.') + 1);
- 	var cCopy = this.state.class;
+ 	var cCopy = this.state.clazz;
  	cCopy.ThumbnailFilename = uuidv4() + '.' + ext;
 
  	var storageRef = this.props.firebase.storage.ref('/classes/' + cCopy.ThumbnailFilename);
@@ -171,30 +233,75 @@ class NewClassPageBase extends React.Component {
 	 	},
 	 	()=>{
 	 		//complete
-	 		this.setState({uploadPercent:0,uploading:false,class:cCopy})
+	 		this.setState({uploadPercent:0,uploading:false,clazz:cCopy},this.handleThumbnailValidate)
 
 	 	})
 
 
  }
- 
+ handleThumbnailValidate(){
+ 	const {clazz,errors} = this.state;
+	
+ 	if(clazz.ThumbnailFilename.length == 0){
+ 		errors["Thumbnail"] = 'THUMBNAIL.<span class="red">ISREQUIRED</span>'; 		
+ 	}
+ 	
+ 	else delete errors["Thumbnail"];
+ 	this.setState({errors:errors});
+ }
  saveChangesHandler(event){
 
- 	this.state.classRef.set({
- 		...this.state.class
- 	})
+ 	const {errors} = this.state;
+ 	if(Object.keys(errors).length == 0){
+ 		this.state.classRef.set({
+	 		...this.state.clazz
+	 	})
  		.then(()=>{
  			console.log("Successfully Saved");
- 			this.props.history.push("/classes/" + this.state.class.key);
+ 			this.props.history.push("/classes/" + this.state.clazz.key);
  		})
  		.catch(error=>console.log(error));
+ 	}
+ 	else{
+ 		var badFields = Object.keys(errors);
+		var messages = [];
+		messages.push({
+			html:`<span class="green">Saving</span>...`,
+			type:true
+		})
+		messages.push({
+			html:`<span class="red">ERROR!</span>`,
+			type:false
+		})
+		for(var i =0;i< badFields.length;i++){
+
+			messages.push({
+				html:errors[badFields[i]],
+				type:true
+			});
+		}
+
+		messages.push({
+			html:`Press any key to continue...`,
+			type:false
+		})
+
+			
+		
+		
+		this.props.setGlobalState({
+			messages:messages,
+			showMessage:true
+			
+		});
+ 	}
+ 	
  	console.log("Save Changes");
  }
 
  render(){
  	
- 	const {loading} = this.state;
- 	const clazz = this.state.class;
+ 	const {loading, clazz} = this.state;
  	const {Title,Description,Schedule,Location} = clazz;
  	const {authUser} = this.props;
  	
@@ -202,11 +309,7 @@ class NewClassPageBase extends React.Component {
  	//console.log(Object.keys(project));
  	if(loading)
  		return (<div>Loading ...</div>);
-	var isInvalid =
-      Title === '' ||
-      Description === '' ||
-      Schedule === '' ||
-      Location === '';
+
      
 	return (
 		<section id="new-class">
@@ -272,7 +375,7 @@ class NewClassPageBase extends React.Component {
 			</div>
 			</div>
 			
-			<button disabled={isInvalid} onClick={this.saveChangesHandler}>Save Changes</button>
+			<button disabled={false} onClick={this.saveChangesHandler}>Save Changes</button>
 		</div>
 		</section>
 	)
@@ -283,7 +386,7 @@ class NewClassPageBase extends React.Component {
 	}
 }
 
-const condition = authUser => authUser && !!authUser.roles[ROLES.ADMIN];
+const condition = authUser => !!authUser && !!authUser.roles[ROLES.ADMIN];
 const NewClassPage = withFirebase(withAuthorization(condition)(NewClassPageBase));
 
 export default NewClassPage;

@@ -20,6 +20,14 @@ class NewProjectPageBase extends React.Component {
  		uploading:false,
  		uploadPercent:0,
  		untutorialRef:null,
+ 		errors:{
+			"Thumbnail" : 'THUMBNAIL.<span class="red">ISREQUIRED</span>',
+			"Title" : 'TITLE.<span class="red">ISREQUIRED</span>',
+			"Step" : 'STEP1.<span class="red">ISREQUIRED</span>',
+			"Stepcount" : 'STEPS.<span class="red">R_REQUIRED</span>',
+			"Description" : 'DESCRIPTION.<span class="red">ISREQUIRED</span>'
+
+ 		},
  		untutorial: {
  			key:uuidv4(),
  			Author:null,
@@ -42,16 +50,21 @@ class NewProjectPageBase extends React.Component {
  	}
  	//this.handleStatusOnChange = this.handleStatusOnChange.bind(this);
  	this.handleThumbnailUpload = this.handleThumbnailUpload.bind(this);
+ 	this.handleThumbnailValidate = this.handleThumbnailValidate.bind(this);
  	this.handlePTitleOnChange = this.handlePTitleOnChange.bind(this);
+ 	this.handlePTitleValidate = this.handlePTitleValidate.bind(this);
  	this.handlePTitleOnSave = this.handlePTitleOnSave.bind(this);
  	this.handlePDescriptionOnChange = this.handlePDescriptionOnChange.bind(this);
+ 	this.handlePDescriptionValidate = this.handlePDescriptionValidate.bind(this);
  	this.handlePDescriptionOnSave = this.handlePDescriptionOnSave.bind(this);
  	this.handleLevelOnChange = this.handleLevelOnChange.bind(this);
  	this.handleLevelOnSave = this.handleLevelOnSave.bind(this);
  	this.handleStepOnChange = this.handleStepOnChange.bind(this);
+ 	this.handleStepValidate = this.handleStepValidate.bind(this);
  	this.handleStepOnSave = this.handleStepOnSave.bind(this);
  	this.addStepHandler = this.addStepHandler.bind(this);
  	this.deleteStepHandler = this.deleteStepHandler.bind(this);
+ 	this.handleStepCountValidate = this.handleStepCountValidate.bind(this);
  	this.saveChangesHandler = this.saveChangesHandler.bind(this);
  	
  	//this.onChange = editorState => this.setState({editorState});
@@ -111,9 +124,21 @@ class NewProjectPageBase extends React.Component {
  	var pCopy = this.state.untutorial;
  	if(value !== pCopy.Title){
  		pCopy.Title = value;
- 		this.setState({untutorial:pCopy});
+ 		this.setState({untutorial:pCopy},this.handlePTitleValidate);
  	}
  	
+ }
+ handlePTitleValidate(){
+ 	const {untutorial,errors} = this.state;
+ 	if(untutorial.Title.length == 0){
+ 		errors["Title"] = 'TITLE.<span class="red">ISREQUIRED</span>'; 		
+ 	}
+ 	else if(untutorial.Title.length <= 5){
+ 		errors["Title"] = 'TITLE.<span class="red">ISTOOSHORT</span>'; 		
+ 	}
+ 	else delete errors["Title"];
+ 	this.setState({errors:errors});
+
  }
  handlePTitleOnSave(){
 
@@ -140,19 +165,41 @@ class NewProjectPageBase extends React.Component {
 	 	},
 	 	()=>{
 	 		//complete
-	 		this.setState({uploadPercent:0,uploading:false,untutorial:pCopy})
+	 		this.setState({uploadPercent:0,uploading:false,untutorial:pCopy},this.handleThumbnailValidate)
 
 	 	})
 
 
  }
+ handleThumbnailValidate(){
+ 	const {untutorial,errors} = this.state;
+	
+ 	if(untutorial.ThumbnailFilename.length == 0){
+ 		errors["Thumbnail"] = 'THUMBNAIL.<span class="red">ISREQUIRED</span>'; 		
+ 	}
+ 	
+ 	else delete errors["Thumbnail"];
+ 	this.setState({errors:errors});
+ }
  handlePDescriptionOnChange(value){
  	var pCopy = this.state.untutorial;
  	if(value !== pCopy.Description){
  		pCopy.Description = value;
- 		this.setState({untutorial:pCopy});
+ 		this.setState({untutorial:pCopy},this.handlePDescriptionValidate);
  	}
  	
+ }
+ handlePDescriptionValidate(){
+ 	const {untutorial,errors} = this.state;
+	const text = untutorial.Description.replace(/<(.|\n)*?>/g, '').trim();
+ 	if(text.length == 0){
+ 		errors["Description"] = 'DESCRIPTION.<span class="red">ISREQUIRED</span>'; 		
+ 	}
+ 	else if(text.length <= 20){
+ 		errors["Description"] = 'DESCRIPTION.<span class="red">ISTOOSHORT</span>'; 		
+ 	}
+ 	else delete errors["Description"];
+ 	this.setState({errors:errors});
  }
  handlePDescriptionOnSave(){
 
@@ -165,6 +212,7 @@ class NewProjectPageBase extends React.Component {
  	}
  	
  }
+
  handleLevelOnSave(){
 
  }
@@ -172,9 +220,20 @@ class NewProjectPageBase extends React.Component {
  	var pCopy = this.state.untutorial;
  	if(value !== pCopy.steps[step].Description){
  		pCopy.steps[step].Description = value;
- 		this.setState({untutorial:pCopy});
+ 		this.setState({untutorial:pCopy},()=>this.handleStepValidate(pCopy.steps[step],step));
  	}
 
+ }
+ handleStepValidate(step,index){
+ 	const {errors} = this.state;
+ 	if(step.Description.length==0){
+ 		errors["Step"+index] = 'STEP' +index+'.<span class="red">ISREQUIRED</span>'; 		
+ 	}
+ 	else if(step.Description.length < 20){
+ 		errors["Step"+index] = 'STEP' +index+'.<span class="red">ISTOOSHORT</span>'; 		
+ 	}
+ 	else delete errors["Step"+index];
+ 	this.setState({errors:errors})
  }
  handleStepOnSave(){
 
@@ -182,26 +241,75 @@ class NewProjectPageBase extends React.Component {
  deleteStepHandler(event,key){
  	var pCopy = this.state.untutorial;
  	delete pCopy.steps[key];
- 	this.setState({untutorial:pCopy});
+ 	this.setState({untutorial:pCopy},this.handleStepCountValidate);
  	console.log("Delete Step");
  	console.log(key);
  }
  addStepHandler(event){
  	var pCopy = this.state.untutorial;
- 	pCopy.steps[Math.max(...Object.keys(pCopy.steps)) + 1] = {Description:''};
- 	this.setState({untutorial:pCopy});
+ 	var step = {Description:''};
+ 	var index = Math.max(...Object.keys(pCopy.steps)) + 1;
+ 	pCopy.steps[index] = step;
+ 	this.setState({untutorial:pCopy},()=>{this.handleStepCountValidate();this.handleStepValidate(step,index)});
  	console.log("Add Step");
  }
+ handleStepCountValidate(){
+ 	const {errors,untutorial} = this.state;
+ 	if(Object.keys(untutorial.steps).length == 0){
+		errors["Stepcount"] = 'STEPS.<span class="red">R_REQUIRED</span>'; 		
+ 	}
+ 	else if(Object.keys(untutorial.steps).length < 4){
+		errors["Stepcount"] = 'STEPS.<span class="red">R_2SHORT</span>'; 		
+ 	}
+ 	else delete errors["Stepcount"];
+ 	this.setState({errors:errors});
+ }
  saveChangesHandler(event){
-
- 	this.state.untutorialRef.set({
- 		...this.state.untutorial
- 	})
+ 	const {errors} = this.state;
+ 	if(Object.keys(errors).length == 0){
+ 		this.state.untutorialRef.set({
+ 			...this.state.untutorial
+ 		})
  		.then(()=>{
  			console.log("Successfully Saved");
  			this.props.history.push(ROUTES.LAUNCHPAD +'/' + this.state.untutorial.key);
  		})
  		.catch(error=>console.log(error));
+ 	}
+ 	else {
+ 		var badFields = Object.keys(errors);
+		var messages = [];
+		messages.push({
+			html:`<span class="green">Saving</span>...`,
+			type:true
+		})
+		messages.push({
+			html:`<span class="red">ERROR!</span>`,
+			type:false
+		})
+		for(var i =0;i< badFields.length;i++){
+
+			messages.push({
+				html:errors[badFields[i]],
+				type:true
+			});
+		}
+
+		messages.push({
+			html:`Press any key to continue...`,
+			type:false
+		})
+
+			
+		
+		
+		this.props.setGlobalState({
+			messages:messages,
+			showMessage:true
+			
+		});
+ 	}
+ 	
  	console.log("Save Changes");
  }
 
@@ -215,14 +323,7 @@ class NewProjectPageBase extends React.Component {
  	//console.log(Object.keys(project));
  	if(loading)
  		return (<div>Loading ...</div>);
-	var isInvalid =
-      Title === '' ||
-      Description === '' ||
-      isNaN(Level) ||
-      stepCount < 1;
-     for(var step in steps)
-     	if(step.Description === '')
-     		isInvalid = true;
+	
 	return (
 	  <section id="new-project">
 		<div className="main">
@@ -297,7 +398,7 @@ class NewProjectPageBase extends React.Component {
 			</div>
 			<div className="toolbar">
 				<button onClick={this.addStepHandler}>+</button>
-			<button disabled={isInvalid} onClick={this.saveChangesHandler}>Save</button> 
+			<button onClick={this.saveChangesHandler}>Save</button> 
 			</div>
 			</div>
 		</div>

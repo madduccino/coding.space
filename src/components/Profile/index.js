@@ -29,6 +29,7 @@ class ProfilePageBase extends React.Component {
  	this.state = {
  		authUser:null,
  		loading:true,
+ 		errors:{},
  		untutorials: [],
  		projects:[],
  		profile:{},
@@ -42,16 +43,15 @@ class ProfilePageBase extends React.Component {
  	this.handleStatusOnChange = this.handleStatusOnChange.bind(this);
  	this.handleStatusOnSave = this.handleStatusOnSave.bind(this);
  	this.handleAgeOnChange = this.handleAgeOnChange.bind(this);
+ 	this.handleAgeValidate = this.handleAgeValidate.bind(this);
  	this.handleAgeOnSave = this.handleAgeOnSave.bind(this);
- 	this.handlePTitleOnChange = this.handlePTitleOnChange.bind(this);
- 	this.handlePTitleOnSave = this.handlePTitleOnSave.bind(this);
  	this.handleThumbnailUpload = this.handleThumbnailUpload.bind(this);
  	this.handleDisplayNameOnChange = this.handleDisplayNameOnChange.bind(this);
+ 	this.handleDisplayNameValidate = this.handleDisplayNameValidate.bind(this);
  	this.handleDisplayNameOnSave = this.handleDisplayNameOnSave.bind(this);
  	this.handlePDescriptionOnChange = this.handlePDescriptionOnChange.bind(this);
+ 	this.handlePDescriptionValidate = this.handlePDescriptionValidate.bind(this);
  	this.handlePDescriptionOnSave = this.handlePDescriptionOnSave.bind(this);
- 	this.handleAgeOnChange = this.handleAgeOnChange.bind(this);
- 	this.handleAgeOnSave = this.handleAgeOnSave.bind(this);
  	this.saveChangesHandler = this.saveChangesHandler.bind(this);
  	
  	//this.onChange = editorState => this.setState({editorState});
@@ -136,20 +136,7 @@ class ProfilePageBase extends React.Component {
 
 
  }
- handlePTitleOnChange(value){
- 	var pCopy = this.state.profile;
- 	if(value !== pCopy.Title){
- 		pCopy.Title = value;
-	 	const {authUser} = this.props;
-	 	if(!!authUser && !!authUser.roles['STUDENT'] && !(!!pCopy.roles['ADMIN']))
-	 		pCopy.Status = 'DRAFT';
-	 	this.setState({project:pCopy,dirty:true});
- 	}
- 	
- }
-  handlePTitleOnSave(){
- 	this.saveChangesHandler();
- }
+
  handlePDescriptionOnChange(value){
  	var pCopy = this.state.profile;
  	if(value !== pCopy.About){
@@ -157,9 +144,21 @@ class ProfilePageBase extends React.Component {
 	 	const {authUser} = this.props;
 	 	if(!!authUser && !!authUser.roles['STUDENT'] && !(!!pCopy.roles['ADMIN']))
 	 		pCopy.Status = 'DRAFT';
-	 	this.setState({project:pCopy,dirty:true});
+	 	this.setState({project:pCopy,dirty:true},this.handlePDescriptionValidate);
  	}
  	
+ }
+ handlePDescriptionValidate(){
+ 	const {errors,profile} = this.state;
+ 	const text = profile.Description.replace(/<(.|\n)*?>/g, '').trim();
+ 	if(text.length == 0){
+ 		errors["About"] = 'ABOUT.<span class="red">ISREQUIRED</span>'; 
+ 	}
+ 	else if(text.length < 20){
+ 		errors["About"] = 'ABOUT.<span class="red">IS2SHORT</span>'; 
+ 	}
+ 	else delete errors["About"];
+ 	this.setState({errors:errors});
  }
   handlePDescriptionOnSave(){
  	this.saveChangesHandler();
@@ -171,9 +170,17 @@ class ProfilePageBase extends React.Component {
 	 	const {authUser} = this.props;
 	 	if(!!authUser && !!authUser.roles['STUDENT'] && !(!!pCopy.roles['ADMIN']))
 	 		pCopy.Status = 'DRAFT';
-	 	this.setState({project:pCopy,dirty:true});
+	 	this.setState({project:pCopy,dirty:true},this.handleAgeValidate);
  	}
  	
+ }
+ handleAgeValidate(){
+ 	const {errors,profile} = this.state;
+ 	if(profile.Age.length != 0 && isNaN(profile.Age)){
+ 		errors["Age"] = 'AGE.<span class="red">ISINVALID</span>'; 
+ 	}
+ 	else delete errors["Age"];
+ 	this.setState({errors:errors});
  }
   handleAgeOnSave(){
  	this.saveChangesHandler();
@@ -185,9 +192,20 @@ class ProfilePageBase extends React.Component {
 	 	const {authUser} = this.props;
 	 	if(!!authUser && !!authUser.roles['STUDENT'] && !(!!pCopy.roles['ADMIN']))
 	 		pCopy.Status = 'DRAFT';
-	 	this.setState({project:pCopy,dirty:true});
+	 	this.setState({project:pCopy,dirty:true},this.handleDisplayNameValidate);
  	}
  	
+ }
+ handleDisplayNameValidate(){
+ 	const {errors,profile} = this.state;
+ 	if(profile.DisplayName.length == 0){
+ 		errors["Name"] = 'NAME.<span class="red">ISREQUIRED</span>'; 
+ 	}
+ 	else if(profile.DisplayName.length < 4){
+ 		errors["Name"] = 'NAME.<span class="red">IS2SHORT</span>'; 
+ 	}
+ 	else delete errors["Name"];
+ 	this.setState({errors:errors});
  }
  handleDisplayNameOnSave(){
  	this.saveChangesHandler();
@@ -217,15 +235,52 @@ class ProfilePageBase extends React.Component {
  	this.saveChangesHandler();
  }
  saveChangesHandler(event){
+ 	const {errors} = this.state;
  	const {key} = this.props.match.params;
- 	this.props.firebase.profile(key).set({
- 		...this.state.profile
- 	})
+ 	if(Object.keys(errors).length == 0){
+ 		this.props.firebase.profile(key).set({
+ 			...this.state.profile
+ 		})
  		.then(()=>{
  			console.log("Successfully Saved");
  			this.setState({dirty:false})
  		})
  		.catch(error=>console.log(error));
+ 	}
+ 	else{
+ 		var badFields = Object.keys(errors);
+		var messages = [];
+		messages.push({
+			html:`<span class="green">Saving</span>...`,
+			type:true
+		})
+		messages.push({
+			html:`<span class="red">ERROR!</span>`,
+			type:false
+		})
+		for(var i =0;i< badFields.length;i++){
+
+			messages.push({
+				html:errors[badFields[i]],
+				type:true
+			});
+		}
+
+		messages.push({
+			html:`Press any key to continue...`,
+			type:false
+		})
+
+			
+		
+		
+		this.props.setGlobalState({
+			messages:messages,
+			showMessage:true
+			
+		});
+ 	}
+ 	
  	console.log("Save Changes");
  }
 
