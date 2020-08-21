@@ -633,9 +633,7 @@ class UntutorialPageBase extends React.Component {
 									<div className="checkOff">
 										{!!progress && (!progress.steps[step] || progress.steps[step].Status == 'DRAFT') && (
 											<div>
-												{!!progress.steps[step] && progress.steps[step].Status == 'DRAFT' && (
-													<div>{progress.steps[step].Comments}</div>
-												)}
+												
 												
 												<button 
 													disabled={false} 
@@ -664,6 +662,9 @@ class UntutorialPageBase extends React.Component {
 										onEditorSave={(value)=>this.handleStepOnSave(value,step)} 
 										placeholder={'Step Description'} 
 										text={untutorial.steps[step].Description}/> 
+										{!!progress.steps[step] && progress.steps[step].Comments != '' && (
+											<div className={'comments'}>{progress.steps[step].Comments}</div>
+										)}
 								</div>
 
 						
