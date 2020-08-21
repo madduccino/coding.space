@@ -31,8 +31,11 @@ class LaunchPad extends React.Component {
  handleMouseLeave = () => this.props.setGlobalState({showFooter:true})
  categoryFilterOnChange(event){
  	const {filter} = this.state;
- 	filter.push(event.target.value);
- 	this.setState({filter:filter});
+ 	if(event.target.value != '-1'){
+ 		filter.push(event.target.value);
+ 		this.setState({filter:filter});	
+ 	}
+ 	
  }
  textFilterOnChange(event){
 
@@ -81,6 +84,7 @@ class LaunchPad extends React.Component {
 			    {loading && <div>Loading ...</div>}
 			    {selectedFilters.length != Object.keys(FILTER).length && (
 					<select onChange={this.categoryFilterOnChange}>
+						<option value='-1'>Filter...</option>
 				    	{Object.keys(FILTER).filter(f=>!selectedFilters.includes(f)).map(filterName=><option value={filterName}>{filterName}</option>)}
 				    </select>
 			    )}

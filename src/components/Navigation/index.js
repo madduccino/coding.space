@@ -36,8 +36,11 @@ class Navigation extends React.Component{
             {!!authUser&&(
             <div className="dropdown">
               <div id="menu" className={this.props.showNav ? "highlight" : null}> 
-                {!!authUser.ThumbnailFilename &&(
-                <LazyImage file={this.props.firebase.storage.ref('/public/' + authUser.key + '/' + authUser.ThumbnailFilename)}/>)}
+                {!!authUser.ThumbnailFilename && authUser.ThumbnailFilename != '' ? (
+                  <LazyImage file={this.props.firebase.storage.ref('/public/' + authUser.key + '/' + authUser.ThumbnailFilename)}/>
+                ) : (
+                  <LazyImage file={this.props.firebase.storage.ref('/public/astronaut.png')}/>
+                )}
                 <div>{authUser.Username}</div>
             </div>
           </div>

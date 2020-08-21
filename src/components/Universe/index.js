@@ -5,17 +5,19 @@ import LazyImage from '../LazyImage';
 import { withAuthentication } from '../Session';
 import { withFirebase } from '../Firebase';
 import * as ROUTES from '../../constants/routes';
-import * as FILTER from '../../constants/filter';
+import * as CATEGORIES from '../../constants/categories';
 
 
 class Universe extends React.Component {
  constructor(props){
  	super(props);
  	this.state = {
- 		loading:false,
+ 		loading:true,
  		projects: [],
  		projectKeys:[],
  		filter:[],
+ 		classFilter:false,
+ 		classMembers:null,
  		textFilter:'',
  		
  	}
@@ -23,6 +25,7 @@ class Universe extends React.Component {
  	this.categoryFilterOnChange = this.categoryFilterOnChange.bind(this);
  	this.textFilterOnChange = this.textFilterOnChange.bind(this);
  	this.filterOnClick = this.filterOnClick.bind(this);
+ 	this.onClassFilterChange = this.onClassFilterChange.bind(this);
 
  }
  
@@ -32,8 +35,10 @@ class Universe extends React.Component {
  handleMouseLeave = () => this.props.setGlobalState({showFooter:true})
  categoryFilterOnChange(event){
  	const {filter} = this.state;
- 	filter.push(event.target.value);
- 	this.setState({filter:filter});
+ 	if(event.target.value != '-1'){
+ 		filter.push(event.target.value);
+ 		this.setState({filter:filter});	
+ 	}
  }
  textFilterOnChange(event){
 
@@ -58,6 +63,7 @@ class Universe extends React.Component {
  			projects.push(project);
  			this.setState({
  				projects: projects,
+ 				loading:false
  			
  			})
  		})
@@ -71,13 +77,45 @@ class Universe extends React.Component {
  componentWillUnmount(){
  	this.props.firebase.projects().off();
  }
+ onClassFilterChange(){
+ 	const {classFilter,classMembers} = this.state;
+ 	const {authUser} = this.props;
+ 	if(classFilter)
+ 		this.setState({classFilter:false});
+ 	else{
+ 		if(!classMembers){
+ 			this.props.firebase.classes().once('value',snapshot=>{
+ 				let classMembers = [];
+ 				let classes = snapshot.val();
+
+ 				let classesWithYou = Object.keys(classes)
+ 					.filter(clazz=>Object.keys(classes[clazz].Members).includes(authUser.uid));
+ 				if(Object.keys(classesWithYou).length>0)
+ 				{
+ 					classesWithYou.forEach(clazz=>{
+
+ 						classMembers = classMembers.concat(Object.keys(classes[clazz].Members));
+ 					})
+ 					this.setState({classMembers:classMembers,classFilter:true});
+ 				}
+ 				
+ 			})
+ 		}
+ 		else
+ 			this.setState({classFilter:true});
+
+ 	}
+
+
+ }
  render(){
  	
- 	const {projects, loading, filter, textFilter} = this.state;
- 	const selectedFilters = Object.keys(FILTER).filter(v=>filter.includes(v));
+ 	const {projects, loading, filter, textFilter,classFilter,classMembers} = this.state;
+ 	const selectedFilters = Object.keys(CATEGORIES).filter(v=>filter.includes(v));
 
-
- 	//console.log("hiya")
+	if(loading)
+		return (<div>Loading ...</div>);
+ 	
  	return (
 		<section id="universe">
 			{/* <a target="_blank" href="http://scratch.mit.edu/create">
@@ -85,14 +123,16 @@ class Universe extends React.Component {
 				</button>
 			</a> */}
 			<div className="filter">
-			    {loading && <div>Loading ...</div>}
-			    {selectedFilters.length != Object.keys(FILTER).length && (
+			    <input type='text' onChange={this.textFilterOnChange} placeholder="Search..."/>
+			    <input type="checkbox" checked={classFilter} onClick={this.onClassFilterChange}/><label>Your Class Only</label>
+			    {selectedFilters.length != Object.keys(CATEGORIES).length && (
 					<select onChange={this.categoryFilterOnChange}>
-				    	{Object.keys(FILTER).filter(f=>!selectedFilters.includes(f)).map(filterName=><option value={filterName}>{filterName}</option>)}
+						<option value="-1">Filter...</option>
+				    	{Object.keys(CATEGORIES).filter(f=>!selectedFilters.includes(f)).map(filterName=><option value={filterName}>{filterName}</option>)}
 				    </select>
 			    )}
 			    
-			    <input type='text' onChange={this.textFilterOnChange} placeholder="Search..."/>
+
 				</div>	
 			    {selectedFilters.length > 0 && (
 			    	<div className="filter-categories">
@@ -105,7 +145,8 @@ class Universe extends React.Component {
 				{projects.filter(project=>
 					project.Status === 'APPROVED' && 
 					(filter.length === 0 || filter.filter(f=>Object.keys(project.Categories).includes(f)).length > 0) && 
-					(project.Title.toLowerCase().includes(textFilter.toLowerCase()) || project.Author.DisplayName.toLowerCase().includes(textFilter.toLowerCase())))
+					(project.Title.toLowerCase().includes(textFilter.toLowerCase()) || project.Author.DisplayName.toLowerCase().includes(textFilter.toLowerCase())) &&
+					(!classFilter || classMembers.includes(project.Author.key)))
 					.map(project => (
 				
 						<a id={project.key} href={project.URL} path={'/public/' + project.Author.key + '/' + project.ThumbnailFilename}>

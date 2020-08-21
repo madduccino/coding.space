@@ -199,7 +199,7 @@ class NewProjectPageBase extends React.Component {
  	})
  		.then(()=>{
  			console.log("Successfully Saved");
- 			this.props.history.push(ROUTES.LAUNCHPAD + this.state.untutorial.key);
+ 			this.props.history.push(ROUTES.LAUNCHPAD +'/' + this.state.untutorial.key);
  		})
  		.catch(error=>console.log(error));
  	console.log("Save Changes");
