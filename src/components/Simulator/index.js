@@ -9,6 +9,9 @@ import * as FILTER from '../../constants/filter';
 import AceEditor from "react-ace";
 import { v4 as uuidv4 } from 'uuid';
 import "ace-builds/src-noconflict/mode-javascript";
+import "ace-builds/src-noconflict/ext-language_tools";
+import "ace-builds/src-noconflict/snippets/javascript";
+import "ace-builds/src-noconflict/mode-css";
 import "ace-builds/src-noconflict/mode-html";
 // import "ace-builds/src-noc onflict/mode-css";
 import "ace-builds/src-noconflict/theme-twilight";
@@ -197,6 +200,7 @@ saveFilenameOnChange(value){
  				value={code}
  				name="code-space"
  				editorProps={{}}
+
  				enableBasicAutocompletion={true}
 			    enableLiveAutocompletion={true}
 			    enableSnippets={true}
