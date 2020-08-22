@@ -50,6 +50,7 @@ class NewProjectPageBase extends React.Component {
  	}
  	//this.handleStatusOnChange = this.handleStatusOnChange.bind(this);
  	this.handleThumbnailUpload = this.handleThumbnailUpload.bind(this);
+ 	this.handleStepThumbnailUpload = this.handleStepThumbnailUpload.bind(this);
  	this.handleThumbnailValidate = this.handleThumbnailValidate.bind(this);
  	this.handlePTitleOnChange = this.handlePTitleOnChange.bind(this);
  	this.handlePTitleValidate = this.handlePTitleValidate.bind(this);
@@ -166,6 +167,34 @@ class NewProjectPageBase extends React.Component {
 	 	()=>{
 	 		//complete
 	 		this.setState({uploadPercent:0,uploading:false,untutorial:pCopy},this.handleThumbnailValidate)
+
+	 	})
+
+
+ }
+ handleStepThumbnailUpload(event,step){
+ 	var file = event.target.files[0];
+ 	var ext = file.name.substring(file.name.lastIndexOf('.') + 1);
+ 	var pCopy = this.state.untutorial;
+ 	pCopy.steps[step].ThumbnailFilename = uuidv4() + '.' + ext;
+
+ 	var storageRef = this.props.firebase.storage.ref('/public/' + pCopy.Author + '/' + pCopy.steps[step].ThumbnailFilename);
+ 	var task = storageRef.put(file);
+
+ 	task.on('state_changed',
+ 		(snapshot)=>{
+ 			//update
+ 			var percentage = 100 * snapshot.bytesTransferred / snapshot.totalBytes;
+ 			this.setState({uploadPercent:percentage,uploading:true})
+
+	 	},(error)=>{
+	 		//error
+	 		console.log(error);
+	 		this.setState({uploadPercent:0,uploading:false})
+	 	},
+	 	()=>{
+	 		//complete
+	 		this.setState({uploadPercent:0,uploading:false,untutorial:pCopy})
 
 	 	})
 
@@ -384,17 +413,31 @@ class NewProjectPageBase extends React.Component {
 			    <h3>Steps</h3>
 				{Object.keys(untutorial.steps).map(step => (
 					<div className="step">
-					<TCSEditor 
-						disabled={false}
-						onEditorChange={(value)=>this.handleStepOnChange(value,step)} 
-						onEditorSave={this.handleStepOnSave}
-						placeholder={'Step Description'} 
-						text={untutorial.steps[step].Description}/>
-					{stepCount > 1 && (
-						<button onClick={(event)=>this.deleteStepHandler(event,step)}>Delete</button>
-					)}
-				</div>
-			))}
+						<TCSEditor 
+							disabled={false}
+							onEditorChange={(value)=>this.handleStepOnChange(value,step)} 
+							onEditorSave={this.handleStepOnSave}
+							placeholder={'Step Description'} 
+							text={untutorial.steps[step].Description}/>
+						
+						{stepCount > 1 && (
+							<button onClick={(event)=>this.deleteStepHandler(event,step)}>Delete</button>
+						)}
+						<div className="thumbnail">
+
+							{this.state.uploading && (
+								<progress value={this.state.uploadPercent} max="100"/>
+							)}
+							{!!untutorial.steps[step].ThumbnailFilename && untutorial.steps[step].ThumbnailFilename!=='' && !this.state.uploading &&(
+								<LazyImage file={this.props.firebase.storage.ref('/public/' + untutorial.Author + '/' + untutorial.steps[step].ThumbnailFilename)}/>
+							)}
+							<label for={'step' + step + '-thumbnail-upload'} className="upload">
+								<input id={'step' + step + '-thumbnail-upload'} type="file" onChange={(event)=>{this.handleStepThumbnailUpload(event,step)}}/>
+							</label>
+				
+						</div>
+					</div>
+				))}
 			</div>
 			<div className="toolbar">
 				<button onClick={this.addStepHandler}>+</button>

@@ -27,6 +27,7 @@ class UntutorialPageBase extends React.Component {
 		this.handleStatusOnChange = this.handleStatusOnChange.bind(this);
 		this.handleStatusOnSave = this.handleStatusOnSave.bind(this);
 		this.handleThumbnailUpload = this.handleThumbnailUpload.bind(this);
+		this.handleStepThumbnailUpload = this.handleStepThumbnailUpload.bind(this);
 		this.handleTitleOnChange = this.handleTitleOnChange.bind(this);
 		this.handleTitleOnSave = this.handleTitleOnSave.bind(this);
 		this.handleDescriptionOnChange = this.handleDescriptionOnChange.bind(this);
@@ -154,12 +155,45 @@ class UntutorialPageBase extends React.Component {
 			},
 			()=>{
 				//complete
-				this.setState({uploadPercent:0,uploading:false,untutorial:oCopy,dirty:true})
+				this.setState({uploadPercent:0,uploading:false,untutorial:oCopy,dirty:true},this.saveChangesHandler)
 
 			})
 
 
 	}
+	handleStepThumbnailUpload(event,step){
+		
+		var file = event.target.files[0];
+		var ext = file.name.substring(file.name.lastIndexOf('.') + 1);
+		var oCopy = this.state.untutorial;
+		const {authUser} = this.props;
+		if(authUser && !!authUser.roles['STUDENT'])
+			oCopy.Status = 'DRAFT';
+		oCopy.steps[step].ThumbnailFilename = uuidv4() + '.' + ext;
+
+		var storageRef = this.props.firebase.storage.ref('/public/' + oCopy.Author.key + '/' + oCopy.steps[step].ThumbnailFilename);
+		var task = storageRef.put(file);
+
+		task.on('state_changed',
+			(snapshot)=>{
+				//update
+				var percentage = 100 * snapshot.bytesTransferred / snapshot.totalBytes;
+				this.setState({uploadPercent:percentage,uploading:true})
+
+			},(error)=>{
+				//error
+				console.log(error);
+				this.setState({uploadPercent:0,uploading:false})
+			},
+			()=>{
+				//complete
+				this.setState({uploadPercent:0,uploading:false,untutorial:oCopy,dirty:true}, this.saveChangesHandler)
+
+			})
+
+
+	}
+
 
 	handleTitleOnChange(value){
 		var oCopy = this.state.untutorial;
@@ -372,6 +406,7 @@ class UntutorialPageBase extends React.Component {
 		
 		if(Object.values(errors).length === 0){
 			untutorial.LastModified = Date.now();
+			untutorial.Author = untutorial.Author.key;
 			this.props.firebase.untutorial(key).set({
 				...untutorial
 			})
@@ -583,7 +618,7 @@ class UntutorialPageBase extends React.Component {
 									{this.state.uploading && (
 										<progress value={this.state.uploadPercent} max="100"/>
 									)}
-									{!!untutorial.ThumbnailFilename && !this.state.uploading &&(
+									{!!untutorial.ThumbnailFilename && !!untutorial.ThumbnailFilename.length != 0 && !this.state.uploading &&(
 										<LazyImage file={this.props.firebase.storage.ref('/public/' + untutorial.Author.key + '/' + untutorial.ThumbnailFilename)}/>
 									)}
 								</div>	
@@ -662,9 +697,23 @@ class UntutorialPageBase extends React.Component {
 										onEditorSave={(value)=>this.handleStepOnSave(value,step)} 
 										placeholder={'Step Description'} 
 										text={untutorial.steps[step].Description}/> 
-										{!!progress && !!progress.steps[step] && progress.steps[step].Comments != '' && (
-											<div className={'comments'}>{progress.steps[step].Comments}</div>
+									{!!progress && !!progress.steps[step] && progress.steps[step].Comments != '' && (
+										<div className={'comments'}>{progress.steps[step].Comments}</div>
+									)}
+									<div className="step thumbnail">
+										{!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===untutorial.Author.key) && (		
+											<label for={'step' + step + '-thumbnail-upload'} className="upload">
+												<input id={'step' + step + '-thumbnail-upload'} type="file" onChange={(event)=>this.handleStepThumbnailUpload(event,step)}/>
+											</label>
+										)} 
+										{this.state.uploading && (
+											<progress value={this.state.uploadPercent} max="100"/>
 										)}
+										{!!untutorial.steps[step].ThumbnailFilename && !!untutorial.steps[step].ThumbnailFilename.length != 0 && !this.state.uploading &&(
+											<LazyImage id={'step' + step + '-thumbnail'} file={this.props.firebase.storage.ref('/public/' + untutorial.Author.key + '/' + untutorial.steps[step].ThumbnailFilename)}/>
+										)}
+									</div>	
+
 								</div>
 
 						
