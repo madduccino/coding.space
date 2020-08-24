@@ -377,6 +377,14 @@ class UntutorialPageBase extends React.Component {
 		if(authUser && !!authUser.roles['STUDENT'])
 			oCopy.Status = 'DRAFT';
 		delete oCopy.steps[key];
+		//shift steps up
+		var newSteps = {};
+		var steps  = Object.values(oCopy.steps);
+		steps.forEach((step,i)=>{
+			newSteps[i] = step;
+		})
+		oCopy.steps = newSteps;
+
 		this.setState({untutorial:oCopy,dirty:true},this.saveChangesHandler);
 		console.log("Delete Step");
 		console.log(key);
@@ -532,6 +540,8 @@ class UntutorialPageBase extends React.Component {
 		if(!progress.steps[step])
 			progress.steps[step]={Status:'PENDING',Comments:''};
 		progress.steps[step].Status = 'PENDING';
+		
+		progress.nextStep = Math.min(Object.keys(progress.steps).filter(step=>progress.steps[step].Status == 'DRAFT'))+1;
 
 		
 		

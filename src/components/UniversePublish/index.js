@@ -94,6 +94,18 @@ class UniversePublish extends React.Component {
 
 
  }
+ componentWillReceiveProps(props){
+ 	const {authUser} = props;
+ 	const {project} = this.state;
+ 	if(!project.Author){
+ 		project.Author = authUser.uid;
+ 		this.setState({ 
+ 			project: project,
+
+ 		})
+ 	}
+ 		
+ }
 
 
  componentWillUnmount(){

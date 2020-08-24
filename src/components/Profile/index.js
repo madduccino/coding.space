@@ -13,7 +13,8 @@ import gmailApi from 'react-gmail'
  	PROJECTS:0,
  	UNTUTORIALS:1,
 	 EMAIL:2,
-	 PROFILE: 3
+	 PROFILE: 3,
+	 PROGRESS:4
  }
  const groupBy = function(xs, key) {
   return xs.reduce(function(rv, x) {
@@ -32,6 +33,7 @@ class ProfilePageBase extends React.Component {
  		errors:{},
  		untutorials: [],
  		projects:[],
+ 		progresses:[],
  		profile:{},
  		uploading:false,
  		uploadPercent:0,
@@ -68,16 +70,19 @@ class ProfilePageBase extends React.Component {
  	//console.log(this.authUser);
 
  	const {key} = this.props.match.params;
+ 	var untuts = [];
+ 	var projects = [];
+ 	var progresses = [];
  	this.props.firebase.profile(key).on('value',snapshot => {
- 		var untuts = [];
- 		var projects = [];
+
 		var rawProf = snapshot.val();
 		if(!rawProf.Notes)
 		   rawProf.Notes='';
 		
 		this.props.firebase.untutorials().once('value',snapshot2 => {
 			const {key} = this.props.match.params;
-			const untutArr = Object.values(snapshot2.val());
+			const untutObj = snapshot2.val();
+			const untutArr = Object.values(untutObj);
 
 			untuts = untuts.concat(untutArr.filter(untutorial=>
 				untutorial.Author==key
@@ -87,17 +92,34 @@ class ProfilePageBase extends React.Component {
 			this.props.firebase.projects().once('value',snapshot3=>{
 				var projArr = Object.values(snapshot3.val());
 				projects = projects.concat(projArr.filter(project=>project.Author==key));
-				this.setState({
-					profile:rawProf,
-					untutorials:untuts,
-					projects:projects,
-					loading:false,
+				this.props.firebase.progresses(key).once('value',snapshot=>{
+					var progObj = snapshot.val();
+					progresses = [];
+					if(!!progObj){
+						progresses = Object.values(snapshot.val());
+						progresses.forEach((p,i)=>{
+							progresses[i].Untutorial = untutObj[p.untut];
+							progresses[i].Level = progresses[i].Untutorial.Level;
+						})
+					
+					}
+					
+					this.setState({
+						profile:rawProf,
+						untutorials:untuts,
+						projects:projects,
+						progresses:progresses,
+						loading:false,
+					})
+					
 				})
+				
 
 			})
 		});
 
 	})
+
  	
 
 
@@ -286,11 +308,13 @@ class ProfilePageBase extends React.Component {
 
  render(){
  	
- 	const {untutorials,projects, loading, profile, tab} = this.state;
+ 	const {untutorials,projects, loading, profile, progresses, tab} = this.state;
  	const {authUser} = this.props;
  	const {key} = this.props.match.params;
  	var projectLevels = groupBy(projects,'Level');
  	var untutorialLevels = groupBy(untutorials,'Level');
+ 	var progressLevels = groupBy(progresses,'Level');
+
  	
  	//console.log(Object.keys(project));
  	if(loading)
@@ -305,6 +329,9 @@ class ProfilePageBase extends React.Component {
 				<div className="sidebar-content">
 				<div className={this.state.tab===TAB.PROFILE ? 'selected' : ''}>
 				<h3 onClick={()=>this.setState({tab:TAB.PROFILE})}>Profile</h3>
+				</div>
+				<div className={this.state.tab===TAB.PROGRESS ? 'selected' : ''}>
+					<h3 onClick={()=>this.setState({tab:TAB.PROGRESS})}>Recent Work</h3>
 				</div>
 				<div className={this.state.tab===TAB.PROJECTS ? 'selected' : ''}>
 					<h3 onClick={()=>this.setState({tab:TAB.PROJECTS})}>Projects</h3>
@@ -394,7 +421,7 @@ class ProfilePageBase extends React.Component {
 			  		</div>	
 				)}
 
-				<div className="tab progress">
+				<div className="tab projects">
 	  	  	  		{(!tab || tab==TAB.PROJECTS) && (
 	  	  	  			<div className="content tab-content">
 							{projects.length < 1 && (
@@ -448,6 +475,48 @@ class ProfilePageBase extends React.Component {
 													</div>
 													
 													<a target="_blank" className="center" href={ROUTES.LAUNCHPAD + '/' + untutorial.key}><h4>View</h4></a>
+													
+													
+														
+												</div>
+											) : ""}
+		  	  	  						</>))
+						  			}/>	
+								</>
+							))}
+						</div>
+	  	  	  		)}
+	  	  		</div>
+	  	  		<div className="tab progress">
+	  	  	  		{(tab==TAB.PROGRESS) && (
+	  	  	  			<div className="content tab-content">
+							{progresses.length < 1 && (
+								<p>{"No Progress Yet :("}</p>
+							)}
+			  	
+	  	  	  				{Object.keys(progressLevels).map(group=>(
+	  	  	  					<>
+									<Accordion group={group} text = {
+										progressLevels[group].sort(progress=>progress.LastModified).map(progress => (<>
+											{ !!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===profile.key) ? (
+												<div id={progress.LastModified}>
+													
+													<a href={ ROUTES.LAUNCHPAD + '/' + progress.Untutorial.key}>
+														<h4 dangerouslySetInnerHTML={{__html:progress.Untutorial.Title}}/>
+													</a>
+
+													
+													<div className="status">
+														<h4 className={progress.Status === 'APPROVED' ? 'green' : progress.Status === 'PENDING' ? 'yellow' :'red'}></h4>
+													</div>
+													
+													<a target="_blank" className="center" href={ROUTES.LAUNCHPAD + '/' + progress.Untutorial.key}>
+														<h4>
+															{progress.Status == 'APPROVED' ? 'FINISHED!' :
+															progress.Status == 'PENDING' ? 'Waiting for Teacher Approval' :
+															'Work on Step ' + (progress.nextStep + 1)}
+														</h4>
+													</a>
 													
 													
 														
