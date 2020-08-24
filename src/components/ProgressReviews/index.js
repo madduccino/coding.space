@@ -186,7 +186,7 @@ class ProgressReviews extends React.Component {
 								.filter(progress=>true)
 								.map((progress,pIndex)=>(
 									<div id={profile.key + progress.untutorial.key}>
-										<h3>{progress.untutorial.Title}</h3>
+										<h3 dangerouslySetInnerHTML={{__html:progress.untutorial.Title}}/ >
 										{Object.keys(progress.steps).length <= 0 && (
 											<h4>No Progress</h4>
 										)}
