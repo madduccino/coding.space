@@ -541,7 +541,7 @@ class UntutorialPageBase extends React.Component {
 			progress.steps[step]={Status:'PENDING',Comments:''};
 		progress.steps[step].Status = 'PENDING';
 		
-		progress.nextStep = Math.min(Object.keys(progress.steps).filter(step=>progress.steps[step].Status == 'DRAFT'))+1;
+		progress.nextStep = Math.min(Object.keys(progress.steps).filter(step=>progress.steps[step].Status == 'DRAFT'))+2;
 
 		
 		

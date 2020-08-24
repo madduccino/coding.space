@@ -514,7 +514,7 @@ class ProfilePageBase extends React.Component {
 														<h4>
 															{progress.Status == 'APPROVED' ? 'FINISHED!' :
 															progress.Status == 'PENDING' ? 'Waiting for Teacher Approval' :
-															'Work on Step ' + (progress.nextStep + 1)}
+															'Work on Step ' + (progress.nextStep)}
 														</h4>
 													</a>
 													
