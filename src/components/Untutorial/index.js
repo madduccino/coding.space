@@ -674,7 +674,7 @@ class UntutorialPageBase extends React.Component {
 						</div>		
 						<div className={'container'}>
 							{!!untutorial && untutorial.steps.map((step,index) => (
-								<div className={"step "}>
+								<div className={"step " + ((!!progress && (progress.steps[index].Status == 'PENDING')) ? "pending" : "")}>
 									<div className="checkOff">
 										{!!progress && (!progress.steps[index] || progress.steps[index].Status == 'DRAFT') && (
 											<div>
@@ -686,12 +686,7 @@ class UntutorialPageBase extends React.Component {
 											</div>
 											
 										)}
-										{!!progress && (progress.steps[index].Status == 'PENDING') && (
-
-											<div>
-												PLaceholder
-											</div>
-										)}
+										
 										{(!!progress && !!progress.steps[index] && progress.steps[index].Status != 'APPROVED') ? (
 											<div>
 
