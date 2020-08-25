@@ -106,6 +106,9 @@ class UntutorialPageBase extends React.Component {
 						profile:authUser.uid,
 						untut:key
 					}
+					Object.keys(untutorial.steps).sort(step=>step).forEach((step,i)=>{
+						progress.steps[step] = {Status:'DRAFT',Comments:''};
+					})
 					snapshot.ref.set({...progress})
 					.then(()=>{
 						this.setState({progress:progress});
