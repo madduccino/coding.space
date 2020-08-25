@@ -508,7 +508,22 @@ class ProfilePageBase extends React.Component {
 
 													
 													<div className="status">
-														<h4 className={progress.Status === 'APPROVED' ? 'green' : progress.Status === 'PENDING' ? 'yellow' :'red'}></h4>
+														{Object.keys(progress.Untutorial.steps).map(slot=>(<>
+															{(!!progress.steps[slot] && progress.steps[slot].Status == 'APPROVED') ? (
+																<img src='/images/rocket-coin.gif'/>
+															) : (
+																<img src='/images/rocket-coin-slot.png'/>
+															)}
+
+														</>))}
+														{progress.Status == 'APPROVED' ? (
+															<img src='/images/explorer-coin.gif'/>
+														) : (
+															<img src='/images/explorer-coin-slot.png'/>
+														)}
+														
+														
+															
 													</div>
 													
 													<Link target="_blank" className="center" to={ROUTES.LAUNCHPAD + '/' + progress.Untutorial.key + '?loadProgress=true'}>

@@ -544,7 +544,7 @@ class UntutorialPageBase extends React.Component {
 			progress.steps[step]={Status:'PENDING',Comments:''};
 		progress.steps[step].Status = 'PENDING';
 		
-		progress.nextStep = Math.min(Object.keys(untutorial.steps).filter(step=>!progress.steps[step] || progress.steps[step].Status == 'DRAFT'))+1;
+		progress.nextStep = untutorial.steps.findIndex(stepf=>!progress.steps[stepf] || progress.steps[stepf].Status == 'DRAFT')+2;
 
 		
 		
@@ -564,12 +564,9 @@ class UntutorialPageBase extends React.Component {
 		var stepCount = 0;
 		if(!!untutorial && !!untutorial.steps)
 			stepCount = Object.keys(untutorial.steps).length;
-		var studentCompleteSteps = 0;
-		if(!!progress && !!progressSteps) 
-			studentCompleteSteps = progressSteps.filter(step=>['PENDING','APPROVED'].includes(progress.steps[step].Status));
-		var nextStep = 0;
-		if(!!studentCompleteSteps)
-			nextStep = Math.min(Object.keys(untutorial.steps).filter(step=>!studentCompleteSteps.includes(step)))+1;
+		var nextStep = -1;
+		if(!!progress)
+			nextStep = untutorial.steps.findIndex(stepf=>!progress.steps[stepf] || progress.steps[stepf].Status == 'DRAFT')+2;;
 		console.log();
 		if(nextStep > stepCount)
 			nextStep = 0;
@@ -669,7 +666,7 @@ class UntutorialPageBase extends React.Component {
 							{!!progress && progress.Status == 'PENDING' && (
 								<h3>Your teacher is reviewing your project! Take it easy!</h3>
 							)}
-							{!!progress && progress.Status == 'DRAFT' && !!nextStep && (
+							{!!progress && progress.Status == 'DRAFT' && nextStep>0 && (
 								<h3>Keep it Up! You're on Step {nextStep}!</h3>
 							)}
 							
@@ -677,7 +674,7 @@ class UntutorialPageBase extends React.Component {
 						</div>		
 						<div className={'container'}>
 							{Object.keys(untutorial.steps).map(step => (
-								<div className="step">
+								<div className={"step " + (!!progress && !!progress.steps[step]) ? progress.steps[step].Status.toLowerCase() : ""}>
 									<div className="checkOff">
 										{!!progress && (!progress.steps[step] || progress.steps[step].Status == 'DRAFT') && (
 											<div>
@@ -689,18 +686,18 @@ class UntutorialPageBase extends React.Component {
 											</div>
 											
 										)}
-										{!!progress && !!progress.steps[step] && progress.steps[step].Status == 'PENDING' && (
+										{(!!progress && !!progress.steps[step] && progress.steps[step].Status != 'APPROVED') ? (
 											<div>
 
-												<img src='/images/coin.gif'/>
+												<img src='/images/rocket-coin-slot.png'/>
 											</div>
-										)}
-										{!!progress && !!progress.steps[step] && progress.steps[step].Status == 'APPROVED' && (
+										) : !!progress && (
 											<div>
 
-												<img src='/images/star-yellow.png'/>
+												<img src='/images/rocket-coin.gif'/>
 											</div>
 										)}
+										
 										<div>Step {parseInt(step)+1}</div>
 									</div>
 									<TCSEditor
