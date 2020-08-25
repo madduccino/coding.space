@@ -535,13 +535,13 @@ class UntutorialPageBase extends React.Component {
 		console.log("Save Changes");
 	}
 	studentApprove(step){
-		const {progress} = this.state;
+		const {progress,untutorial} = this.state;
 		var pCopy = progress;
 		if(!progress.steps[step])
 			progress.steps[step]={Status:'PENDING',Comments:''};
 		progress.steps[step].Status = 'PENDING';
 		
-		progress.nextStep = Math.min(Object.keys(progress.steps).filter(step=>progress.steps[step].Status == 'DRAFT'))+2;
+		progress.nextStep = Math.min(Object.keys(untutorial.steps).filter(step=>!progress.steps[step] || progress.steps[step].Status == 'DRAFT'))+1;
 
 		
 		
@@ -563,10 +563,10 @@ class UntutorialPageBase extends React.Component {
 			stepCount = Object.keys(untutorial.steps).length;
 		var studentCompleteSteps = 0;
 		if(!!progress && !!progressSteps) 
-			studentCompleteSteps = progressSteps.filter(step=>progress.steps[step].Status=='PENDING');
+			studentCompleteSteps = progressSteps.filter(step=>['PENDING','APPROVED'].includes(progress.steps[step].Status));
 		var nextStep = 0;
 		if(!!studentCompleteSteps)
-			nextStep = Math.min(...Object.keys(untutorial.steps).filter(step=>!studentCompleteSteps.includes(step)))+1;
+			nextStep = Math.min(Object.keys(untutorial.steps).filter(step=>!studentCompleteSteps.includes(step)))+1;
 		console.log();
 		if(nextStep > stepCount)
 			nextStep = 0;
