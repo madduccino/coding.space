@@ -544,7 +544,7 @@ class UntutorialPageBase extends React.Component {
 			progress.steps[step]={Status:'PENDING',Comments:''};
 		progress.steps[step].Status = 'PENDING';
 		
-		progress.nextStep = untutorial.steps.findIndex(stepf=>!progress.steps[stepf] || progress.steps[stepf].Status == 'DRAFT')+2;
+		progress.nextStep = untutorial.steps.findIndex(stepf=>!progress.steps[stepf] || progress.steps[stepf].Status == 'DRAFT')+1;
 
 		
 		
@@ -566,7 +566,7 @@ class UntutorialPageBase extends React.Component {
 			stepCount = Object.keys(untutorial.steps).length;
 		var nextStep = -1;
 		if(!!progress)
-			nextStep = untutorial.steps.findIndex(stepf=>!progress.steps[stepf] || progress.steps[stepf].Status == 'DRAFT')+2;;
+			nextStep = untutorial.steps.findIndex(stepf=>!progress.steps[stepf] || progress.steps[stepf].Status == 'DRAFT')+1;;
 		console.log();
 		if(nextStep > stepCount)
 			nextStep = 0;
