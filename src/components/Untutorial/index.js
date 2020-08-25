@@ -673,20 +673,26 @@ class UntutorialPageBase extends React.Component {
 				
 						</div>		
 						<div className={'container'}>
-							{Object.keys(untutorial.steps).map(step => (
-								<div className={"step " + (!!progress && !!progress.steps[step]) ? progress.steps[step].Status.toLowerCase() : ""}>
+							{!!untutorial && untutorial.steps.map((step,index) => (
+								<div className={"step "}>
 									<div className="checkOff">
-										{!!progress && (!progress.steps[step] || progress.steps[step].Status == 'DRAFT') && (
+										{!!progress && (!progress.steps[index] || progress.steps[index].Status == 'DRAFT') && (
 											<div>
 												
 												
 												<button 
 													disabled={false} 
-													onClick={()=>this.studentApprove(step)}>Done</button>
+													onClick={()=>this.studentApprove(index)}>Done</button>
 											</div>
 											
 										)}
-										{(!!progress && !!progress.steps[step] && progress.steps[step].Status != 'APPROVED') ? (
+										{!!progress && (progress.steps[index].Status == 'PENDING') && (
+
+											<div>
+												PLaceholder
+											</div>
+										)}
+										{(!!progress && !!progress.steps[index] && progress.steps[index].Status != 'APPROVED') ? (
 											<div>
 
 												<img src='/images/rocket-coin-slot.png'/>
@@ -698,7 +704,7 @@ class UntutorialPageBase extends React.Component {
 											</div>
 										)}
 										
-										<div>Step {parseInt(step)+1}</div>
+										<div>Step {parseInt(index)+1}</div>
 									</div>
 									<TCSEditor
 										disabled={!(!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===untutorial.Author.key))}
@@ -706,21 +712,21 @@ class UntutorialPageBase extends React.Component {
 										onEditorChange={(value)=>this.handleStepOnChange(value,step)} 
 										onEditorSave={(value)=>this.handleStepOnSave(value,step)} 
 										placeholder={'Step Description'} 
-										text={untutorial.steps[step].Description}/> 
-									{!!progress && !!progress.steps[step] && progress.steps[step].Comments != '' && (
-										<div className={'comments'}>{progress.steps[step].Comments}</div>
+										text={untutorial.steps[index].Description}/> 
+									{!!progress && !!progress.steps[index] && progress.steps[index].Comments != '' && (
+										<div className={'comments'}>{progress.steps[index].Comments}</div>
 									)}
 									<div className="step thumbnail">
 										{!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===untutorial.Author.key) && (		
-											<label for={'step' + step + '-thumbnail-upload'} className="upload">
-												<input id={'step' + step + '-thumbnail-upload'} type="file" onChange={(event)=>this.handleStepThumbnailUpload(event,step)}/>
+											<label for={'step' + index + '-thumbnail-upload'} className="upload">
+												<input id={'step' + index + '-thumbnail-upload'} type="file" onChange={(event)=>this.handleStepThumbnailUpload(event,index)}/>
 											</label>
 										)} 
 										{this.state.uploading && (
 											<progress value={this.state.uploadPercent} max="100"/>
 										)}
-										{!!untutorial.steps[step].ThumbnailFilename && !!untutorial.steps[step].ThumbnailFilename.length != 0 && !this.state.uploading &&(
-											<LazyImage id={'step' + step + '-thumbnail'} file={this.props.firebase.storage.ref('/public/' + untutorial.Author.key + '/' + untutorial.steps[step].ThumbnailFilename)}/>
+										{!!untutorial.steps[index].ThumbnailFilename && !!untutorial.steps[index].ThumbnailFilename.length != 0 && !this.state.uploading &&(
+											<LazyImage id={'step' + index + '-thumbnail'} file={this.props.firebase.storage.ref('/public/' + untutorial.Author.key + '/' + untutorial.steps[index].ThumbnailFilename)}/>
 										)}
 									</div>	
 
