@@ -1,6 +1,7 @@
 import React from 'react';
 import LazyImage from '../LazyImage';
 import EmailLoader from '../EmailLoader';
+import { Link } from 'react-router-dom';
 import { AuthUserContext } from '../Session';
 import {withAuthentication} from '../Session';
 import {withFirebase} from '../Firebase';
@@ -510,13 +511,13 @@ class ProfilePageBase extends React.Component {
 														<h4 className={progress.Status === 'APPROVED' ? 'green' : progress.Status === 'PENDING' ? 'yellow' :'red'}></h4>
 													</div>
 													
-													<a target="_blank" className="center" href={ROUTES.LAUNCHPAD + '/' + progress.Untutorial.key}>
+													<Link target="_blank" className="center" to={ROUTES.LAUNCHPAD + '/' + progress.Untutorial.key + '?loadProgress=true'}>
 														<h4>
 															{progress.Status == 'APPROVED' ? 'FINISHED!' :
 															progress.Status == 'PENDING' ? 'Waiting for Teacher Approval' :
 															'Work on Step ' + (progress.nextStep)}
 														</h4>
-													</a>
+													</Link>
 													
 													
 														

@@ -75,7 +75,7 @@ class UntutorialPageBase extends React.Component {
 					this.setState({
 						untutorial: untutorial,
 						loading:false,
-					})
+					},()=>this.props.location.search.includes("loadProgress") ? this.loadProgress() : null)
 				})
 			
 			
