@@ -187,20 +187,20 @@ class ProgressReviews extends React.Component {
 								.map((progress,pIndex)=>(
 									<div id={profile.key + progress.untutorial.key}>
 										<h3 dangerouslySetInnerHTML={{__html:progress.untutorial.Title}}/ >
-										{Object.keys(progress.steps).length <= 0 && (
+										{progress.steps.length <= 0 && (
 											<h4>No Progress</h4>
 										)}
-										{Object.keys(progress.steps).length > 0 && Object.keys(progress.steps)
-											.filter(step=>pendingFilter ? progress.steps[step].Status === 'PENDING' : true)
-											.map(step=>(
+										{progress.steps.length > 0 && progress.steps
+											.filter(step=>pendingFilter ? step.Status === 'PENDING' : true)
+											.map((step,i)=>(
 											<div>
 												<h4>Step {Number(step) + 1}</h4>
-												<h4>{progress.steps[step].Status}</h4>
-												{progress.steps[step].Status == 'PENDING' && (
+												<h4>{step.Status}</h4>
+												{step.Status == 'PENDING' && (
 													<div>
-														<input id={'feedback-' + progress.untutorial.key + '' + step} type="text" value={progress.steps[step].Comments} placeholder="Feedback..." onChange={(event)=>this.onFeedbackUpdate(profile.key,progress.untutorial.key,pIndex,step,event.target.value)}/>
-														<button id={'approve-' + progress.untutorial.key + '' + step} onClick={()=>this.approveStep(activeProgress.uid,progress.untutorial.key,pIndex,step)}>Approve Step</button>
-														<button id={'disapprove-' + progress.untutorial.key + '' + step} onClick={()=>this.disapproveStep(activeProgress.uid,progress.untutorial.key,pIndex,step)}>Disapprove Step</button>
+														<input id={'feedback-' + progress.untutorial.key + '' + i} type="text" value={step.Comments} placeholder="Feedback..." onChange={(event)=>this.onFeedbackUpdate(profile.key,progress.untutorial.key,pIndex,i,event.target.value)}/>
+														<button id={'approve-' + progress.untutorial.key + '' + i} onClick={()=>this.approveStep(activeProgress.uid,progress.untutorial.key,pIndex,i)}>Approve Step</button>
+														<button id={'disapprove-' + progress.untutorial.key + '' + i} onClick={()=>this.disapproveStep(activeProgress.uid,progress.untutorial.key,pIndex,i)}>Disapprove Step</button>
 													</div>
 												)}
 											</div>

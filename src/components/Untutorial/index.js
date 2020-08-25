@@ -96,18 +96,18 @@ class UntutorialPageBase extends React.Component {
 				if(snapshot.exists()){
 					let progress = snapshot.val();
 					if(!progress.steps)
-						progress.steps = {};
+						progress.steps = [];
 					this.setState({progress:progress});
 				} else {
 					let progress = {
 						Status:"DRAFT",
-						steps:{},
+						steps:[],
 						LastModified:Date.now(),
 						profile:authUser.uid,
 						untut:key
 					}
 					untutorial.steps.forEach((step,i)=>{
-						progress.steps[i] = {Status:'DRAFT',Comments:''};
+						progress.steps.push({Status:'DRAFT',Comments:''});
 					})
 					snapshot.ref.set({...progress})
 					.then(()=>{
@@ -544,7 +544,7 @@ class UntutorialPageBase extends React.Component {
 			progress.steps[step]={Status:'PENDING',Comments:''};
 		progress.steps[step].Status = 'PENDING';
 		
-		progress.nextStep = untutorial.steps.findIndex(stepf=>!progress.steps[stepf] || progress.steps[stepf].Status == 'DRAFT')+1;
+		progress.nextStep = untutorial.steps.findIndex((stepf,i)=>!progress.steps[i] || progress.steps[i].Status == 'DRAFT')+1;
 
 		
 		
@@ -560,13 +560,13 @@ class UntutorialPageBase extends React.Component {
 
 		var progressSteps = null;
 		if(!!progress)
-			progressSteps = Object.keys(progress.steps);
+			progressSteps = progress.steps;
 		var stepCount = 0;
 		if(!!untutorial && !!untutorial.steps)
-			stepCount = Object.keys(untutorial.steps).length;
+			stepCount = untutorial.steps.length;
 		var nextStep = -1;
 		if(!!progress)
-			nextStep = untutorial.steps.findIndex(stepf=>!progress.steps[stepf] || progress.steps[stepf].Status == 'DRAFT')+1;;
+			nextStep = untutorial.steps.findIndex((stepf,i)=>!progress.steps[i] || progress.steps[i].Status == 'DRAFT')+1;;
 		console.log();
 		if(nextStep > stepCount)
 			nextStep = 0;
