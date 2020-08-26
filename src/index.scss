@@ -463,15 +463,13 @@
             font-size: 48px;  
             font-family: $headerFont;
             padding: 0 80px;
+            margin:auto;
+            text-align:center;
             margin-bottom: 5px;
-            button {
-              width: auto;
-              margin-right: 20px;
-              height: 100%;
-              font-size: 14px;
-              font-weight: bold;
-              background-color: #28d653;
+            .img{
+              width:60px;
             }
+
           } 
         }
         .field {
@@ -633,67 +631,151 @@
         }
       }
       .container {
-        .pending {
-          position:relative;
-        }
-        .step.pending .overlay{
+        .step.pending {
           
-          background-color: $darkOrangeTransparent;
-          position:absolute;
-          width:100%;
-          height:100%;
-          top:0px;
-          left:0px;
-          /*#e4be4c is the color match of darkOrangeTransparent against white*/
-          box-shadow:
-            0   -6px 0  -2px #e4be4c,
-            0    6px 0  -2px #e4be4c,
-            0  -12px 0  -4px #e4be4c,
-            0   12px 0  -4px #e4be4c,
-            0  -18px 0  -8px #e4be4c,
-            0   18px 0  -8px #e4be4c,
-            0  -24px 0 -12px #e4be4c,
-            0   24px 0 -12px #e4be4c,
-
-           -6px  0   0   0   black,
-            6px  0   0   0   black,
-            0    0   0   4px black,
-            0   -6px 0   2px black,
-            0    6px 0   2px black,
-            0  -10px 0   0   black,
-            0   10px 0   0   black,
-            0  -14px 0  -2px black,
-            0   14px 0  -2px black,
-            0  -18px 0  -4px black,
-            0   18px 0  -4px black,
-            0  -24px 0  -8px black,
-            0   24px 0  -8px black,
-            0  -30px 0 -12px black,
-            0   30px 0 -12px black;
-        }
-        .pending .overlay img{
-          width:50%;
           
-          margin-left:25%;
-          margin-right:25%;
-          margin-top:25%;
-
-        }
-        .field {
-          background-color: #fff;
-          font-family: $headerFont;
-          font-size: 24px;
-          margin-top: 0;
-            p {
-              font-family: $bodyFont;
-              font-size: 18px;
-              line-height: 30px;
-              font-weight: 300;
-              background-color: $lightGreen;
-              padding: 20px;
-              margin: 5ox 0;
-              border-radius: 8px;
+          .overlay-content{
+            position:relative;
+            .step-content{
+              filter:blur(2.5px);
             }
+            
+            .overlay{
+              position:absolute;
+              width:100%;
+              height:100%;
+              top:0px;
+              left:0px;
+              .pending-plate{
+                width:50%;
+                margin-left:25%;
+                margin-right:25%;
+                margin-top:20%;
+                background-color: #EDC034;
+                box-shadow:
+                  0   -6px 0  -2px #EDC034,
+                  0    6px 0  -2px#EDC034,
+                  0  -12px 0  -4px #EDC034,
+                  0   12px 0  -4px#EDC034,
+                  0  -18px 0  -8px#EDC034,
+                  0   18px 0  -8px#EDC034,
+                  0  -24px 0 -12px#EDC034,
+                  0   24px 0 -12px #EDC034,
+
+                 -6px  0   0   0   black,
+                  6px  0   0   0   black,
+                  0    0   0   4px black,
+                  0   -6px 0   2px black,
+                  0    6px 0   2px black,
+                  0  -10px 0   0   black,
+                  0   10px 0   0   black,
+                  0  -14px 0  -2px black,
+                  0   14px 0  -2px black,
+                  0  -18px 0  -4px black,
+                  0   18px 0  -4px black,
+                  0  -24px 0  -8px black,
+                  0   24px 0  -8px black,
+                  0  -30px 0 -12px black,
+                  0   30px 0 -12px black;
+                img{
+                  width:80%;
+                  margin-left:10%;
+                  margin-right:10%;
+                  margin-top:10%;
+                }
+              }
+              
+            }
+
+          }
+        }
+        .step{
+          .overlay-content{
+            background-color: $lightGreen;
+            box-shadow:
+              0   -6px 0  -2px $lightGreen,
+              0    6px 0  -2px $lightGreen,
+              0  -12px 0  -4px $lightGreen,
+              0   12px 0  -4px $lightGreen,
+              0  -18px 0  -8px $lightGreen,
+              0   18px 0  -8px $lightGreen,
+              0  -24px 0 -12px $lightGreen,
+              0   24px 0 -12px $lightGreen,
+
+             -6px  0   0   0   black,
+              6px  0   0   0   black,
+              0    0   0   4px black,
+              0   -6px 0   2px black,
+              0    6px 0   2px black,
+              0  -10px 0   0   black,
+              0   10px 0   0   black,
+              0  -14px 0  -2px black,
+              0   14px 0  -2px black,
+              0  -18px 0  -4px black,
+              0   18px 0  -4px black,
+              0  -24px 0  -8px black,
+              0   24px 0  -8px black,
+              0  -30px 0 -12px black,
+              0   30px 0 -12px black;
+              .step-content{
+                margin-top: 0;
+                font-family: $bodyFont;
+                font-size: 18px;
+                line-height: 30px;
+                font-weight: 300;
+                
+                padding: 20px;
+                margin: 5ox 0;
+                .field{
+                  background-color:#9FE2DD;
+                  text-align:center;
+                  margin:0px;
+                  margin-bottom:50px;
+                  padding:0px;
+                  button{
+                    width:100%;
+                  }
+                  p{
+                    
+                  }
+                }
+                button.done-button{
+                  background-color:#28d653;
+                  width:100%;
+                  margin-top:70px;
+                }
+                .thumbnail{
+                  width:100%;
+                  height:auto;
+                  max-height:500px;
+                  .upload{
+                    width:100%;
+                    height:auto;
+                    max-height:500px;
+                  }
+                  .upload:after{
+                    content:"Choose Screenshot";
+                  }
+                  img{
+                    max-height:500px;
+                    width:100%;
+                    height:auto;
+                  }
+                }
+
+              }
+          }
+          .step-title{
+            display:flex;
+            margin:auto;
+            margin-bottom:10px;
+            div{
+              margin-left:20px;
+              img{
+                width:60px;
+              }
+            }
+          }
         }
       }
     }

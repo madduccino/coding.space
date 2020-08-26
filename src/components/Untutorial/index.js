@@ -677,64 +677,77 @@ class UntutorialPageBase extends React.Component {
 								<div className={"step " + ((!!progress && (progress.steps[index].Status == 'PENDING')) ? "pending" : "")}>
 
 									<div className="checkOff">
-										{!!progress && (!progress.steps[index] || progress.steps[index].Status == 'DRAFT') && (
-											<div>
-												
-												
-												<button 
-													disabled={false} 
-													onClick={()=>this.studentApprove(index)}>Done</button>
-											</div>
-											
-										)}
 										
-										{(!!progress && !!progress.steps[index] && progress.steps[index].Status == 'DRAFT') ? (
-											<div>
+										<div className={'step-title'}>
+											Step {parseInt(index)+1}
+											{(!!progress && !!progress.steps[index] && progress.steps[index].Status == 'DRAFT') ? (
+												<div>
 
-												<img className={'pixel'} src='/images/rocket-coin-slot.png'/>
-											</div>
-										) : (!!progress && !!progress.steps[index] && progress.steps[index].Status == 'PENDING') ? (
-											<div>
+													<img className={'pixel'} src='/images/rocket-coin-slot.png'/>
+												</div>
+											) : (!!progress && !!progress.steps[index] && progress.steps[index].Status == 'PENDING') ? (
+												<div>
 
-												<img className={'pixel'} src='/images/inprogress-coin.gif'/>
-											</div>
-										) : !!progress && (
-											<div>
+													<img className={'pixel'} src='/images/inprogress-coin.gif'/>
+												</div>
+											) : !!progress && (
+												<div>
 
-												<img className={'pixel'} src='/images/rocket-coin.gif'/>
-											</div>
-										)}
-										
-										<div>Step {parseInt(index)+1}</div>
-									</div>
-									<TCSEditor
-										disabled={!(!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===untutorial.Author.key))}
-										type={'text'}
-										onEditorChange={(value)=>this.handleStepOnChange(value,step)} 
-										onEditorSave={(value)=>this.handleStepOnSave(value,step)} 
-										placeholder={'Step Description'} 
-										text={untutorial.steps[index].Description}/> 
-									{!!progress && !!progress.steps[index] && progress.steps[index].Comments != '' && (
-										<div className={'comments'}>{progress.steps[index].Comments}</div>
-									)}
-									<div className="step thumbnail">
-										{!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===untutorial.Author.key) && (		
-											<label for={'step' + index + '-thumbnail-upload'} className="upload">
-												<input id={'step' + index + '-thumbnail-upload'} type="file" onChange={(event)=>this.handleStepThumbnailUpload(event,index)}/>
-											</label>
-										)} 
-										{this.state.uploading && (
-											<progress value={this.state.uploadPercent} max="100"/>
-										)}
-										{!!untutorial.steps[index].ThumbnailFilename && !!untutorial.steps[index].ThumbnailFilename.length != 0 && !this.state.uploading &&(
-											<LazyImage id={'step' + index + '-thumbnail'} file={this.props.firebase.storage.ref('/public/' + untutorial.Author.key + '/' + untutorial.steps[index].ThumbnailFilename)}/>
-										)}
-									</div>	
-									{!!progress && (!progress.steps[index] || progress.steps[index].Status == 'PENDING') && (
-										<div className={'overlay'}>
-											<img className={'pixel'} src={'/images/fixing.gif'}/>
+													<img className={'pixel'} src='/images/rocket-coin.gif'/>
+												</div>
+											)}
 										</div>
-									)}
+										
+										
+										
+									</div>
+									<div className={'overlay-content'}>
+										<div className={'step-content'}>
+											<TCSEditor
+												disabled={!(!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===untutorial.Author.key))}
+												type={'text'}
+												onEditorChange={(value)=>this.handleStepOnChange(value,index)} 
+												onEditorSave={(value)=>this.handleStepOnSave(value,index)} 
+												placeholder={'Step Description'}
+												buttonText={'Edit Description'} 
+												text={untutorial.steps[index].Description}/> 
+											{!!progress && !!progress.steps[index] && progress.steps[index].Comments != '' && (
+												<div className={'comments'}>{progress.steps[index].Comments}</div>
+											)}
+											<div className="step thumbnail">
+												{!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===untutorial.Author.key) && (		
+													<label for={'step' + index + '-thumbnail-upload'} className="upload">
+														<input id={'step' + index + '-thumbnail-upload'} type="file" onChange={(event)=>this.handleStepThumbnailUpload(event,index)}/>
+													</label>
+												)} 
+												{this.state.uploading && (
+													<progress value={this.state.uploadPercent} max="100"/>
+												)}
+												{!!untutorial.steps[index].ThumbnailFilename && !!untutorial.steps[index].ThumbnailFilename.length != 0 && !this.state.uploading &&(
+													<LazyImage id={'step' + index + '-thumbnail'} file={this.props.firebase.storage.ref('/public/' + untutorial.Author.key + '/' + untutorial.steps[index].ThumbnailFilename)}/>
+												)}
+											</div>	
+											{!!progress && (!progress.steps[index] || progress.steps[index].Status == 'DRAFT') && (
+												<div>
+													
+													
+													<button 
+														disabled={false} 
+														className={'done-button'}
+														onClick={()=>this.studentApprove(index)}>Done</button>
+												</div>
+												
+											)}
+										</div>
+										{!!progress && (!progress.steps[index] || progress.steps[index].Status == 'PENDING') && (
+											<div className={'overlay'}>
+												<div className={'pending-plate'}>
+													<img className={'pixel'} src={'/images/fixing.gif'}/>
+												</div>
+											</div>
+										)}
+									</div>
+									
 
 								</div>
 

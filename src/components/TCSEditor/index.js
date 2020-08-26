@@ -15,6 +15,7 @@ class TCSEditor extends React.Component {
 			placeholder:props.placeholder,
 			name:props.name,
 			editing:false,
+			buttonText:!!props.buttonText ? props.buttonText : "Edit",
 
 
 			save:true,
@@ -56,7 +57,7 @@ class TCSEditor extends React.Component {
 
 		const {className} = this.props;
 
-		const {text,type,selectOptions,disabled,placeholder,name, editing, save} = this.state;
+		const {text,type,selectOptions,disabled,placeholder,name, editing, save,buttonText} = this.state;
 
 		if(!!disabled){
 			return (
@@ -70,7 +71,7 @@ class TCSEditor extends React.Component {
 				<div className={'field ' + className}>
              
 					<div name={name} dangerouslySetInnerHTML={{__html:text}}/>
-					<button onClick={this.handleEdit}>Edit</button>
+					<button onClick={this.handleEdit}>{buttonText}</button>
 
 				</div>
 			)
