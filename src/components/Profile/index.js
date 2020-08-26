@@ -173,7 +173,7 @@ class ProfilePageBase extends React.Component {
  }
  handlePDescriptionValidate(){
  	const {errors,profile} = this.state;
- 	const text = profile.Description.replace(/<(.|\n)*?>/g, '').trim();
+ 	const text = profile.About.replace(/<(.|\n)*?>/g, '').trim();
  	if(text.length == 0){
  		errors["About"] = 'ABOUT.<span class="red">ISREQUIRED</span>'; 
  	}
@@ -199,8 +199,8 @@ class ProfilePageBase extends React.Component {
  }
  handleAgeValidate(){
  	const {errors,profile} = this.state;
- 	if(profile.Age.length != 0 && isNaN(profile.Age)){
- 		errors["Age"] = 'AGE.<span class="red">ISINVALID</span>'; 
+ 	if(profile.Age.length != 0/* && isNaN(profile.Age)*/){
+ 		errors["Age"] = 'AGE.<span class="red">ISREQUIRED</span>'; 
  	}
  	else delete errors["Age"];
  	this.setState({errors:errors});
