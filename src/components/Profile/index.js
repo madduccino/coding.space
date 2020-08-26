@@ -198,8 +198,8 @@ class ProfilePageBase extends React.Component {
  	
  }
  handleAgeValidate(){
- 	const {errors,profile} = this.state;
- 	if(profile.Age.length != 0/* && isNaN(profile.Age)*/){
+ 	const {errors} = this.state;
+ 	if(this.state.profile.Age.length == 0/* && isNaN(profile.Age)*/){
  		errors["Age"] = 'AGE.<span class="red">ISREQUIRED</span>'; 
  	}
  	else delete errors["Age"];
