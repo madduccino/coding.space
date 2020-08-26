@@ -1,5 +1,9 @@
   @import url('https://use.typekit.net/eia0pww.css');
   @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=B612+Mono&family=Share+Tech+Mono&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Overpass+Mono:wght@700&family=Roboto+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=Space+Mono:wght@700&display=swap');
 
   $darkgreen: #274548;
   $lightGreen:#9FE2DD;
@@ -12,6 +16,8 @@
   $fontSize: 18px;
   $headerFont: 'futura-pt-bold',sans-serif;
   $bodyFont: 'Montserrat';
+  // $headerFont: 'roboto mono','futura-pt-bold',sans-serif;
+  // $bodyFont: 'VT323',monospace;
   $breakpoint-tablet: 768px;
   $breakpoint-phone: 600px;
   @keyframes spin {
@@ -30,7 +36,10 @@
     margin: 0;
     padding: 0;
   }
-
+ 
+  img {
+    max-width: 100%;
+  }
 
   h1,h2,h3,h4,h5,h6 {
       font-family: $headerFont;
@@ -49,10 +58,15 @@
     margin-top: -5rem;
     margin-bottom: 0.5rem;
   }
+  
+  p {
+    margin: 0;
+    padding: 0;
+  }
 
   h2 {
-      font-size: 1.2rem;
-  } 
+    font-size: 1.6rem;
+  }
 
   a {
       text-decoration: none;
@@ -70,8 +84,9 @@
   }
 
   .title {
-    font-size: 1.8rem;
+    font-size: 1.4rem;
     margin-top: -30px;
+    font-family: $headerFont;
   }
   img.pixel{
     image-rendering:pixelated;
@@ -344,6 +359,9 @@
         > div {
           margin-bottom: 40px;
         }
+        a {
+          color: $lightGreen;
+        }
       }
 
       button {
@@ -359,7 +377,7 @@
       p {
         margin: 0;
         padding: 0;
-        line-height: 20px;
+
       }
       span {
         font-size: 0.8rem;
@@ -368,6 +386,11 @@
         // margin: 40px 0;
         // border: 2px solid $lightGreen;
         position: relative;
+        p {
+          margin-top: 20px;
+          // font-size: 1.8rem;
+          // line-height: 2rem;
+        }
       }
       h4 {
         // margin-top: 20px;
@@ -391,6 +414,7 @@
         &.level {
           font-size: 40px;
           font-family: $headerFont;
+          color: $orange;
         }
          > div {
           }
@@ -582,9 +606,8 @@
       .titleStatus {
         display: grid;
         grid-template-columns: 5fr 1fr; 
-        margin-top: -30px;
         .title {
-          margin-top: 0;
+          margin-top: 10px;
         }
       }
     }
@@ -631,15 +654,12 @@
         }
       }
       .container {
-        .step.pending {
-          
-          
+        .step.pending { 
           .overlay-content{
             position:relative;
             .step-content{
               filter:blur(2.5px);
             }
-            
             .overlay{
               position:absolute;
               width:100%;
@@ -685,8 +705,7 @@
                 }
               }
               
-            }
-
+           }
           }
         }
         .step{
@@ -740,12 +759,11 @@
                   }
                 }
                 button.done-button{
-                  background-color:#28d653;
                   width:100%;
                   margin-top:70px;
                 }
                 .thumbnail{
-                  width:100%;
+                  max-width:100%;
                   height:auto;
                   max-height:500px;
                   .upload{
@@ -764,6 +782,15 @@
                 }
 
               }
+          }
+          .field {
+            > div {
+              font-size: 1.2rem;
+              font-weight: 300;
+            }
+            iframe {
+              margin-top: 20px;
+            }
           }
           .step-title{
             display:flex;
@@ -1028,7 +1055,7 @@
         cursor: pointer;
       }
       .selected {
-        h3 {
+        h2 {
           border-bottom: 5px solid $lightGreen;
           display: inline-block;
         }
@@ -1107,9 +1134,7 @@
       .field {
         position: relative
       }
-      a {
-        padding-top: 10px;
-      }
+
       .status {
         display: flex;
         flex-flow: row wrap;
@@ -1117,7 +1142,11 @@
         img {
           image-rendering: pixelated;
           width: 40px;
-          margin-top: -20px;
+          height: 44px;
+          &.explorer {
+            height: 78px;
+            margin-top: -20px;
+          }
         }
 
        h4 {
@@ -1150,15 +1179,15 @@
           background-color: $beige;
           border-bottom: 1px solid #f3eddb;
           padding: 10px;
+          padding-top: 20px;
           grid-template-columns: 1fr 2fr 1fr;
 
         }
         
      }
-     .progress {
+     .progress,.projects, .untutorials {
       h3 {
         background-color: $lightGreen;
-        border: 3px solid #7ae2da;
         padding: 0 5px;
         margin-top: 20px;
         grid-column: span 3;
@@ -1185,6 +1214,7 @@
         font-size: 14px;
         padding: 2px 4px;
       }
+      
     > div {
       // display: grid;
       // grid-template-columns: 1fr 1fr;
@@ -1194,15 +1224,9 @@
       margin-bottom: 40px;
       font-size: 2rem;
     }
-  //  .avatar {
-  //   border: 2px solid red;
-  //   position: relative;
-  //   img {
-  //     width: 100px;
-  //     height: 100px;
-  //     object-fit: contain;
-  //   }
-  //  }
+   .avatar {
+    margin-bottom: 40px;
+   }
     > div {
       margin-bottom: 20px;
       word-wrap: break-word;  
@@ -1291,19 +1315,19 @@
   }
 
   .avatar {
-    width: 100px;
-    height: 100px;
+    width: 300px;
+    height: 300px;
     border: 1px solid #ccc;
-    border-radius: 50%;
     padding: 20px;
+    border-radius: 4px;
     img {
-      width: 100px;
-      height: 100px;
+      width: 300px;
+      height: 300px;
       position: absolute;
     }
     .upload {
-    width: 100px;
-    height: 100px;
+    width: 300px;
+    height: 300px;
     padding: 5px;
     }
   }
@@ -1311,8 +1335,7 @@
   .thumbnail {
     width: 200px;
     height: 150px;
-    margin: 0;
-    margin-top: 5px;
+    margin: 5px 0 20px;
     // width: 300px;
     // height: 150px;
     img {

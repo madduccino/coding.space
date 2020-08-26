@@ -46,7 +46,7 @@ class Navigation extends React.Component{
           </div>
             )} 
           <div className={this.props.showNav ? "showMenu" : "hideMenu"}> 
-            <a href={'/profile/' + authUser.uid}>My Account</a>
+            <a href={'/profile/' + authUser.uid}>My Profile</a>
             {(!!authUser.roles[ROLES.ADMIN] || !!authUser.roles[ROLES.TEACHER]) && (
               <Link to={ROUTES.RESOURCE_HOME}>Resources</Link>
             )}
