@@ -675,6 +675,7 @@ class UntutorialPageBase extends React.Component {
 						<div className={'container'}>
 							{!!untutorial && untutorial.steps.map((step,index) => (
 								<div className={"step " + ((!!progress && (progress.steps[index].Status == 'PENDING')) ? "pending" : "")}>
+
 									<div className="checkOff">
 										{!!progress && (!progress.steps[index] || progress.steps[index].Status == 'DRAFT') && (
 											<div>
@@ -690,17 +691,17 @@ class UntutorialPageBase extends React.Component {
 										{(!!progress && !!progress.steps[index] && progress.steps[index].Status == 'DRAFT') ? (
 											<div>
 
-												<img src='/images/rocket-coin-slot.png'/>
+												<img className={'pixel'} src='/images/rocket-coin-slot.png'/>
 											</div>
 										) : (!!progress && !!progress.steps[index] && progress.steps[index].Status == 'PENDING') ? (
 											<div>
 
-												<img src='/images/inprogress-coin.gif'/>
+												<img className={'pixel'} src='/images/inprogress-coin.gif'/>
 											</div>
 										) : !!progress && (
 											<div>
 
-												<img src='/images/rocket-coin.gif'/>
+												<img className={'pixel'} src='/images/rocket-coin.gif'/>
 											</div>
 										)}
 										
@@ -729,6 +730,11 @@ class UntutorialPageBase extends React.Component {
 											<LazyImage id={'step' + index + '-thumbnail'} file={this.props.firebase.storage.ref('/public/' + untutorial.Author.key + '/' + untutorial.steps[index].ThumbnailFilename)}/>
 										)}
 									</div>	
+									{!!progress && (!progress.steps[index] || progress.steps[index].Status == 'PENDING') && (
+										<div className={'overlay'}>
+											<img className={'pixel'} src={'/images/fixing.gif'}/>
+										</div>
+									)}
 
 								</div>
 

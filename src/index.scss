@@ -8,6 +8,7 @@
   $beige: #FBF6EE;
   $orange: #EDC034;
   $darkerOrange: #d8a200;
+  $darkOrangeTransparent:rgba(216,162,0,0.7);
   $fontSize: 18px;
   $headerFont: 'futura-pt-bold',sans-serif;
   $bodyFont: 'Montserrat';
@@ -59,7 +60,7 @@
       color: $darkgreen;
   } 
 
-  button {
+  button { 
       font-size: $fontSize;
       font-family: $bodyFont;
   }
@@ -72,7 +73,9 @@
     font-size: 1.8rem;
     margin-top: -30px;
   }
-  
+  img.pixel{
+    image-rendering:pixelated;
+  }
   #page-container {
       display: grid;
       height: 100%;
@@ -631,19 +634,50 @@
       }
       .container {
         .pending {
-          .field,.step {
-            display: none;
-          }
-          &:after {
-            background: url('/images/fixing.gif') no-repeat;
-            image-rendering: pixelated;
-            width: 200px;
-            height: 200px;
-            display: block;
-            content: "";
-            background-size: contain;
-            margin: 0 auto;
-          }
+          position:relative;
+        }
+        .step.pending .overlay{
+          
+          background-color: $darkOrangeTransparent;
+          position:absolute;
+          width:100%;
+          height:100%;
+          top:0px;
+          left:0px;
+          /*#e4be4c is the color match of darkOrangeTransparent against white*/
+          box-shadow:
+            0   -6px 0  -2px #e4be4c,
+            0    6px 0  -2px #e4be4c,
+            0  -12px 0  -4px #e4be4c,
+            0   12px 0  -4px #e4be4c,
+            0  -18px 0  -8px #e4be4c,
+            0   18px 0  -8px #e4be4c,
+            0  -24px 0 -12px #e4be4c,
+            0   24px 0 -12px #e4be4c,
+
+           -6px  0   0   0   black,
+            6px  0   0   0   black,
+            0    0   0   4px black,
+            0   -6px 0   2px black,
+            0    6px 0   2px black,
+            0  -10px 0   0   black,
+            0   10px 0   0   black,
+            0  -14px 0  -2px black,
+            0   14px 0  -2px black,
+            0  -18px 0  -4px black,
+            0   18px 0  -4px black,
+            0  -24px 0  -8px black,
+            0   24px 0  -8px black,
+            0  -30px 0 -12px black,
+            0   30px 0 -12px black;
+        }
+        .pending .overlay img{
+          width:50%;
+          
+          margin-left:25%;
+          margin-right:25%;
+          margin-top:25%;
+
         }
         .field {
           background-color: #fff;
