@@ -687,10 +687,15 @@ class UntutorialPageBase extends React.Component {
 											
 										)}
 										
-										{(!!progress && !!progress.steps[index] && progress.steps[index].Status != 'APPROVED') ? (
+										{(!!progress && !!progress.steps[index] && progress.steps[index].Status == 'DRAFT') ? (
 											<div>
 
 												<img src='/images/rocket-coin-slot.png'/>
+											</div>
+										) : (!!progress && !!progress.steps[index] && progress.steps[index].Status == 'PENDING') ? (
+											<div>
+
+												<img src='/images/inprogress-coin.gif'/>
 											</div>
 										) : !!progress && (
 											<div>

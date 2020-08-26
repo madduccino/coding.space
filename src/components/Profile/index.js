@@ -509,10 +509,12 @@ class ProfilePageBase extends React.Component {
 													
 													<div className="status">
 														{Object.keys(progress.Untutorial.steps).map(slot=>(<>
-															{(!!progress.steps[slot] && progress.steps[slot].Status == 'APPROVED') ? (
-																<img src='/images/rocket-coin.gif'/>
-															) : (
+															{(!!progress.steps[slot] && progress.steps[slot].Status == 'DRAFT') ? (
 																<img src='/images/rocket-coin-slot.png'/>
+															) : (!!progress.steps[slot] && progress.steps[slot].Status == 'PENDING') ? (
+																<img src='/images/inprogress-coin.gif'/>
+															) : (
+																<img src='/images/rocket-coin.gif'/>
 															)}
 
 														</>))}
