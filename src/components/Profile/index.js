@@ -329,20 +329,20 @@ class ProfilePageBase extends React.Component {
 			<div className="sidebar">
 				<div className="sidebar-content">
 				<div className={this.state.tab===TAB.PROFILE ? 'selected' : ''}>
-				<h3 onClick={()=>this.setState({tab:TAB.PROFILE})}>Profile</h3>
+				<h2 onClick={()=>this.setState({tab:TAB.PROFILE})}>Profile</h2>
 				</div>
 				<div className={this.state.tab===TAB.PROGRESS ? 'selected' : ''}>
-					<h3 onClick={()=>this.setState({tab:TAB.PROGRESS})}>Recent Work</h3>
+					<h2 onClick={()=>this.setState({tab:TAB.PROGRESS})}>Recent Work</h2>
 				</div>
 				<div className={this.state.tab===TAB.PROJECTS ? 'selected' : ''}>
-					<h3 onClick={()=>this.setState({tab:TAB.PROJECTS})}>Projects</h3>
+					<h2 onClick={()=>this.setState({tab:TAB.PROJECTS})}>Projects</h2>
 				</div>
 				<div className={this.state.tab===TAB.UNTUTORIALS ? 'selected' : ''}>
-					<h3 onClick={()=>this.setState({tab:TAB.UNTUTORIALS})}>Untutorials</h3>
+					<h2 onClick={()=>this.setState({tab:TAB.UNTUTORIALS})}>Untutorials</h2>
 				</div>
 				{!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===profile.key) && (
 				<div className={this.state.tab===TAB.EMAIL ? 'selected' : ''}>
-					<h3 onClick={()=>this.setState({tab:TAB.EMAIL})}>Email</h3>
+					<h2 onClick={()=>this.setState({tab:TAB.EMAIL})}>Email</h2>
 				</div>
 				)}
 			</div>
@@ -368,8 +368,8 @@ class ProfilePageBase extends React.Component {
 		 				</div>
 						{!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===profile.key) && (
 							<>
-								<div><strong>Login</strong><br/> {profile.Username}</div>
-								<div><strong>Email</strong><br/> {profile.Email}</div>
+								<div><h4>Login</h4>{profile.Username}</div>
+								<div><h4>Email</h4>{profile.Email}</div>
 							</>	
 						)}
 						<div>
@@ -421,7 +421,6 @@ class ProfilePageBase extends React.Component {
 					
 			  		</div>	
 				)}
-
 				<div className="tab projects">
 	  	  	  		{(!tab || tab==TAB.PROJECTS) && (
 	  	  	  			<div className="content tab-content">
@@ -451,7 +450,6 @@ class ProfilePageBase extends React.Component {
 						</div>
 	  	  	  		)}
 	  	  		</div>
-		  		
 		  	  	<div className="tab untutorials">
 	  	  	  		{(tab==TAB.UNTUTORIALS) && (
 	  	  	  			<div className="content tab-content">
@@ -503,7 +501,7 @@ class ProfilePageBase extends React.Component {
 												<div id={progress.LastModified}>
 													
 													<a href={ ROUTES.LAUNCHPAD + '/' + progress.Untutorial.key}>
-														<h4 dangerouslySetInnerHTML={{__html:progress.Untutorial.Title}}/>
+														<div dangerouslySetInnerHTML={{__html:progress.Untutorial.Title}}/>
 													</a>
 
 													
@@ -519,9 +517,9 @@ class ProfilePageBase extends React.Component {
 
 														</>))}
 														{progress.Status == 'APPROVED' ? (
-															<img className={'pixel'} src='/images/explorer-coin.gif'/>
+															<img className={'pixel explorer'} src='/images/explorer-coin.gif'/>
 														) : (
-															<img className={'pixel'} src='/images/explorer-coin-slot.png'/>
+															<img className={'pixel explorer'} src='/images/explorer-coin-slot.png'/>
 														)}
 														
 														
@@ -529,11 +527,11 @@ class ProfilePageBase extends React.Component {
 													</div>
 													
 													<Link target="_blank" className="center" to={ROUTES.LAUNCHPAD + '/' + progress.Untutorial.key + '?loadProgress=true'}>
-														<h4>
+														<div>
 															{progress.Status == 'APPROVED' ? 'FINISHED!' :
 															progress.Status == 'PENDING' ? 'Waiting for Teacher Approval' :
 															'Work on Step ' + (progress.nextStep)}
-														</h4>
+														</div>
 													</Link>
 													
 													
@@ -561,7 +559,7 @@ class ProfilePageBase extends React.Component {
 		  	</div>
 		</div>	
 		</div>
-	</section>	
+		</section>	
 	)
   }
 }

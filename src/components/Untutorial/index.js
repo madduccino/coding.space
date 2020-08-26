@@ -581,9 +581,28 @@ class UntutorialPageBase extends React.Component {
 		return (
 			<section id="untutorial">
 				<div className="main">
-
 					<div className="sidebar">
 						<div className="sidebar-content">
+							<div className="container">
+								<div className="workOnProject">
+									{!!authUser && !progress && (
+									<button
+									onClick={this.loadProgress}>Check Out</button>
+									)}
+									{!!progress && progress.Status == 'APPROVED' &&(
+									<div>
+										<h3>GREAT JOB! You finished this project!</h3>
+										<button onClick={()=>window.location = ROUTES.UNIVERSE + '/' + progress.untut}>Publish to the UNIVERSE!</button>
+									</div>
+									)}
+									{!!progress && progress.Status == 'PENDING' && (
+									<h3>Your teacher is reviewing your project! Take it easy!</h3>
+									)}
+									{!!progress && progress.Status == 'DRAFT' && nextStep>0 && (
+									<h3>Keep it Up! You're on Step {nextStep}!</h3>
+									)}	
+								</div>		
+							</div>
 							<div className={'container'} >
 								<TCSEditor 
 								disabled={!(authUser && (!!authUser.roles['ADMIN'] || authUser.uid===untutorial.Author.key))}
@@ -594,8 +613,7 @@ class UntutorialPageBase extends React.Component {
 								onEditorSave={this.handleLevelOnSave}
 								placeholder={'Level'} 
 								text={`Level ${untutorial.Level}`}/>
-							</div>
-							<div className={'container titleStatus'}>
+															<div className={'titleStatus'}>
 								<TCSEditor 
 								disabled={!(authUser && !!authUser.roles['ADMIN'])}
 								type={'text'}
@@ -618,6 +636,8 @@ class UntutorialPageBase extends React.Component {
 									text={untutorial.Status} />
 								)}
 							</div>
+							</div>
+
 							<div className="container">
 								<div className="thumbnail">
 									{!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===untutorial.Author.key) && (		
@@ -639,7 +659,7 @@ class UntutorialPageBase extends React.Component {
 									</div>
 								)}
 								
-								<div className={'container'}>
+								<div className={'container description'}>
 									<TCSEditor 
 									disabled={!(authUser && (!!authUser.roles['ADMIN'] || authUser.uid===untutorial.Author.key))}
 									type={'text'}
@@ -652,26 +672,7 @@ class UntutorialPageBase extends React.Component {
 						</div>
 					</div>
 					<div className="main-content">
-						<div className="workOnProject">
-							{!!authUser && !progress && (
-								<button
-								onClick={this.loadProgress}>Check Out</button>
-							)}
-							{!!progress && progress.Status == 'APPROVED' &&(
-								<div>
-									<h3>GREAT JOB! You finished this project!'</h3>
-									<button onClick={()=>window.location = ROUTES.UNIVERSE + '/' + progress.untut}>Publish to the UNIVERSE!</button>
-								</div>
-							)}
-							{!!progress && progress.Status == 'PENDING' && (
-								<h3>Your teacher is reviewing your project! Take it easy!</h3>
-							)}
-							{!!progress && progress.Status == 'DRAFT' && nextStep>0 && (
-								<h3>Keep it Up! You're on Step {nextStep}!</h3>
-							)}
-							
-				
-						</div>		
+
 						<div className={'container'}>
 							{!!untutorial && untutorial.steps.map((step,index) => (
 								<div className={"step " + ((!!progress && (progress.steps[index].Status == 'PENDING')) ? "pending" : "")}>
