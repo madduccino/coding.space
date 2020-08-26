@@ -30,6 +30,7 @@
     padding: 0;
   }
 
+
   h1,h2,h3,h4,h5,h6 {
       font-family: $headerFont;
       padding: 0;
@@ -629,6 +630,21 @@
         }
       }
       .container {
+        .pending {
+          .field,.step {
+            display: none;
+          }
+          &:after {
+            background: url('/images/fixing.gif') no-repeat;
+            image-rendering: pixelated;
+            width: 200px;
+            height: 200px;
+            display: block;
+            content: "";
+            background-size: contain;
+            margin: 0 auto;
+          }
+        }
         .field {
           background-color: #fff;
           font-family: $headerFont;
@@ -891,18 +907,18 @@
       color: $darkgreen;
     }
     .sidebar {
-    > div {
-      margin-bottom: 20px;
-      cursor: pointer;
-
-    }
-    .selected {
-      h3 {
-        border-bottom: 5px solid $lightGreen;
-        display: inline-block;
+      > div {
+        margin-bottom: 20px;
+        cursor: pointer;
+      }
+      .selected {
+        h3 {
+          border-bottom: 5px solid $lightGreen;
+          display: inline-block;
+        }
       }
     }
-  }
+    .main {
     .tab-labels {
       text-align: center;
       list-style: none;
@@ -975,11 +991,20 @@
       .field {
         position: relative
       }
+      a {
+        padding-top: 10px;
+      }
       .status {
         display: flex;
-        flex-flow: column wrap;
-        justify-content: center;
-      h4 {
+        flex-flow: row wrap;
+        align-content: center;
+        img {
+          image-rendering: pixelated;
+          width: 40px;
+          margin-top: -20px;
+        }
+
+       h4 {
         width: 15px;
         height: 15px;
         border-radius: 50%;
@@ -1009,7 +1034,10 @@
           background-color: $beige;
           border-bottom: 1px solid #f3eddb;
           padding: 10px;
+          grid-template-columns: 1fr 2fr 1fr;
+
         }
+        
      }
      .progress {
       h3 {
@@ -1101,6 +1129,7 @@
       } 
      }
     }
+   }
   }
 
   #simulator {
