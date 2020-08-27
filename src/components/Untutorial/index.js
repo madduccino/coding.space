@@ -196,8 +196,6 @@ class UntutorialPageBase extends React.Component {
 
 
 	}
-
-
 	handleTitleOnChange(value){
 		var oCopy = this.state.untutorial;
 		if(value !== oCopy.Title){
@@ -357,7 +355,6 @@ class UntutorialPageBase extends React.Component {
 		}
 		this.setState({errors:errors});
 	}
-	
 	validateProjectURL(){
 		const {untutorial,errors,project} = this.state;
 		const {authUser} = this.props;
@@ -672,11 +669,9 @@ class UntutorialPageBase extends React.Component {
 						</div>
 					</div>
 					<div className="main-content">
-
 						<div className={'container'}>
 							{!!untutorial && untutorial.steps.map((step,index) => (
 								<div className={"step " + ((!!progress && (progress.steps[index].Status == 'PENDING')) ? "pending" : "")}>
-
 									<div className="checkOff">
 										
 										<div className={'step-title'}>
@@ -748,12 +743,7 @@ class UntutorialPageBase extends React.Component {
 											</div>
 										)}
 									</div>
-									
-
 								</div>
-
-						
-
 							))}
 						</div>
 					</div>
