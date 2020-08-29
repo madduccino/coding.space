@@ -508,18 +508,24 @@ class ProfilePageBase extends React.Component {
 													<div className="status">
 														{Object.keys(progress.Untutorial.steps).map(slot=>(<>
 															{(!!progress.steps[slot] && progress.steps[slot].Status == 'DRAFT') ? (
-																<img className={'pixel'} src='/images/rocket-coin-slot.png'/>
+																<div className="white"></div>
+																// <img className={'pixel'} src='/images/rocket-coin-slot.png'/>
 															) : (!!progress.steps[slot] && progress.steps[slot].Status == 'PENDING') ? (
-																<img className={'pixel'} src='/images/inprogress-coin.gif'/>
+																<div className="yellow"></div>
+																// <img className={'pixel'} src='/images/inprogress-coin.gif'/>
 															) : (
-																<img className={'pixel'} src='/images/rocket-coin.gif'/>
+																<div className="green"></div>
+																// <img className={'pixel'} src='/images/rocket-coin.gif'/>
 															)}
 
 														</>))}
 														{progress.Status == 'APPROVED' ? (
-															<img className={'pixel explorer'} src='/images/explorer-coin.gif'/>
+															<div className="green"></div>
 														) : (
-															<img className={'pixel explorer'} src='/images/explorer-coin-slot.png'/>
+															<div className="white"></div>
+
+															// <div className="white"></div>
+															// <img className={'pixel explorer'} src='/images/explorer-coin-slot.png'/>
 														)}
 														
 														

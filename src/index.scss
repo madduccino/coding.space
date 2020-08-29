@@ -28,13 +28,25 @@
       height: 100%;
   }
 
+  @mixin flex-horizontal {
+     display: flex;
+     flex-flow: row wrap;
+     justify-content: center;
+     margin: 0 auto;
+  }
+
   body {
-    background-color: $darkgreen;
     color: $darkgreen;
     font-size: $fontSize;
     font-family: $bodyFont;
     margin: 0;
     padding: 0;
+  }
+  
+  #page-container {
+    #signIn, #landing,#forget,#signup,#launchpad,#universe {
+    background-color:$darkgreen;
+    }
   }
  
   img {
@@ -97,6 +109,8 @@
       grid-template-rows: 70px 1fr;
       position: relative;
   }
+
+
 
   #header {
       background-color: #fff;
@@ -331,16 +345,7 @@
   }
  
   #profile, #clazz, #untutorial, #new-project, #jetfuel, #question {
-    .approve {
-      text-align: center;
-      margin-top: 20px;
-      div {
-        color: $orange;
-        position: relative; 
-        display: inline;
-        padding-right: 20px;
-      }
-    }
+
     .main {
       color: #fff;
       display: grid;
@@ -401,12 +406,11 @@
         margin-right: 5px;
       }
       .field {
-       
         &.draft > div {
           background-color: red;
           text-align: center;
         }
-        &.approved > div {
+        &.approved  {
           background-color:#00b700;
           text-align: center;
           font-size: 12px;
@@ -478,6 +482,17 @@
       padding: 60px;
       // grid-column: span 2;
       position: relative;
+      margin: 0 auto;
+      .approve {
+        text-align: center;
+        margin-top: 20px; 
+        div {
+          color: $orange;
+          position: relative; 
+          display: inline;
+          padding-right: 20px;
+        }
+      }
       .container {
         .step {
           margin-bottom: 40px;
@@ -545,25 +560,30 @@
    }
   }
 
-  #launchpad {
+  #launchpad, #universe {
     .main {
       color: #fff;
       display: grid;
-      grid-template-columns: repeat(4,1fr);
       grid-gap: 3rem;
+      @include flex-horizontal;
       margin: 40px;
       > a {
         background-color: #fff;
         border-radius: 8px;
         color: $darkgreen;
+        width: 20%;
+        // flex-grow: 1;
         img {
             width: 100%;
         }
         > div {
-          padding: 0 20px;
+          padding: 20px;
           font-size: 1rem;
           font-family: $bodyFont;
           font-weight: 300;
+          h2 {
+            margin-bottom: 20px;
+          }
           p {
            line-height: 1.6rem;
           }
@@ -573,14 +593,9 @@
   }
 
   #classes {
-    a {
-    color: $orange;
-    text-align: center;
-  }
+
   .main {
-  display: flex;
-  flex-flow: row wrap;
-  justify-content: center;
+  @include flex-horizontal;  
   a {
     color: $orange;
     width: 200px;
@@ -853,8 +868,7 @@
 
   #signup {
     labels {
-      display: flex;
-      flex-flow: row wrap;    
+      @include flex-horizontal;    
     }
   } 
 
@@ -893,6 +907,11 @@
     }
     }
     .main-content {
+      padding: 0;
+      display: grid;
+      grid-template-rows: 70px 1fr;
+      position: relative;
+      width: 100%;
       h1 {
         font-size: 3rem;
         position: relative;
@@ -910,12 +929,20 @@
         font-size: 48px;
         margin-bottom: 40px;
       }
+      .container {
+        padding: 30px;
+      }
       .toolbar {
-        position: fixed;
-        bottom: 50px;
-        right: 50px;
+        position: sticky;
+        top: 0;
+        z-index: 1;
         display: flex;
-        flex-flow: row wrap;
+        flex-flow: column wrap;
+        align-content: center;
+        // bottom: 50px;
+        // right: 50px;
+        // display: flex;
+        // flex-flow: row wrap;
         padding: 10px;
         border:1px solid #ccc;
         background-color: $lightGreen;
@@ -924,19 +951,33 @@
           width: auto;
           margin: 10px;
           color: $darkgreen;
+          width: 15%;
         }
       }
-    .step {
-      position: relative;
-      max-width: 600px;
-      color: $darkgreen;
-      border-radius: 4px;
-    .desc {
+     .step {
+      //  position: relative;
+      //   max-width: 600px;
+      //   color: $darkgreen;
+      //   border-radius: 4px;
+         border: 1px solid #ECECEC;
+         border-radius: 4px;
+         position: relative;
+         .thumbnail {
+          @include flex-horizontal;
+          margin-bottom: 20px;
+        }
+     .desc {
         position:absolute;
         top: 35%;
         left: 0;
         right: 0;
       }
+      .quill {
+        max-width: 100%;
+        }
+        .ql-toolbar {
+          padding-bottom: 10px;
+        }
       button {
         position: absolute;
         top: 0;
@@ -972,47 +1013,14 @@
         cursor: pointer;
         z-index:999;
       }
-      .dropdown {
-        position: absolute;
-        right: 0;
-        width: 80px;
-        background-color: $lightGreen;
-        right: 0;
-        padding-right: 30px;
-        height: 100%;
-        top: 0;
-        font-size: 16px;
-        cursor: pointer;
-        .edit {
-          position: absolute;
-          top: 60px;
-          right: 30px;
-          text-align: right;
-
-        }
-        .add {
-          position: absolute;
-          top: 90px;
-          right: 30px;
-          text-align: right;
-        }
-        .del {
-          position: absolute;
-          right: 0px;
-          top: 120px;
-          right: 30px;
-          text-align: right;
-
-        } 
-      }
-    }
+     }
  
+    }
    }
-  }
   }  
 
-  #launchpad {
-    margin-top: 10px;
+  #launchpad, #universe {
+    color: $orange;
     a {
       display: inline-block;
       margin-right: 20px;
@@ -1023,11 +1031,24 @@
     display:flex;
     flex-flow: row wrap;
     justify-content: center;
-    margin-top: 30px;
+    margin: 30px auto 60px;
+    max-width: 600px;
+    div {
+     width: 33%;
+     text-align: center;
+    }
     }
     .filter-categories {
       text-align: center;
-
+      margin-top: 20px;
+      a {
+        color: $darkgreen;
+        background-color: $beige;
+        padding: 5px;
+        margin: 10px;
+        display: inline;
+        border-radius: 5px;
+      }
     }
     .container {
       width: 50%;
@@ -1136,9 +1157,35 @@
       }
 
       .status {
-        display: flex;
-        flex-flow: row wrap;
-        align-content: center;
+        @include flex-horizontal; 
+        .approved {
+          width: 25px;
+          height: 25px;
+          background-color: green;
+          border-radius: 50%;
+          margin:10px;
+        }
+        .draft {
+          width: 25px;
+          height: 25px;
+          background-color: #fff;
+          border-radius: 50%;
+          margin:10px;
+        }
+        .pending {
+          width: 25px;
+          height: 25px;
+          background-color: yellow;
+          border-radius: 50%;
+          margin:10px;
+        }
+        .finished {
+          width: 25px;
+          height: 25px;
+          background-color: blue;
+          border-radius: 50%;
+          margin:10px;
+        }
         img {
           image-rendering: pixelated;
           width: 40px;
@@ -1149,12 +1196,12 @@
           }
         }
 
-       h4 {
+       div {
         width: 15px;
         height: 15px;
         border-radius: 50%;
         text-align: center;
-        margin: 0 auto;
+        margin: 0 10px;
         &.yellow {
           background-color:$orange;
           background: radial-gradient(circle, $orange,$darkerOrange);
@@ -1163,9 +1210,17 @@
           background-color:rgb(80, 221, 15);
           background:radial-gradient(circle, rgb(6, 177, 83),rgb(3, 107, 50));
         }
+        &.white {
+          background-color:rgb(255, 255, 255);
+          background:radial-gradient(circle, rgb(255, 255, 255), rgb(223, 223, 223),);
+        }
         &.red {
           background-color:rgb(247, 48, 48);
           background:radial-gradient(circle, rgb(236, 99, 99), rgb(247, 48, 48),);
+        }
+        &.blue {
+          background-color:blue;
+          background:radial-gradient(circle, rgb(17, 147, 233), rgb(4, 61, 136),);
         }
       }
       }

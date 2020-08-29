@@ -364,8 +364,11 @@ class ClassPageBase extends React.Component {
 
 	return (
 	 <section id="clazz">
-		<div className="approve"> 
-		  <div>
+
+		<div className="main">
+		  <div className="sidebar">
+			<div className="content">
+			<div className="approve"> 
 			<TCSEditor 
 					disabled={!(!!authUser && !!authUser.roles['ADMIN'] )}
 					type='select'
@@ -374,11 +377,7 @@ class ClassPageBase extends React.Component {
 					onEditorSave={this.handleStatusOnSave}
 					placeholder={'Class Status'} 
 					text={clazz.Status}/>
-		  </div>
 		</div>
-		<div className="main">
-		  <div className="sidebar">
-			<div className="content">
 			<div className="avatar">
 			{!!clazz.ThumbnailFilename && !uploading &&(
 					<LazyImage file={this.props.firebase.storage.ref('/classes/' + clazz.ThumbnailFilename)}/>
@@ -435,7 +434,7 @@ class ClassPageBase extends React.Component {
         </div>
 		</div>
 			{/* <button onClick={this.deleteClassHandler}>Delete Class</button> */}
-		<div className="content">
+		<div className="main-content">
 		<h3>Students and Teachers</h3>
 	
 			{!!profiles && (

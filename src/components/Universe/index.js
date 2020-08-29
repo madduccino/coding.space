@@ -123,17 +123,16 @@ class Universe extends React.Component {
 				</button>
 			</a> */}
 			<div className="filter">
-			    <input type='text' onChange={this.textFilterOnChange} placeholder="Search..."/>
-			    <input type="checkbox" checked={classFilter} onClick={this.onClassFilterChange}/><label>Your Class Only</label>
-			    {selectedFilters.length != Object.keys(CATEGORIES).length && (
+			    <div><input type='text' onChange={this.textFilterOnChange} placeholder="Search..."/></div>
+			    <div><input type="checkbox" checked={classFilter} onClick={this.onClassFilterChange}/><label>Your Class Only</label>
+				</div>
+			   <div> {selectedFilters.length != Object.keys(CATEGORIES).length && (
 					<select onChange={this.categoryFilterOnChange}>
 						<option value="-1">Filter...</option>
 				    	{Object.keys(CATEGORIES).filter(f=>!selectedFilters.includes(f)).map(filterName=><option value={filterName}>{filterName}</option>)}
 				    </select>
-			    )}
+			    )}</div>
 			    
-
-				</div>	
 			    {selectedFilters.length > 0 && (
 			    	<div className="filter-categories">
 			    		{selectedFilters.map(f=>(
@@ -141,6 +140,8 @@ class Universe extends React.Component {
 			    		))}
 			    	</div>
 			    )}	
+				</div>	
+
 			<div className="main">	
 				{projects.filter(project=>
 					project.Status === 'APPROVED' && 

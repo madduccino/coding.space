@@ -409,6 +409,10 @@ class NewProjectPageBase extends React.Component {
 				</div>
 			</div>
 			<div className="main-content">
+			<div className="toolbar">
+				<button onClick={this.addStepHandler}>Add Step</button>
+				<button onClick={this.saveChangesHandler}>Save</button> 
+			</div>
 				<div className="container">
 			    <h3>Steps</h3>
 				{Object.keys(untutorial.steps).map(step => (
@@ -439,10 +443,7 @@ class NewProjectPageBase extends React.Component {
 					</div>
 				))}
 			</div>
-			<div className="toolbar">
-				<button onClick={this.addStepHandler}>+</button>
-			<button onClick={this.saveChangesHandler}>Save</button> 
-			</div>
+
 			</div>
 		</div>
 	  </section>	
