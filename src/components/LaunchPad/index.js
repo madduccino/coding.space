@@ -107,7 +107,7 @@ class LaunchPad extends React.Component {
 							<LazyImage key={untutorial.key} file={this.props.firebase.storage.ref('/public/' + untutorial.Author + '/' + untutorial.ThumbnailFilename)}/>
 						<div>
 							<h2 dangerouslySetInnerHTML={{__html:untutorial.Title}}/>
-							<div dangerouslySetInnerHTML={{__html:untutorial.Description}}/>
+							<div dangerouslySetInnerHTML={{__html:untutorial.Description.replace(/<(.|\n)*?>/g, '').trim()}}/>
 						</div>
 					</a>
 				))}
