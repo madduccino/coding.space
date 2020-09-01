@@ -662,17 +662,17 @@ class UntutorialPageBase extends React.Component {
 								onEditorSave={this.handleLevelOnSave}
 								placeholder={'Level'} 
 								text={`Level ${untutorial.Level}`}/>
-															<div className={'titleStatus'}>
-								<TCSEditor 
-								disabled={!(authUser && !!authUser.roles['ADMIN'])}
-								type={'text'}
-								className={'title'}
-								name={'title'}
-								onEditorChange={this.handleTitleOnChange}
-								onEditorSave={this.handleTitleOnSave}
-								placeholder={'Step Description'} 
-								text={untutorial.Title} />
-								{!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===untutorial.Author.key) && (		
+								<div className={'titleStatus'}>
+									<TCSEditor 
+									disabled={!(authUser && !!authUser.roles['ADMIN'])}
+									type={'text'}
+									className={'title'}
+									name={'title'}
+									onEditorChange={this.handleTitleOnChange}
+									onEditorSave={this.handleTitleOnSave}
+									placeholder={'Step Description'} 
+									text={untutorial.Title} />
+									{!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===untutorial.Author.key) && (		
 									<TCSEditor 
 									disabled={!(authUser && (!!authUser.roles['ADMIN'] || authUser.uid===untutorial.Author.key))}
 									type={'select'}
@@ -709,7 +709,6 @@ class UntutorialPageBase extends React.Component {
 							</div>
 							
 							</div>
-
 							<div className="container">
 								<div className="thumbnail">
 									{!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===untutorial.Author.key) && (		
@@ -727,7 +726,6 @@ class UntutorialPageBase extends React.Component {
 								{untutorial.Author.Status === 'APPROVED' &&(
 									<div className={'container'}>
 										<h3>by: <a href={'/profile/' + untutorial.Author.key} dangerouslySetInnerHTML={{__html:untutorial.Author.DisplayName}}/></h3>
-
 									</div>
 								)}
 								
@@ -738,13 +736,14 @@ class UntutorialPageBase extends React.Component {
 									onEditorChange={this.handleDescriptionOnChange}
 									onEditorSave={this.handleDescriptionOnSave}
 									placeholder={'Untutorial Description'} 
-									text={untutorial.Description}/>
+									text={untutorial.Description.replace(/<(.|\n)*?>/g, '').trim()} />
+															
+
 								</div>
 							</div>
 						</div>
 					</div>
 					<div className="main-content">
-						<div className={'container'}>
 							{!!untutorial && untutorial.steps.map((step,index) => (
 								<div className={"step " + ((!!progress && (progress.steps[index].Status == 'PENDING')) ? "pending" : "")}>
 									<div className="checkOff">
@@ -822,7 +821,6 @@ class UntutorialPageBase extends React.Component {
 							))}
 						</div>
 					</div>
-				</div>
 			</section>
 		)
 	}

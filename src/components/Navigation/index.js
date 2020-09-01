@@ -24,7 +24,6 @@ class Navigation extends React.Component{
         <div className="nav">
             <Link to={ROUTES.UNIVERSE}>Universe</Link>
             <Link to={ROUTES.NEW_PROJECT}>New Untutorial</Link>
-            <Link to={ROUTES.CLASSES}>My Classes</Link>       
             <Link to={ROUTES.JETFUEL}>Jet Fuel</Link>   
             <Link to={ROUTES.SIMULATOR}>Simulator</Link>   
             {!!authUser.roles[ROLES.ADMIN] && (
@@ -51,6 +50,8 @@ class Navigation extends React.Component{
               <Link to={ROUTES.RESOURCE_HOME}>Resources</Link>
             )}
             <Link to={'/launchpad'}>Launch Pad</Link>
+            <Link to={ROUTES.CLASSES}>My Classes</Link>       
+
             <SignOutButton />
           </div>
        

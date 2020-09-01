@@ -95,33 +95,34 @@ class ClassesPageBase extends React.Component {
  	
  	//console.log(Object.keys(project));
  	if(loading)
- 		return (<div>Loading ...</div>);
+ 		return (<div className="loading">Loading ...</div>);
 
 	return (
 		 <section id="classes">
 			<h1>My Classes</h1>
 			{!!authUser && !!authUser.roles['ADMIN'] && (
-					<a className="button" href={ROUTES.NEW_CLASS}>New Class</a>
-				)}
-			<input type="checkbox" checked={classFilter} onClick={this.onClassFilterChange}/><label>Your Class Only</label>
-			<div className="main">
-					    
-						{Object.values(classes)
-							.filter(clazz=>
-								(classFilter ? 
-									(clazz.Status==='APPROVED' && Object.keys(clazz.Members).includes(authUser.uid)) :
-									(clazz.Status==='APPROVED')) ||
-								(!!authUser && !!authUser.roles['ADMIN'])).map(clazz => (	
-								<>
-								<a id={clazz.key} href={'/classes/' + clazz.key} path={'/classes/' + clazz.ThumbnailFilename}>
-									<LazyImage file={this.props.firebase.storage.ref('/classes/' + clazz.ThumbnailFilename)}/>
-								
-							 <div>
-									<h4 className={'container'} dangerouslySetInnerHTML={{__html:clazz.Title}}/>
-									{!!authUser && !!authUser.roles['ADMIN'] && clazz.Status != 'APPROVED' && (
-										<h5>{clazz.Status}</h5>
-									)}
-								</div> 
+				<a className="button" href={ROUTES.NEW_CLASS}>New Class</a>
+			)}
+			<div className="filter">
+				<input type="checkbox" checked={classFilter} onClick={this.onClassFilterChange}/>
+				<label>Your Class Only</label>
+			</div>
+			<div className="main">    
+				{Object.values(classes)
+					.filter(clazz=>
+						(classFilter ? 
+							(clazz.Status==='APPROVED' && Object.keys(clazz.Members).includes(authUser.uid)) :
+							(clazz.Status==='APPROVED')) ||
+						(!!authUser && !!authUser.roles['ADMIN'])).map(clazz => (	
+						<>
+						<a id={clazz.key} href={'/classes/' + clazz.key} path={'/classes/' + clazz.ThumbnailFilename}>
+							<LazyImage file={this.props.firebase.storage.ref('/classes/' + clazz.ThumbnailFilename)}/>
+						<div>
+							<h4 className={'container'} dangerouslySetInnerHTML={{__html:clazz.Title}}/>
+							{!!authUser && !!authUser.roles['ADMIN'] && clazz.Status != 'APPROVED' && (
+								<h5>{clazz.Status}</h5>
+							)}
+						</div> 
 								</a>
 							</>
 						))}

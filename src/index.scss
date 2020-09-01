@@ -20,19 +20,36 @@
   // $bodyFont: 'VT323',monospace;
   $breakpoint-tablet: 768px;
   $breakpoint-phone: 600px;
+  
   @keyframes spin {
     from { transform: rotate(0deg); }
     to { transform: rotate(360deg); }
   }
+ 
   html,body,#root {
       height: 100%;
   }
 
-  @mixin flex-horizontal {
+  @mixin flexh {
      display: flex;
      flex-flow: row wrap;
-     justify-content: center;
-     margin: 0 auto;
+  }
+
+  @mixin flexhc {
+    @include flexh;
+    justify-content: center;
+    margin: 0 auto;
+ }
+
+  @mixin flexv {
+    display: flex;
+    flex-flow: column wrap;
+  }
+
+  @mixin flexvc {
+    @include flexv;
+    align-content: center;
+    justify-content: center;
   }
 
   body {
@@ -44,8 +61,16 @@
   }
   
   #page-container {
-    #signIn, #landing,#forget,#signup,#launchpad,#universe {
-    background-color:$darkgreen;
+    #signIn, #landing,#forget,#signup,#launchpad,#universe,#classes {
+      background-color:$darkgreen;
+      color: #fff;
+      h1 {
+        font-size: 6rem;
+        color: #fff;
+        text-shadow: rgb(53, 173, 185) 2px 1px 0px;  
+        text-align: center;
+      }
+      .loading {text-align: center;}
     }
   }
  
@@ -57,13 +82,6 @@
       font-family: $headerFont;
       padding: 0;
       margin: 0;
-  }
-
-  h1 {
-      font-size: 6rem;
-      color: #fff;
-      text-shadow: rgb(53, 173, 185) 2px 1px 0px;  
-      text-align: center;
   }
 
   #landing h1 {
@@ -100,17 +118,20 @@
     margin-top: -30px;
     font-family: $headerFont;
   }
+
   img.pixel{
     image-rendering:pixelated;
   }
+  
   #page-container {
       display: grid;
       height: 100%;
       grid-template-rows: 70px 1fr;
       position: relative;
+    .loading {
+      text-align: center;
+    }
   }
-
-
 
   #header {
       background-color: #fff;
@@ -118,9 +139,7 @@
       border-bottom: 5px solid $lightGreen;
       display: flex;
       .logo {
-        display: flex;
-        flex-flow: column wrap;
-        justify-content: center;
+        @include flexvc;
         margin: 0 40px;
         img {
           width: 50px;
@@ -128,11 +147,10 @@
         }
       }
       .nav {
-        display: flex;
+        @include flexh;
         line-height: 70px;
         width:100%;
         height: 70px;
-        flex-flow: row wrap;
         justify-content: flex-end;
         .signIn {
           color: #fff;
@@ -159,28 +177,14 @@
           display:none;
         }   
         .showMenu {
-          display: flex;
+          @include flexv;
           text-align: left;
-          flex-flow: column wrap;
           line-height: 1rem;
           background-color: $lightblue;
           z-index: 9999;
           position: absolute;
           top: 70px;
           margin: 0 40px 0 0;
-          &:before {
-            // width: 0; 
-            // height: 0; 
-            // border-left: 20px solid transparent;
-            // border-right: 20px solid transparent;
-            // border-bottom: 20px solid $lightGreen;
-            // top: -20px;
-            // right: 0;
-            // position: absolute;
-            // content: "";
-            // z-index: 0;
-            // cursor: pointer;
-          }
           button {
             border-radius: 0;
             padding: 5px 20px;
@@ -203,8 +207,7 @@
           z-index: 99;
           margin: 0 40px;
           #menu {
-            display: flex;
-            flex-flow: row wrap;
+            @include flexh;
             justify-content: flex-end;
             padding: 0 5px;
             &.highlight {
@@ -236,7 +239,6 @@
   }
 
   button, .button {  
-    // color: $beige !important;
     border-radius: 4px;
     display: flex;
     align-content: center;
@@ -257,9 +259,6 @@
     &:hover {
       background-color: $darkerOrange;
     }
-    // &:active {
-    //  background-color: $darkerOrange;
-    // }
   }
 
   button {
@@ -313,7 +312,6 @@
     background:url('/images/bg.png') no-repeat;
     background-size: cover;
     background-position: 10% 50%;
-    
     #rocket {
       top: 50px;
     }
@@ -345,7 +343,6 @@
   }
  
   #profile, #clazz, #untutorial, #new-project, #jetfuel, #question {
-
     .main {
       color: #fff;
       display: grid;
@@ -363,9 +360,6 @@
         padding: 60px 30px;
         > div {
           margin-bottom: 40px;
-        }
-        a {
-          color: $lightGreen;
         }
       }
 
@@ -388,20 +382,14 @@
         font-size: 0.8rem;
       }
       .container {
-        // margin: 40px 0;
-        // border: 2px solid $lightGreen;
         position: relative;
+        .description {
+          margin-top: 20px;
+        }
         p {
           margin-top: 20px;
-          // font-size: 1.8rem;
-          // line-height: 2rem;
         }
       }
-      h4 {
-        // margin-top: 20px;
-        // padding: 10px 40px;
-        // text-align: center;
-       }
       select {
         margin-right: 5px;
       }
@@ -416,9 +404,7 @@
           font-size: 12px;
         }
         &.level {
-          font-size: 40px;
-          font-family: $headerFont;
-          color: $orange;
+          font-size: 1.6rem;
         }
          > div {
           }
@@ -480,9 +466,7 @@
       color: $darkgreen;
       position: relative;
       padding: 60px;
-      // grid-column: span 2;
       position: relative;
-      margin: 0 auto;
       .approve {
         text-align: center;
         margin-top: 20px; 
@@ -565,7 +549,7 @@
       color: #fff;
       display: grid;
       grid-gap: 3rem;
-      @include flex-horizontal;
+      @include flexhc;
       margin: 40px;
       > a {
         background-color: #fff;
@@ -595,7 +579,7 @@
   #classes {
 
   .main {
-  @include flex-horizontal;  
+  @include flexhc;  
   a {
     color: $orange;
     width: 200px;
@@ -616,60 +600,36 @@
 }
 
   #untutorial {
+    img {
+      max-width: 100%;
+      object-fit: contain;
+      }
     .main {
-    .sidebar {
-      .titleStatus {
-        display: grid;
-        grid-template-columns: 5fr 1fr; 
-        .title {
-          margin-top: 10px;
-        }
-      }
-    }
-    .main-content {
-      .workOnProject {
-        display: grid;
-        grid-template-columns: 1fr 5fr;
-        margin-bottom: 40px;
-        > button {
-          text-align: center;
-          grid-column: span 6;
-          width: auto;
-        }
-        h3 {
-          grid-column: span 6;
-          font-size: 24px;
-          position: absolute;
-          background-color: $beige;
-          top: 0;
-          left: 0;
-          right: 0;
-          padding: 10px  0;
-          text-align: center;
-        }
-        h4 {
-          font-size: 48px;
-        }
- 
-        .projInfo {
-          grid-column: span 6;
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          text-align: center;
-          margin-top: 60px;
-          .field {
-            font-size: 24px;
-          }
+      .sidebar {
+        .workOnProject {
           button {
-            width: auto;
-            padding: 2px 6px;
-            font-size: 14px;
-            margin: 10px auto;
+            width: 100%;
+            height: 50px;
+            font-size: 1.6rem;
+            color: $darkgreen;
+          }
+        }
+        .titleStatus {
+          display: grid;
+          grid-template-columns: 5fr 1fr; 
+          .title {
+            margin-top: 0;
+            font-size: 2rem;
+            p {
+              margin: 0;
+              padding: 0;
+            }
           }
         }
       }
-      .container {
-        .step.pending { 
+    .main-content {
+      .step.pending {
+        &.pending { 
           .overlay-content{
             position:relative;
             .step-content{
@@ -696,7 +656,6 @@
                   0   18px 0  -8px#EDC034,
                   0  -24px 0 -12px#EDC034,
                   0   24px 0 -12px #EDC034,
-
                  -6px  0   0   0   black,
                   6px  0   0   0   black,
                   0    0   0   4px black,
@@ -723,7 +682,11 @@
            }
           }
         }
+      }
         .step{
+           max-width: 600px;
+           margin: 0 auto 60px;
+
           .overlay-content{
             background-color: $lightGreen;
             box-shadow:
@@ -757,25 +720,14 @@
                 font-size: 18px;
                 line-height: 30px;
                 font-weight: 300;
-                
-                padding: 20px;
-                margin: 5ox 0;
                 .field{
                   background-color:#9FE2DD;
                   text-align:center;
                   margin:0px;
                   margin-bottom:50px;
-                  padding:0px;
                   button{
                     width:100%;
                   }
-                  p{
-                    
-                  }
-                }
-                button.done-button{
-                  width:100%;
-                  margin-top:70px;
                 }
                 .thumbnail{
                   max-width:100%;
@@ -805,12 +757,15 @@
             }
             iframe {
               margin-top: 20px;
+              display: block;
+              margin: 20px auto;
             }
           }
           .step-title{
             display:flex;
             margin:auto;
-            margin-bottom:10px;
+            margin-bottom:20px;
+            font-size: 2rem;
             div{
               margin-left:20px;
               img{
@@ -819,13 +774,10 @@
             }
           }
         }
-      }
+
     }
   }
-    img {
-      max-width: 100%;
-      object-fit: contain;
-      }
+
     }
     // .main {
     //   margin-top: 20px;
@@ -868,7 +820,7 @@
 
   #signup {
     labels {
-      @include flex-horizontal;    
+      @include flexh;    
     }
   } 
 
@@ -935,7 +887,7 @@
       .toolbar {
         position: sticky;
         top: 0;
-        z-index: 1;
+        z-index: 2;
         display: flex;
         flex-flow: column wrap;
         align-content: center;
@@ -944,12 +896,11 @@
         // display: flex;
         // flex-flow: row wrap;
         padding: 10px;
-        border:1px solid #ccc;
-        background-color: $lightGreen;
+        background-color: $beige;
         text-align: center;
         button {
           width: auto;
-          margin: 10px;
+          margin: 5px 10px 0;
           color: $darkgreen;
           width: 15%;
         }
@@ -963,7 +914,7 @@
          border-radius: 4px;
          position: relative;
          .thumbnail {
-          @include flex-horizontal;
+          @include flexhc;
           margin-bottom: 20px;
         }
      .desc {
@@ -985,6 +936,8 @@
         top: 50px;
         font-size: 14px;
         width: 50px;
+        background-color: $darkgreen;
+        color: #fff;
         
       }
       .field {
@@ -1019,7 +972,7 @@
    }
   }  
 
-  #launchpad, #universe {
+  #launchpad, #universe, #classes {
     color: $orange;
     a {
       display: inline-block;
@@ -1031,11 +984,11 @@
     display:flex;
     flex-flow: row wrap;
     justify-content: center;
-    margin: 30px auto 60px;
+    margin: 30px auto;
     max-width: 600px;
     div {
-     width: 33%;
      text-align: center;
+     margin:1rem;
     }
     }
     .filter-categories {
@@ -1157,7 +1110,7 @@
       }
 
       .status {
-        @include flex-horizontal; 
+        @include flexh; 
         .approved {
           width: 25px;
           height: 25px;
@@ -1357,7 +1310,7 @@
       margin: 0 auto;
       z-index: 1;
       &:after {
-        content: "Edit";
+        content: "Choose Image";
         position: absolute;
         bottom: 0;
         left: 0;

@@ -78,14 +78,12 @@ class NewProjectPageBase extends React.Component {
 
  }
 
- 
  handleMouseEnter = (target) => {
 
  	if(this.state.canEdit){
  		return; //replace control with rich text editor
  	}
  };
-
  componentDidMount(){
  	var pCopy = this.state.untutorial;
  	if(this.props.authUser){
@@ -246,7 +244,6 @@ class NewProjectPageBase extends React.Component {
  	}
  	
  }
-
  handleLevelOnSave(){
 
  }
@@ -456,43 +453,39 @@ class NewProjectPageBase extends React.Component {
 	
 				</div>
 			</div>
-		</div>
-		<div className="main-content">
-			<div className="toolbar">
-				<button onClick={this.addStepHandler}>Add Step</button>
-				<button onClick={this.saveChangesHandler}>Save</button> 
-			</div>
-			<div className="container">
-			    <h3>Steps</h3>
-				{Object.keys(untutorial.steps).map(step => (
-					<div className="step">
-						<TCSEditor 
-							disabled={false}
-							onEditorChange={(value)=>this.handleStepOnChange(value,step)} 
-							onEditorSave={this.handleStepOnSave}
-							placeholder={'Step Description'} 
-							text={untutorial.steps[step].Description}/>
-						
-						{stepCount > 1 && (
-							<button onClick={(event)=>this.deleteStepHandler(event,step)}>Delete</button>
-						)}
-						<div className="thumbnail">
 
-							{this.state.uploading && (
-								<progress value={this.state.uploadPercent} max="100"/>
+			<div className="main-content">
+				<div className="toolbar">
+					<button onClick={this.addStepHandler}>Add Step</button>
+					<button onClick={this.saveChangesHandler}>Save</button> 
+				</div>
+				<div className="container">
+					<h3>Steps</h3>
+					{Object.keys(untutorial.steps).map(step => (
+						<div className="step">
+							<TCSEditor 
+								disabled={false}
+								onEditorChange={(value)=>this.handleStepOnChange(value,step)} 
+								onEditorSave={this.handleStepOnSave}
+								placeholder={'Step Description'} 
+								text={untutorial.steps[step].Description}/>
+							{stepCount > 1 && (
+								<button onClick={(event)=>this.deleteStepHandler(event,step)}>Delete</button>
 							)}
-							{!!untutorial.steps[step].ThumbnailFilename && untutorial.steps[step].ThumbnailFilename!=='' && !this.state.uploading &&(
-								<LazyImage file={this.props.firebase.storage.ref('/public/' + untutorial.Author + '/' + untutorial.steps[step].ThumbnailFilename)}/>
-							)}
-							<label for={'step' + step + '-thumbnail-upload'} className="upload">
-								<input id={'step' + step + '-thumbnail-upload'} type="file" onChange={(event)=>{this.handleStepThumbnailUpload(event,step)}}/>
-							</label>
-				
+							<div className="thumbnail">
+								{this.state.uploading && (
+									<progress value={this.state.uploadPercent} max="100"/>
+								)}
+								{!!untutorial.steps[step].ThumbnailFilename && untutorial.steps[step].ThumbnailFilename!=='' && !this.state.uploading &&(
+									<LazyImage file={this.props.firebase.storage.ref('/public/' + untutorial.Author + '/' + untutorial.steps[step].ThumbnailFilename)}/>
+								)}
+								<label for={'step' + step + '-thumbnail-upload'} className="upload">
+									<input id={'step' + step + '-thumbnail-upload'} type="file" onChange={(event)=>{this.handleStepThumbnailUpload(event,step)}}/>
+								</label>
+							</div>
 						</div>
-					</div>
-				))}
-			</div>
-
+					))}
+				</div>
 			</div>
 		</div>
 	  </section>	
@@ -503,7 +496,6 @@ class NewProjectPageBase extends React.Component {
  	
 	}
 }
-
 
 const NewProjectPage = withFirebase(withAuthentication(NewProjectPageBase));
 
