@@ -14,7 +14,11 @@ class LaunchPad extends React.Component {
  	this.state = {
  		loading:false,
  		untutorials: [],
- 		filter:[],
+ 		filter:[
+ 			FILTER.SCRATCH,
+ 			FILTER.WOOF,
+ 			FILTER.WEB
+ 		],
  		textFilter:'',
  		
  	}

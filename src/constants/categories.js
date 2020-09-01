@@ -5,3 +5,4 @@ export const ADVENTURE = 'ADVENTURE';
 export const PUZZLE = 'PUZZLE';
 export const ARCADE = 'ARCADE';
 export const MULTIPLAYER = 'MULTIPLAYER';
+export const INTRO = 'INTRO';

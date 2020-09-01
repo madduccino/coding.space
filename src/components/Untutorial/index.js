@@ -6,6 +6,7 @@ import {withFirebase} from '../Firebase';
 import TCSEditor from '../TCSEditor';
 import { v4 as uuidv4 } from 'uuid';
 import * as ROUTES from '../../constants/routes';
+import * as FILTERS from '../../constants/filter';
 
 class UntutorialPageBase extends React.Component {
 	constructor(props){
@@ -43,6 +44,11 @@ class UntutorialPageBase extends React.Component {
 		this.validateTitle = this.validateTitle.bind(this);
 		this.validateStatus = this.validateStatus.bind(this);
 		this.validateDescription = this.validateDescription.bind(this);
+		this.handlePCategoryOnChange = this.handlePCategoryOnChange.bind(this);
+		this.handleCategoryValidate = this.handleCategoryValidate.bind(this);
+		this.handleCategoryOnClick = this.handleCategoryOnClick.bind(this);
+		this.handleProgressURLOnChange = this.handleProgressURLOnChange.bind(this);
+		this.handleProgressURLOnSave = this.handleProgressURLOnSave.bind(this);
 		this.validateLevel = this.validateLevel.bind(this);
 		this.validateStep = this.validateStep.bind(this);
 		this.loadProgress = this.loadProgress.bind(this);
@@ -289,6 +295,28 @@ class UntutorialPageBase extends React.Component {
 		}
 		this.setState({errors:errors});
 	}
+	 handlePCategoryOnChange(event){
+	 	const {untutorial} = this.state;
+	 	if(event.target.value != '-1'){
+	 		untutorial.Categories[event.target.value] = event.target.value;
+	 		this.setState({untutorial:untutorial},this.handleCategoryValidate);	
+	 	}
+	 }
+	 handleCategoryOnClick(text){
+	 	const {untutorial} = this.state;
+	 	delete untutorial.Categories[text];
+	 	this.setState({untutorial:untutorial},this.handleCategoryValidate);
+
+	 }
+	 handleCategoryValidate(){
+	 	const {untutorial,errors} = this.state;
+	 	if(Object.keys(untutorial.Categories).length < 3){
+	 		errors["Categories"] = 'CATS.<span class="red">GR8TR.THAN.2.REQUIRED</span>';
+	 	}
+	 	else
+	 		delete errors["Categories"];
+	 	this.setState({errors:errors});
+	 }
 	handleLevelOnChange(value){
 		var oCopy = this.state.untutorial;
 		if(value !== oCopy.Level){
@@ -534,6 +562,16 @@ class UntutorialPageBase extends React.Component {
 		
 		console.log("Save Changes");
 	}
+	handleProgressURLOnChange(value){
+		const {progress} = this.state;
+		var pCopy = progress;
+		pCopy.URL = value;
+		this.setState(progress:pCopy);
+	}
+	handleProgressURLOnSave(value){
+		this.saveProgressHandler();
+
+	}
 	studentApprove(step){
 		const {progress,untutorial} = this.state;
 		var pCopy = progress;
@@ -595,9 +633,23 @@ class UntutorialPageBase extends React.Component {
 									{!!progress && progress.Status == 'PENDING' && (
 									<h3>Your teacher is reviewing your project! Take it easy!</h3>
 									)}
+									{!!progress && (!progress.URL || progress.URL == '') && (
+											<TCSEditor 
+												disabled={false}
+												type={'plain'}
+												className="level"
+												editing={true}
+												onEditorChange={this.handleProgressURLOnChange}
+												onEditorSave={this.handleProgressURLOnSave}
+												placeholder={'Project URL...'} 
+												text={progress.URL}/>
+									)}
 									{!!progress && progress.Status == 'DRAFT' && nextStep>0 && (
 									<h3>Keep it Up! You're on Step {nextStep}!</h3>
 									)}	
+									{!!progress && !!progress.URL && progress.URL != '' && (
+										<a href={progress.URL} target={'_blank'}>Your project!</a>
+									)}
 								</div>		
 							</div>
 							<div className={'container'} >
@@ -632,7 +684,30 @@ class UntutorialPageBase extends React.Component {
 									placeholder={'Status'} 
 									text={untutorial.Status} />
 								)}
+								{!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===untutorial.Author.key) && (		
+									<div>
+						    			<h4>Tags</h4>
+										<div className="filter">
+							    
+										    {Object.keys(untutorial.Categories).length != Object.keys(FILTERS).length && (
+												<select onChange={this.handlePCategoryOnChange}>
+													<option value='-1'>-------</option>
+											    	{Object.keys(FILTERS).filter(f=>!Object.keys(untutorial.Categories).includes(f)).map(catName=><option value={catName}>{FILTERS[catName]}</option>)}
+											    </select>
+										    )}
+						    
+						    			</div>
+						    			{Object.keys(untutorial.Categories).length > 0 && (
+									    	<div className="filter-categories">
+									    		{Object.keys(untutorial.Categories).map(f=>(
+									    			<a onClick={()=>this.handleCategoryOnClick(f)}>{f}</a>
+									    		))}
+									    	</div>
+									    )}
+									</div>
+								)}
 							</div>
+							
 							</div>
 
 							<div className="container">

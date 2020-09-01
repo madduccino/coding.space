@@ -6,6 +6,7 @@ import {withFirebase} from '../Firebase';
 import TCSEditor from '../TCSEditor';
 import { v4 as uuidv4 } from 'uuid';
 import * as ROUTES from '../../constants/routes';
+import * as FILTERS from '../../constants/filter';
 
 
 
@@ -32,6 +33,7 @@ class NewProjectPageBase extends React.Component {
  			key:uuidv4(),
  			Author:null,
  			Description:'',
+ 			Categories:{},
  			Level:1,
  			ThumbnailFilename:null,
  			Title:'',
@@ -66,6 +68,9 @@ class NewProjectPageBase extends React.Component {
  	this.addStepHandler = this.addStepHandler.bind(this);
  	this.deleteStepHandler = this.deleteStepHandler.bind(this);
  	this.handleStepCountValidate = this.handleStepCountValidate.bind(this);
+ 	this.handlePCategoryOnChange = this.handlePCategoryOnChange.bind(this);
+	this.handleCategoryValidate = this.handleCategoryValidate.bind(this);
+	this.handleCategoryOnClick = this.handleCategoryOnClick.bind(this);
  	this.saveChangesHandler = this.saveChangesHandler.bind(this);
  	
  	//this.onChange = editorState => this.setState({editorState});
@@ -293,6 +298,29 @@ class NewProjectPageBase extends React.Component {
  	else delete errors["Stepcount"];
  	this.setState({errors:errors});
  }
+ handlePCategoryOnChange(event){
+ 	const {untutorial} = this.state;
+ 	if(event.target.value != '-1'){
+ 		untutorial.Categories[event.target.value] = event.target.value;
+ 		this.setState({untutorial:untutorial},this.handleCategoryValidate);	
+ 	}
+ 	
+ }
+ handleCategoryOnClick(text){
+ 	const {untutorial} = this.state;
+ 	delete untutorial.Categories[text];
+ 	this.setState({untutorial:untutorial},this.handleCategoryValidate);
+
+ }
+ handleCategoryValidate(){
+ 	const {untutorial,errors} = this.state;
+ 	if(Object.keys(untutorial.Categories).length < 3){
+ 		errors["Categories"] = 'CATS.<span class="red">GR8TR.THAN.2.REQUIRED</span>';
+ 	}
+ 	else
+ 		delete errors["Categories"];
+ 	this.setState({errors:errors});
+ }
  saveChangesHandler(event){
  	const {errors} = this.state;
  	if(Object.keys(errors).length == 0){
@@ -359,61 +387,82 @@ class NewProjectPageBase extends React.Component {
 			<div className="sidebar">
 				<div className="sidebar-content">
 					<div className={'container'}>
-					<div>
-					<h4>Title</h4>
-						<TCSEditor 
-						disabled={false}
-						type='plain'
-						onEditorChange={this.handlePTitleOnChange} 
-						onEditorSave={this.handlePTitleOnSave}
-						placeholder={'Untutorial Title'} 
-						text={untutorial.Title}/>
-			   		 </div>
+						<div>
+							<h4>Title</h4>
+								<TCSEditor 
+								disabled={false}
+								type='plain'
+								onEditorChange={this.handlePTitleOnChange} 
+								onEditorSave={this.handlePTitleOnSave}
+								placeholder={'Untutorial Title'} 
+								text={untutorial.Title}/>
+			   		 	</div>
 						<h4>Add Image</h4>
 
-			   <div className="thumbnail">
+			   			<div className="thumbnail">
 
-				{this.state.uploading && (
-					<progress value={this.state.uploadPercent} max="100"/>
-				)}
-				{!!untutorial.ThumbnailFilename && untutorial.ThumbnailFilename!=='' && !this.state.uploading &&(
-					<LazyImage file={this.props.firebase.storage.ref('/public/' + untutorial.Author + '/' + untutorial.ThumbnailFilename)}/>
-				)}
-				<label for="files" className="upload">
-				<input id="files" type="file" onChange={this.handleThumbnailUpload}/>
-				</label>
+							{this.state.uploading && (
+								<progress value={this.state.uploadPercent} max="100"/>
+							)}
+							{!!untutorial.ThumbnailFilename && untutorial.ThumbnailFilename!=='' && !this.state.uploading &&(
+								<LazyImage file={this.props.firebase.storage.ref('/public/' + untutorial.Author + '/' + untutorial.ThumbnailFilename)}/>
+							)}
+							<label for="files" className="upload">
+								<input id="files" type="file" onChange={this.handleThumbnailUpload}/>
+							</label>
 	
-			</div>
-			<div>
-				<h4>Description</h4>
-				<TCSEditor 
-					disabled={false}
-					type='text'
-					onEditorChange={this.handlePDescriptionOnChange} 
-					onEditorSave={this.handlePDescriptionOnSave}
-					placeholder={'Project Description'} 
-					text={untutorial.Description}/>
-			</div>
-			<div>
-			    <h4>Level</h4>
-				<TCSEditor 
-					disabled={false}
-					type='select'
-					selectOptions={[1,2,3,4,5,6]}
-					onEditorChange={this.handleLevelOnChange} 
-					onEditorSave={this.handleLevelOnSave}
-					text={untutorial.Level}/>	
-			</div>
+						</div>
+						<div>
+							<h4>Description</h4>
+							<TCSEditor 
+								disabled={false}
+								type='text'
+								onEditorChange={this.handlePDescriptionOnChange} 
+								onEditorSave={this.handlePDescriptionOnSave}
+								placeholder={'Project Description'} 
+								text={untutorial.Description}/>
+						</div>
+						<div>
+						    <h4>Level</h4>
+							<TCSEditor 
+								disabled={false}
+								type='select'
+								selectOptions={[1,2,3,4,5,6]}
+								onEditorChange={this.handleLevelOnChange} 
+								onEditorSave={this.handleLevelOnSave}
+								text={untutorial.Level}/>	
+						</div>
+						<div>
+			    			<h4>Tags</h4>
+							<div className="filter">
+				    
+							    {Object.keys(untutorial.Categories).length != Object.keys(FILTERS).length && (
+									<select onChange={this.handlePCategoryOnChange}>
+										<option value='-1'>-------</option>
+								    	{Object.keys(FILTERS).filter(f=>!Object.keys(untutorial.Categories).includes(f)).map(catName=><option value={catName}>{FILTERS[catName]}</option>)}
+								    </select>
+							    )}
+			    
+			    
+						</div>	
+					    {Object.keys(untutorial.Categories).length > 0 && (
+					    	<div className="filter-categories">
+					    		{Object.keys(untutorial.Categories).map(f=>(
+					    			<a onClick={()=>this.handleCategoryOnClick(f)}>{f}</a>
+					    		))}
+					    	</div>
+					    )}
+					</div>
 	
-			</div>
 				</div>
 			</div>
-			<div className="main-content">
+		</div>
+		<div className="main-content">
 			<div className="toolbar">
 				<button onClick={this.addStepHandler}>Add Step</button>
 				<button onClick={this.saveChangesHandler}>Save</button> 
 			</div>
-				<div className="container">
+			<div className="container">
 			    <h3>Steps</h3>
 				{Object.keys(untutorial.steps).map(step => (
 					<div className="step">
