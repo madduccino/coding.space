@@ -566,7 +566,7 @@ class UntutorialPageBase extends React.Component {
 		const {progress} = this.state;
 		var pCopy = progress;
 		pCopy.URL = value;
-		this.setState(progress:pCopy);
+		this.setState({progress:pCopy});
 	}
 	handleProgressURLOnSave(value){
 		this.saveProgressHandler();

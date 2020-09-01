@@ -99,7 +99,7 @@ class TCSEditor extends React.Component {
 			return (
 				<div className={'field ' + className} >
 
-					<input type="text" value={text} onChange={this.handleTextChange} onBlur={this.handleTextChange}/>
+					<input type="text" placeholder={this.props.placeholder} value={text} onChange={this.handleTextChange} onBlur={this.handleTextChange}/>
  					{save && (
  						<button onClick={this.handleSave}>Save</button>
  					)}

@@ -439,6 +439,7 @@ class NewProjectPageBase extends React.Component {
 								    	{Object.keys(FILTERS).filter(f=>!Object.keys(untutorial.Categories).includes(f)).map(catName=><option value={catName}>{FILTERS[catName]}</option>)}
 								    </select>
 							    )}
+							</div>
 			    
 			    
 						</div>	
