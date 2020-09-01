@@ -89,7 +89,7 @@ class LaunchPad extends React.Component {
 			    {selectedFilters.length != Object.keys(FILTER).length && (
 					<select onChange={this.categoryFilterOnChange}>
 						<option value='-1'>Filter...</option>
-				    	{Object.keys(FILTER).filter(f=>!selectedFilters.includes(f)).map(filterName=><option value={filterName}>{filterName}</option>)}
+				    	{Object.keys(FILTER).filter(f=>!selectedFilters.includes(f)).map(filterName=><option value={filterName}>{FILTER[filterName]}</option>)}
 				    </select>
 			    )}
 			    
@@ -105,7 +105,7 @@ class LaunchPad extends React.Component {
 			<div className="main">	
 				{untutorials.filter(untutorial=>
 					untutorial.Status === 'APPROVED' && 
-					(filter.length === 0 || filter.filter(f=>Object.keys(untutorial.Categories).includes(f)).length > 0) &&
+					(filter.length === 0 || filter.filter(f=>Object.values(untutorial.Categories).includes(f)).length > 0) &&
 					untutorial.Title.toLowerCase().includes(textFilter.toLowerCase())).map(untutorial => (
 						<a id={untutorial.key} href={ROUTES.LAUNCHPAD + '/' + untutorial.key} path={'/public/' + untutorial.Author + '/' + untutorial.ThumbnailFilename}>
 							<LazyImage key={untutorial.key} file={this.props.firebase.storage.ref('/public/' + untutorial.Author + '/' + untutorial.ThumbnailFilename)}/>
