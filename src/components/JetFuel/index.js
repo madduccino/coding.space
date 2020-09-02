@@ -195,9 +195,8 @@ class JetFuel extends React.Component {
  	const selectedFilters = Object.keys(FILTERS).filter(v=>filter.includes(v));
  	const {authUser} = this.props;
  	if(loading)
- 		return (<div>Loading...</div>);
+ 		return (<div className="loading">Loading...</div>);
 
- 	//console.log("hiya")
  	return (
 		<section id="jetfuel">
 						
@@ -248,7 +247,7 @@ class JetFuel extends React.Component {
 			)}
 			</div>	
 			<div className="main-content">	
-			<h1>JetFuel Q&A</h1>
+			{/* <h1>JetFuel Q&A</h1> */}
 				{questions.filter(question=>
 					question.Status === 'APPROVED' && 
 					(filter.length === 0 || filter.filter(f=>!!question.tags && Object.keys(question.tags).includes(f)).length > 0) &&

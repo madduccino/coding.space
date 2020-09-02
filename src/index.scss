@@ -59,8 +59,11 @@
     margin: 0;
     padding: 0;
   }
+
   
   #page-container {
+    .loading {text-align: center;margin-top: 20px;}
+
     #signIn, #landing,#forget,#signup,#launchpad,#universe,#classes {
       background-color:$darkgreen;
       color: #fff;
@@ -70,7 +73,6 @@
         text-shadow: rgb(53, 173, 185) 2px 1px 0px;  
         text-align: center;
       }
-      .loading {text-align: center;}
     }
   }
  
@@ -577,11 +579,15 @@
   }
 
   #classes {
-
+  .button {
+    display: block;
+    margin: 0 auto;
+    color: $darkgreen;
+  }
   .main {
   @include flexhc;  
   a {
-    color: $orange;
+    color: $darkergreen;
     width: 200px;
     height: 300px;
     background-color: white;
@@ -779,34 +785,6 @@
   }
 
     }
-    // .main {
-    //   margin-top: 20px;
-  
-    //   .container {
-    //     max-width: 400px;
-    //     position: relative;
-    //     margin: 10px auto;
-    //   h2 {
-    //     font-size: 3rem;
-    //   }
-    //     .field {
-    //       position: relative;
-      
-    //     img {
-    //       position: absolute;
-    //       top: 0;
-    //       right: -30px;
-    //       cursor: pointer;
-    //     }
-    //     .workOnProject {
-    //       grid-row-start: 2;
-    //     }
-      
-    //   }
-      
-    // }
-    // }
-  
 
   #signin, #forget, #signup, #signIn {
     background:url('/images/bg2.png') no-repeat;
@@ -847,13 +825,24 @@
   #new-project { 
     .main {
     .sidebar { 
+
       .container {
+        p {
+          margin: 0;
+        }
       > div {
         h4 {
           position: relative;
         }
         position: relative;
         margin-bottom: 40px;
+      }
+      .filter-categories {
+       @include flexv;
+       margin-top: -20px;
+       a {
+         margin: 5px 0;
+       }
       }
 
     }
@@ -996,7 +985,7 @@
       margin-top: 20px;
       a {
         color: $darkgreen;
-        background-color: $beige;
+        background-color: $orange;
         padding: 5px;
         margin: 10px;
         display: inline;
@@ -1419,4 +1408,14 @@
       
     }
   }
+  }
+
+  #jetfuel {
+    .main-content {
+      > div {
+        > a {
+          @include flexh;
+        }
+      }
+    }
   }
