@@ -289,7 +289,7 @@ class NewProjectPageBase extends React.Component {
  	if(Object.keys(untutorial.steps).length == 0){
 		errors["Stepcount"] = 'STEPS.<span class="red">R_REQUIRED</span>'; 		
  	}
- 	else if(Object.keys(untutorial.steps).length < 4){
+ 	else if(Object.keys(untutorial.steps).length < 3){
 		errors["Stepcount"] = 'STEPS.<span class="red">R_2SHORT</span>'; 		
  	}
  	else delete errors["Stepcount"];
