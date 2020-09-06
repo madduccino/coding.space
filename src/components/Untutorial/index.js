@@ -633,7 +633,7 @@ class UntutorialPageBase extends React.Component {
 									{!!progress && progress.Status == 'PENDING' && (
 									<h3>Your teacher is reviewing your project! Take it easy!</h3>
 									)}
-									{!!progress && (!progress.URL || progress.URL == '') && (
+									{!!progress  && (
 											<TCSEditor 
 												disabled={false}
 												type={'plain'}
@@ -647,9 +647,7 @@ class UntutorialPageBase extends React.Component {
 									{!!progress && progress.Status == 'DRAFT' && nextStep>0 && (
 									<h3>Keep it Up! You're on Step {nextStep}!</h3>
 									)}	
-									{!!progress && !!progress.URL && progress.URL != '' && (
-										<a href={progress.URL} target={'_blank'}>Your project!</a>
-									)}
+
 								</div>		
 							</div>
 							<div className={'container'} >

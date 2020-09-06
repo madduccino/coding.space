@@ -107,7 +107,8 @@ class ProgressReviews extends React.Component {
 	 			activeProgress.uid = uid;
 	 			activeProgress.progresses.push({
 	 				untutorial:untutorial,
-	 				steps:untutProg.steps
+	 				steps:untutProg.steps,
+	 				URL:untutProg.URL
 	 			})
 	 			this.setState({activeProgress:activeProgress});
 	 		})
@@ -194,7 +195,7 @@ class ProgressReviews extends React.Component {
 											.filter(step=>pendingFilter ? step.Status === 'PENDING' : true)
 											.map((step,i)=>(
 											<div>
-												<h4>Step {Number(step) + 1}</h4>
+												<h4>Step {i + 1}</h4>
 												<h4>{step.Status}</h4>
 												{step.Status == 'PENDING' && (
 													<div>
