@@ -136,6 +136,7 @@ class ProgressReviews extends React.Component {
   disapproveStep(uid,untutKey,pIndex,stepId,comments){
   	const {activeProgress} = this.state;
   	var apCopy = activeProgress;
+
  	this.props.firebase.progress(uid,untutKey).child('steps').child(stepId).set({
  		Comments:activeProgress.progresses[pIndex].steps[stepId].Comments,
  		Status:'DRAFT'
@@ -192,23 +193,24 @@ class ProgressReviews extends React.Component {
 											<h4>No Progress</h4>
 										)}
 										{progress.steps.length > 0 && progress.steps
-											.filter(step=>pendingFilter ? step.Status === 'PENDING' : true)
-											.map((step,i)=>(
-											<div>
-												<h4>Step {i + 1}</h4>
-												<h4>{step.Status}</h4>
-												{step.Status == 'PENDING' && (
-													<div>
-														{!!progress.URL && progress.URL != '' && (
-															<a href={progress.URL} target={'_blank'}>View Project</a>
+											.map((step,i)=>(<>
+												{(!pendingFilter || (pendingFilter && step.Status === 'PENDING')) && (
+													<div id={progress.untutorial.key + '' + i}>
+														<h4>Step {i + 1}</h4>
+														<h4>{step.Status}</h4>
+														{step.Status == 'PENDING' && (
+															<div>
+																{!!progress.URL && progress.URL != '' && (
+																	<a href={progress.URL} target={'_blank'}>View Project</a>
+																)}
+																<input id={'feedback-' + progress.untutorial.key + '' + i} type="text" value={step.Comments} placeholder="Feedback..." onChange={(event)=>this.onFeedbackUpdate(profile.key,progress.untutorial.key,pIndex,i,event.target.value)}/>
+																<button id={'approve-' + progress.untutorial.key + '' + i} onClick={()=>this.approveStep(activeProgress.uid,progress.untutorial.key,pIndex,i)}>Approve Step</button>
+																<button id={'disapprove-' + progress.untutorial.key + '' + i} onClick={()=>this.disapproveStep(activeProgress.uid,progress.untutorial.key,pIndex,i)}>Disapprove Step</button>
+															</div>
 														)}
-														<input id={'feedback-' + progress.untutorial.key + '' + i} type="text" value={step.Comments} placeholder="Feedback..." onChange={(event)=>this.onFeedbackUpdate(profile.key,progress.untutorial.key,pIndex,i,event.target.value)}/>
-														<button id={'approve-' + progress.untutorial.key + '' + i} onClick={()=>this.approveStep(activeProgress.uid,progress.untutorial.key,pIndex,i)}>Approve Step</button>
-														<button id={'disapprove-' + progress.untutorial.key + '' + i} onClick={()=>this.disapproveStep(activeProgress.uid,progress.untutorial.key,pIndex,i)}>Disapprove Step</button>
 													</div>
 												)}
-											</div>
-										))}
+										</>))}
 
 
 									</div>

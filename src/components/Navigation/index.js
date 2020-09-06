@@ -4,6 +4,7 @@ import SignOutButton from '../SignOut';
 import * as ROUTES from '../../constants/routes';
 import * as ROLES from '../../constants/roles';
 import { AuthUserContext, withAuthentication } from '../Session';
+import { withFirebase } from '../Firebase';
 import LazyImage from '../LazyImage';
 import logo from './logo.png'
 
@@ -11,12 +12,30 @@ class Navigation extends React.Component{
   constructor(props){
     super(props);
     this.state={
-
+      profileUrl:null,
+      authUser:null
     }
+  }
+
+  componentDidUpdate(prevProps){
+    const {authUser} = this.props;
+    const prevUser = prevProps.authUser;
+    if(!!authUser && (!prevUser || authUser.ThumbnailFilename != prevUser.ThumbnailFilename)){
+      this.props.firebase.profile(authUser.key).child('ThumbnailFilename').on('value',snapshot=>{
+        var url = snapshot.val();
+        this.setState({profileUrl:url});
+      })
+    }
+
+  }
+  componentWillUnmount(){
+    const {authUser} = this.props;
+    this.props.firebase.profile(authUser.key).child('ThumbnailFilename').off();
   }
   render(){
     const {authUser} = this.props;
     const {pathname} = this.props.location;
+    const {profileUrl} = this.state;
     if(authUser)
       return (
         <>
@@ -35,10 +54,10 @@ class Navigation extends React.Component{
             {!!authUser&&(
             <div className="dropdown">
               <div id="menu" className={this.props.showNav ? "highlight" : null}> 
-                {!!authUser.ThumbnailFilename && authUser.ThumbnailFilename != '' ? (
-                  <LazyImage file={this.props.firebase.storage.ref('/public/' + authUser.key + '/' + authUser.ThumbnailFilename)}/>
+                {!!authUser && profileUrl ? (
+                  <LazyImage id={'profile-thumbnail'} file={this.props.firebase.storage.ref('/public/' + authUser.key + '/' + profileUrl)}/>
                 ) : (
-                  <LazyImage file={this.props.firebase.storage.ref('/public/astronaut.png')}/>
+                  <LazyImage id={'profile-missing-thumbnail'} file={this.props.firebase.storage.ref('/public/astronaut.png')}/>
                 )}
                 <div>{authUser.Username}</div>
             </div>
@@ -75,4 +94,4 @@ class Navigation extends React.Component{
 
 
 
-export default withAuthentication(Navigation);
+export default withFirebase(withAuthentication(Navigation));

@@ -579,7 +579,7 @@ class UntutorialPageBase extends React.Component {
 			progress.steps[step]={Status:'PENDING',Comments:''};
 		progress.steps[step].Status = 'PENDING';
 		
-		progress.nextStep = untutorial.steps.findIndex((stepf,i)=>!progress.steps[i] || progress.steps[i].Status == 'DRAFT')+1;
+		//progress.nextStep = untutorial.steps.findIndex((stepf,i)=>!progress.steps[i] || progress.steps[i].Status == 'DRAFT')+1;
 
 		
 		
@@ -601,7 +601,7 @@ class UntutorialPageBase extends React.Component {
 			stepCount = untutorial.steps.length;
 		var nextStep = -1;
 		if(!!progress)
-			nextStep = untutorial.steps.findIndex((stepf,i)=>!progress.steps[i] || progress.steps[i].Status == 'DRAFT')+1;;
+			nextStep = progress.nextStep;
 		console.log();
 		if(nextStep > stepCount)
 			nextStep = 0;
@@ -672,7 +672,7 @@ class UntutorialPageBase extends React.Component {
 									text={untutorial.Title} />
 									{!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===untutorial.Author.key) && (		
 									<TCSEditor 
-									disabled={!(authUser && (!!authUser.roles['ADMIN'] || authUser.uid===untutorial.Author.key))}
+									disabled={!(authUser && !!authUser.roles['ADMIN'])}
 									type={'select'}
 									selectOptions={['DRAFT','APPROVED']}
 									name={'status'}

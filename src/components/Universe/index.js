@@ -166,4 +166,4 @@ class Universe extends React.Component {
 	)
   }
 }
-export default withFirebase(Universe);
+export default withFirebase(withAuthentication(Universe));

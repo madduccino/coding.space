@@ -71,6 +71,7 @@ exports.progressStatus = functions.database.ref('/db/Progress/{uid}/{unid}/steps
 		var after = change.after;
 		var afterRef = after.ref;
 		var afterVal = after.val();
+		var nextStep = afterVal.findIndex((stepf,i)=>stepf.Status == 'DRAFT')+1;
 		console.log(afterVal[0]);
 		var pending = true;
 		var approved = true;
@@ -84,7 +85,7 @@ exports.progressStatus = functions.database.ref('/db/Progress/{uid}/{unid}/steps
 			
 		}
 		console.log(afterRef.parent);
-		afterRef.parent.update({Status:
+		afterRef.parent.update({nextStep:nextStep,Status:
 			approved ? "APPROVED" :
 			pending ? "PENDING" :
 			"DRAFT"

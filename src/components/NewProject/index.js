@@ -24,7 +24,7 @@ class NewProjectPageBase extends React.Component {
  		errors:{
 			"Thumbnail" : 'THUMBNAIL.<span class="red">ISREQUIRED</span>',
 			"Title" : 'TITLE.<span class="red">ISREQUIRED</span>',
-			"Step" : 'STEP1.<span class="red">ISREQUIRED</span>',
+			"Step1" : 'STEP1.<span class="red">ISREQUIRED</span>',
 			"Stepcount" : 'STEPS.<span class="red">R_REQUIRED</span>',
 			"Description" : 'DESCRIPTION.<span class="red">ISREQUIRED</span>'
 

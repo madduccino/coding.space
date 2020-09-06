@@ -356,7 +356,7 @@ class ProfilePageBase extends React.Component {
 								<progress value={this.state.uploadPercent} max="100"/>
 							)}
 							{!!profile.ThumbnailFilename && profile.ThumbnailFilename != '' && !this.state.uploading ? (
-								<LazyImage file={this.props.firebase.storage.ref('/public/' + profile.key + '/' + profile.ThumbnailFilename)}/>
+								<LazyImage id={profile.ThumbnailFilename} file={this.props.firebase.storage.ref('/public/' + profile.key + '/' + profile.ThumbnailFilename)}/>
 							) : (
 								<LazyImage file={this.props.firebase.storage.ref('/public/astronaut.png')}/>
 							)}
@@ -536,7 +536,8 @@ class ProfilePageBase extends React.Component {
 														<div>
 															{progress.Status == 'APPROVED' ? 'FINISHED!' :
 															progress.Status == 'PENDING' ? 'Waiting for Teacher Approval' :
-															'Work on Step ' + (progress.nextStep)}
+															!!progress.nextStep ? ('Work on Step ' + (progress.nextStep)) :
+															'Work on Project'}
 														</div>
 													</Link>
 													
