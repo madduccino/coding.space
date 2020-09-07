@@ -539,7 +539,7 @@
     }
     .quill {
       color: $darkgreen;
-      max-width: 525px;
+      // max-width: 525px;
       border: 1px solid #D1D1D1;
       border-radius: 4px;
     }
@@ -606,12 +606,38 @@
 }
 
   #untutorial {
-    img {
-      max-width: 100%;
-      object-fit: contain;
+    // img {
+    //   max-width: 100%;
+    //   object-fit: contain;
+    //   }
+    .thumbnail {
+      width: 100%;
+      height: 400px;
+      margin: 0;
+      img, label {
+        width: 100%;
+        height: 400px;
+        margin: 0;
+        border: 0;
+        object-fit: cover;
       }
+    }
     .main {
+       grid-template-columns: 3fr 1fr;
       .sidebar {
+        background-color: #fff;
+        color: $darkgreen;
+        .filter-categories {
+          a {
+            display: block;
+            margin: 20px 0;
+          }
+        }
+        button {
+          background-color: $darkgreen !important;
+          color: #fff !important;
+        }
+
         .workOnProject {
           button {
             width: 100%;
@@ -621,8 +647,8 @@
           }
         }
         .titleStatus {
-          display: grid;
-          grid-template-columns: 5fr 1fr; 
+          // display: grid;
+          // grid-template-columns: 5fr 1fr; 
           .title {
             margin-top: 0;
             font-size: 2rem;
@@ -632,8 +658,17 @@
             }
           }
         }
+        .container {
+          border-bottom: 1px solid #ccc;
+        }
       }
     .main-content {
+      .thumbnail {
+        width: auto;
+        img {
+          width: auto;
+        }
+      }
       .step.pending {
         &.pending { 
           .overlay-content{
@@ -690,36 +725,44 @@
         }
       }
         .step{
-           max-width: 600px;
-           margin: 0 auto 60px;
+           text-align: left;
+          padding-bottom: 40px;
+          position: relative;
+          margin-right: 50px;
+          button {
+            position: absolute;
+            left: 130px;
+            top: 0;
+            width: auto;
 
+          }
           .overlay-content{
-            background-color: $lightGreen;
-            box-shadow:
-              0   -6px 0  -2px $lightGreen,
-              0    6px 0  -2px $lightGreen,
-              0  -12px 0  -4px $lightGreen,
-              0   12px 0  -4px $lightGreen,
-              0  -18px 0  -8px $lightGreen,
-              0   18px 0  -8px $lightGreen,
-              0  -24px 0 -12px $lightGreen,
-              0   24px 0 -12px $lightGreen,
+            // background-color: $lightGreen;
+            // box-shadow:
+            //   0   -6px 0  -2px $lightGreen,
+            //   0    6px 0  -2px $lightGreen,
+            //   0  -12px 0  -4px $lightGreen,
+            //   0   12px 0  -4px $lightGreen,
+            //   0  -18px 0  -8px $lightGreen,
+            //   0   18px 0  -8px $lightGreen,
+            //   0  -24px 0 -12px $lightGreen,
+            //   0   24px 0 -12px $lightGreen,
 
-             -6px  0   0   0   black,
-              6px  0   0   0   black,
-              0    0   0   4px black,
-              0   -6px 0   2px black,
-              0    6px 0   2px black,
-              0  -10px 0   0   black,
-              0   10px 0   0   black,
-              0  -14px 0  -2px black,
-              0   14px 0  -2px black,
-              0  -18px 0  -4px black,
-              0   18px 0  -4px black,
-              0  -24px 0  -8px black,
-              0   24px 0  -8px black,
-              0  -30px 0 -12px black,
-              0   30px 0 -12px black;
+            //  -6px  0   0   0   black,
+            //   6px  0   0   0   black,
+            //   0    0   0   4px black,
+            //   0   -6px 0   2px black,
+            //   0    6px 0   2px black,
+            //   0  -10px 0   0   black,
+            //   0   10px 0   0   black,
+            //   0  -14px 0  -2px black,
+            //   0   14px 0  -2px black,
+            //   0  -18px 0  -4px black,
+            //   0   18px 0  -4px black,
+            //   0  -24px 0  -8px black,
+            //   0   24px 0  -8px black,
+            //   0  -30px 0 -12px black,
+            //   0   30px 0 -12px black;
               .step-content{
                 margin-top: 0;
                 font-family: $bodyFont;
@@ -727,30 +770,35 @@
                 line-height: 30px;
                 font-weight: 300;
                 .field{
-                  background-color:#9FE2DD;
+                  // background-color:#9FE2DD;
                   text-align:center;
                   margin:0px;
                   margin-bottom:50px;
-                  button{
-                    width:100%;
-                  }
+          
                 }
-                .thumbnail{
-                  max-width:100%;
-                  height:auto;
-                  max-height:500px;
+                .thumbnail{ 
+                  height: 400px;
+                  width: auto;
+            
+                  
+                  // max-width:100%;
+                  // height:auto;
+                  // max-height:500px;
                   .upload{
-                    width:100%;
-                    height:auto;
-                    max-height:500px;
+                    // width:100%;
+                    // height:auto;
+                    // max-height:500px;
                   }
                   .upload:after{
                     content:"Choose Screenshot";
+                    left: auto;
+                    margin: 0 auto;
+                    right: auto;
                   }
                   img{
-                    max-height:500px;
-                    width:100%;
-                    height:auto;
+                    // max-height:500px;
+                    // width:100%;
+                    // height:auto;
                   }
                 }
 
@@ -760,6 +808,7 @@
             > div {
               font-size: 1.2rem;
               font-weight: 300;
+              text-align: left;
             }
             iframe {
               margin-top: 20px;
