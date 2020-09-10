@@ -364,7 +364,6 @@
           margin-bottom: 40px;
         }
       }
-
       button {
         padding: 0 6px;
         width: auto;
@@ -396,14 +395,17 @@
         margin-right: 5px;
       }
       .field {
+        line-height: 1.8rem;
         &.draft > div {
           background-color: red;
-          text-align: center;
         }
         &.approved  {
+          div {
           background-color:#00b700;
-          text-align: center;
-          font-size: 12px;
+          
+          // text-align: center;
+          // font-size: 12px;
+          }
         }
         &.level {
           font-size: 1.6rem;
@@ -660,6 +662,7 @@
         }
         .container {
           border-bottom: 1px solid #ccc;
+          padding-bottom:5px;
         }
       }
     .main-content {
@@ -726,9 +729,11 @@
       }
         .step{
            text-align: left;
-          padding-bottom: 40px;
           position: relative;
           margin-right: 50px;
+          max-width: 533px;
+          margin: 0 auto 60px;
+          border-bottom: 1px solid #ccc;
           button {
             position: absolute;
             left: 130px;
@@ -773,7 +778,7 @@
                   // background-color:#9FE2DD;
                   text-align:center;
                   margin:0px;
-                  margin-bottom:50px;
+                  margin-bottom: 20px;
           
                 }
                 .thumbnail{ 
@@ -791,14 +796,10 @@
                   }
                   .upload:after{
                     content:"Choose Screenshot";
-                    left: auto;
+                    left: 0;
                     margin: 0 auto;
-                    right: auto;
-                  }
-                  img{
-                    // max-height:500px;
-                    // width:100%;
-                    // height:auto;
+                    right: 0;
+                    text-align: center;
                   }
                 }
 
@@ -1150,11 +1151,11 @@
       .status {
         @include flexh; 
         .approved {
-          width: 25px;
-          height: 25px;
-          background-color: green;
-          border-radius: 50%;
-          margin:10px;
+          // width: 25px;
+          // height: 25px;
+          // background-color: green;
+          // border-radius: 50%;
+          // margin:10px;
         }
         .draft {
           width: 25px;
