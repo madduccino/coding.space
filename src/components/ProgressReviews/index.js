@@ -168,68 +168,117 @@ class ProgressReviews extends React.Component {
 
  	//console.log("hiya")
  	return (
-		<section id="progress-reviews">
-			<h1>Student Progress</h1>
-  
-			<div className="main">	
-				<input type="checkbox" checked={pendingFilter} onClick={this.onPendingFilterChange}/><label>Pending Steps Only</label>
-				<input type="checkbox" checked={classFilter} onClick={this.onClassFilterChange}/><label>Your Class Only</label>
-				<input type="textFilter" value={textFilter} onChange={this.onTextFilterChange} placeholder="Search..."/>
+	  <section id="progress-reviews">
+		  <div className="main">	
+            <div className="sidebar">
+			<div className="filters">	
+			<input className="search" type="textFilter" value={textFilter} onChange={this.onTextFilterChange} placeholder="Search..."/>			
+		     <div>
+				 <input type="checkbox" checked={pendingFilter} onClick={this.onPendingFilterChange}/>
+				 <label>Pending Steps Only</label>
+			  </div>
+		     <div> 
+				 <input type="checkbox" checked={classFilter} onClick={this.onClassFilterChange}/>
+				 <label>Your Class Only</label>
+			  </div>	 
+
+			  </div>
 				<ul>
-
-					{profiles.sort(profile=>profile.DisplayName)
-						.filter(profile=>
-							(classFilter ? classMembers.includes(profile.key) : true) &&
-							(textFilter.length == 0 || profile.Username.toLowerCase().includes(textFilter.toLowerCase()) || profile.DisplayName.toLowerCase().includes(textFilter.toLowerCase())))
-						.map(profile => (
-						<li>
-							<h3 onClick={()=>this.onProfileActivate(profile.key)} onHover={()=>this.onProfileActivate(profile.key)}>{profile.Username}</h3>
-							{!!activeProgress.uid && activeProgress.uid === profile.key && activeProgress.progresses
-								.filter(progress=>true)
-								.map((progress,pIndex)=>(
-									<div id={profile.key + progress.untutorial.key}>
-										<h3 dangerouslySetInnerHTML={{__html:progress.untutorial.Title}}/ >
-										{progress.steps.length <= 0 && (
-											<h4>No Progress</h4>
-										)}
-										{progress.steps.length > 0 && progress.steps
-											.map((step,i)=>(<>
-												{(!pendingFilter || (pendingFilter && step.Status === 'PENDING')) && (
-													<div id={progress.untutorial.key + '' + i}>
-														<h4>Step {i + 1}</h4>
-														<h4>{step.Status}</h4>
-														{step.Status == 'PENDING' && (
-															<div>
-																{!!progress.URL && progress.URL != '' && (
-																	<a href={progress.URL} target={'_blank'}>View Project</a>
-																)}
-																<input id={'feedback-' + progress.untutorial.key + '' + i} type="text" value={step.Comments} placeholder="Feedback..." onChange={(event)=>this.onFeedbackUpdate(profile.key,progress.untutorial.key,pIndex,i,event.target.value)}/>
-																<button id={'approve-' + progress.untutorial.key + '' + i} onClick={()=>this.approveStep(activeProgress.uid,progress.untutorial.key,pIndex,i)}>Approve Step</button>
-																<button id={'disapprove-' + progress.untutorial.key + '' + i} onClick={()=>this.disapproveStep(activeProgress.uid,progress.untutorial.key,pIndex,i)}>Disapprove Step</button>
-															</div>
-														)}
-													</div>
-												)}
-										</>))}
+		        {profiles.sort(profile=>profile.DisplayName)
+			    .filter(profile=>
+				(classFilter ? classMembers.includes(profile.key) : true) &&
+				(textFilter.length == 0 || profile.Username.toLowerCase().includes(textFilter.toLowerCase()) || profile.DisplayName.toLowerCase().includes(textFilter.toLowerCase())))
+			    .map(profile => (		
+			      <li>
+  
+				  
+				  
 
 
-									</div>
-								))}
-								
 
-							
-							
-						</li>
-					))}
-				</ul>
+
+
+
+
+
+				   <h3 onClick={()=>this.onProfileActivate(profile.key)} onHover={()=>this.onProfileActivate(profile.key)}>{profile.Username}</h3>
+
+
+
+				  </li>
+				))}
+			  </ul>
 			</div>
-
+            <div className="main-content">	
 			
+	          <h1>Student Progress</h1>
+			  
+		        {profiles.sort(profile=>profile.DisplayName)
+		        .filter(profile=>
+		    (classFilter ? classMembers.includes(profile.key) : true) &&
+		     (textFilter.length == 0 || profile.Username.toLowerCase().includes(textFilter.toLowerCase()) || profile.DisplayName.toLowerCase().includes(textFilter.toLowerCase())))
+		  .map(profile => (
+          <>
+          {!!activeProgress.uid && activeProgress.uid === profile.key && activeProgress.progresses
+		  .filter(progress=>true)
+		  .map((progress,pIndex)=>(
+		  <div id={profile.key + progress.untutorial.key}>
+		  
+		    <div className="aside">
+		     <h3 dangerouslySetInnerHTML={{__html:progress.untutorial.Title}}/ >
+		    	{progress.steps.length <= 0 && (
+			   <h4>No Progress</h4>
+			 )}
+			  {!!progress.URL && progress.URL != '' && (
+				<a href={progress.URL} target={'_blank'}>View</a>
+			  )}
+			</div>
+			{progress.steps.length > 0 && progress.steps
+				.map((step,i)=>(<>
+				{(!pendingFilter || (pendingFilter && step.Status === 'PENDING')) && (
+				<div id={progress.untutorial.key + '' + i}>
+					<div className="status">
+						<h4>Step {i + 1}</h4>
+						<div className={step.Status==='PENDING' ? "yellow" : 
+						step.Status==='APPROVED' ? "green" :
+						"red"}>
+							
+						</div>
+					   
 
-
+					</div>
+					{step.Status == 'PENDING' && (
+					<div className="giveFeedback">
+						<textarea id={'feedback-' + progress.untutorial.key + '' + i} type="text" value={step.Comments} placeholder="Feedback..." onChange={(event)=>this.onFeedbackUpdate(profile.key,progress.untutorial.key,pIndex,i,event.target.value)}/>
+						<div>
+							<button id={'approve-' + progress.untutorial.key + '' + i} onClick={()=>this.approveStep(activeProgress.uid,progress.untutorial.key,pIndex,i)}>Approve Step</button>
+							<button id={'disapprove-' + progress.untutorial.key + '' + i} onClick={()=>this.disapproveStep(activeProgress.uid,progress.untutorial.key,pIndex,i)}>Disapprove Step</button>
+						</div>
+					</div>
+					)}
+				</div>
+			    )}
+			 </>
+			))}
+          </div>
+			  
+			  
+			  
+			  
+			  
+			  
+			  
+			  ))}	
+		     </>
+			))}
+		
+		
+		
+		 </div>
+	  </div>	
     </section>
 	)
-}
+  }
 }
 var condition = authUser => authUser && (!!authUser.roles[ROLES.ADMIN] || !!authUser.roles[ROLES.TEACHER]);
 export default withFirebase(withAuthorization(condition)(ProgressReviews));

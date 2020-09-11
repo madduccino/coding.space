@@ -438,7 +438,7 @@ class ProfilePageBase extends React.Component {
 														<h4 dangerouslySetInnerHTML={{__html:project.Title}}/>
 													</a>
 													<div className="status">
-														<h4 className={project.Status === 'APPROVED' ? 'green' : project.Status === 'PENDING' ? 'yellow' :'red'}></h4>
+														<div className={project.Status === 'APPROVED' ? 'green' : project.Status === 'PENDING' ? 'yellow' :'red'}></div>
 													</div>
 													<a target="_blank" className="center" href={project.URL}><h4>View</h4></a>	
 												</div>
@@ -456,7 +456,6 @@ class ProfilePageBase extends React.Component {
 							{untutorials.length < 1 && (
 								<p>{"No Untutorials Yet :("}</p>
 							)}
-			  	
 	  	  	  				{Object.keys(untutorialLevels).map(group=>(
 	  	  	  					<>
 									<Accordion group={group} text = {
@@ -467,16 +466,12 @@ class ProfilePageBase extends React.Component {
 													<a href={ ROUTES.LAUNCHPAD + '/' + untutorial.key}>
 														<h4 dangerouslySetInnerHTML={{__html:untutorial.Title}}/>
 													</a>
-
-													
 													<div className="status">
-														<h4 className={untutorial.Status === 'APPROVED' ? 'green' : untutorial.Status === 'PENDING' ? 'yellow' :'red'}></h4>
+														<div className={untutorial.Status === 'APPROVED' ? 'green' : untutorial.Status === 'PENDING' ? 'yellow' :'red'}></div>
 													</div>
 													
 													<a target="_blank" className="center" href={ROUTES.LAUNCHPAD + '/' + untutorial.key}><h4>View</h4></a>
-													
-													
-														
+		
 												</div>
 											) : ""}
 		  	  	  						</>))
@@ -496,7 +491,8 @@ class ProfilePageBase extends React.Component {
 	  	  	  				{Object.keys(progressLevels).map(group=>(
 	  	  	  					<>
 									<Accordion group={group} text = {
-										progressLevels[group].sort(progress=>progress.LastModified).map(progress => (<>
+										progressLevels[group].sort(progress=>progress.LastModified).map(progress => (
+										<>
 											{ !!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===profile.key) ? (
 												<div id={progress.LastModified}>
 													

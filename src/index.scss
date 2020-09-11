@@ -344,7 +344,7 @@
     color: #fff;
   }
  
-  #profile, #clazz, #untutorial, #new-project, #jetfuel, #question {
+  #profile, #clazz, #untutorial, #new-project, #jetfuel, #question, #progress-reviews {
     .main {
       color: #fff;
       display: grid;
@@ -606,7 +606,7 @@
   }
  }
 }
-
+ 
   #untutorial {
     // img {
     //   max-width: 100%;
@@ -646,6 +646,7 @@
             height: 50px;
             font-size: 1.6rem;
             color: $darkgreen;
+            display: flex;
           }
         }
         .titleStatus {
@@ -690,39 +691,40 @@
                 margin-left:25%;
                 margin-right:25%;
                 margin-top:20%;
-                background-color: #EDC034;
-                box-shadow:
-                  0   -6px 0  -2px #EDC034,
-                  0    6px 0  -2px#EDC034,
-                  0  -12px 0  -4px #EDC034,
-                  0   12px 0  -4px#EDC034,
-                  0  -18px 0  -8px#EDC034,
-                  0   18px 0  -8px#EDC034,
-                  0  -24px 0 -12px#EDC034,
-                  0   24px 0 -12px #EDC034,
-                 -6px  0   0   0   black,
-                  6px  0   0   0   black,
-                  0    0   0   4px black,
-                  0   -6px 0   2px black,
-                  0    6px 0   2px black,
-                  0  -10px 0   0   black,
-                  0   10px 0   0   black,
-                  0  -14px 0  -2px black,
-                  0   14px 0  -2px black,
-                  0  -18px 0  -4px black,
-                  0   18px 0  -4px black,
-                  0  -24px 0  -8px black,
-                  0   24px 0  -8px black,
-                  0  -30px 0 -12px black,
-                  0   30px 0 -12px black;
+                background-color:$lightGreen;
+                border: 6px solid $darkgreen;
+                border-radius: 4px;
+                // box-shadow:
+                //   0   -6px 0  -2px #EDC034,
+                //   0    6px 0  -2px#EDC034,
+                //   0  -12px 0  -4px #EDC034,
+                //   0   12px 0  -4px#EDC034,
+                //   0  -18px 0  -8px#EDC034,
+                //   0   18px 0  -8px#EDC034,
+                //   0  -24px 0 -12px#EDC034,
+                //   0   24px 0 -12px #EDC034,
+                //  -6px  0   0   0   black,
+                //   6px  0   0   0   black,
+                //   0    0   0   4px black,
+                //   0   -6px 0   2px black,
+                //   0    6px 0   2px black,
+                //   0  -10px 0   0   black,
+                //   0   10px 0   0   black,
+                //   0  -14px 0  -2px black,
+                //   0   14px 0  -2px black,
+                //   0  -18px 0  -4px black,
+                //   0   18px 0  -4px black,
+                //   0  -24px 0  -8px black,
+                //   0   24px 0  -8px black,
+                //   0  -30px 0 -12px black,
+                //   0   30px 0 -12px black;
                 img{
                   width:80%;
                   margin-left:10%;
                   margin-right:10%;
                   margin-top:10%;
                 }
-              }
-              
+              } 
            }
           }
         }
@@ -823,7 +825,7 @@
             margin-bottom:20px;
             font-size: 2rem;
             div{
-              margin-left:20px;
+              // margin-left:20px;
               img{
                 width:60px;
               }
@@ -1148,74 +1150,6 @@
         position: relative
       }
 
-      .status {
-        @include flexh; 
-        .approved {
-          // width: 25px;
-          // height: 25px;
-          // background-color: green;
-          // border-radius: 50%;
-          // margin:10px;
-        }
-        .draft {
-          width: 25px;
-          height: 25px;
-          background-color: #fff;
-          border-radius: 50%;
-          margin:10px;
-        }
-        .pending {
-          width: 25px;
-          height: 25px;
-          background-color: yellow;
-          border-radius: 50%;
-          margin:10px;
-        }
-        .finished {
-          width: 25px;
-          height: 25px;
-          background-color: blue;
-          border-radius: 50%;
-          margin:10px;
-        }
-        img {
-          image-rendering: pixelated;
-          width: 40px;
-          height: 44px;
-          &.explorer {
-            height: 78px;
-            margin-top: -20px;
-          }
-        }
-
-       div {
-        width: 15px;
-        height: 15px;
-        border-radius: 50%;
-        text-align: center;
-        margin: 0 10px;
-        &.yellow {
-          background-color:$orange;
-          background: radial-gradient(circle, $orange,$darkerOrange);
-        }
-        &.green {
-          background-color:rgb(80, 221, 15);
-          background:radial-gradient(circle, rgb(6, 177, 83),rgb(3, 107, 50));
-        }
-        &.white {
-          background-color:rgb(255, 255, 255);
-          background:radial-gradient(circle, rgb(255, 255, 255), rgb(223, 223, 223),);
-        }
-        &.red {
-          background-color:rgb(247, 48, 48);
-          background:radial-gradient(circle, rgb(236, 99, 99), rgb(247, 48, 48),);
-        }
-        &.blue {
-          background-color:blue;
-          background:radial-gradient(circle, rgb(17, 147, 233), rgb(4, 61, 136),);
-        }
-      }
-      }
       .tab-content {
         .title {
           background-color: $lightGreen;
@@ -1317,6 +1251,100 @@
      }
     }
    }
+  }
+
+  #progress {
+    .status {
+      margin: 0
+    }
+  }
+
+  #untutorial, #profile, #progress-reviews {
+    .status {
+      @include flexh; 
+      .approved {
+        // width: 25px;
+        // height: 25px;
+        // background-color: green;
+        // border-radius: 50%;
+        // margin:10px;
+      }
+      .draft {
+        width: 25px;
+        height: 25px;
+        background-color: #fff;
+        border-radius: 50%;
+        margin:10px;
+      }
+      .pending {
+        width: 25px;
+        height: 25px;
+        background-color: yellow;
+        border-radius: 50%;
+        margin:10px;
+      }
+      .finished {
+        width: 25px;
+        height: 25px;
+        background-color: blue;
+        border-radius: 50%;
+        margin:10px;
+      }
+      img {
+        image-rendering: pixelated;
+        width: 40px;
+        height: 44px;
+        &.explorer {
+          height: 78px;
+          margin-top: -20px;
+        }
+      }
+
+     div {
+      width: 15px;
+      height: 15px;
+      border-radius: 50%;
+      text-align: center;
+      margin: 10px;
+      &.yellow {
+        background-color:$orange;
+        background: radial-gradient(circle, $orange,$darkerOrange);
+      }
+      &.green {
+        background-color:rgb(80, 221, 15);
+        background:radial-gradient(circle, rgb(6, 177, 83),rgb(3, 107, 50));
+      }
+      &.white {
+        background-color:rgb(255, 255, 255);
+        background:radial-gradient(circle, rgb(255, 255, 255), rgb(223, 223, 223),);
+      }
+      &.red {
+        background-color:rgb(247, 48, 48);
+        background:radial-gradient(circle, rgb(236, 99, 99), rgb(247, 48, 48),);
+      }
+      &.blue {
+        background-color:blue;
+        background:radial-gradient(circle, rgb(17, 147, 233), rgb(4, 61, 136),);
+      }
+    }
+    }
+  }
+
+  #untutorial {
+    .status {
+      > div  {
+        margin: 0;
+      }
+
+    }
+  }
+
+  #profile {
+    #projects, #untutorials {
+    .status {
+      justify-content: center;
+    }
+    }
   }
 
   #simulator {
@@ -1468,4 +1496,60 @@
         }
       }
     }
+  }
+
+  #progress-reviews {
+    .sidebar {
+      > div {
+        display: flex;
+        flex-flow: column wrap;
+        align-items: center;
+        margin: 40px 0 0;
+        > div{
+          margin: 10px 0;
+          display: flex;
+        }
+        .search {
+         width: 80%;
+        padding: 10px 5px;
+        }
+      }
+      ul {
+        li {
+          list-style: none;
+          cursor: pointer;
+          margin: 10px 0;
+        }
+      }
+
+    }
+    .main-content {
+      h1 {
+        font-size: 40px;
+        text-align: center;
+        margin-bottom: 40px;
+      }
+      > div {
+        margin-bottom: 20px;
+      }
+    .status {
+      h4 {
+        margin: 10px 0;
+      }
+    }
+    .giveFeedback,.aside {
+      display: flex;
+      button,a {
+        display: block;
+        margin: 10px;
+        width: auto;
+      }
+      a {
+        margin-top:0;
+      }
+      textarea {
+        width: 400px;
+      }
+    }
+  }
   }

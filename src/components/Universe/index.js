@@ -114,7 +114,7 @@ class Universe extends React.Component {
  	const selectedFilters = Object.keys(CATEGORIES).filter(v=>filter.includes(v));
 
 	if(loading)
-		return (<div>Loading ...</div>);
+		return (<div className="loading">Loading ...</div>);
  	
  	return (
 		<section id="universe">

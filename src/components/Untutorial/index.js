@@ -630,107 +630,131 @@ class UntutorialPageBase extends React.Component {
 								</div>
 			  <div className="main">
 				  <div className="main-content">
+				  <div className="container">
+						<div className="workOnProject">
+						  {!!authUser && !progress && (
+						  <button
+						  onClick={this.loadProgress}>Check Out</button>
+						  )}
+						  {!!progress && progress.Status == 'APPROVED' &&(
+						  <div>
+							<h3>GREAT JOB! You finished this project!</h3>
+							<button onClick={()=>window.location = ROUTES.UNIVERSE + '/' + progress.untut}>Publish to the UNIVERSE!</button>
+						  </div>
+						  )}
+						  {!!progress && progress.Status == 'PENDING' && (
+						  <h3>Your teacher is reviewing your project! Take it easy!</h3>
+						  )}
+						  {!!progress  && (
+						  <TCSEditor 
+							disabled={false}
+							type={'plain'}
+							className="url"
+							editing={true}
+							onEditorChange={this.handleProgressURLOnChange}
+							onEditorSave={this.handleProgressURLOnSave}
+							placeholder={'Project URL...'} 
+							buttonText={'Add Link'}
+							goToLink={'https://google.com'}
+							text={progress.URL}/>
+						  )}
+						  {!!progress && progress.Status == 'DRAFT' && nextStep>0 && (
+						    <h3>Keep it Up! You're on Step {nextStep}!</h3>
+						  )}	
+						</div>		
+					  </div>
 				    {!!untutorial && untutorial.steps.map((step,index) => (
-					  <div className={"step " + ((!!progress && (progress.steps[index].Status == 'PENDING')) ? "pending" : "")}>
-				        <div className="checkOff">
-						  <div className={'step-title'}>
+					  <div className={"step " + ((!!progress && (progress.steps[index].Status == 'PENDING')) ? "" : "")}>
+				        
+						<div className="checkOff">
+						  <div className={'step-title status'}>
 						    Step {index}
 						    {(!!progress && !!progress.steps[index] && progress.steps[index].Status == 'DRAFT') ? (
-							  <div>
-							    <img className={'pixel'} src='/images/rocket-coin-slot.png'/>
+							  <div className="red">
+							    {/* <img className={'pixel'} src='/images/rocket-coin-slot.png'/> */}
 						      </div>
 							  ) : (!!progress && !!progress.steps[index] && progress.steps[index].Status == 'PENDING') ? (
-							  <div>
-							    <img className={'pixel'} src='/images/inprogress-coin.gif'/>
+							  <div className="yellow">
+							    {/* <img className={'pixel'} src='/images/inprogress-coin.gif'/> */}
 						      </div>
 							  ) : !!progress && (
-								<div>
-									<img className={'pixel'} src='/images/rocket-coin.gif'/>
+								<div className="green">
+									{/* <img className={'pixel'} src='/images/rocket-coin.gif'/> */}
 								</div>
 								)}
 							</div>	
 						</div>
 						<div className={'overlay-content'}>
 							<div className={'step-content'}>
-								<TCSEditor
-									disabled={!(!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===untutorial.Author.key))}
-									type={'text'}
-									onEditorChange={(value)=>this.handleStepOnChange(value,index)} 
-									onEditorSave={(value)=>this.handleStepOnSave(value,index)} 
-									placeholder={'Step Description'}
-									buttonText={'Edit Description'} 
-									text={untutorial.steps[index].Description}/> 
+							  <TCSEditor
+								disabled={!(!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===untutorial.Author.key))}
+								type={'text'}
+								onEditorChange={(value)=>this.handleStepOnChange(value,index)} 
+								onEditorSave={(value)=>this.handleStepOnSave(value,index)} 
+								placeholder={'Step Description'}
+								buttonText={'Edit Description'} 
+								text={untutorial.steps[index].Description}/> 
 								{!!progress && !!progress.steps[index] && progress.steps[index].Comments != '' && (
-									<div className={'comments'}>{progress.steps[index].Comments}</div>
+								  <div className={'comments'}>{progress.steps[index].Comments}</div>
 								)}
 								<div className="step thumbnail">
-									{!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===untutorial.Author.key) && (		
-										<label for={'step' + index + '-thumbnail-upload'} className="upload">
-											<input id={'step' + index + '-thumbnail-upload'} type="file" onChange={(event)=>this.handleStepThumbnailUpload(event,index)}/>
-										</label>
-									)} 
-									{this.state.uploading && (
-										<progress value={this.state.uploadPercent} max="100"/>
-									)}
-									{!!untutorial.steps[index].ThumbnailFilename && !!untutorial.steps[index].ThumbnailFilename.length != 0 && !this.state.uploading &&(
-										<LazyImage id={'step' + index + '-thumbnail'} file={this.props.firebase.storage.ref('/public/' + untutorial.Author.key + '/' + untutorial.steps[index].ThumbnailFilename)}/>
-									)}
+								  {!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===untutorial.Author.key) && (		
+									<label for={'step' + index + '-thumbnail-upload'} className="upload">
+									  <input id={'step' + index + '-thumbnail-upload'} type="file" onChange={(event)=>this.handleStepThumbnailUpload(event,index)}/>
+									</label>
+								  )} 
+								  {this.state.uploading && (
+									<progress value={this.state.uploadPercent} max="100"/>
+								  )}
+								  {!!untutorial.steps[index].ThumbnailFilename && !!untutorial.steps[index].ThumbnailFilename.length != 0 && !this.state.uploading &&(
+									<LazyImage id={'step' + index + '-thumbnail'} file={this.props.firebase.storage.ref('/public/' + untutorial.Author.key + '/' + untutorial.steps[index].ThumbnailFilename)}/>
+								  )}
 								</div>	
 								{!!progress && (!progress.steps[index] || progress.steps[index].Status == 'DRAFT') && (
 									<div>
-										
-										
 										<button 
 											disabled={false} 
 											className={'done-button'}
 											onClick={()=>this.studentApprove(index)}>Done</button>
 									</div>
-									
+								)}
+									{!!progress && (!progress.steps[index] || progress.steps[index].Status == 'PENDING') && (
+									<div>
+										<button 
+											disabled={false} 
+											className={'done-button'}
+											onClick={()=>this.studentApprove(index)}>Teacher Reviewing!</button>
+									</div>
 								)}
 							</div>
-							{!!progress && (!progress.steps[index] || progress.steps[index].Status == 'PENDING') && (
+							{/* {!!progress && (!progress.steps[index] || progress.steps[index].Status == 'PENDING') && (
+								
 								<div className={'overlay'}>
+									
 									<div className={'pending-plate'}>
 										<img className={'pixel'} src={'/images/fixing.gif'}/>
 									</div>
 								</div>
-							)}
+							)} */}
 						</div>
 					</div>
 				))}
 			</div>
 				  <div className="sidebar">
 				    <div className="sidebar-content">
-					  <div className="container">
-						<div className="workOnProject">
-						{!!authUser && !progress && (
-						<button
-						onClick={this.loadProgress}>Check Out</button>
-						)}
-						{!!progress && progress.Status == 'APPROVED' &&(
-						<div>
-							<h3>GREAT JOB! You finished this project!</h3>
-							<button onClick={()=>window.location = ROUTES.UNIVERSE + '/' + progress.untut}>Publish to the UNIVERSE!</button>
-						</div>
-						)}
-						{!!progress && progress.Status == 'PENDING' && (
-						<h3>Your teacher is reviewing your project! Take it easy!</h3>
-						)}
-						{!!progress  && (
-								<TCSEditor 
-									disabled={false}
-									type={'plain'}
-									className="level"
-									editing={true}
-									onEditorChange={this.handleProgressURLOnChange}
-									onEditorSave={this.handleProgressURLOnSave}
-									placeholder={'Project URL...'} 
-									text={progress.URL}/>
-						)}
-						{!!progress && progress.Status == 'DRAFT' && nextStep>0 && (
-						<h3>Keep it Up! You're on Step {nextStep}!</h3>
-						)}	
-						</div>		
+					<div className="container">	
+					    <div className={'titleStatus'}>
+						Title 
+						<TCSEditor 
+						disabled={!(authUser && !!authUser.roles['ADMIN'])}
+						type={'text'}
+						className={'title'}
+						name={'title'}
+						onEditorChange={this.handleTitleOnChange}
+						onEditorSave={this.handleTitleOnSave}
+						placeholder={'Step Description'} 
+						text={untutorial.Title} />
+					    </div>		
 					  </div>
 					  <div className="container">
 						Level
@@ -744,23 +768,10 @@ class UntutorialPageBase extends React.Component {
 							placeholder={'Level'} 
 							text={untutorial.Level}/>
 					  </div>	
-					  <div className="container">	
-						<div className={'titleStatus'}>
-							Title
-							<TCSEditor 
-							disabled={!(authUser && !!authUser.roles['ADMIN'])}
-							type={'text'}
-							className={'title'}
-							name={'title'}
-							onEditorChange={this.handleTitleOnChange}
-							onEditorSave={this.handleTitleOnSave}
-							placeholder={'Step Description'} 
-							text={untutorial.Title} />
-						</div>
-						</div>
+
+					  {!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===untutorial.Author.key) && (		
 					  <div className="container">
 						Status	
-						{!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===untutorial.Author.key) && (		
 						<TCSEditor 
 						disabled={!(authUser && !!authUser.roles['ADMIN'])}
 						type={'select'}
@@ -771,33 +782,31 @@ class UntutorialPageBase extends React.Component {
 						onEditorSave={this.handleStatusOnSave}
 						placeholder={'Status'} 
 						text={untutorial.Status} />
+					  </div>
+					  )}
+					  {!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===untutorial.Author.key) && (	
+					  <div className="container">	
+						<h4>Tags</h4>
+						<div className="filter">
+						{Object.keys(untutorial.Categories).length != Object.keys(FILTERS).length && (
+							<select onChange={this.handlePCategoryOnChange}>
+								<option value='-1'>-------</option>
+								{Object.keys(FILTERS).filter(f=>!Object.keys(untutorial.Categories).includes(f)).map(catName=><option value={catName}>{FILTERS[catName]}</option>)}
+							</select>
 						)}
-					  </div>	
-					  <div className="container">
-						{!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===untutorial.Author.key) && (	
-						<>	
-						  <h4>Tags</h4>
-						  <div className="filter">
-							{Object.keys(untutorial.Categories).length != Object.keys(FILTERS).length && (
-								<select onChange={this.handlePCategoryOnChange}>
-									<option value='-1'>-------</option>
-									{Object.keys(FILTERS).filter(f=>!Object.keys(untutorial.Categories).includes(f)).map(catName=><option value={catName}>{FILTERS[catName]}</option>)}
-								</select>
-							)}
-							{Object.keys(untutorial.Categories).length > 0 && (
-								<div className="filter-categories">
-									{Object.keys(untutorial.Categories).map(f=>(
-										<a onClick={()=>this.handleCategoryOnClick(f)}>{f}</a>
-									))}
-								</div>
-							)}
+						{Object.keys(untutorial.Categories).length > 0 && (
+							<div className="filter-categories">
+								{Object.keys(untutorial.Categories).map(f=>(
+									<a onClick={()=>this.handleCategoryOnClick(f)}>{f}</a>
+								))}
 							</div>
-						</>
 						)}
 						</div>
+					  </div>
+					  )}
 					  <div className="container">
 						{untutorial.Author.Status === 'APPROVED' &&(
-							<h3>by: <a href={'/profile/' + untutorial.Author.key} dangerouslySetInnerHTML={{__html:untutorial.Author.DisplayName}}/></h3>
+						  <h3>by: <a href={'/profile/' + untutorial.Author.key} dangerouslySetInnerHTML={{__html:untutorial.Author.DisplayName}}/></h3>
 						)}
 					  </div>	
 					  <div className={'container description'}>
