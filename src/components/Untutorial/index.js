@@ -630,8 +630,7 @@ class UntutorialPageBase extends React.Component {
 								</div>
 			  <div className="main">
 				  <div className="main-content">
-				  <div className="container">
-						<div className="workOnProject">
+				  <div className="workOnProject">
 						  {!!authUser && !progress && (
 						  <button
 						  onClick={this.loadProgress}>Check Out</button>
@@ -645,23 +644,13 @@ class UntutorialPageBase extends React.Component {
 						  {!!progress && progress.Status == 'PENDING' && (
 						  <h3>Your teacher is reviewing your project! Take it easy!</h3>
 						  )}
-						  {!!progress  && (
-						  <TCSEditor 
-							disabled={false}
-							type={'plain'}
-							className="url"
-							editing={true}
-							onEditorChange={this.handleProgressURLOnChange}
-							onEditorSave={this.handleProgressURLOnSave}
-							placeholder={'Project URL...'} 
-							buttonText={'Add Link'}
-							goToLink={'https://google.com'}
-							text={progress.URL}/>
-						  )}
+		
 						  {!!progress && progress.Status == 'DRAFT' && nextStep>0 && (
 						    <h3>Keep it Up! You're on Step {nextStep}!</h3>
 						  )}	
-						</div>		
+						</div>
+				  <div className="container">
+		
 					  </div>
 				    {!!untutorial && untutorial.steps.map((step,index) => (
 					  <div className={"step " + ((!!progress && (progress.steps[index].Status == 'PENDING')) ? "" : "")}>
@@ -689,6 +678,7 @@ class UntutorialPageBase extends React.Component {
 							  <TCSEditor
 								disabled={!(!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===untutorial.Author.key))}
 								type={'text'}
+								className={'editor'}
 								onEditorChange={(value)=>this.handleStepOnChange(value,index)} 
 								onEditorSave={(value)=>this.handleStepOnSave(value,index)} 
 								placeholder={'Step Description'}
@@ -768,7 +758,35 @@ class UntutorialPageBase extends React.Component {
 							placeholder={'Level'} 
 							text={untutorial.Level}/>
 					  </div>	
-
+					  <div className="container">
+						{untutorial.Author.Status === 'APPROVED' &&(
+						  <h3>by: <a href={'/profile/' + untutorial.Author.key} dangerouslySetInnerHTML={{__html:untutorial.Author.DisplayName}}/></h3>
+						)}
+					  </div>	
+					  <div className={'container description'}>
+							<TCSEditor 
+							disabled={!(authUser && (!!authUser.roles['ADMIN'] || authUser.uid===untutorial.Author.key))}
+							type={'text'}
+							onEditorChange={this.handleDescriptionOnChange}
+							onEditorSave={this.handleDescriptionOnSave}
+							placeholder={'Untutorial Description'} 
+							text={untutorial.Description.replace(/<(.|\n)*?>/g, '').trim()} />
+					  </div>
+					  {!!progress  && (
+						  <div className="container">
+							  Link to Project
+						  <TCSEditor 
+							disabled={false}
+							type={'plain'}
+							className="url"
+							editing={true}
+							onEditorChange={this.handleProgressURLOnChange}
+							onEditorSave={this.handleProgressURLOnSave}
+							placeholder={'Project URL...'} 
+							url={progress.URL}/>
+							  </div>
+						  )}
+						
 					  {!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===untutorial.Author.key) && (		
 					  <div className="container">
 						Status	
@@ -804,20 +822,7 @@ class UntutorialPageBase extends React.Component {
 						</div>
 					  </div>
 					  )}
-					  <div className="container">
-						{untutorial.Author.Status === 'APPROVED' &&(
-						  <h3>by: <a href={'/profile/' + untutorial.Author.key} dangerouslySetInnerHTML={{__html:untutorial.Author.DisplayName}}/></h3>
-						)}
-					  </div>	
-					  <div className={'container description'}>
-							<TCSEditor 
-							disabled={!(authUser && (!!authUser.roles['ADMIN'] || authUser.uid===untutorial.Author.key))}
-							type={'text'}
-							onEditorChange={this.handleDescriptionOnChange}
-							onEditorSave={this.handleDescriptionOnSave}
-							placeholder={'Untutorial Description'} 
-							text={untutorial.Description.replace(/<(.|\n)*?>/g, '').trim()} />
-					  </div>
+
 					</div>
 				  </div>
 				</div>	

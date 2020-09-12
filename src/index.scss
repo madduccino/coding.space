@@ -626,6 +626,22 @@
     }
     .main {
        grid-template-columns: 3fr 1fr;
+       
+       .workOnProject {
+        margin-bottom: 60px;
+        text-align: center;
+        font-size: 24px;
+        margin-top: -20px;
+        border-bottom: 2px solid $lightGreen;
+        padding-bottom: 10px;
+        button {
+          width: 100%;
+          height: 50px;
+          font-size: 1.6rem;
+          color: $darkgreen;
+          display: flex;
+        }
+      }
       .sidebar {
         background-color: #fff;
         color: $darkgreen;
@@ -640,15 +656,6 @@
           color: #fff !important;
         }
 
-        .workOnProject {
-          button {
-            width: 100%;
-            height: 50px;
-            font-size: 1.6rem;
-            color: $darkgreen;
-            display: flex;
-          }
-        }
         .titleStatus {
           // display: grid;
           // grid-template-columns: 5fr 1fr; 
@@ -736,13 +743,17 @@
           max-width: 533px;
           margin: 0 auto 60px;
           border-bottom: 1px solid #ccc;
+  
           button {
             position: absolute;
             left: 130px;
             top: 0;
             width: auto;
-
           }
+          &.done {
+            bottom: 0;
+          }
+          
           .overlay-content{
             // background-color: $lightGreen;
             // box-shadow:
@@ -781,6 +792,9 @@
                   text-align:center;
                   margin:0px;
                   margin-bottom: 20px;
+                  button {
+                    margin-right: 40px;
+                  }
           
                 }
                 .thumbnail{ 
