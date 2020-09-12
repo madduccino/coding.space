@@ -341,7 +341,7 @@ class UntutorialPageBase extends React.Component {
 		if(isNaN(Level)){
 			errors['Level'] = 'LEVEL.<span class="red">ISINVALID</span>'; 		
 		}
-		if(![1,2,3,4,5,6].includes(Level)){
+		if(!['1','2','3','4','5','6'].includes(Level)){
 
 			errors['Level'] = 'LEVEL.<span class="red">ISOUTSIDERANGE</span>';
 		}
@@ -659,7 +659,7 @@ class UntutorialPageBase extends React.Component {
 								onEditorChange={this.handleLevelOnChange}
 								onEditorSave={this.handleLevelOnSave}
 								placeholder={'Level'} 
-								text={`Level ${untutorial.Level}`}/>
+								text={untutorial.Level}/>
 								<div className={'titleStatus'}>
 									<TCSEditor 
 									disabled={!(authUser && !!authUser.roles['ADMIN'])}
