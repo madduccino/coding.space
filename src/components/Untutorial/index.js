@@ -341,7 +341,7 @@ class UntutorialPageBase extends React.Component {
 		if(isNaN(Level)){
 			errors['Level'] = 'LEVEL.<span class="red">ISINVALID</span>'; 		
 		}
-		if(![1,2,3,4,5,6].includes(Level)){
+		if(!['1','2','3','4','5','6'].includes(Level)){
 
 			errors['Level'] = 'LEVEL.<span class="red">ISOUTSIDERANGE</span>';
 		}
@@ -675,6 +675,7 @@ class UntutorialPageBase extends React.Component {
 						</div>
 						<div className={'overlay-content'}>
 							<div className={'step-content'}>
+							{!!authUser && !progress && (
 							  <TCSEditor
 								disabled={!(!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===untutorial.Author.key))}
 								type={'text'}
@@ -684,6 +685,7 @@ class UntutorialPageBase extends React.Component {
 								placeholder={'Step Description'}
 								buttonText={'Edit Description'} 
 								text={untutorial.steps[index].Description}/> 
+							)}
 								{!!progress && !!progress.steps[index] && progress.steps[index].Comments != '' && (
 								  <div className={'comments'}>{progress.steps[index].Comments}</div>
 								)}

@@ -61,7 +61,6 @@
   }
 
   
-  #page-container {
     .loading {text-align: center;margin-top: 20px;}
 
     #signIn, #landing,#forget,#signup,#launchpad,#universe,#classes {
@@ -74,7 +73,7 @@
         text-align: center;
       }
     }
-  }
+  
  
   img {
     max-width: 100%;
@@ -559,10 +558,13 @@
         background-color: #fff;
         border-radius: 8px;
         color: $darkgreen;
-        width: 20%;
+        width: 25%;
+        min-height: 400px;
         // flex-grow: 1;
         img {
-            width: 100%;
+          height: 150px;
+          width: 100%;
+          object-fit: cover;
         }
         > div {
           padding: 20px;
@@ -576,6 +578,15 @@
            line-height: 1.6rem;
           }
         }
+      }
+    }
+  }
+
+  #launchpad {
+    .main {
+      h1 {
+        font-size: 36px;
+        width: 100%;
       }
     }
   }
@@ -635,10 +646,11 @@
         border-bottom: 2px solid $lightGreen;
         padding-bottom: 10px;
         button {
-          width: 100%;
           height: 50px;
+          color: #fff;
+          width: 300px;
           font-size: 1.6rem;
-          color: $darkgreen;
+          background-color: $darkgreen;
           display: flex;
         }
       }

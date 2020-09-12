@@ -7,12 +7,17 @@ import { withFirebase } from '../Firebase';
 import * as ROUTES from '../../constants/routes';
 import * as FILTER from '../../constants/filter';
 
-
+ const groupBy = function(xs, key) {
+  return xs.reduce(function(rv, x) {
+    (rv[x[key]] = rv[x[key]] || []).push(x);
+    return rv;
+  }, {});
+};
 class LaunchPad extends React.Component {
  constructor(props){
  	super(props);
  	this.state = {
- 		loading:false,
+ 		loading:true,
  		untutorials: [],
  		filter:[
  			FILTER.SCRATCH,
@@ -53,7 +58,7 @@ class LaunchPad extends React.Component {
 
  }
  componentDidMount(){
- 	this.setState({ loading: true });
+
 
  	this.props.firebase.untutorials().on('value', snapshot => {
  		const untutsObj = snapshot.val();
@@ -75,7 +80,9 @@ class LaunchPad extends React.Component {
  	
  	const {untutorials, loading, filter, textFilter} = this.state;
  	const selectedFilters = Object.keys(FILTER).filter(v=>filter.includes(v));
-
+ 	var untutorialLevels = groupBy(untutorials,'Level');
+ 	if(loading)
+ 		return (<div className="loading">...Loading</div>);
 
  	//console.log("hiya")
  	return (
@@ -93,7 +100,7 @@ class LaunchPad extends React.Component {
 				    </select>
 			    )}
 			    
-			    <input type='text' onChange={this.textFilterOnChange} placeholder="Search..."/>
+			    <input className="search" type='text' onChange={this.textFilterOnChange} placeholder="Search..."/>
 				</div>	
 			    {selectedFilters.length > 0 && (
 			    	<div className="filter-categories">
@@ -103,18 +110,26 @@ class LaunchPad extends React.Component {
 			    	</div>
 			    )}	
 			<div className="main">	
-				{untutorials.filter(untutorial=>
-					untutorial.Status === 'APPROVED' && 
-					(filter.length === 0 || filter.filter(f=>Object.values(untutorial.Categories).includes(f)).length > 0) &&
-					untutorial.Title.toLowerCase().includes(textFilter.toLowerCase())).map(untutorial => (
-						<a id={untutorial.key} href={ROUTES.LAUNCHPAD + '/' + untutorial.key} path={'/public/' + untutorial.Author + '/' + untutorial.ThumbnailFilename}>
-							<LazyImage key={untutorial.key} file={this.props.firebase.storage.ref('/public/' + untutorial.Author + '/' + untutorial.ThumbnailFilename)}/>
-						<div>
-							<h2 dangerouslySetInnerHTML={{__html:untutorial.Title}}/>
-							<div dangerouslySetInnerHTML={{__html:untutorial.Description.replace(/<(.|\n)*?>/g, '').trim()}}/>
-						</div>
-					</a>
-				))}
+				{Object.keys(untutorialLevels).map(level=>(<>
+					
+					<>
+					<h1>{'Level ' + level}</h1>
+						{untutorialLevels[level].filter(untutorial=>
+							untutorial.Status === 'APPROVED' && 
+							(filter.length === 0 || filter.filter(f=>Object.values(untutorial.Categories).includes(f)).length > 0) &&
+							untutorial.Title.toLowerCase().includes(textFilter.toLowerCase())).map(untutorial => (
+								<a id={untutorial.key} href={ROUTES.LAUNCHPAD + '/' + untutorial.key} path={'/public/' + untutorial.Author + '/' + untutorial.ThumbnailFilename}>
+									<LazyImage key={untutorial.key} file={this.props.firebase.storage.ref('/public/' + untutorial.Author + '/' + untutorial.ThumbnailFilename)}/>
+									<div>
+										<h2 dangerouslySetInnerHTML={{__html:untutorial.Title}}/>
+										<div dangerouslySetInnerHTML={{__html:untutorial.Description.replace(/<(.|\n)*?>/g, '').trim()}}/>
+									</div>
+								</a>
+							))}
+					</>
+				
+					
+				</>))}
 			</div>
 
 

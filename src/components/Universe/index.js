@@ -112,6 +112,7 @@ class Universe extends React.Component {
  	
  	const {projects, loading, filter, textFilter,classFilter,classMembers} = this.state;
  	const selectedFilters = Object.keys(CATEGORIES).filter(v=>filter.includes(v));
+ 	//var projectLevels = groupBy(projects,'Level');
 
 	if(loading)
 		return (<div className="loading">Loading ...</div>);
