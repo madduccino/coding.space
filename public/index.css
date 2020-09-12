@@ -160,11 +160,15 @@ h4 {
 	font-family: 'futura-pt-bold',sans-serif;
 }
 
+
+
+
+
 .main {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
   grid-gap: 50px;
-  margin: 40px;
+  margin: 40px auto;
+  justify-content: center;
 }
 .main h2 {
 	font-size: 28px;
@@ -174,12 +178,19 @@ h4 {
 	background-color: rgb(169, 145, 255);
 	color: #fff ;
 	max-width: 300px;
-	padding: 25px;
 	display: flex;
 	flex-flow: column wrap;
 	justify-content: center;
 	border-radius: 10px;
 	font-size: 24px;
 	box-shadow: 0 2px 8px 0 rgba(0,0,0,.15);
+	margin: 0 auto;
 	
+}
+
+@media screen and (min-width: 600px) {
+	.main {
+		grid-template-columns: repeat(3, 1fr);
+
+	}
 }
