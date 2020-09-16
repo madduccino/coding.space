@@ -73,7 +73,7 @@ class TCSEditor extends React.Component {
 					<div name={name} dangerouslySetInnerHTML={{__html:text}}/>
 					<button onClick={this.handleEdit}>{buttonText}</button>
 					{this.props.url && (
-						<a target="_blank" href={this.props.url}>Link to Project</a>
+						<a target="_blank" href={this.props.url}>Go to Project</a>
 					)}
 
 				</div>

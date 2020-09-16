@@ -82,7 +82,7 @@ class LaunchPad extends React.Component {
  	const selectedFilters = Object.keys(FILTER).filter(v=>filter.includes(v));
  	var untutorialLevels = groupBy(untutorials,'Level');
  	if(loading)
- 		return (<div className="loading">...Loading</div>);
+ 		return (<div className="loading">Loading...</div>);
 
  	//console.log("hiya")
  	return (
