@@ -615,7 +615,7 @@ class UntutorialPageBase extends React.Component {
 
 		return (
 			<section id="untutorial">
-			  <div className="thumbnail">
+			  <div className="thumbnail hero">
 									{!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===untutorial.Author.key) && (		
 										<label for="files" className="upload">
 											<input id="files" type="file" onChange={this.handleThumbnailUpload}/>
@@ -631,14 +631,11 @@ class UntutorialPageBase extends React.Component {
 			  <div className="main">
 				  <div className="main-content">
 				  <div className="workOnProject">
-						  {!!authUser && !progress && (
-						  <button
-						  onClick={this.loadProgress}>Check Out</button>
-						  )}
+	
 						  {!!progress && progress.Status == 'APPROVED' &&(
 						  <div>
 							<h3>GREAT JOB! You finished this project!</h3>
-							<button onClick={()=>window.location = ROUTES.UNIVERSE + '/' + progress.untut}>Publish to the UNIVERSE!</button>
+							<button className="publish" onClick={()=>window.location = ROUTES.UNIVERSE + '/' + progress.untut}>Publish to the UNIVERSE!</button>
 						  </div>
 						  )}
 						  {!!progress && progress.Status == 'PENDING' && (
@@ -657,7 +654,7 @@ class UntutorialPageBase extends React.Component {
 				        
 						<div className="checkOff">
 						  <div className={'step-title status'}>
-						    Step {index}
+						    Step {index+1}
 						    {(!!progress && !!progress.steps[index] && progress.steps[index].Status == 'DRAFT') ? (
 							  <div className="red">
 							    {/* <img className={'pixel'} src='/images/rocket-coin-slot.png'/> */}
@@ -731,10 +728,8 @@ class UntutorialPageBase extends React.Component {
 				))}
 			</div>
 				  <div className="sidebar">
-				    <div className="sidebar-content">
-					<div className="container">	
+					  <div className="container">	
 					    <div className={'titleStatus'}>
-						Title 
 						<TCSEditor 
 						disabled={!(authUser && !!authUser.roles['ADMIN'])}
 						type={'text'}
@@ -743,11 +738,16 @@ class UntutorialPageBase extends React.Component {
 						onEditorChange={this.handleTitleOnChange}
 						onEditorSave={this.handleTitleOnSave}
 						placeholder={'Step Description'} 
-						text={untutorial.Title} />
+						text={`Title: ${untutorial.Title}`} />
 					    </div>		
-					  </div>
+					
+					  {!!authUser && !progress && (
+						  <button className="checkout"
+						  onClick={this.loadProgress}>Check Out</button>
+						  )}
+						    </div>
 					  <div className="container">
-						Level
+						
 					    <TCSEditor 
 							disabled={!(authUser && (!!authUser.roles['ADMIN'] || authUser.uid===untutorial.Author.key))}
 							type={'select'}
@@ -756,7 +756,7 @@ class UntutorialPageBase extends React.Component {
 							onEditorChange={this.handleLevelOnChange}
 							onEditorSave={this.handleLevelOnSave}
 							placeholder={'Level'} 
-							text={untutorial.Level}/>
+							text={`Level: ${untutorial.Level}`}/>
 					  </div>	
 					  <div className="container">
 						{untutorial.Author.Status === 'APPROVED' &&(
@@ -785,8 +785,7 @@ class UntutorialPageBase extends React.Component {
 							url={true}
 							text={progress.URL}/>
 							  </div>
-						  )}
-						
+					  )}
 					  {!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===untutorial.Author.key) && (		
 					  <div className="container">
 						Status	
@@ -823,7 +822,6 @@ class UntutorialPageBase extends React.Component {
 					  </div>
 					  )}
 
-					</div>
 				  </div>
 				</div>	
 			</section>
