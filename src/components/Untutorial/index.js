@@ -645,6 +645,21 @@ class UntutorialPageBase extends React.Component {
 						  {!!progress && progress.Status == 'DRAFT' && nextStep>0 && (
 						    <h3>Keep it Up! You're on Step {nextStep}!</h3>
 						  )}	
+						{!!progress  && 
+						 	
+						(
+						<div>	  
+						  <TCSEditor 
+							disabled={false}
+							type={'plain'}
+							className="url"
+							onEditorChange={this.handleProgressURLOnChange}
+							onEditorSave={this.handleProgressURLOnSave}
+							placeholder={'Project URL...'} 
+							url={true}
+							text={progress.URL}/>
+							</div>
+					  )}
 						</div>
 				  <div className="container">
 		
@@ -656,22 +671,19 @@ class UntutorialPageBase extends React.Component {
 						  <div className={'step-title status'}>
 						    Step {index+1}
 						    {(!!progress && !!progress.steps[index] && progress.steps[index].Status == 'DRAFT') ? (
-							  <div className="red">
-							    {/* <img className={'pixel'} src='/images/rocket-coin-slot.png'/> */}
-						      </div>
+							  <div className="red"></div>
 							  ) : (!!progress && !!progress.steps[index] && progress.steps[index].Status == 'PENDING') ? (
-							  <div className="yellow">
-							    {/* <img className={'pixel'} src='/images/inprogress-coin.gif'/> */}
-						      </div>
+							  <div className="yellow"></div>
 							  ) : !!progress && (
-								<div className="green">
-									{/* <img className={'pixel'} src='/images/rocket-coin.gif'/> */}
-								</div>
+								<div className="green"></div>
 								)}
 							</div>	
 						</div>
-						<div className={'overlay-content'}>
+
+						
 							<div className={'step-content'}>
+							  
+							  
 							  <TCSEditor
 								disabled={!(!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===untutorial.Author.key))}
 								type={'text'}
@@ -679,12 +691,14 @@ class UntutorialPageBase extends React.Component {
 								onEditorChange={(value)=>this.handleStepOnChange(value,index)} 
 								onEditorSave={(value)=>this.handleStepOnSave(value,index)} 
 								placeholder={'Step Description'}
-								buttonText={'Edit Description'} 
+								buttonText={!!progress  ? '' : 'Edit Description'} 
 								text={untutorial.steps[index].Description}/> 
+
+
 								{!!progress && !!progress.steps[index] && progress.steps[index].Comments != '' && (
 								  <div className={'comments'}>{progress.steps[index].Comments}</div>
 								)}
-								<div className="step thumbnail">
+								<div className="thumbnail">
 								  {!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===untutorial.Author.key) && (		
 									<label for={'step' + index + '-thumbnail-upload'} className="upload">
 									  <input id={'step' + index + '-thumbnail-upload'} type="file" onChange={(event)=>this.handleStepThumbnailUpload(event,index)}/>
@@ -714,16 +728,6 @@ class UntutorialPageBase extends React.Component {
 									</div>
 								)}
 							</div>
-							{/* {!!progress && (!progress.steps[index] || progress.steps[index].Status == 'PENDING') && (
-								
-								<div className={'overlay'}>
-									
-									<div className={'pending-plate'}>
-										<img className={'pixel'} src={'/images/fixing.gif'}/>
-									</div>
-								</div>
-							)} */}
-						</div>
 					</div>
 				))}
 			</div>
@@ -738,7 +742,7 @@ class UntutorialPageBase extends React.Component {
 						onEditorChange={this.handleTitleOnChange}
 						onEditorSave={this.handleTitleOnSave}
 						placeholder={'Step Description'} 
-						text={`Title: ${untutorial.Title}`} />
+						text={untutorial.Title} />
 					    </div>		
 					
 					  {!!authUser && !progress && (
@@ -772,20 +776,7 @@ class UntutorialPageBase extends React.Component {
 							placeholder={'Untutorial Description'} 
 							text={untutorial.Description.replace(/<(.|\n)*?>/g, '').trim()} />
 					  </div>
-					  {!!progress  && (
-						  <div className="container">
-							  Link to Project
-						  <TCSEditor 
-							disabled={false}
-							type={'plain'}
-							className="url"
-							onEditorChange={this.handleProgressURLOnChange}
-							onEditorSave={this.handleProgressURLOnSave}
-							placeholder={'Project URL...'} 
-							url={true}
-							text={progress.URL}/>
-							  </div>
-					  )}
+
 					  {!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===untutorial.Author.key) && (		
 					  <div className="container">
 						Status	

@@ -401,33 +401,17 @@
         &.approved  {
           div {
           background-color:#00b700;
-          
-          // text-align: center;
-          // font-size: 12px;
           }
         }
         &.level {
           font-size: 1.6rem;
         }
-         > div {
-          }
-        // font-size: 2rem;
-        // line-height: 2rem;
-        // font-size: 1rem;
-        // border-bottom-right-radius: 4px;
-        // border-bottom-left-radius: 4px;
-        // color: $darkgreen;
-        // background-color: #fff;
-        // padding-bottom: 1px;
         button {
-            font-size: 14px;
+            font-size: 1rem;
             padding: 2px 6px;
             background-color: $lightGreen;
             color: $darkgreen;
             display: inline;
-          // right: 0;
-          // top: 0;
-          // position: absolute;
         }
         &.display-name {
           font-size: 2rem;
@@ -551,14 +535,14 @@
     .main {
       color: #fff;
       display: grid;
-      grid-gap: 3rem;
       @include flexhc;
       margin: 40px;
       > a {
         background-color: #fff;
         border-radius: 8px;
         color: $darkgreen;
-        width: 25%;
+        width: 21%;
+        margin: 2%;
         // flex-grow: 1;
         img {
            width: 100%;
@@ -568,7 +552,7 @@
            border-top-right-radius: 8px;
         }
         > div {
-          padding: 40px;
+          padding: 40px 20px;
           font-size: 1rem;
           font-family: $bodyFont;
           font-weight: 300;
@@ -649,7 +633,8 @@
       .sidebar {
         background-color: #fff;
         color: $darkgreen; 
-        padding: 20px;
+        padding: 30px;
+        margin-top: 20px;
         .filter-categories {
           a {
             display: block;
@@ -659,7 +644,6 @@
         button {
           background-color: $darkgreen !important;
           color: #fff !important;
-          margin-left: 10px;
         }
         .titleStatus {
           .title {
@@ -680,9 +664,7 @@
           padding-bottom:5px;
           margin-bottom: 20px;
           @include flexv;
-          &.url {
-            display: block;
-          }
+
           .checkout {
             margin-left: 0;
             margin-top: 10px;
@@ -691,9 +673,10 @@
         }
       }
       .main-content {
+        
       .status {
         > div  {
-          margin: 0;
+          margin-left: 2px;
         }
       }
       padding-top: 30px;
@@ -711,146 +694,44 @@
         width: 350px;
         margin-top: 10px;
       }
-      .step.pending {
-        &.pending { 
-          .overlay-content{
-            position:relative;
-            .step-content{
-              filter:blur(2.5px);
-            }
-            .overlay{
-              position:absolute;
-              width:100%;
-              height:100%;
-              top:0px;
-              left:0px;
-              .pending-plate{
-                width:50%;
-                margin-left:25%;
-                margin-right:25%;
-                margin-top:20%;
-                background-color:$lightGreen;
-                border: 6px solid $darkgreen;
-                border-radius: 4px;
-                // box-shadow:
-                //   0   -6px 0  -2px #EDC034,
-                //   0    6px 0  -2px#EDC034,
-                //   0  -12px 0  -4px #EDC034,
-                //   0   12px 0  -4px#EDC034,
-                //   0  -18px 0  -8px#EDC034,
-                //   0   18px 0  -8px#EDC034,
-                //   0  -24px 0 -12px#EDC034,
-                //   0   24px 0 -12px #EDC034,
-                //  -6px  0   0   0   black,
-                //   6px  0   0   0   black,
-                //   0    0   0   4px black,
-                //   0   -6px 0   2px black,
-                //   0    6px 0   2px black,
-                //   0  -10px 0   0   black,
-                //   0   10px 0   0   black,
-                //   0  -14px 0  -2px black,
-                //   0   14px 0  -2px black,
-                //   0  -18px 0  -4px black,
-                //   0   18px 0  -4px black,
-                //   0  -24px 0  -8px black,
-                //   0   24px 0  -8px black,
-                //   0  -30px 0 -12px black,
-                //   0   30px 0 -12px black;
-                img{
-                  width:80%;
-                  margin-left:10%;
-                  margin-right:10%;
-                  margin-top:10%;
-                }
-              } 
-           }
-          }
+      .url {
+        margin: 20px 0;
+        button {
+          background-color: $darkgreen;
+          color: #fff;
+          width: auto;
+          padding: 2px 6px;
+          margin: 10px auto;
+          font-size: 1rem;
         }
       }
-        .step{
+      .step{
           text-align: left;
           position: relative;
           max-width: 533px;
-          margin: 40px auto 60px;
+          margin: 20px auto 60px;
           border-bottom: 1px solid #ccc;
-  
+          box-shadow: 0 2px 8px 0 rgba(0,0,0,.15);
+          padding: 0 20px 20px;
+          border-radius: 10px;
+          .step-content {
+            margin-top: 20px;
+          }
           button {
             position: absolute;
-            left: 130px;
+            right: 0px;
             top: 0;
             width: auto;
           }
           &.done {
             bottom: 0;
           }
-    
-          
-          .overlay-content{
-            // background-color: $lightGreen;
-            // box-shadow:
-            //   0   -6px 0  -2px $lightGreen,
-            //   0    6px 0  -2px $lightGreen,
-            //   0  -12px 0  -4px $lightGreen,
-            //   0   12px 0  -4px $lightGreen,
-            //   0  -18px 0  -8px $lightGreen,
-            //   0   18px 0  -8px $lightGreen,
-            //   0  -24px 0 -12px $lightGreen,
-            //   0   24px 0 -12px $lightGreen,
-
-            //  -6px  0   0   0   black,
-            //   6px  0   0   0   black,
-            //   0    0   0   4px black,
-            //   0   -6px 0   2px black,
-            //   0    6px 0   2px black,
-            //   0  -10px 0   0   black,
-            //   0   10px 0   0   black,
-            //   0  -14px 0  -2px black,
-            //   0   14px 0  -2px black,
-            //   0  -18px 0  -4px black,
-            //   0   18px 0  -4px black,
-            //   0  -24px 0  -8px black,
-            //   0   24px 0  -8px black,
-            //   0  -30px 0 -12px black,
-            //   0   30px 0 -12px black;
-              .step-content{
-                margin-top: 0;
-                font-family: $bodyFont;
-                font-size: 18px;
-                line-height: 30px;
-                font-weight: 300;
-                .field{
-                  // background-color:#9FE2DD;
-                  text-align:center;
-                  margin:0px;
-                  margin-bottom: 20px;
-                  button {
-                    margin-right: 40px;
-                  }
-          
-                }
-                .thumbnail{ 
-                  
-                  width: auto;
-      border: 1px solid #ECECEC;
-                  img {
-                    width: 100%;
-                  }
-                  .upload:after{
-                    content:"Choose Screenshot";
-                    left: 0;
-                    margin: 0 auto;
-                    right: 0;
-                    text-align: center;
-                  }
-                }
-
-              }
-          }
           .field {
             > div {
               font-size: 1.2rem;
               font-weight: 300;
               text-align: left;
+              margin-bottom: 10px;
             }
             iframe {
               margin-top: 20px;
@@ -860,11 +741,10 @@
           }
           .step-title{
             display:flex;
-            margin:auto;
-            margin-bottom:20px;
-            font-size: 2rem;
+            font-family: $bodyFont;
+            font-weight: 300;
+            font-size: 3rem;
             div{
-              // margin-left:20px;
               img{
                 width:60px;
               }
@@ -989,6 +869,7 @@
           @include flexhc;
           margin-bottom: 20px;
         }
+
      .desc {
         position:absolute;
         top: 35%;
@@ -1006,7 +887,7 @@
         top: 0;
         right: 0;
         top: 50px;
-        font-size: 14px;
+        font-size: 1rem;
         width: 50px;
         background-color: $darkgreen;
         color: #fff;
@@ -1048,7 +929,6 @@
     color: $orange;
     a {
       display: inline-block;
-      margin-right: 20px;
       cursor: pointer;
       color: $orange;
     }
@@ -1223,7 +1103,7 @@
       button {
         margin: 5px 0;
         width: auto;
-        font-size: 14px;
+        font-size: 1rem;
         padding: 2px 4px;
       }
       
@@ -1284,54 +1164,23 @@
    }
   }
 
-  #progress {
+.status {
+  margin: 0 auto;
+}
+
+  .progress {
     .status {
-      margin: 0
+      margin: 0;
     }
   }
 
   #untutorial, #profile, #progress-reviews {
+    .workOnProject {
+      margin: 20px 0 40px;
+    }
     .status {
       @include flexh; 
-      .approved {
-        // width: 25px;
-        // height: 25px;
-        // background-color: green;
-        // border-radius: 50%;
-        // margin:10px;
-      }
-      .draft {
-        width: 25px;
-        height: 25px;
-        background-color: #fff;
-        border-radius: 50%;
-        margin:10px;
-      }
-      .pending {
-        width: 25px;
-        height: 25px;
-        background-color: yellow;
-        border-radius: 50%;
-        margin:10px;
-      }
-      .finished {
-        width: 25px;
-        height: 25px;
-        background-color: blue;
-        border-radius: 50%;
-        margin:10px;
-      }
-      img {
-        image-rendering: pixelated;
-        width: 40px;
-        height: 44px;
-        &.explorer {
-          height: 78px;
-          margin-top: -20px;
-        }
-      }
-
-     div {
+     > div {
       width: 15px;
       height: 15px;
       border-radius: 50%;
@@ -1360,8 +1209,6 @@
     }
     }
   }
-
- 
 
   #profile {
     #projects, #untutorials {
