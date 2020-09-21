@@ -1,9 +1,21 @@
 {
   "rules": {
     "db":{
-      "Project":{
+      "Projects":{
         ".read":true,
         ".write":true
+      },
+      "Progress":{
+          ".read":true,
+          ".write":true
+      },
+      "Questions":{
+          ".read":true,
+          ".write":true
+      },
+      "Resources":{
+          ".read":true,
+          ".write":true
       },
       "Profiles" : {
       ".read":"true",
@@ -44,3 +56,10 @@
     }
     
 }
+Classes
+Profiles
+Progress
+Projects
+Questions
+Resources
+Untutorials
