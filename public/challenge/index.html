@@ -11,65 +11,17 @@
     <link href="https://fonts.googleapis.com/css?family=Quicksand" rel="stylesheet">
     <link rel="icon" type="image/x-icon" href="./images/favicon.ico">
     <style>
-      body {
-        background: url(https://coding.space/images/2018background.jpg);
-        -webkit-background-size: cover;
-        -moz-background-size: cover;
-        -o-background-size: cover;
-        background-size: cover;
+      .button {
+        width: 250px;
+        height: 70px;
       }
-      p {
-        margin-top: 10vh;
-      }
-      #title {
-        font-size: 3.5em;
-      }
-      h1 {
-        font-size: 2.5em;
-        font-family: 'Quicksand', sans-serif;
-        font-weight: bold;
-      }
-      img  {
-        display: inline-block;
-        margin: 5px;
-      }
-      #imageContainer {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        height: 40vh;
-        cursor: pointer;
-      }
-      #titleContainer {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        height: 30vh;
-        color: white;
-      }
-      .challenge {
-        position: fixed; /* Sit on top of the page content */
-        display: none; /* Hidden by default */
-        width: 100%; /* Full width (cover the whole page) */
-        height: 100%; /* Full height (cover the whole page) */
-        top: 0; 
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background-color: rgba(0,0,0,0.95); /* Black background with opacity */
-        z-index: 2; /* Specify a stack order in case you're using a different order for other elements */
-        cursor: pointer; /* Add a pointer on hover */
-        text-align: center;
-        color: white;
-        padding-top: 15vh;
-        font-size: 200%;
-      }	
     </style>
+    <link rel="stylesheet" href="style.css">
   </head>
 
   <body>
       <div id="titleContainer">
-          <h1 id="title">Coding Space Weekly Challenges Week</h1>
+          <h1 id="title"></h1>
       </div>
       <div id="imageContainer">
         <img id = "scratchImage" onclick = "overlayOn('scratchChallenge')"  src="https://coding.space/images/2018scratch.png">
@@ -79,6 +31,13 @@
       <div class = "challenge"  onclick =     "overlayOff('scratchChallenge')" id="scratchChallenge"></div>
       <div class = "challenge" id="woofChallenge" onclick = "overlayOff('woofChallenge')" ></div>
       <div class = "challenge" id="webChallenge" onclick = "overlayOff('webChallenge')" ></div>
+    
+      <div id="footer">
+        <div class="button">
+          <a href="past.html" class="past">Past Challenges</a>
+        </div>
+      </div>
+    
     <script>
           //arrays contain challenge information
           let scratchChallenges = [
@@ -97,40 +56,40 @@
             "Make a project which uses at least one <strong>graphic effect</strong> on a sprite.</p><p>Start a Scratch project at a higher level than one you've done before.</p><p>Make an animation with some randomized text and multiple paths.",
             "Pull an image from Google Images to use as a sprite costume or backdrop in your project.</p><p>Use comments in your project to label your code so that someone else can understand it.</p><p>Create a project which can be used by the player to generate visual art.",
             "Use the <strong>and</strong> operator to combine two diamond-shaped blocks.</p><p>Learn the difference between a <strong>vector</strong> costume and a <strong>bitmap</strong> costume.</p><p>Add a high score table to one of your projects using a list.",
-            "</p><p>Use a <strong>cloud variable</strong> in a project.</p><p>Makea project using only art you drew yourself.",
+            "Use the <strong>touching color</strong> block in a project.</p><p>Use a <strong>cloud variable</strong> in a project.</p><p>Make a project using only art you drew yourself.",
             "Use the <strong>join</strong> operator to combine a variable and some text.</p><p></p><p>Use a variable that is <strong>for this sprite only</strong> with clones.",
-            "</p><p></p><p>"
+            "Help another student fix a bug in their project.</p><p>Make and use a health bar in a project.</p><p>Finish one of your projects and have someone test it."
           ]
           let woofChallenges = [
             "Learn the name of everyone in your class, both teachers and students.</p><p>Make a project with at least one of each of the types of sprites.</p><p>Complete 3 steps in a new WoofJS project.",
+            "Make a sprite which follows the mouse.</p><p>Make your own <strong>array</strong> and use it in a project.</p><p>Use the WoofJS <strong>pen</strong> to draw a starry sky on a solid color background.",
+            "Make an image outside of WoofJS (pixilart.com is great for pixel art) and import it into WoofJS to use as a sprite.</p><p>Use the current time and date in a project.</p><p>Make a WoofJS project with a fixed size using <strong>fullScreen = false</strong> and <strong>setBackdropSize(x, y)</strong>",
+            "Make a sprite which constantly changes color using <strong>randomColor()</strong>.</p><p>Research <strong>while</strong> and <strong>for</strong> loops and use them in a project.</p><p>Do the cloning tutorial and, after you complete it, explain to someone what each part of the code does.",
+            "</p><p>Learn one new thing about Javascript from <strong>w3schools.com/js</strong> and test it in WoofJS.</p><p>Make a complete WoofJS project using only <strong>Text</strong> sprites.",
+            "</p><p>Research good techniques for organizing code, and organize the code of your current or a past project.</p><p>Using clones, make a rain effect in your project.",
+            "Use <strong>Math.random()</strong> in your project instead of the WoofJS <strong>random()</strong>.</p><p></p><p>",
             "</p><p></p><p>",
+            "</p><p>Use an <strong>Integration</strong> in your project.</p><p>",
             "</p><p></p><p>",
-            "</p><p></p><p>",
-            "</p><p></p><p>",
-            "</p><p></p><p>",
-            "</p><p></p><p>",
-            "</p><p></p><p>",
-            "</p><p></p><p>",
-            "</p><p></p><p>",
-            "</p><p></p><p>",
+            "</p><p></p><p>Try to use as many variables as you can, and reduce the number of 'hard-coded' numbers in your script.",
             "</p><p></p><p>",
             "</p><p></p><p>",
             "</p><p></p><p>",
             "</p><p></p><p>",
             "</p><p></p><p>Make and use a class (with a constructor) in a project.",
-            "</p><p></p><p>",
+            "</p><p></p><p>Write your own collision code without using the <strong>touching</strong> function.",
             "</p><p></p><p>"
           ]
           let webChallenges = [
             "Learn the name of everyone in your class, both teachers and students.</p><p>Use at least 5 different HTML tags in a project.</p><p>Complete 3 steps in a new web project.",
-            "</p><p></p><p>",
-            "</p><p></p><p>Make the ugliest website you possibly can.",
-            "</p><p></p><p>",
-            "</p><p></p><p>",
-            "</p><p></p><p>",
+            "Learn what <strong>deprecated</strong> means and learn about 5 deprecated HTML tags.</p><p>Use at least 3 <strong>button</strong> tags in your project with connected Javascript.</p><p>Create a website with all of your favorite YouTube videos embedded on it.",
+            "Choose a color palette for your next project using a helpful tool like <strong>colorhunt.co</strong> or <strong>paletton.com</strong></p><p>Research the difference between <strong>var</strong>, <strong>let</strong>, and <strong>const</strong> and revise a project to use the appropriate keywords.</p><p>Make the ugliest website you possibly can.",
+            "Define your own function and use it in a project.</p><p>Research good techniques for organizing code, and organize the code of your current or a past project.</p><p>Make a website with only one link on it that is as hard to find as possible.",
             "</p><p></p><p>",
             "</p><p></p><p>",
-            "</p><p>Use a Google Fonts font in one of your projects.</p><p>",
+            "</p><p></p><p>",
+            "</p><p></p><p>",
+            "</p><p>Use a Google Fonts font in one of your projects.</p><p>Use your browser's <strong>inspector</strong> to examine the code on this page and find the <strong>secret challenge!</strong>", // SECRET CHALLENGE - 
             "</p><p></p><p>",
             "</p><p></p><p>",
             "</p><p></p><p>",
@@ -165,24 +124,24 @@
             let eighteenthWeek = new Date (2021, 0, 31)
             let dateToday = new Date(/*add date here to test other dates*/)
             if (dateToday <= firstWeek) currentWeek = 0;
-            if (dateToday <= secondWeek && dateToday > firstWeek) currentWeek = 0;
-            if (dateToday <= thirdWeek && dateToday > secondWeek) currentWeek = 1;
-            if (dateToday <= fourthWeek && dateToday > thirdWeek) currentWeek = 2;
-            if (dateToday <= fifthWeek && dateToday > fourthWeek) currentWeek = 3;
-            if (dateToday <= sixthWeek && dateToday > fifthWeek) currentWeek = 4;
-            if (dateToday <= seventhWeek && dateToday > sixthWeek) currentWeek = 5;
-            if (dateToday <= eigthWeek && dateToday > seventhWeek) currentWeek = 6;
-            if (dateToday <= ninthWeek && dateToday > eigthWeek) currentWeek = 7;
-            if (dateToday <= tenthWeek && dateToday > ninthWeek) currentWeek = 8;
-            if (dateToday <= eleventhWeek && dateToday > tenthWeek) currentWeek = 9;
-            if (dateToday <= twelfthWeek && dateToday > eleventhWeek) currentWeek = 10;
-            if (dateToday <= thirteenthWeek && dateToday > twelfthWeek) currentWeek = 11;
-            if (dateToday <= fourteenthWeek && dateToday > thirteenthWeek) currentWeek = 12;
-            if (dateToday <= fifteenthWeek && dateToday > fourteenthWeek) currentWeek = 13;
-            if (dateToday <= sixteenthWeek && dateToday > fifteenthWeek) currentWeek = 14;
-            if (dateToday <= seventeenthWeek && dateToday > sixteenthWeek) currentWeek = 15;
-            if (dateToday <= eighteenthWeek && dateToday > seventeenthWeek) currentWeek = 16;
-            if (dateToday >= eighteenthWeek) currentWeek = 17;
+            if (dateToday <= secondWeek && dateToday > firstWeek) currentWeek = 1;
+            if (dateToday <= thirdWeek && dateToday > secondWeek) currentWeek = 2;
+            if (dateToday <= fourthWeek && dateToday > thirdWeek) currentWeek = 3;
+            if (dateToday <= fifthWeek && dateToday > fourthWeek) currentWeek = 4;
+            if (dateToday <= sixthWeek && dateToday > fifthWeek) currentWeek = 5;
+            if (dateToday <= seventhWeek && dateToday > sixthWeek) currentWeek = 6;
+            if (dateToday <= eigthWeek && dateToday > seventhWeek) currentWeek = 7;
+            if (dateToday <= ninthWeek && dateToday > eigthWeek) currentWeek = 8;
+            if (dateToday <= tenthWeek && dateToday > ninthWeek) currentWeek = 9;
+            if (dateToday <= eleventhWeek && dateToday > tenthWeek) currentWeek = 10;
+            if (dateToday <= twelfthWeek && dateToday > eleventhWeek) currentWeek = 11;
+            if (dateToday <= thirteenthWeek && dateToday > twelfthWeek) currentWeek = 12;
+            if (dateToday <= fourteenthWeek && dateToday > thirteenthWeek) currentWeek = 13;
+            if (dateToday <= fifteenthWeek && dateToday > fourteenthWeek) currentWeek = 14;
+            if (dateToday <= sixteenthWeek && dateToday > fifteenthWeek) currentWeek = 15;
+            if (dateToday <= seventeenthWeek && dateToday > sixteenthWeek) currentWeek = 16;
+            if (dateToday <= eighteenthWeek && dateToday > seventeenthWeek) currentWeek = 17;
+            if (dateToday >= eighteenthWeek) currentWeek = 18;
           }
           function overlayOn(elementToTurnOn) {
             document.getElementById(elementToTurnOn).style.display = "block";
@@ -191,9 +150,74 @@
           function overlayOff(elementToTurnOff) {
             document.getElementById(elementToTurnOff).style.display = "none";
           }
+      
+          /*
+            
+            // OLD CHALLENGES FROM FALL 2019
+            
+            let scratchChallenges = [
+			  "Learn the name of everyone in your class--teachers and students.",
+			  "Find 4 totally different methods for moving sprites and demonstrate them in a project.",
+			  "Make a project with only 5 surprise sprites and 2 surprise backdrops (and some code). ",
+			  "Share one or more of your projects on the Scratch website.",
+			  "Make a variable that stays on the screen and use it in a project.",
+			  "Use messages to communicate between sprites.",
+			  "Make a variable that is hidden and use it in a project.",
+			  "Make an original scratch animation using costumes.",
+			  "Make a list and use it in a project.",
+			  "Use a loop block that you haven't used before.",
+			  "Make a block and use it in your project.",
+			  "Make a block with input values and use it in your project.",
+			  "Make a block that adds basic controls for a sprite, save it to your backpack, and use it in another project.",
+			  "Use one or more operator blocks that you've never used before.",
+			  "Test out a classmate's project.",
+			  "Add an extension to Scratch and use it in your project.",
+			  "Use the current time (year, month, etc) block in a project."
+			]
+			let woofChallenges = [
+			  "Learn the name of everyone in your class--teachers and students.",
+			  "Make a sprite on an external website (piskelapp.com is great for pixel art) and import it into Woof and use it in your project.",
+			  "Do the cloning tutorial and, after you complete it, explain to someone what each part of the code does.",
+			  "Research good techniques for organizing code, and organize the code of your current or a past project.",
+			  "Try to use as many variables as you can, and reduce the number of 'hard-coded' numbers in your script. ",
+			  "Learn one new thing about Javascript from w3schools.com/js and test it in WoofJS.",
+			  "Make your own array and use it in a project.",
+			  "Research while and for loops and use them in a project.",
+			  "Define your own function and use it in a project.",
+			  "Define a function that takes parameters and use it in a project.",
+			  "Define a function that ends with a return statement. Use the returned value for something in your project.",
+			  "Use a javascript switch statement in a project.",
+			  "Test out a classmate's project.",
+			  "Add an integration to your woof project.",
+			  "Make and use an object in a project.",
+			  "Make a constructor and use it in a project.",
+			  "Make and use a class (with a constructor) in a project."
+			]
+			let webChallenges = [
+			  "Learn the name of everyone in your class--teachers and students.",
+			  "Come up with a 15-week plan for your web development this semester.",
+			  "Use the browser inspector to inspect the code of whatever web editor you are using, and use the console to show a console.log result from code that you write.",
+			  "Make a sprite on an external website (piskelapp.com is great for pixel art) and import it into Woof and use the link that is generated there in your web project (or host it by some other means).",
+			  "Research good techniques for organizing code, and organize the code of your current or a past project.",
+			  "Research the difference between var, let, and const and revise a project to use the appropriate keywords.",
+			  "Research Javascript's pre-defined Array functions and utilize one of them in a project.",
+			  "Research while and for loops and use them in a project.",
+			  "Define your own function and use it in a project (use parameters and return statements where needed).",
+			  "Write a program that consists almost entirely of functions and runs normally.",
+			  "Find a website that has javascript algorithm challenges, and complete one of those challenges.",
+			  "Use a javascript switch statement, a default parameter, and a ternary operator all in one project.",
+			  "Test out a classmate's project.",
+			  "Add an api to a project.",
+			  "Make and use an object in a project.",
+			  "Make a constructor and use it in a project.",
+			  "Make and use a class (with a constructor) in a project."
+			]
+            
+            */
+      
           //script commands
           findCurrentWeek();
-          document.getElementById("title").innerHTML += " " + (currentWeek + 1);
+          document.getElementById("title").innerHTML = "Coding Space Weekly Challenges Week " + (currentWeek + 1);
           document.getElementById("scratchChallenge").innerHTML = "<h1>Scratch Challenges</h1> <p>" + scratchChallenges[currentWeek] + "</p>";
           document.getElementById("woofChallenge").innerHTML = "<h1>WoofJS Challenges</h1> <p>" + woofChallenges[currentWeek] + "</p>";
           document.getElementById("webChallenge").innerHTML = "<h1>Web Challenges</h1> <p>" + webChallenges[currentWeek] + "</p>";
