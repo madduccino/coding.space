@@ -82,7 +82,7 @@ class LaunchPad extends React.Component {
  	const selectedFilters = Object.keys(FILTER).filter(v=>filter.includes(v));
  	var untutorialLevels = groupBy(untutorials,'Level');
  	if(loading)
- 		return (<div>...Loading</div>);
+ 		return (<div className="loading">Loading...</div>);
 
  	//console.log("hiya")
  	return (
@@ -100,7 +100,7 @@ class LaunchPad extends React.Component {
 				    </select>
 			    )}
 			    
-			    <input type='text' onChange={this.textFilterOnChange} placeholder="Search..."/>
+			    <input className="search" type='text' onChange={this.textFilterOnChange} placeholder="Search..."/>
 				</div>	
 			    {selectedFilters.length > 0 && (
 			    	<div className="filter-categories">
@@ -111,8 +111,9 @@ class LaunchPad extends React.Component {
 			    )}	
 			<div className="main">	
 				{Object.keys(untutorialLevels).map(level=>(<>
+					
+					<>
 					<h1>{'Level ' + level}</h1>
-					<div>
 						{untutorialLevels[level].filter(untutorial=>
 							untutorial.Status === 'APPROVED' && 
 							(filter.length === 0 || filter.filter(f=>Object.values(untutorial.Categories).includes(f)).length > 0) &&
@@ -125,7 +126,7 @@ class LaunchPad extends React.Component {
 									</div>
 								</a>
 							))}
-					</div>
+					</>
 				
 					
 				</>))}

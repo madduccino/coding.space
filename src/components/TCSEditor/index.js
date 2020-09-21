@@ -57,7 +57,8 @@ class TCSEditor extends React.Component {
 
 		const {className} = this.props;
 
-		const {text,type,selectOptions,disabled,placeholder,name, editing, save,buttonText} = this.state;
+		const {text,type,selectOptions,disabled,placeholder,name, editing, save,buttonText	} = 
+		this.state;
 
 		if(!!disabled){
 			return (
@@ -67,12 +68,18 @@ class TCSEditor extends React.Component {
 			)
 		}
 		else if(!disabled && !editing){
+			if (this.props.url) {
+				return (
+				  <div className={'field ' + className}>
+					Project URL: <a target="_blank" href={text}>Go to Project</a>
+			        <button onClick={this.handleEdit}>{buttonText}</button>
+			      </div>
+				)
+			}
 			return (
 				<div className={'field ' + className}>
-             
 					<div name={name} dangerouslySetInnerHTML={{__html:text}}/>
 					<button onClick={this.handleEdit}>{buttonText}</button>
-
 				</div>
 			)
 		}

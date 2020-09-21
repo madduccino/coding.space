@@ -115,7 +115,7 @@ class Universe extends React.Component {
  	//var projectLevels = groupBy(projects,'Level');
 
 	if(loading)
-		return (<div>Loading ...</div>);
+		return (<div className="loading">Loading ...</div>);
  	
  	return (
 		<section id="universe">

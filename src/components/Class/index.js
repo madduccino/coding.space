@@ -335,7 +335,7 @@ class ClassPageBase extends React.Component {
  	
  	//console.log(Object.keys(project));
  	if(loading)
- 		return (<div>Loading ...</div>);
+ 		return (<div className="loading">Loading ...</div>);
  	const isInvalid = 
  		clazz.Title === '' ||
  		clazz.Description === '' ||
