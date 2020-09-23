@@ -21,8 +21,8 @@ class LaunchPad extends React.Component {
  		untutorials: [],
  		filter:[
  			FILTER.SCRATCH,
- 			FILTER.WOOF,
- 			FILTER.WEB
+ 			// FILTER.WOOF,
+ 			// FILTER.WEB
  		],
  		textFilter:'',
  		
@@ -35,8 +35,6 @@ class LaunchPad extends React.Component {
  }
  
  handleMouseEnter = () => this.props.setGlobalState({showFooter:false});
-	/*$('#scratch-box').fadeIn(250);
-	$('#footer').css('display','none');*/
  handleMouseLeave = () => this.props.setGlobalState({showFooter:true})
  categoryFilterOnChange(event){
  	const {filter} = this.state;
@@ -92,7 +90,7 @@ class LaunchPad extends React.Component {
 				</button>
 			</a> */}
 			<div className="filter">
-			    {loading && <div>Loading ...</div>}
+			    {loading && <div className="loading">Loading ...</div>}
 			    {selectedFilters.length != Object.keys(FILTER).length && (
 					<select onChange={this.categoryFilterOnChange}>
 						<option value='-1'>Filter...</option>

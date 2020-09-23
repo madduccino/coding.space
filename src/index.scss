@@ -848,7 +848,7 @@
         // display: flex;
         // flex-flow: row wrap;
         padding: 10px;
-        background-color: $beige;
+        box-shadow: 0 2px 8px 0 rgba(0,0,0,.15);
         text-align: center;
         button {
           width: auto;
