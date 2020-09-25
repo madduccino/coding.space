@@ -32,10 +32,6 @@
         height: 70px;
         display: none;
       }
-      #mainpage {
-        width: 250px;
-        height: 70px;
-      }
     </style>
     <link rel="stylesheet" href="style.css">
   </head>
@@ -62,9 +58,6 @@
       </div>
       <div class="button" id="listButton">
         <h4 onclick="mainPage()" class="past">Back To List</a>
-      </div>
-      <div class="button" id="mainpage">
-          <a href="./../" class="past">TCS Projects</a>
       </div>
     </div>
     
@@ -134,44 +127,7 @@
           var currentWeek = 0;
           //uses today's date to find current week index
           function findCurrentWeek() {
-            let firstWeek = new Date(2020, 8, 20)
-            let secondWeek = new Date(2020, 8, 27)
-            let thirdWeek = new Date(2020, 9, 4)
-            let fourthWeek = new Date(2020, 9, 11)
-            let fifthWeek = new Date(2020, 9, 18)
-            let sixthWeek = new Date(2020, 9, 25)
-            let seventhWeek = new Date(2020, 10, 1)
-            let eigthWeek = new Date(2020, 10, 8)
-            let ninthWeek = new Date(2020, 10, 15)
-            let tenthWeek = new Date(2020, 10, 22)
-            let eleventhWeek = new Date(2020, 10, 29)
-            let twelfthWeek = new Date(2020, 11, 6)
-            let thirteenthWeek = new Date(2020, 11, 13)
-            let fourteenthWeek = new Date(2020, 11, 20)
-            let fifteenthWeek = new Date(2021, 0, 10)
-            let sixteenthWeek = new Date(2021, 0, 17)
-            let seventeenthWeek = new Date (2021, 0, 24)
-            let eighteenthWeek = new Date (2021, 0, 31)
-            let dateToday = new Date(/*add date here to test other dates*/)
-            if (dateToday <= firstWeek) currentWeek = 0;
-            if (dateToday <= secondWeek && dateToday > firstWeek) currentWeek = 1;
-            if (dateToday <= thirdWeek && dateToday > secondWeek) currentWeek = 2;
-            if (dateToday <= fourthWeek && dateToday > thirdWeek) currentWeek = 3;
-            if (dateToday <= fifthWeek && dateToday > fourthWeek) currentWeek = 4;
-            if (dateToday <= sixthWeek && dateToday > fifthWeek) currentWeek = 5;
-            if (dateToday <= seventhWeek && dateToday > sixthWeek) currentWeek = 6;
-            if (dateToday <= eigthWeek && dateToday > seventhWeek) currentWeek = 7;
-            if (dateToday <= ninthWeek && dateToday > eigthWeek) currentWeek = 8;
-            if (dateToday <= tenthWeek && dateToday > ninthWeek) currentWeek = 9;
-            if (dateToday <= eleventhWeek && dateToday > tenthWeek) currentWeek = 10;
-            if (dateToday <= twelfthWeek && dateToday > eleventhWeek) currentWeek = 11;
-            if (dateToday <= thirteenthWeek && dateToday > twelfthWeek) currentWeek = 12;
-            if (dateToday <= fourteenthWeek && dateToday > thirteenthWeek) currentWeek = 13;
-            if (dateToday <= fifteenthWeek && dateToday > fourteenthWeek) currentWeek = 14;
-            if (dateToday <= sixteenthWeek && dateToday > fifteenthWeek) currentWeek = 15;
-            if (dateToday <= seventeenthWeek && dateToday > sixteenthWeek) currentWeek = 16;
-            if (dateToday <= eighteenthWeek && dateToday > seventeenthWeek) currentWeek = 17;
-            if (dateToday >= eighteenthWeek) currentWeek = 18;
+            currentWeek = 18;
           }
           function overlayOn(elementToTurnOn) {
             document.getElementById(elementToTurnOn).style.display = "block";
@@ -190,7 +146,7 @@
       
           function goToWeek(w) {
             findCurrentWeek();
-            document.getElementById("title").innerHTML = "Coding Space Past Challenges Week " + (w + 1);
+            document.getElementById("title").innerHTML = "Coding Space Challenges Week " + (w + 1);
             document.getElementById("scratchChallenge").innerHTML = "<h1>Scratch Challenges</h1> <p>" + scratchChallenges[w] + "</p>";
             document.getElementById("woofChallenge").innerHTML = "<h1>WoofJS Challenges</h1> <p>" + woofChallenges[w] + "</p>";
             document.getElementById("webChallenge").innerHTML = "<h1>Web Challenges</h1> <p>" + webChallenges[w] + "</p>";
@@ -200,7 +156,7 @@
             document.getElementById("backButton").style.display = "none";
           }
           function mainPage() {
-            document.getElementById("title").innerHTML = "Coding Space Past Weekly Challenges"
+            document.getElementById("title").innerHTML = "All Coding Space Challenges";
             document.getElementById("imageContainer").style.display = "none";
             document.getElementById("buttonContainer").style.display = "flex";
             document.getElementById("listButton").style.display = "none";
