@@ -69,9 +69,11 @@ class TCSEditor extends React.Component {
 		}
 		else if(!disabled && !editing){
 			if (this.props.url) {
-				return (
+				return ( 
 				  <div className={'field ' + className}>
-					Project URL: <a target="_blank" href={text}>Go to Project</a>
+					Project URL {text  && ( 
+					<h2><a target="_blank" href={text}>Go to Project</a></h2>
+					)}
 			        <button onClick={this.handleEdit}>{buttonText}</button>
 			      </div>
 				)

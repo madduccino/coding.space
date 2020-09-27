@@ -616,38 +616,35 @@ class UntutorialPageBase extends React.Component {
 		return (
 			<section id="untutorial">
 			  <div className="thumbnail hero">
-									{!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===untutorial.Author.key) && (		
-										<label for="files" className="upload">
-											<input id="files" type="file" onChange={this.handleThumbnailUpload}/>
-										</label>
-									)} 
-									{this.state.uploading && (
-										<progress value={this.state.uploadPercent} max="100"/>
-									)}
-									{!!untutorial.ThumbnailFilename && !!untutorial.ThumbnailFilename.length != 0 && !this.state.uploading &&(
-										<LazyImage file={this.props.firebase.storage.ref('/public/' + untutorial.Author.key + '/' + untutorial.ThumbnailFilename)}/>
-									)}
-								</div>
+				{!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===untutorial.Author.key) && (	
+				<label for="files" className="upload">
+					<input id="files" type="file" onChange={this.handleThumbnailUpload}/>
+				</label>
+				)} 
+				{this.state.uploading && (
+					<progress value={this.state.uploadPercent} max="100"/>
+				)}
+				{!!untutorial.ThumbnailFilename && !!untutorial.ThumbnailFilename.length != 0 && !this.state.uploading &&(
+					<LazyImage file={this.props.firebase.storage.ref('/public/' + untutorial.Author.key + '/' + untutorial.ThumbnailFilename)}/>
+				)}
+			  </div>
 			  <div className="main">
 				  <div className="main-content">
 				  <div className="workOnProject">
-	
-						  {!!progress && progress.Status == 'APPROVED' &&(
-						  <div>
-							<h3>GREAT JOB! You finished this project!</h3>
-							<button className="publish" onClick={()=>window.location = ROUTES.UNIVERSE + '/' + progress.untut}>Publish to the UNIVERSE!</button>
-						  </div>
-						  )}
-						  {!!progress && progress.Status == 'PENDING' && (
-						  <h3>Your teacher is reviewing your project! Take it easy!</h3>
-						  )}
-		
-						  {!!progress && progress.Status == 'DRAFT' && nextStep>0 && (
-						    <h3>Keep it Up! You're on Step {nextStep}!</h3>
-						  )}	
-						{!!progress  && 
-						 	
-						(
+					{!!progress && progress.Status == 'APPROVED' &&(
+					<div>
+					<h3>GREAT JOB! You finished this project!</h3>
+					<button className="publish" onClick={()=>window.location = ROUTES.UNIVERSE + '/' + progress.untut}>Publish to the UNIVERSE!</button>
+					</div>
+					)}
+					{!!progress && progress.Status == 'PENDING' && (
+					<h3>Your teacher is reviewing your project! Take it easy!</h3>
+					)}
+
+					{!!progress && progress.Status == 'DRAFT' && nextStep>0 && (
+					<h3>Keep it Up! You're on Step {nextStep}!</h3>
+					)}	
+					{!!progress  && (
 						<div>	  
 						  <TCSEditor 
 							disabled={false}
@@ -657,6 +654,7 @@ class UntutorialPageBase extends React.Component {
 							onEditorSave={this.handleProgressURLOnSave}
 							placeholder={'Project URL...'} 
 							url={true}
+							buttonText={progress.URL ? 'Edit Link' : 'Add Link'}
 							text={progress.URL}/>
 							</div>
 					  )}

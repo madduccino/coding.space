@@ -696,6 +696,20 @@
       }
       .url {
         margin: 20px 0;
+        font-size: 1.4rem;
+        h2 {
+          margin-top: 5px;
+        }
+        input {
+          padding: 8px;
+          border:4px solid $orange;
+          border-radius: 4px;
+          width: 50%;
+          font-size: 1.5rem;
+          &:focus {
+            outline: 0;
+          }
+        }
         button {
           background-color: $darkgreen;
           color: #fff;
