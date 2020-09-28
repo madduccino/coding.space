@@ -782,7 +782,7 @@ class UntutorialPageBase extends React.Component {
 						  )}
 						    </div>
 					  <div className="container">
-						
+						Level:
 					    <TCSEditor 
 							disabled={!(authUser && (!!authUser.roles['ADMIN'] || authUser.uid===untutorial.Author.key))}
 							type={'select'}
@@ -791,7 +791,7 @@ class UntutorialPageBase extends React.Component {
 							onEditorChange={this.handleLevelOnChange}
 							onEditorSave={this.handleLevelOnSave}
 							placeholder={'Level'} 
-							text={`Level: ${untutorial.Level}`}/>
+							text={untutorial.Level}/>
 					  </div>	
 					  <div className="container">
 						{untutorial.Author.Status === 'APPROVED' &&(
