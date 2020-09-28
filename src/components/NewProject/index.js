@@ -38,11 +38,11 @@ class NewProjectPageBase extends React.Component {
  			ThumbnailFilename:null,
  			Title:'',
  			Status:'DRAFT',
- 			steps:{
- 				1:{
- 					Description:'',
+ 			steps:[
+ 				{
+ 					Description:'',Title:''
  				}
- 			}
+ 			]
 
  		},
  		valid:false,
@@ -62,6 +62,8 @@ class NewProjectPageBase extends React.Component {
  	this.handlePDescriptionOnSave = this.handlePDescriptionOnSave.bind(this);
  	this.handleLevelOnChange = this.handleLevelOnChange.bind(this);
  	this.handleLevelOnSave = this.handleLevelOnSave.bind(this);
+ 	this.handleStepTitleOnChange = this.handleStepTitleOnChange.bind(this);
+
  	this.handleStepOnChange = this.handleStepOnChange.bind(this);
  	this.handleStepValidate = this.handleStepValidate.bind(this);
  	this.handleStepOnSave = this.handleStepOnSave.bind(this);
@@ -247,6 +249,14 @@ class NewProjectPageBase extends React.Component {
  handleLevelOnSave(){
 
  }
+ handleStepTitleOnChange(value,step){
+ 	var pCopy = this.state.untutorial;
+ 	if(value !== pCopy.steps[step].Title){
+ 		pCopy.steps[step].Title = value;
+ 		this.setState({untutorial:pCopy},()=>this.handleStepValidate(pCopy.steps[step],step));
+ 	}
+
+ }
  handleStepOnChange(value,step){
  	var pCopy = this.state.untutorial;
  	if(value !== pCopy.steps[step].Description){
@@ -278,18 +288,18 @@ class NewProjectPageBase extends React.Component {
  }
  addStepHandler(event){
  	var pCopy = this.state.untutorial;
- 	var step = {Description:''};
- 	var index = Math.max(...Object.keys(pCopy.steps)) + 1;
- 	pCopy.steps[index] = step;
+ 	var step = {Description:'',Title:''};
+ 	var index = pCopy.steps.length;
+ 	pCopy.steps.push(step);
  	this.setState({untutorial:pCopy},()=>{this.handleStepCountValidate();this.handleStepValidate(step,index)});
  	console.log("Add Step");
  }
  handleStepCountValidate(){
  	const {errors,untutorial} = this.state;
- 	if(Object.keys(untutorial.steps).length == 0){
+ 	if(untutorial.steps.length == 0){
 		errors["Stepcount"] = 'STEPS.<span class="red">R_REQUIRED</span>'; 		
  	}
- 	else if(Object.keys(untutorial.steps).length < 3){
+ 	else if(untutorial.steps.length < -3/*disabled*/){
 		errors["Stepcount"] = 'STEPS.<span class="red">R_2SHORT</span>'; 		
  	}
  	else delete errors["Stepcount"];
@@ -462,26 +472,32 @@ class NewProjectPageBase extends React.Component {
 				</div>
 				<div className="container">
 					<h3>Steps</h3>
-					{Object.keys(untutorial.steps).map(step => (
+					{untutorial.steps.map((step,index) => (
 						<div className="step">
 							<TCSEditor 
 								disabled={false}
-								onEditorChange={(value)=>this.handleStepOnChange(value,step)} 
+								onEditorChange={(value)=>this.handleStepTitleOnChange(value,index)} 
+								onEditorSave={this.handleStepOnSave}
+								placeholder={'Step Title'} 
+								text={untutorial.steps[index].Title}/>
+							<TCSEditor 
+								disabled={false}
+								onEditorChange={(value)=>this.handleStepOnChange(value,index)} 
 								onEditorSave={this.handleStepOnSave}
 								placeholder={'Step Description'} 
-								text={untutorial.steps[step].Description}/>
+								text={untutorial.steps[index].Description}/>
 							{stepCount > 1 && (
-								<button onClick={(event)=>this.deleteStepHandler(event,step)}>Delete</button>
+								<button onClick={(event)=>this.deleteStepHandler(event,index)}>Delete</button>
 							)}
 							<div className="thumbnail">
 								{this.state.uploading && (
 									<progress value={this.state.uploadPercent} max="100"/>
 								)}
-								{!!untutorial.steps[step].ThumbnailFilename && untutorial.steps[step].ThumbnailFilename!=='' && !this.state.uploading &&(
-									<LazyImage file={this.props.firebase.storage.ref('/public/' + untutorial.Author + '/' + untutorial.steps[step].ThumbnailFilename)}/>
+								{!!untutorial.steps[index].ThumbnailFilename && untutorial.steps[index].ThumbnailFilename!=='' && !this.state.uploading &&(
+									<LazyImage file={this.props.firebase.storage.ref('/public/' + untutorial.Author + '/' + untutorial.steps[index].ThumbnailFilename)}/>
 								)}
-								<label for={'step' + step + '-thumbnail-upload'} className="upload">
-									<input id={'step' + step + '-thumbnail-upload'} type="file" onChange={(event)=>{this.handleStepThumbnailUpload(event,step)}}/>
+								<label for={'step' + index + '-thumbnail-upload'} className="upload">
+									<input id={'step' + index + '-thumbnail-upload'} type="file" onChange={(event)=>{this.handleStepThumbnailUpload(event,index)}}/>
 								</label>
 							</div>
 						</div>

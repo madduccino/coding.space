@@ -35,6 +35,8 @@ class UntutorialPageBase extends React.Component {
 		this.handleDescriptionOnSave = this.handleDescriptionOnSave.bind(this);
 		this.handleLevelOnChange = this.handleLevelOnChange.bind(this);
 		this.handleLevelOnSave = this.handleLevelOnSave.bind(this);
+		this.handleStepTitleOnChange = this.handleStepTitleOnChange.bind(this);
+		this.handleStepTitleOnSave = this.handleStepTitleOnSave.bind(this);
 		this.handleStepOnChange = this.handleStepOnChange.bind(this);
 		this.handleStepOnSave = this.handleStepOnSave.bind(this);
 		this.addStepHandler = this.addStepHandler.bind(this);
@@ -350,6 +352,22 @@ class UntutorialPageBase extends React.Component {
 		}
 		this.setState({errors:errors});
 
+	}
+	handleStepTitleOnChange(value,step){
+		var oCopy = this.state.untutorial;
+		if(value !== oCopy.steps[step].Title){
+			oCopy.steps[step].Title = value;
+			const {authUser} = this.props;
+			if(authUser && !!authUser.roles['STUDENT'])
+				oCopy.Status = 'DRAFT';
+			this.setState({untutorial:oCopy,dirty:true});
+			//this.validateStep(step);
+		}
+
+		
+	}
+	handleStepTitleOnSave(value,step){
+		this.saveChangesHandler();
 	}
 	handleStepOnChange(value,step){
 		var oCopy = this.state.untutorial;
@@ -668,6 +686,18 @@ class UntutorialPageBase extends React.Component {
 						<div className="checkOff">
 						  <div className={'step-title status'}>
 						    Step {index+1}
+						    {!!step.Title && !!step.Title.length && (<>
+						    	:
+						    </>)}
+						    <TCSEditor
+								disabled={!(!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===untutorial.Author.key))}
+								type={'text'}
+								className={'editor'}
+								onEditorChange={(value)=>this.handleStepTitleOnChange(value,index)} 
+								onEditorSave={(value)=>this.handleStepTitleOnSave(value,index)} 
+								placeholder={'Step Title'}
+								buttonText={!!progress  ? '' : 'Edit Step Title'} 
+								text={!!untutorial.steps[index].Title ? untutorial.steps[index].Title : ""}/> 
 						    {(!!progress && !!progress.steps[index] && progress.steps[index].Status == 'DRAFT') ? (
 							  <div className="red"></div>
 							  ) : (!!progress && !!progress.steps[index] && progress.steps[index].Status == 'PENDING') ? (
