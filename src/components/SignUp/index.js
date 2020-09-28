@@ -176,7 +176,7 @@ class NewUserFormBase extends Component {
   }
 }
 
-const condition = authUser => authUser && !!authUser.roles[ROLES.ADMIN];
+const condition = authUser => authUser && (!!authUser.roles[ROLES.ADMIN] || !!authUser.roles[ROLES.TEACHER]);
 const NewUserForm =  withFirebase(withAuthorization(condition)(NewUserFormBase));//withMail(withAuthorization(withFirebase(SignUpFormBase)));
   
 export default NewUserForm;
