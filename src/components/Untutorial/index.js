@@ -680,6 +680,9 @@ class UntutorialPageBase extends React.Component {
 				  <div className="container">
 		
 					  </div>
+					{!!untutorial.Categories['SCRATCH'] && (
+						<a href='https://scratch.mit.edu' target='_Blank'>Scratch</a>
+					)}
 				    {!!untutorial && untutorial.steps.map((step,index) => (
 					  <div className={"step " + ((!!progress && (progress.steps[index].Status == 'PENDING')) ? "" : "")}>
 				        
