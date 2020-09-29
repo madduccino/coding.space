@@ -381,20 +381,12 @@ class NewProjectPageBase extends React.Component {
 	return (
 	  <section id="new-project">
 		<div className="main">
-			<div className="sidebar">
-				<div className="sidebar-content">
-					<div className={'container'}>
-						<div>
-							<h4>Title</h4>
-								<TCSEditor 
-								disabled={false}
-								type='plain'
-								onEditorChange={this.handlePTitleOnChange} 
-								onEditorSave={this.handlePTitleOnSave}
-								placeholder={'Untutorial Title'} 
-								text={untutorial.Title}/>
-			   		 	</div>
-						<h4>Add Image</h4>
+		  <div className="toolbar">
+				<button onClick={this.addStepHandler}>Add Step</button>
+				<button onClick={this.saveChangesHandler}>Save</button> 
+			</div>
+							
+					{	/* <h4>Add Image</h4>
 
 			   			<div className="thumbnail">
 
@@ -409,16 +401,7 @@ class NewProjectPageBase extends React.Component {
 							</label>
 	
 						</div>
-						<div>
-							<h4>Description</h4>
-							<TCSEditor 
-								disabled={false}
-								type='text'
-								onEditorChange={this.handlePDescriptionOnChange} 
-								onEditorSave={this.handlePDescriptionOnSave}
-								placeholder={'Project Description'} 
-								text={untutorial.Description}/>
-						</div>
+			
 						<div>
 						    <h4>Level</h4>
 							<TCSEditor 
@@ -453,49 +436,81 @@ class NewProjectPageBase extends React.Component {
 					</div>
 	
 				</div>
+			</div> */ }
+          <div className="main-content">  
+			  {Object.keys(untutorial.steps).map(step => (
+			    <div className="step">
+					
+					<div className={'step-title status'}>
+						Step {step}
+					</div>
+					<div className="step-content">
+					<TCSEditor 
+						disabled={false}
+						onEditorChange={(value)=>this.handleStepOnChange(value,step)} 
+						onEditorSave={this.handleStepOnSave}
+						placeholder={'Step Description'} 
+						buttonText={untutorial.steps[step].Description.length > 0 ? 'Edit Description' : 'Add Description'}
+						text={untutorial.steps[step].Description}/>
+					</div>
+					{stepCount > 1 && (
+						<button className="delete" onClick={(event)=>this.deleteStepHandler(event,step)}>Delete</button>
+					)}
+				
+					<div className="thumbnail">
+						{this.state.uploading && (
+							<progress value={this.state.uploadPercent} max="100"/>
+						)}
+							<p className={!!untutorial.steps[step].ThumbnailFilename ? 
+							"change" : "add"}>{!!untutorial.steps[step].ThumbnailFilename ? 
+							"Update Screenshot" : "Add Screenshot"}</p>
+					
+						{!!untutorial.steps[step].ThumbnailFilename && untutorial.steps[step].ThumbnailFilename!=='' && !this.state.uploading &&(
+							<LazyImage file={this.props.firebase.storage.ref('/public/' + untutorial.Author + '/' + untutorial.steps[step].ThumbnailFilename)}/>
+						)}
+						<label for={'step' + step + '-thumbnail-upload'} className="upload">
+							<input id={'step' + step + '-thumbnail-upload'} type="file" onChange={(event)=>{this.handleStepThumbnailUpload(event,step)}}/>
+						</label>
+					</div>
+				</div>
+			  ))}
+			</div>
+		 
+			<div className="sidebar">
+			
+			<div className={'container'}>
+			
+					<h4>Title</h4>
+						<TCSEditor 
+						disabled={false}
+						type='plain'
+						onEditorChange={this.handlePTitleOnChange} 
+						onEditorSave={this.handlePTitleOnSave}
+						placeholder={'Untutorial Title'} 
+						buttonText={untutorial.Title.length > 0 ? "Edit" : "Add"}
+						text={untutorial.Title}/>
 			</div>
 
-			<div className="main-content">
-				<div className="toolbar">
-					<button onClick={this.addStepHandler}>Add Step</button>
-					<button onClick={this.saveChangesHandler}>Save</button> 
-				</div>
-				<div className="container">
-					<h3>Steps</h3>
-					{Object.keys(untutorial.steps).map(step => (
-						<div className="step">
+			<div className={'container'}>
+							<h4>Description</h4>
 							<TCSEditor 
 								disabled={false}
-								onEditorChange={(value)=>this.handleStepOnChange(value,step)} 
-								onEditorSave={this.handleStepOnSave}
-								placeholder={'Step Description'} 
-								text={untutorial.steps[step].Description}/>
-							{stepCount > 1 && (
-								<button onClick={(event)=>this.deleteStepHandler(event,step)}>Delete</button>
-							)}
-							<div className="thumbnail">
-								{this.state.uploading && (
-									<progress value={this.state.uploadPercent} max="100"/>
-								)}
-								{!!untutorial.steps[step].ThumbnailFilename && untutorial.steps[step].ThumbnailFilename!=='' && !this.state.uploading &&(
-									<LazyImage file={this.props.firebase.storage.ref('/public/' + untutorial.Author + '/' + untutorial.steps[step].ThumbnailFilename)}/>
-								)}
-								<label for={'step' + step + '-thumbnail-upload'} className="upload">
-									<input id={'step' + step + '-thumbnail-upload'} type="file" onChange={(event)=>{this.handleStepThumbnailUpload(event,step)}}/>
-								</label>
-							</div>
+								type='text'
+								onEditorChange={this.handlePDescriptionOnChange} 
+								onEditorSave={this.handlePDescriptionOnSave}
+								placeholder={'Project Description'} 
+								buttonText={untutorial.Description.length > 0 ? "Edit" : "Add"}
+								text={untutorial.Description}/>
 						</div>
-					))}
-				</div>
-			</div>
-		</div>
+
+	
+		</div> 
+		
+		  </div>
+
 	  </section>	
 	)
-
-
-
- 	
-	}
+  }
 }
 
 const NewProjectPage = withFirebase(withAuthentication(NewProjectPageBase));
