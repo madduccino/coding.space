@@ -38,11 +38,11 @@ class NewProjectPageBase extends React.Component {
  			ThumbnailFilename:null,
  			Title:'',
  			Status:'DRAFT',
- 			steps:{
- 				1:{
- 					Description:'',
+ 			steps:[
+ 				{
+ 					Description:'',Title:''
  				}
- 			}
+ 			]
 
  		},
  		valid:false,
@@ -62,6 +62,8 @@ class NewProjectPageBase extends React.Component {
  	this.handlePDescriptionOnSave = this.handlePDescriptionOnSave.bind(this);
  	this.handleLevelOnChange = this.handleLevelOnChange.bind(this);
  	this.handleLevelOnSave = this.handleLevelOnSave.bind(this);
+ 	this.handleStepTitleOnChange = this.handleStepTitleOnChange.bind(this);
+
  	this.handleStepOnChange = this.handleStepOnChange.bind(this);
  	this.handleStepValidate = this.handleStepValidate.bind(this);
  	this.handleStepOnSave = this.handleStepOnSave.bind(this);
@@ -247,6 +249,14 @@ class NewProjectPageBase extends React.Component {
  handleLevelOnSave(){
 
  }
+ handleStepTitleOnChange(value,step){
+ 	var pCopy = this.state.untutorial;
+ 	if(value !== pCopy.steps[step].Title){
+ 		pCopy.steps[step].Title = value;
+ 		this.setState({untutorial:pCopy},()=>this.handleStepValidate(pCopy.steps[step],step));
+ 	}
+
+ }
  handleStepOnChange(value,step){
  	var pCopy = this.state.untutorial;
  	if(value !== pCopy.steps[step].Description){
@@ -278,18 +288,18 @@ class NewProjectPageBase extends React.Component {
  }
  addStepHandler(event){
  	var pCopy = this.state.untutorial;
- 	var step = {Description:''};
- 	var index = Math.max(...Object.keys(pCopy.steps)) + 1;
- 	pCopy.steps[index] = step;
+ 	var step = {Description:'',Title:''};
+ 	var index = pCopy.steps.length;
+ 	pCopy.steps.push(step);
  	this.setState({untutorial:pCopy},()=>{this.handleStepCountValidate();this.handleStepValidate(step,index)});
  	console.log("Add Step");
  }
  handleStepCountValidate(){
  	const {errors,untutorial} = this.state;
- 	if(Object.keys(untutorial.steps).length == 0){
+ 	if(untutorial.steps.length == 0){
 		errors["Stepcount"] = 'STEPS.<span class="red">R_REQUIRED</span>'; 		
  	}
- 	else if(Object.keys(untutorial.steps).length < 3){
+ 	else if(untutorial.steps.length < -3/*disabled*/){
 		errors["Stepcount"] = 'STEPS.<span class="red">R_2SHORT</span>'; 		
  	}
  	else delete errors["Stepcount"];
@@ -381,10 +391,10 @@ class NewProjectPageBase extends React.Component {
 	return (
 	  <section id="new-project">
 		<div className="main">
-		  <div className="toolbar">
+		  {/* <div className="toolbar">
 				<button onClick={this.addStepHandler}>Add Step</button>
 				<button onClick={this.saveChangesHandler}>Save</button> 
-			</div>
+			</div> */}
 							
 					{	/* <h4>Add Image</h4>
 
@@ -437,7 +447,7 @@ class NewProjectPageBase extends React.Component {
 	
 				</div>
 			</div> */ }
-          <div className="main-content">  
+           <div className="main-content">  
 			  {Object.keys(untutorial.steps).map(step => (
 			    <div className="step">
 					
@@ -475,10 +485,8 @@ class NewProjectPageBase extends React.Component {
 				</div>
 			  ))}
 			</div>
-		 
 			<div className="sidebar">
-			
-			<div className={'container'}>
+			  <div className={'container'}>
 			
 					<h4>Title</h4>
 						<TCSEditor 
