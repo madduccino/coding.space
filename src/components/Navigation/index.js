@@ -59,7 +59,7 @@ class Navigation extends React.Component{
                 ) : (
                   <LazyImage id={'profile-missing-thumbnail'} file={this.props.firebase.storage.ref('/public/astronaut.png')}/>
                 )}
-                <div>{authUser.Username}</div>
+                <div>{authUser.DisplayName}</div>
             </div>
           </div>
             )} 

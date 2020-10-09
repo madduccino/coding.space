@@ -20,7 +20,7 @@ class UntutorialPageBase extends React.Component {
 			dirty:false,
 			uploading:false,
 			uploadPercent:0,
-
+            showiframe: true
 
 
 		}
@@ -82,7 +82,7 @@ class UntutorialPageBase extends React.Component {
 					untutorial.Author = author;
 					this.setState({
 						untutorial: untutorial,
-						loading:false,
+						loading:false
 					},()=>this.props.location.search.includes("loadProgress") ? this.loadProgress() : null)
 				})
 			
@@ -97,7 +97,7 @@ class UntutorialPageBase extends React.Component {
 	}
 	loadProgress(){
 		const {authUser} = this.props;
-		const {untutorial} = this.state;
+		const {untutorial,showiframe} = this.state;
 		const {key} = this.props.match.params;
 		if(!!authUser){
 			this.props.firebase.progress(authUser.uid,untutorial.key).on('value', snapshot => {
@@ -132,9 +132,7 @@ class UntutorialPageBase extends React.Component {
 			
 			
 		}
-
-						
-						
+        if (showiframe) this.setState({showiframe: false})					
 	}
 	componentWillUnmount(){
 		//this.props.firebase.proj().off();
@@ -297,20 +295,20 @@ class UntutorialPageBase extends React.Component {
 		}
 		this.setState({errors:errors});
 	}
-	 handlePCategoryOnChange(event){
+	handlePCategoryOnChange(event){
 	 	const {untutorial} = this.state;
 	 	if(event.target.value != '-1'){
 	 		untutorial.Categories[event.target.value] = event.target.value;
 	 		this.setState({untutorial:untutorial},this.handleCategoryValidate);	
 	 	}
-	 }
-	 handleCategoryOnClick(text){
+	}
+	handleCategoryOnClick(text){
 	 	const {untutorial} = this.state;
 	 	delete untutorial.Categories[text];
 	 	this.setState({untutorial:untutorial},this.handleCategoryValidate);
 
-	 }
-	 handleCategoryValidate(){
+	}
+	handleCategoryValidate(){
 	 	const {untutorial,errors} = this.state;
 	 	if(Object.keys(untutorial.Categories).length < 3){
 	 		errors["Categories"] = 'CATS.<span class="red">GR8TR.THAN.2.REQUIRED</span>';
@@ -318,7 +316,7 @@ class UntutorialPageBase extends React.Component {
 	 	else
 	 		delete errors["Categories"];
 	 	this.setState({errors:errors});
-	 }
+	}
 	handleLevelOnChange(value){
 		var oCopy = this.state.untutorial;
 		if(value !== oCopy.Level){
@@ -606,7 +604,7 @@ class UntutorialPageBase extends React.Component {
 	}
 	render(){
 		
-		const {untutorial, loading, author,progress} = this.state;
+		const {untutorial, loading, author,progress,showiframe} = this.state;
 		const {Title,Description, Level, steps} = untutorial;
 		const {authUser} = this.props;
 		const {key} = this.props.match.params;
@@ -632,225 +630,239 @@ class UntutorialPageBase extends React.Component {
 		//can edit
 
 		return (
-			<section id="untutorial">
-			  <div className="thumbnail hero">
-				{!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===untutorial.Author.key) && (	
-				<label for="files" className="upload">
-					<input id="files" type="file" onChange={this.handleThumbnailUpload}/>
-				</label>
-				)} 
-				{this.state.uploading && (
-					<progress value={this.state.uploadPercent} max="100"/>
-				)}
-				{!!untutorial.ThumbnailFilename && !!untutorial.ThumbnailFilename.length != 0 && !this.state.uploading &&(
-					<LazyImage file={this.props.firebase.storage.ref('/public/' + untutorial.Author.key + '/' + untutorial.ThumbnailFilename)}/>
-				)}
+		<section id="untutorial">
+		  <div className="thumbnail hero">
+		  {!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===untutorial.Author.key) && (	
+		    <label for="files" className="upload">
+			<input id="files" type="file" onChange={this.handleThumbnailUpload}/>
+		</label>
+		  )} 
+		  {this.state.uploading && (
+			<progress value={this.state.uploadPercent} max="100"/>
+		  )}
+		  {!!untutorial.ThumbnailFilename && !!untutorial.ThumbnailFilename.length != 0 && !this.state.uploading &&(
+		    <LazyImage file={this.props.firebase.storage.ref('/public/' + untutorial.Author.key + '/' + untutorial.ThumbnailFilename)}/>
+		  )}
+		  </div>
+		  <div className="main">		 
+		    <div className="workOnProject">
+			  {!!progress && progress.Status == 'APPROVED' &&(
+			  <div>
+			    <h3>GREAT JOB! You finished this project!</h3>
+			    <button className="publish" onClick={()=>window.location = ROUTES.UNIVERSE + '/' + progress.untut}>Publish to the UNIVERSE!</button>
 			  </div>
-			  <div className="main">
-				  <div className="main-content">
-				  <div className="workOnProject">
-					{!!progress && progress.Status == 'APPROVED' &&(
-					<div>
-					<h3>GREAT JOB! You finished this project!</h3>
-					<button className="publish" onClick={()=>window.location = ROUTES.UNIVERSE + '/' + progress.untut}>Publish to the UNIVERSE!</button>
-					</div>
-					)}
-					{!!progress && progress.Status == 'PENDING' && (
-					<h3>Your teacher is reviewing your project! Take it easy!</h3>
-					)}
+			  )}
+			  {!!progress && progress.Status == 'PENDING' && (
+			    <h3>Your teacher is reviewing your project! Take it easy!</h3>
+			  )}
+			  {!!progress && progress.Status == 'DRAFT' && nextStep>0 && (
+			    <h3>Keep it Up! You're on Step {nextStep}!</h3>
+			  )}	
+			</div>
+		    <div className="main-content">
+			  {/* <a href="/launchpad">Back</a> */}
+			  {!!progress  && (
+			    <TCSEditor 
+			    disabled={false}
+			    type={'plain'}
+			    className="url"
+			    onEditorChange={this.handleProgressURLOnChange}
+			    onEditorSave={this.handleProgressURLOnSave}
+			    placeholder={'Project URL...'} 
+			    url={true}
+			    buttonText={progress.URL ? 'Edit Link' : 'Add Link'}
+				text={progress.URL}/>		
+				)}
+				<div className="steps">
+				{!!untutorial && untutorial.steps.map((step,index) => (
+				  <div className={"step " + ((!!progress && (progress.steps[index].Status == 'PENDING')) ? "" : "")}>
+				  <div className="checkOff">
+					<div className={'step-title status'}>
+						Step {index+1}
+						{!!step.Title && !!step.Title.length && (<>
+							:
+						</>)}
+						<TCSEditor
+							disabled={!(!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===untutorial.Author.key))}
+							type={'text'}
+							className={'editor'}
+							onEditorChange={(value)=>this.handleStepTitleOnChange(value,index)} 
+							onEditorSave={(value)=>this.handleStepTitleOnSave(value,index)} 
+							placeholder={'Step Title'}
+							buttonText={!!progress  ? '' : 'Edit Step Title'} 
+							text={!!untutorial.steps[index].Title ? untutorial.steps[index].Title : ""}/> 
+						{(!!progress && !!progress.steps[index] && progress.steps[index].Status == 'DRAFT') ? (
+							<div className="red"></div>
+							) : (!!progress && !!progress.steps[index] && progress.steps[index].Status == 'PENDING') ? (
+							<div className="yellow"></div>
+							) : !!progress && (
+							<div className="green"></div>
+							)}
+						</div>	
+				  </div>
 
-					{!!progress && progress.Status == 'DRAFT' && nextStep>0 && (
-					<h3>Keep it Up! You're on Step {nextStep}!</h3>
-					)}	
-					{!!progress  && (
-						<div>	  
-						  <TCSEditor 
-							disabled={false}
-							type={'plain'}
-							className="url"
-							onEditorChange={this.handleProgressURLOnChange}
-							onEditorSave={this.handleProgressURLOnSave}
-							placeholder={'Project URL...'} 
-							url={true}
-							buttonText={progress.URL ? 'Edit Link' : 'Add Link'}
-							text={progress.URL}/>
-							</div>
-					  )}
-						</div>
-				  <div className="container">
-		
-					  </div>
-					{!!untutorial.Categories['SCRATCH'] && (
-						<a href='https://scratch.mit.edu' target='_Blank'>Scratch</a>
-					)}
-				    {!!untutorial && untutorial.steps.map((step,index) => (
-					  <div className={"step " + ((!!progress && (progress.steps[index].Status == 'PENDING')) ? "" : "")}>
-				        
-						<div className="checkOff">
-						  <div className={'step-title status'}>
-						    Step {index+1}
-						    {!!step.Title && !!step.Title.length && (<>
-						    	:
-						    </>)}
-						    <TCSEditor
-								disabled={!(!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===untutorial.Author.key))}
-								type={'text'}
-								className={'editor'}
-								onEditorChange={(value)=>this.handleStepTitleOnChange(value,index)} 
-								onEditorSave={(value)=>this.handleStepTitleOnSave(value,index)} 
-								placeholder={'Step Title'}
-								buttonText={!!progress  ? '' : 'Edit Step Title'} 
-								text={!!untutorial.steps[index].Title ? untutorial.steps[index].Title : ""}/> 
-						    {(!!progress && !!progress.steps[index] && progress.steps[index].Status == 'DRAFT') ? (
-							  <div className="red"></div>
-							  ) : (!!progress && !!progress.steps[index] && progress.steps[index].Status == 'PENDING') ? (
-							  <div className="yellow"></div>
-							  ) : !!progress && (
-								<div className="green"></div>
+				  <div className={'step-content'}>	
+				
+					<TCSEditor
+					disabled={!(!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===untutorial.Author.key))}
+					type={'text'}
+					className={'editor'}
+					onEditorChange={(value)=>this.handleStepOnChange(value,index)} 
+					onEditorSave={(value)=>this.handleStepOnSave(value,index)} 
+					placeholder={'Step Description'}
+					buttonText={!!progress ? '' : 'Edit Description'} 
+					text={untutorial.steps[index].Description}/>
+				
+
+					{!!progress && !!progress.steps[index] && progress.steps[index].Comments != '' && (
+						<div className={'comments'}>{progress.steps[index].Comments}</div>
+							)}
+							<div className="thumbnail">
+								{!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===untutorial.Author.key) && (		
+								<label for={'step' + index + '-thumbnail-upload'} className="upload">
+									<input id={'step' + index + '-thumbnail-upload'} type="file" onChange={(event)=>this.handleStepThumbnailUpload(event,index)}/>
+								</label>
+								)} 
+								{this.state.uploading && (
+								<progress value={this.state.uploadPercent} max="100"/>
+								)}
+								{!!untutorial.steps[index].ThumbnailFilename && !!untutorial.steps[index].ThumbnailFilename.length != 0 && !this.state.uploading &&(
+								<LazyImage id={'step' + index + '-thumbnail'} file={this.props.firebase.storage.ref('/public/' + untutorial.Author.key + '/' + untutorial.steps[index].ThumbnailFilename)}/>
 								)}
 							</div>	
-						</div>
-
-						
-							<div className={'step-content'}>
-							  
-							  
-							  <TCSEditor
-								disabled={!(!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===untutorial.Author.key))}
-								type={'text'}
-								className={'editor'}
-								onEditorChange={(value)=>this.handleStepOnChange(value,index)} 
-								onEditorSave={(value)=>this.handleStepOnSave(value,index)} 
-								placeholder={'Step Description'}
-								buttonText={!!progress  ? '' : 'Edit Description'} 
-								text={untutorial.steps[index].Description}/> 
-
-
-								{!!progress && !!progress.steps[index] && progress.steps[index].Comments != '' && (
-								  <div className={'comments'}>{progress.steps[index].Comments}</div>
-								)}
-								<div className="thumbnail">
-								  {!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===untutorial.Author.key) && (		
-									<label for={'step' + index + '-thumbnail-upload'} className="upload">
-									  <input id={'step' + index + '-thumbnail-upload'} type="file" onChange={(event)=>this.handleStepThumbnailUpload(event,index)}/>
-									</label>
-								  )} 
-								  {this.state.uploading && (
-									<progress value={this.state.uploadPercent} max="100"/>
-								  )}
-								  {!!untutorial.steps[index].ThumbnailFilename && !!untutorial.steps[index].ThumbnailFilename.length != 0 && !this.state.uploading &&(
-									<LazyImage id={'step' + index + '-thumbnail'} file={this.props.firebase.storage.ref('/public/' + untutorial.Author.key + '/' + untutorial.steps[index].ThumbnailFilename)}/>
-								  )}
-								</div>	
-								{!!progress && (!progress.steps[index] || progress.steps[index].Status == 'DRAFT') && (
-									<div>
-										<button 
-											disabled={false} 
-											className={'done-button'}
-											onClick={()=>this.studentApprove(index)}>Done</button>
-									</div>
-								)}
-									{!!progress && (!progress.steps[index] || progress.steps[index].Status == 'PENDING') && (
-									<div>
-										<button 
-											disabled={false} 
-											className={'done-button'}
-											onClick={()=>this.studentApprove(index)}>Teacher Reviewing!</button>
-									</div>
-								)}
-							</div>
-					</div>
-				))}
-			</div>
-				  <div className="sidebar">
-					  <div className="container">	
-					    <div className={'titleStatus'}>
-						<TCSEditor 
-						disabled={!(authUser && !!authUser.roles['ADMIN'])}
-						type={'text'}
-						className={'title'}
-						name={'title'}
-						onEditorChange={this.handleTitleOnChange}
-						onEditorSave={this.handleTitleOnSave}
-						placeholder={'Step Description'} 
-						text={untutorial.Title} />
-					    </div>		
-					
-					  {!!authUser && !progress && (
-						  <button className="checkout"
-						  onClick={this.loadProgress}>Check Out</button>
-						  )}
-						    </div>
-					  <div className="container">
-						Level:
-					    <TCSEditor 
-							disabled={!(authUser && (!!authUser.roles['ADMIN'] || authUser.uid===untutorial.Author.key))}
-							type={'select'}
-							className="level"
-							selectOptions={["1","2","3","4","5","6"]}
-							onEditorChange={this.handleLevelOnChange}
-							onEditorSave={this.handleLevelOnSave}
-							placeholder={'Level'} 
-							text={untutorial.Level}/>
-					  </div>	
-					  <div className="container">
-						{untutorial.Author.Status === 'APPROVED' &&(
-						  <h3>by: <a href={'/profile/' + untutorial.Author.key} dangerouslySetInnerHTML={{__html:untutorial.Author.DisplayName}}/></h3>
-						)}
-					  </div>	
-					  <div className={'container description'}>
-							<TCSEditor 
-							disabled={!(authUser && (!!authUser.roles['ADMIN'] || authUser.uid===untutorial.Author.key))}
-							type={'text'}
-							onEditorChange={this.handleDescriptionOnChange}
-							onEditorSave={this.handleDescriptionOnSave}
-							placeholder={'Untutorial Description'} 
-							text={untutorial.Description.replace(/<(.|\n)*?>/g, '').trim()} />
-					  </div>
-
-					  {!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===untutorial.Author.key) && (		
-					  <div className="container">
-						Status	
-						<TCSEditor 
-						disabled={!(authUser && !!authUser.roles['ADMIN'])}
-						type={'select'}
-						selectOptions={['DRAFT','APPROVED']}
-						name={'status'}
-						className={untutorial.Status === 'APPROVED' ? 'approved' : 'draft'}
-						onEditorChange={this.handleStatusOnChange}
-						onEditorSave={this.handleStatusOnSave}
-						placeholder={'Status'} 
-						text={untutorial.Status} />
-					  </div>
-					  )}
-					  {!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===untutorial.Author.key) && (	
-					  <div className="container">	
-						<h4>Tags</h4>
-						<div className="filter">
-						{Object.keys(untutorial.Categories).length != Object.keys(FILTERS).length && (
-							<select onChange={this.handlePCategoryOnChange}>
-								<option value='-1'>-------</option>
-								{Object.keys(FILTERS).filter(f=>!Object.keys(untutorial.Categories).includes(f)).map(catName=><option value={catName}>{FILTERS[catName]}</option>)}
-							</select>
-						)}
-						{Object.keys(untutorial.Categories).length > 0 && (
-							<div className="filter-categories">
-								{Object.keys(untutorial.Categories).map(f=>(
-									<a onClick={()=>this.handleCategoryOnClick(f)}>{f}</a>
-								))}
+							{!!progress && (!progress.steps[index] || progress.steps[index].Status == 'DRAFT') && (
+								<div>
+									<button 
+										disabled={false} 
+										className={'done-button'}
+										onClick={()=>this.studentApprove(index)}>Done</button>
+								</div>
+							)}
+							{!!progress && (!progress.steps[index] || progress.steps[index].Status == 'PENDING') && (
+							<div>
+								<button 
+									disabled={false} 
+									className={'done-button'}
+									onClick={()=>this.studentApprove(index)}>Teacher Reviewing!</button>
 							</div>
 						)}
 						</div>
-					  </div>
-					  )}
-
 				  </div>
-				</div>	
-			</section>
+			    ))}
+			  </div>
+			</div>
+		    <div className="sidebar">
+				{!!progress && (
+				<>	 				
+				  {!!untutorial.Categories['SCRATCH'] && (
+					<a className="scratch" href='https://scratch.mit.edu' target='_Blank'>
+					<LazyImage file={this.props.firebase.storage.ref('/public/scratch.png')}/></a>
+				  )}
+				</>
+				)}	
+				<div className="container">	
+
+			<div className={'titleStatus'}>
+			<TCSEditor 
+			disabled={!(authUser && !!authUser.roles['ADMIN'])}
+			type={'text'}
+			className={'title'}
+			name={'title'}
+			onEditorChange={this.handleTitleOnChange}
+			onEditorSave={this.handleTitleOnSave}
+			placeholder={'Step Description'} 
+			text={untutorial.Title} />
+	
+			</div>		
+		
+			{!!authUser && !progress && (
+				<button className="checkout"
+				onClick={this.loadProgress}>Get Coding!</button>
+			)}
+				</div>
+				<div className="container">
+				
+			Level:
+			<TCSEditor 
+				disabled={!(authUser && (!!authUser.roles['ADMIN'] || authUser.uid===untutorial.Author.key))}
+				type={'select'}
+				className="level"
+				selectOptions={["1","2","3","4","5","6"]}
+				onEditorChange={this.handleLevelOnChange}
+				onEditorSave={this.handleLevelOnSave}
+				placeholder={'Level'} 
+				text={untutorial.Level}/>
+			</div>	
+				<div className="container">
+			{untutorial.Author.Status === 'APPROVED' &&(
+				<h3>by: <a href={'/profile/' + untutorial.Author.key} dangerouslySetInnerHTML={{__html:untutorial.Author.DisplayName}}/></h3>
+			)}
+			</div>	
+				<div className={showiframe ? 'iframe-on' : "iframe-off"}>
+			<div className="popup">
+			{showiframe && (
+			<>
+			<h3 dangerouslySetInnerHTML={{__html:untutorial.Title}}/>
+			<div dangerouslySetInnerHTML={{__html:untutorial.Description}}/>
+			<button onClick={this.loadProgress}>Code This Project</button>	
+			</>
+			)}
+				<div onClick={()=> this.setState({showiframe:!showiframe})} className="toggle-iframe"></div>
+{/* 			
+				{!!authUser && !progress && (
+				<button onClick={this.loadProgress}>Code This Project</button>
+				)} */}
+			</div>
+			</div>
+				<TCSEditor 
+				  disabled={!(authUser && (!!authUser.roles['ADMIN'] || authUser.uid===untutorial.Author.key))}
+				  type={'text'}
+				  onEditorChange={this.handleDescriptionOnChange}
+				  onEditorSave={this.handleDescriptionOnSave}
+				  placeholder={'Untutorial Description'} 
+				  text={untutorial.Description.replace(/<(.|\n)*?>/g, '').trim()} />
+				{!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===untutorial.Author.key) && (
+				<div className="container">
+			        <h4>Status</h4>	
+			        <TCSEditor 
+			          disabled={!(authUser && !!authUser.roles['ADMIN'])}
+			type={'select'}
+			selectOptions={['DRAFT','APPROVED']}
+			name={'status'}
+			className={untutorial.Status === 'APPROVED' ? 'approved' : 'draft'}
+			onEditorChange={this.handleStatusOnChange}
+			onEditorSave={this.handleStatusOnSave}
+			placeholder={'Status'} 
+			          text={untutorial.Status} />
+			      </div>
+				)}
+				{!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===untutorial.Author.key) && (	
+				<div className="container">	
+			      <h4>Tags</h4>
+			       <div className="filter">
+			        {Object.keys(untutorial.Categories).length != Object.keys(FILTERS).length && (
+				      <select onChange={this.handlePCategoryOnChange}>
+					<option value='-1'>-------</option>
+					{Object.keys(FILTERS).filter(f=>!Object.keys(untutorial.Categories).includes(f)).map(catName=><option value={catName}>{FILTERS[catName]}</option>)}
+				</select>
+			        )}
+			        {Object.keys(untutorial.Categories).length > 0 && (
+				    <div className="filter-categories">
+					{Object.keys(untutorial.Categories).map(f=>(
+						<a onClick={()=>this.handleCategoryOnClick(f)}>{f}</a>
+					))}
+				</div>
+			    )}
+			</div>
+			</div>
+				)}
+			  </div>
+		  </div>	
+		</section>
 		)
 	}
 }
 
 const ProjectPage = withFirebase(withAuthentication(UntutorialPageBase));
 
-export default ProjectPage;
+export default ProjectPage;	

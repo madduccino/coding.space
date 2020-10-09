@@ -71,7 +71,7 @@ class TCSEditor extends React.Component {
 			if (this.props.url) {
 				return ( 
 				  <div className={'field ' + className}>
-					Project URL {text  && ( 
+					Link to My Project {text  && ( 
 					<h2><a target="_blank" href={text}>Go to Project</a></h2>
 					)}
 			        <button onClick={this.handleEdit}>{buttonText}</button>

@@ -39,7 +39,7 @@ class LazyImage extends React.Component{
 	render(){
 		const {guid,url,loading} = this.state;
 		return (
-			<img id={guid} key={guid} className={'project-image ' + (loading)?'pixel':''} id={guid} src={url}/>
+			<img id={guid} key={guid} className={loading ? 'pixel':''} id={guid} src={url}/>
 		)
 	}
 }
