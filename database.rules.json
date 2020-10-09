@@ -1,7 +1,7 @@
 {
   "rules": {
     "db":{
-      "Projects":{
+      "Project":{
         ".read":true,
         ".write":true
       },
@@ -50,16 +50,9 @@
       },
         "Projects" : {
           ".read":true,
-            ".write":true,
+            ".write":true
         }
   }
     }
     
 }
-Classes
-Profiles
-Progress
-Projects
-Questions
-Resources
-Untutorials
