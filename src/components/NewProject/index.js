@@ -404,6 +404,15 @@ class NewProjectPageBase extends React.Component {
 					
 					<div className={'step-title status'}>
 						Step {parseInt(step)+1}
+						<TCSEditor
+						disabled={!(!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===untutorial.Author.key))}
+						type={'text'}
+						className={'editor header'}
+						onEditorChange={(value)=>this.handleStepTitleOnChange(value,step)} 
+						onEditorSave={this.handleStepOnSave} 
+						placeholder={'Step Title'}
+						buttonText={'Edit Step Header'} 
+						text={!!untutorial.steps[step].Title ? untutorial.steps[step].Title : ""}/> 
 					</div>
 					<div className="step-content">
 					<TCSEditor 

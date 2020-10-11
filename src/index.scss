@@ -466,23 +466,6 @@
         }
       }
       .container {
-        .step {
-          margin-bottom: 40px;
-          .checkOff {
-            display: flex;
-            flex-flow: row wrap;
-            font-size: 48px;  
-            font-family: $headerFont;
-            padding: 0 80px;
-            margin:auto;
-            text-align:center;
-            margin-bottom: 5px;
-            .img{
-              width:60px;
-            }
-
-          } 
-        }
         .field {
           position: relative;
           margin: 0;
@@ -656,24 +639,26 @@
       padding: 0 5%;
      .workOnProject {
        grid-column: span 2;
-       margin-top: -40px;
-       height: 34px;
-       width: 100%;
-       background-color: $darkgreen;
        color: #fff;
        text-align: center;
-       padding-top: 4px;
-       border-top-left-radius: 8px;
-       border-top-right-radius: 8px;
-       
+       margin: 0;
+       h3 {
+        background-color: $darkgreen;
+        padding-top: 4px;
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+        margin-top: -40px;
+        height: 34px;
+        width: 100%;
+       }
      }
-      .scratch {
-        grid-column: span 2;
-        img {
-        width: 130px;
-      }
+     .scratch {
+      grid-column: span 2;
+      img {
+      width: 130px;
     }
-    .sidebar {
+     }
+     .sidebar {
         background-color: #fff;
         color: $darkgreen; 
         margin-top: 20px;
@@ -702,6 +687,9 @@
             position: relative;
             max-width: 600px;
             padding-bottom: 20px;
+            h3 {
+              padding: 4px 20px;            
+            }
             button {
               background-color: $darkgreen;
               color: #fff;
@@ -828,8 +816,8 @@
             padding: 10px 30px;
           }
         }
-      }
-      .main-content {  
+     }
+    .main-content {  
         .status {
         > div  {
           margin-left: 2px;
@@ -900,51 +888,93 @@
         // overflow-y: auto;
         }
       .step{
-          text-align: left;
-          position: relative;
-          width: 533px;
-          margin: 20px auto 60px;
-          border-bottom: 1px solid #ccc;
-          box-shadow: 0 2px 8px 0 rgba(0,0,0,.15);
-          padding: 0 20px 60px;
-          border-radius: 10px;
-          .step-content {
-            margin-top: 20px;
-          
+        text-align: left;
+        position: relative;
+        width: 533px;
+        margin: 20px auto 60px;
+        border-bottom: 1px solid #ccc;
+        box-shadow: 0 2px 8px 0 rgba(0,0,0,.15);
+        padding: 0 20px 60px;
+        border-radius: 10px;
+        .no-button {
+          button, .editor-button {
+          display: none;
           }
-          button {
-            position: absolute;
-            right: 0px;
-            width: auto;
-            &:not(.delete) {
-              top: 0;
-            }
-          }
-          &.done {
-            bottom: 0;
-          }
-          .field {
-            > div {
-              font-size: 1.2rem;
-              font-weight: 300;
-              text-align: left;
-              margin-bottom: 10px;
-            }
-            iframe {
-              margin-top: 20px;
-              display: block;
-              margin: 20px auto;
-            }
-          }
-          .step-title{
-            display:flex;
-            font-family: $bodyFont;
-            font-weight: 300;
-            font-size: 3rem;
+        }
+        .step-title {
+          @include flexh;     
+          font-weight: 700;
+          font-size: 2rem;
+          padding-top: 10px;
+          word-break: break-all;
+          font-family: $bodyFont;
             div{
               img{
                 width:60px;
               }
+            }
+          
+        .header {
+          > div:not(.quill) {
+            font-size: 2rem;
+            margin: 0;
+          }
+          .editor-button {
+            width: auto;
+            display: block;
+            margin: 0;
+            margin-left: 10px;
+         
+          }
+         }
+        }
+        .step-content {
+          margin-top: 20px;
+         button {
+           width: auto;
+           display: block;
+           margin: 0;
+         }
+         .done-button {
+           position: absolute;
+           top: 0;
+           right: 0;
+         }
+        }
+        // button {
+        //   position: absolute;
+        //   width: auto;
+        //   &:not(.delete) {
+        //     top: 0;
+        //   }
+        // }
+        // &.done {
+        //   bottom: 0;
+        // }
+        // .editor {
+        //     button {
+        //     right: 0;
+        //     }
+        //     &.header {
+        //       width: 100%;
+        //       button {
+        //         left: 0;
+        //       }
+        //     }
+        // }
+        .field {
+          > div {
+            font-size: 1.2rem;
+            font-weight: 300;
+            text-align: left;
+            margin-bottom: 10px;
+          }
+
+
+            iframe {
+              margin-top: 20px;
+              display: block;
+              margin: 20px auto;
             }
           }
         }
@@ -1306,12 +1336,9 @@
   }
 
   #untutorial, #profile, #progress-reviews {
-    .workOnProject {
-      margin: 20px 0 40px;
-    }
     .status {
       @include flexh; 
-     > div {
+     > div:not(.field) {
       width: 15px;
       height: 15px;
       border-radius: 50%;
@@ -1340,7 +1367,6 @@
     }
     }
   }
-
   #profile {
     #projects, #untutorials {
     .status {

@@ -361,8 +361,6 @@ class UntutorialPageBase extends React.Component {
 			this.setState({untutorial:oCopy,dirty:true});
 			//this.validateStep(step);
 		}
-
-		
 	}
 	handleStepTitleOnSave(value,step){
 		this.saveChangesHandler();
@@ -647,20 +645,21 @@ class UntutorialPageBase extends React.Component {
 		  <div className="main">		 
 		    <div className="workOnProject">
 			  {!!progress && progress.Status == 'APPROVED' &&(
-			  <div>
+			  <>
 			    <h3>GREAT JOB! You finished this project!</h3>
 			    <button className="publish" onClick={()=>window.location = ROUTES.UNIVERSE + '/' + progress.untut}>Publish to the UNIVERSE!</button>
-			  </div>
+			  </>
 			  )}
 			  {!!progress && progress.Status == 'PENDING' && (
 			    <h3>Your teacher is reviewing your project! Take it easy!</h3>
 			  )}
 			  {!!progress && progress.Status == 'DRAFT' && nextStep>0 && (
 			    <h3>Keep it Up! You're on Step {nextStep}!</h3>
-			  )}	
+			  )}
+			  			  <a href="/launchpad">Back</a>
+	
 			</div>
 		    <div className="main-content">
-			  {/* <a href="/launchpad">Back</a> */}
 			  {!!progress  && (
 			    <TCSEditor 
 			    disabled={false}
@@ -677,20 +676,22 @@ class UntutorialPageBase extends React.Component {
 				{!!untutorial && untutorial.steps.map((step,index) => (
 				  <div className={"step " + ((!!progress && (progress.steps[index].Status == 'PENDING')) ? "" : "")}>
 				  <div className="checkOff">
-					<div className={'step-title status'}>
-						Step {index+1}
-						{!!step.Title && !!step.Title.length && (<>
-							:
-						</>)}
-						<TCSEditor
-							disabled={!(!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===untutorial.Author.key))}
-							type={'text'}
-							className={'editor'}
-							onEditorChange={(value)=>this.handleStepTitleOnChange(value,index)} 
-							onEditorSave={(value)=>this.handleStepTitleOnSave(value,index)} 
-							placeholder={'Step Title'}
-							buttonText={!!progress  ? '' : 'Edit Step Title'} 
-							text={!!untutorial.steps[index].Title ? untutorial.steps[index].Title : ""}/> 
+				    <div className={'step-title status'}>
+					  Step {index+1}
+					  {!!step.Title && !!step.Title.length && (
+						<>:&nbsp;</>
+					  )}
+					  
+					  <TCSEditor
+						disabled={!(!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===untutorial.Author.key))}
+						type={'text'}
+						className={!!progress  ? 'no-button' : 'header'} 
+						onEditorChange={(value)=>this.handleStepTitleOnChange(value,index)} 
+						onEditorSave={(value)=>this.handleStepTitleOnSave(value,index)} 
+						placeholder={'Step Title'}
+						buttonText={!!progress  ? '' : 'Edit Title'} 
+						text={!!untutorial.steps[index].Title ? untutorial.steps[index].Title : ""}/> 
+						
 						{(!!progress && !!progress.steps[index] && progress.steps[index].Status == 'DRAFT') ? (
 							<div className="red"></div>
 							) : (!!progress && !!progress.steps[index] && progress.steps[index].Status == 'PENDING') ? (
@@ -700,20 +701,16 @@ class UntutorialPageBase extends React.Component {
 							)}
 						</div>	
 				  </div>
-
 				  <div className={'step-content'}>	
-				
 					<TCSEditor
 					disabled={!(!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===untutorial.Author.key))}
 					type={'text'}
-					className={'editor'}
+					className={!!progress ? 'no-button' : 'editor'}
 					onEditorChange={(value)=>this.handleStepOnChange(value,index)} 
 					onEditorSave={(value)=>this.handleStepOnSave(value,index)} 
 					placeholder={'Step Description'}
 					buttonText={!!progress ? '' : 'Edit Description'} 
 					text={untutorial.steps[index].Description}/>
-				
-
 					{!!progress && !!progress.steps[index] && progress.steps[index].Comments != '' && (
 						<div className={'comments'}>{progress.steps[index].Comments}</div>
 							)}
@@ -752,16 +749,14 @@ class UntutorialPageBase extends React.Component {
 			  </div>
 			</div>
 		    <div className="sidebar">
-				{!!progress && (
-				<>	 				
-				  {!!untutorial.Categories['SCRATCH'] && (
-					<a className="scratch" href='https://scratch.mit.edu' target='_Blank'>
-					<LazyImage file={this.props.firebase.storage.ref('/public/scratch.png')}/></a>
-				  )}
-				</>
-				)}	
-				<div className="container">	
-
+			{!!progress && (
+			<>	 				
+			  {!!untutorial.Categories['SCRATCH'] && (
+			  <a className="scratch" href='https://scratch.mit.edu' target='_Blank'><LazyImage file={this.props.firebase.storage.ref('/public/scratch.png')}/></a>
+			  )}
+			</>
+			)}	
+			<div className="container">	
 			<div className={'titleStatus'}>
 			<TCSEditor 
 			disabled={!(authUser && !!authUser.roles['ADMIN'])}
@@ -772,48 +767,46 @@ class UntutorialPageBase extends React.Component {
 			onEditorSave={this.handleTitleOnSave}
 			placeholder={'Step Description'} 
 			text={untutorial.Title} />
-	
 			</div>		
-		
 			{!!authUser && !progress && (
 				<button className="checkout"
 				onClick={this.loadProgress}>Get Coding!</button>
 			)}
-				</div>
-				<div className="container">
-				
-			Level:
-			<TCSEditor 
-				disabled={!(authUser && (!!authUser.roles['ADMIN'] || authUser.uid===untutorial.Author.key))}
-				type={'select'}
-				className="level"
-				selectOptions={["1","2","3","4","5","6"]}
-				onEditorChange={this.handleLevelOnChange}
-				onEditorSave={this.handleLevelOnSave}
-				placeholder={'Level'} 
-				text={untutorial.Level}/>
-			</div>	
-				<div className="container">
-			{untutorial.Author.Status === 'APPROVED' &&(
-				<h3>by: <a href={'/profile/' + untutorial.Author.key} dangerouslySetInnerHTML={{__html:untutorial.Author.DisplayName}}/></h3>
-			)}
-			</div>	
-				<div className={showiframe ? 'iframe-on' : "iframe-off"}>
-			<div className="popup">
-			{showiframe && (
-			<>
-			<h3 dangerouslySetInnerHTML={{__html:untutorial.Title}}/>
-			<div dangerouslySetInnerHTML={{__html:untutorial.Description}}/>
-			<button onClick={this.loadProgress}>Code This Project</button>	
-			</>
-			)}
-				<div onClick={()=> this.setState({showiframe:!showiframe})} className="toggle-iframe"></div>
+			</div>
+			<div className="container">
+		      Level:
+		      <TCSEditor 
+			  disabled={!(authUser && (!!authUser.roles['ADMIN'] || authUser.uid===untutorial.Author.key))}
+			  type={'select'}
+			  className="level"
+			  selectOptions={["1","2","3","4","5","6"]}
+			  onEditorChange={this.handleLevelOnChange}
+			  onEditorSave={this.handleLevelOnSave}
+			  placeholder={'Level'} 
+			  text={untutorial.Level}/>
+		    </div>	
+			<div className="container">
+		      {untutorial.Author.Status === 'APPROVED' &&(
+			    <h3>by: <a href={'/profile/' + untutorial.Author.key} dangerouslySetInnerHTML={{__html:untutorial.Author.DisplayName}}/></h3>
+		      )}
+		    </div>	
+			<div className={showiframe ? 'iframe-on' : "iframe-off"}>
+			  <div className="popup">
+			  {showiframe && (
+			  <>
+			    <h3 dangerouslySetInnerHTML={{__html:untutorial.Title}}/>
+			    <div dangerouslySetInnerHTML={{__html:untutorial.Description}}/>
+			    <button onClick={this.loadProgress}>Code This Project</button>	
+			  </>
+			  )}
+			  <div onClick={()=> this.setState({showiframe:!showiframe})} className="toggle-iframe"></div>
 {/* 			
 				{!!authUser && !progress && (
 				<button onClick={this.loadProgress}>Code This Project</button>
 				)} */}
 			</div>
 			</div>
+			<div className="container">
 				<TCSEditor 
 				  disabled={!(authUser && (!!authUser.roles['ADMIN'] || authUser.uid===untutorial.Author.key))}
 				  type={'text'}
@@ -821,6 +814,7 @@ class UntutorialPageBase extends React.Component {
 				  onEditorSave={this.handleDescriptionOnSave}
 				  placeholder={'Untutorial Description'} 
 				  text={untutorial.Description.replace(/<(.|\n)*?>/g, '').trim()} />
+				</div>
 				{!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===untutorial.Author.key) && (
 				<div className="container">
 			        <h4>Status</h4>	

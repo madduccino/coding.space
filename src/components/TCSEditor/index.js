@@ -81,7 +81,7 @@ class TCSEditor extends React.Component {
 			return (
 				<div className={'field ' + className}>
 					<div name={name} dangerouslySetInnerHTML={{__html:text}}/>
-					<button onClick={this.handleEdit}>{buttonText}</button>
+					<button className="editor-button" onClick={this.handleEdit}>{buttonText}</button>
 				</div>
 			)
 		}
