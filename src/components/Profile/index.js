@@ -324,245 +324,237 @@ class ProfilePageBase extends React.Component {
  	//can edit
 
 	return (
-		<section id="profile">	
-	 	  <div className="main">		
-			<div className="sidebar">
-				<div className="sidebar-content">
-				<div className={this.state.tab===TAB.PROFILE ? 'selected' : ''}>
-				<h2 onClick={()=>this.setState({tab:TAB.PROFILE})}>Profile</h2>
-				</div>
-				<div className={this.state.tab===TAB.PROGRESS ? 'selected' : ''}>
-					<h2 onClick={()=>this.setState({tab:TAB.PROGRESS})}>Recent Work</h2>
-				</div>
-				<div className={this.state.tab===TAB.PROJECTS ? 'selected' : ''}>
-					<h2 onClick={()=>this.setState({tab:TAB.PROJECTS})}>Projects</h2>
-				</div>
-				<div className={this.state.tab===TAB.UNTUTORIALS ? 'selected' : ''}>
-					<h2 onClick={()=>this.setState({tab:TAB.UNTUTORIALS})}>Untutorials</h2>
-				</div>
-				{!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===profile.key) && (
-				<div className={this.state.tab===TAB.EMAIL ? 'selected' : ''}>
-					<h2 onClick={()=>this.setState({tab:TAB.EMAIL})}>Email</h2>
-				</div>
-				)}
-			</div>
-			</div>
-			<div className="main-content">
-				<div className="tabs">
-				{(tab==TAB.PROFILE) && (
-		  	  		<div className="tab profile">	
-						<div className="avatar">
-							{this.state.uploading && (
-								<progress value={this.state.uploadPercent} max="100"/>
-							)}
-							{!!profile.ThumbnailFilename && profile.ThumbnailFilename != '' && !this.state.uploading ? (
-								<LazyImage id={profile.ThumbnailFilename} file={this.props.firebase.storage.ref('/public/' + profile.key + '/' + profile.ThumbnailFilename)}/>
-							) : (
-								<LazyImage file={this.props.firebase.storage.ref('/public/astronaut.png')}/>
-							)}
-							{!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===profile.key) && (
-								<label for="files" className="upload">
-									<input id="files" type="file" onChange={this.handleThumbnailUpload}/>
-								</label>
-							)}
-		 				</div>
-						{!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===profile.key) && (
-							<>
-								<div><h4>Login</h4>{profile.Username}</div>
-								<div><h4>Email</h4>{profile.Email}</div>
-							</>	
-						)}
-						<div>
-							<h4>Display Name</h4>
-							 <TCSEditor 
-							 disabled={!(!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===profile.key))}
-							className='display-name' 
-							type='plain'
-							onEditorChange={this.handleDisplayNameOnChange} 
-							onEditorSave={this.handleDisplayNameOnSave} 
-							placeholder={'Display Name'} 
-							text={profile.DisplayName}/>
-						</div>
-			  			<div>
-				  			<h4>My Age</h4>
-							<TCSEditor 
-								disabled={!(!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===profile.key))}
-								type='text'
-								onEditorChange={this.handleAgeOnChange} 
-								onEditorSave={this.handleAgeOnSave}
-								placeholder={'I\'m ___ years old!'} 
-								text={profile.Age}/>
-						</div>
-						<div>
-							<h4>About Me</h4>
-							<TCSEditor 
-								disabled={!(!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===profile.key))}
-								className={'block'} 
-								type='text'
-								onEditorChange={this.handlePDescriptionOnChange} 
-								onEditorSave={this.handlePDescriptionOnSave}
-								placeholder={'About Me'} 
-								text={profile.About}/>
-						</div>
-					
-						{!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===profile.key) && (
-							<>
-								<h4>Notes</h4>
-								<TCSEditor 
-								disabled={!(!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===profile.key))}
-								type='text'
-								onEditorChange={this.handleNotesOnChange} 
-								onEditorSave={this.handleNotesOnSave}
-								placeholder={'Notes'} 
-								text={profile.Notes}/>
-							</>
-
-						)}
-					
-			  		</div>	
-				)}
-				<div className="tab projects">
-	  	  	  		{(!tab || tab==TAB.PROJECTS) && (
-	  	  	  			<div className="content tab-content">
-							{projects.length < 1 && (
-								<p>{"No Projects Yet :("}</p>
-							)}
-			  	
-	  	  	  				{Object.keys(projectLevels).map(group=>(
-	  	  	  					<>
-									<Accordion group={group} text={
-										projectLevels[group].map(project => (<>
-											{project.Status === 'APPROVED' | (!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===profile.key)) ? (
-												<div id={project.key}>
-													<a href={project.URL}>
-														<h4 dangerouslySetInnerHTML={{__html:project.Title}}/>
-													</a>
-													<div className="status">
-														<div className={project.Status === 'APPROVED' ? 'green' : project.Status === 'PENDING' ? 'yellow' :'red'}></div>
-													</div>
-													<a target="_blank" className="center" href={project.URL}><h4>View</h4></a>	
-												</div>
-											) : ""}
-		  	  	  						</>))
-						  			} />	
-								</>
-							))}
-						</div>
-	  	  	  		)}
-	  	  		</div>
-		  	  	<div className="tab untutorials">
-	  	  	  		{(tab==TAB.UNTUTORIALS) && (
-	  	  	  			<div className="content tab-content">
-							{untutorials.length < 1 && (
-								<p>{"No Untutorials Yet :("}</p>
-							)}
-	  	  	  				{Object.keys(untutorialLevels).map(group=>(
-	  	  	  					<>
-									<Accordion group={group} text = {
-										untutorialLevels[group].map(untutorial => (<>
-											{untutorial.Status === 'APPROVED' | (!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===profile.key)) ? (
-												<div id={untutorial.key}>
-													
-													<a href={ ROUTES.LAUNCHPAD + '/' + untutorial.key}>
-														<h4 dangerouslySetInnerHTML={{__html:untutorial.Title}}/>
-													</a>
-													<div className="status">
-														<div className={untutorial.Status === 'APPROVED' ? 'green' : untutorial.Status === 'PENDING' ? 'yellow' :'red'}></div>
-													</div>
-													
-													<a target="_blank" className="center" href={ROUTES.LAUNCHPAD + '/' + untutorial.key}><h4>View</h4></a>
-		
-												</div>
-											) : ""}
-		  	  	  						</>))
-						  			}/>	
-								</>
-							))}
-						</div>
-	  	  	  		)}
-	  	  		</div>
-	  	  		<div className="tab progress">
-	  	  	  		{(tab==TAB.PROGRESS) && (
-	  	  	  			<div className="content tab-content">
-							{progresses.length < 1 && (
-								<p>{"No Progress Yet :("}</p>
-							)}
-			  	
-	  	  	  				{Object.keys(progressLevels).map(group=>(
-	  	  	  					<>
-									<Accordion group={group} text = {
-										progressLevels[group].sort(progress=>progress.LastModified).map(progress => (
-										<>
-											{ !!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===profile.key) ? (
-												<div id={progress.LastModified}>
-													
-													<a href={ ROUTES.LAUNCHPAD + '/' + progress.Untutorial.key}>
-														<div dangerouslySetInnerHTML={{__html:progress.Untutorial.Title}}/>
-													</a>
-
-													
-													<div className="status">
-														{Object.keys(progress.Untutorial.steps).map(slot=>(<>
-															{(!!progress.steps[slot] && progress.steps[slot].Status == 'DRAFT') ? (
-																<div className="white"></div>
-																// <img className={'pixel'} src='/images/rocket-coin-slot.png'/>
-															) : (!!progress.steps[slot] && progress.steps[slot].Status == 'PENDING') ? (
-																<div className="yellow"></div>
-																// <img className={'pixel'} src='/images/inprogress-coin.gif'/>
-															) : (
-																<div className="green"></div>
-																// <img className={'pixel'} src='/images/rocket-coin.gif'/>
-															)}
-
-														</>))}
-														{progress.Status == 'APPROVED' ? (
-															<div className="green"></div>
-														) : (
-															<div className="white"></div>
-
-															// <div className="white"></div>
-															// <img className={'pixel explorer'} src='/images/explorer-coin-slot.png'/>
-														)}
-														
-														
-															
-													</div>
-													
-													<Link target="_blank" className="center" to={ROUTES.LAUNCHPAD + '/' + progress.Untutorial.key + '?loadProgress=true'}>
-														<div>
-															{progress.Status == 'APPROVED' ? 'FINISHED!' :
-															progress.Status == 'PENDING' ? 'Waiting for Teacher Approval' :
-															!!progress.nextStep ? ('Work on Step ' + (progress.nextStep)) :
-															'Work on Project'}
-														</div>
-													</Link>
-													
-													
-														
-												</div>
-											) : ""}
-		  	  	  						</>))
-						  			}/>	
-								</>
-							))}
-						</div>
-	  	  	  		)}
-	  	  		</div>
-		  	    {!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===profile.key) && (
-		  	  	<div className="tab email">
-		  	  	  	{tab==TAB.EMAIL && (
-			  	  	  	<div className='content tab-content'>
-
-							<EmailLoader label={profile.Username}/>
-						</div>
-		  	  	  	)}
-
-		  	  	</div>
-		  	  	)}
-		  	</div>
-		</div>	
+	<section id="profile">	
+	  <div className="main">		
+	    <div className="sidebar">
+		<div className="sidebar-content">
+		<div className={this.state.tab===TAB.PROFILE ? 'selected' : ''}>
+		<h2 onClick={()=>this.setState({tab:TAB.PROFILE})}>Profile</h2>
 		</div>
-		</section>	
+		<div className={this.state.tab===TAB.PROGRESS ? 'selected' : ''}>
+			<h2 onClick={()=>this.setState({tab:TAB.PROGRESS})}>Recent Work</h2>
+		</div>
+		<div className={this.state.tab===TAB.PROJECTS ? 'selected' : ''}>
+			<h2 onClick={()=>this.setState({tab:TAB.PROJECTS})}>Projects</h2>
+		</div>
+		<div className={this.state.tab===TAB.UNTUTORIALS ? 'selected' : ''}>
+			<h2 onClick={()=>this.setState({tab:TAB.UNTUTORIALS})}>Untutorials</h2>
+		</div>
+		{!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===profile.key) && (
+		<div className={this.state.tab===TAB.EMAIL ? 'selected' : ''}>
+			<h2 onClick={()=>this.setState({tab:TAB.EMAIL})}>Email</h2>
+		</div>
+		)}
+	</div>
+	</div>
+	    <div className="main-content">
+		  <div className="tabs">
+			{(tab==TAB.PROFILE) && (
+			  <div className="tab profile">	
+					<div className="avatar">
+						{this.state.uploading && (
+							<progress value={this.state.uploadPercent} max="100"/>
+						)}
+						{!!profile.ThumbnailFilename && profile.ThumbnailFilename != '' && !this.state.uploading ? (
+							<LazyImage id={profile.ThumbnailFilename} file={this.props.firebase.storage.ref('/public/' + profile.key + '/' + profile.ThumbnailFilename)}/>
+						) : (
+							<LazyImage file={this.props.firebase.storage.ref('/public/astronaut.png')}/>
+						)}
+						{!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===profile.key) && (
+							<label for="files" className="upload">
+								<input id="files" type="file" onChange={this.handleThumbnailUpload}/>
+							</label>
+						)}
+					</div>
+					{!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===profile.key) && (
+						<>
+							<div><h4>Login</h4>{profile.Username}</div>
+							<div><h4>Email</h4>{profile.Email}</div>
+						</>	
+					)}
+					<div>
+						<h4>Display Name</h4>
+							<TCSEditor 
+							disabled={!(!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===profile.key))}
+						className='display-name' 
+						type='plain'
+						onEditorChange={this.handleDisplayNameOnChange} 
+						onEditorSave={this.handleDisplayNameOnSave} 
+						placeholder={'Display Name'} 
+						text={profile.DisplayName}/>
+					</div>
+					<div>
+						<h4>My Age</h4>
+						<TCSEditor 
+							disabled={!(!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===profile.key))}
+							type='text'
+							onEditorChange={this.handleAgeOnChange} 
+							onEditorSave={this.handleAgeOnSave}
+							placeholder={'I\'m ___ years old!'} 
+							text={profile.Age}/>
+					</div>
+					<div>
+						<h4>About Me</h4>
+						<TCSEditor 
+							disabled={!(!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===profile.key))}
+							className={'block'} 
+							type='text'
+							onEditorChange={this.handlePDescriptionOnChange} 
+							onEditorSave={this.handlePDescriptionOnSave}
+							placeholder={'About Me'} 
+							text={profile.About}/>
+					</div>
+				
+					{!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===profile.key) && (
+						<>
+							<h4>Notes</h4>
+							<TCSEditor 
+							disabled={!(!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===profile.key))}
+							type='text'
+							onEditorChange={this.handleNotesOnChange} 
+							onEditorSave={this.handleNotesOnSave}
+							placeholder={'Notes'} 
+							text={profile.Notes}/>
+						</>
+
+					)}
+				
+				</div>	
+			)}
+			<div className="tab projects">
+				{(!tab || tab==TAB.PROJECTS) && (
+					<div className="content tab-content">
+						{projects.length < 1 && (
+							<p>{"No Projects Yet :("}</p>
+						)}
+			
+						{Object.keys(projectLevels).map(group=>(
+							<>
+								<Accordion group={group} text={
+									projectLevels[group].map(project => (<>
+										{project.Status === 'APPROVED' | (!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===profile.key)) ? (
+											<div id={project.key}>
+												<a href={project.URL}>
+													<h4 dangerouslySetInnerHTML={{__html:project.Title}}/>
+												</a>
+												<div className="status">
+													<div className={project.Status === 'APPROVED' ? 'green' : project.Status === 'PENDING' ? 'yellow' :'red'}></div>
+												</div>
+												<a target="_blank" className="center" href={project.URL}><h4>View</h4></a>	
+											</div>
+										) : ""}
+									</>))
+								} />	
+							</>
+						))}
+					</div>
+				)}
+			</div>
+			<div className="tab untutorials">
+				{(tab==TAB.UNTUTORIALS) && (
+					<div className="content tab-content">
+						{untutorials.length < 1 && (
+							<p>{"No Untutorials Yet :("}</p>
+						)}
+						{Object.keys(untutorialLevels).map(group=>(
+							<>
+								<Accordion group={group} text = {
+									untutorialLevels[group].map(untutorial => (<>
+										{untutorial.Status === 'APPROVED' | (!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===profile.key)) ? (
+											<div id={untutorial.key}>
+												
+												<a href={ ROUTES.LAUNCHPAD + '/' + untutorial.key}>
+													<h4 dangerouslySetInnerHTML={{__html:untutorial.Title}}/>
+												</a>
+												<div className="status">
+													<div className={untutorial.Status === 'APPROVED' ? 'green' : untutorial.Status === 'PENDING' ? 'yellow' :'red'}></div>
+												</div>
+												
+												<a target="_blank" className="center" href={ROUTES.LAUNCHPAD + '/' + untutorial.key}><h4>View</h4></a>
+	
+											</div>
+										) : ""}
+									</>))
+								}/>	
+							</>
+						))}
+					</div>
+				)}
+			</div>
+			<div className="tab progress">
+			  {(tab==TAB.PROGRESS) && (
+			    <div className="content tab-content">
+				  {progresses.length < 1 && (
+				    <p>{"No Progress Yet :("}</p>
+				  )}
+				  <div className="instructions">
+				    <span class="fa fa-star white"> = to do</span>
+				    <span class="fa fa-star yellow"> = pending teacher approval</span>
+				    <span class="fa fa-star green"> = done!</span>
+				  </div>
+				  {Object.keys(progressLevels).map(group=>(
+				    <>
+					  <Accordion group={group} text = {
+					  progressLevels[group].sort(progress=>progress.LastModified).map(progress => (
+					  <>
+					    { !!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===profile.key) ? (
+						<div id={progress.LastModified}>	
+							<a href={ ROUTES.LAUNCHPAD + '/' + progress.Untutorial.key}>
+								<div dangerouslySetInnerHTML={{__html:progress.Untutorial.Title}}/>
+							</a>
+							<div className="status">
+							  {Object.keys(progress.Untutorial.steps).map(slot=>(<>
+									{(!!progress.steps[slot] && progress.steps[slot].Status == 'DRAFT') ? (
+										<div class="fa fa-star white"></div>
+										// <img className={'pixel'} src='/images/rocket-coin-slot.png'/>
+									) : (!!progress.steps[slot] && progress.steps[slot].Status == 'PENDING') ? (
+										<div class="fa fa-star yellow"></div>
+										// <img className={'pixel'} src='/images/inprogress-coin.gif'/>
+									) : (
+										<div className="fa fa-star green"></div>
+										// <img className={'pixel'} src='/images/rocket-coin.gif'/>
+									)}
+
+								</>))}
+							  {progress.Status == 'APPROVED' ? (
+									<div className="green"></div>
+								) : (
+									<div className="white"></div>
+
+									// <div className="white"></div>
+									// <img className={'pixel explorer'} src='/images/explorer-coin-slot.png'/>
+								)}		
+							</div>						
+							<Link target="_blank" className="center" to={ROUTES.LAUNCHPAD + '/' + progress.Untutorial.key + '?loadProgress=true'}>
+								<div>
+									{progress.Status == 'APPROVED' ? 'FINISHED!' :
+									progress.Status == 'PENDING' ? 'Waiting for Teacher Approval' :
+									!!progress.nextStep ? ('Work on Step ' + (progress.nextStep)) :
+									'Work on Project'}
+								</div>
+							</Link>
+						</div>
+					    ) : ""}
+				       </>))
+					  }/>	
+					</>
+				  ))}
+				</div>
+			  )}
+			</div>
+			{!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===profile.key) && (
+			<div className="tab email">
+			  {tab==TAB.EMAIL && (
+			    <div className='content tab-content'>
+				  <EmailLoader label={profile.Username}/>
+				</div>
+			  )}
+			</div>
+			)}
+		    </div>
+	    </div>	
+      </div>
+	</section>	
 	)
   }
 }

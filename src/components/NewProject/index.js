@@ -401,7 +401,6 @@ class NewProjectPageBase extends React.Component {
 		   <div className="steps"> 
 			  {Object.keys(untutorial.steps).map(step => (
 			    <div className="step">
-					
 					<div className={'step-title status'}>
 						Step {parseInt(step)+1}
 						<TCSEditor
@@ -411,7 +410,7 @@ class NewProjectPageBase extends React.Component {
 						onEditorChange={(value)=>this.handleStepTitleOnChange(value,step)} 
 						onEditorSave={this.handleStepOnSave} 
 						placeholder={'Step Title'}
-						buttonText={'Edit Step Header'} 
+						buttonText={untutorial.steps[step].Description.length > 0 ? 'Edit Title' : 'Add Title'} 
 						text={!!untutorial.steps[step].Title ? untutorial.steps[step].Title : ""}/> 
 					</div>
 					<div className="step-content">

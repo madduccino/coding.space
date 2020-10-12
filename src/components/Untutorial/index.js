@@ -656,8 +656,7 @@ class UntutorialPageBase extends React.Component {
 			  {!!progress && progress.Status == 'DRAFT' && nextStep>0 && (
 			    <h3>Keep it Up! You're on Step {nextStep}!</h3>
 			  )}
-			  			  <a href="/launchpad">Back</a>
-	
+				<a href="/launchpad">Back</a>
 			</div>
 		    <div className="main-content">
 			  {!!progress  && (
