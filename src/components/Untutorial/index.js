@@ -303,6 +303,7 @@ class UntutorialPageBase extends React.Component {
 	 	}
 	}
 	handleCategoryOnClick(text){
+		console.log(text)
 	 	const {untutorial} = this.state;
 	 	delete untutorial.Categories[text];
 	 	this.setState({untutorial:untutorial},this.handleCategoryValidate);
@@ -310,7 +311,7 @@ class UntutorialPageBase extends React.Component {
 	}
 	handleCategoryValidate(){
 	 	const {untutorial,errors} = this.state;
-	 	if(Object.keys(untutorial.Categories).length < 3){
+	 	if(Object.keys(untutorial.Categories).length < 2){
 	 		errors["Categories"] = 'CATS.<span class="red">GR8TR.THAN.2.REQUIRED</span>';
 	 	}
 	 	else
@@ -341,7 +342,7 @@ class UntutorialPageBase extends React.Component {
 		if(isNaN(Level)){
 			errors['Level'] = 'LEVEL.<span class="red">ISINVALID</span>'; 		
 		}
-		if(![1,2,3,4,5,6].includes(Level)){
+		if(![1,2,3,4,5,6].includes(parseInt(Level))){
 
 			errors['Level'] = 'LEVEL.<span class="red">ISOUTSIDERANGE</span>';
 		}
@@ -680,7 +681,6 @@ class UntutorialPageBase extends React.Component {
 					  {!!step.Title && !!step.Title.length && (
 						<>:&nbsp;</>
 					  )}
-					  
 					  <TCSEditor
 						disabled={!(!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===untutorial.Author.key))}
 						type={'text'}
@@ -798,7 +798,9 @@ class UntutorialPageBase extends React.Component {
 			    <button onClick={this.loadProgress}>Code This Project</button>	
 			  </>
 			  )}
-			  <div onClick={()=> this.setState({showiframe:!showiframe})} className="toggle-iframe"></div>
+			  <div onClick={()=> this.setState({showiframe:!showiframe})} className="toggle-iframe">
+			      <i class="fa fa-info-circle"></i>
+			  </div>
 {/* 			
 				{!!authUser && !progress && (
 				<button onClick={this.loadProgress}>Code This Project</button>
@@ -826,8 +828,8 @@ class UntutorialPageBase extends React.Component {
 			onEditorChange={this.handleStatusOnChange}
 			onEditorSave={this.handleStatusOnSave}
 			placeholder={'Status'} 
-			          text={untutorial.Status} />
-			      </div>
+			text={untutorial.Status} />
+		  </div>
 				)}
 				{!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===untutorial.Author.key) && (	
 				<div className="container">	
@@ -842,7 +844,7 @@ class UntutorialPageBase extends React.Component {
 			        {Object.keys(untutorial.Categories).length > 0 && (
 				    <div className="filter-categories">
 					{Object.keys(untutorial.Categories).map(f=>(
-						<a onClick={()=>this.handleCategoryOnClick(f)}>{f}</a>
+					  <a onClick={()=>this.handleCategoryOnClick(f)}>{FILTERS[f]}</a>
 					))}
 				</div>
 			    )}

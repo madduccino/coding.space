@@ -9,6 +9,9 @@ import TCSEditor from '../TCSEditor';
 import { v4 as uuidv4 } from 'uuid';
 import * as ROUTES from '../../constants/routes';
 import gmailApi from 'react-gmail'
+import ReactDOM from 'react-dom'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCoffee } from '@fortawesome/free-solid-svg-icons'
 
  const TAB = {
  	PROJECTS:0,
@@ -159,7 +162,6 @@ class ProfilePageBase extends React.Component {
 
 
  }
-
  handlePDescriptionOnChange(value){
  	var pCopy = this.state.profile;
  	if(value !== pCopy.About){
@@ -422,64 +424,65 @@ class ProfilePageBase extends React.Component {
 				</div>	
 			)}
 			<div className="tab projects">
-				{(!tab || tab==TAB.PROJECTS) && (
-					<div className="content tab-content">
-						{projects.length < 1 && (
-							<p>{"No Projects Yet :("}</p>
-						)}
-			
-						{Object.keys(projectLevels).map(group=>(
-							<>
-								<Accordion group={group} text={
-									projectLevels[group].map(project => (<>
-										{project.Status === 'APPROVED' | (!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===profile.key)) ? (
-											<div id={project.key}>
-												<a href={project.URL}>
-													<h4 dangerouslySetInnerHTML={{__html:project.Title}}/>
-												</a>
-												<div className="status">
-													<div className={project.Status === 'APPROVED' ? 'green' : project.Status === 'PENDING' ? 'yellow' :'red'}></div>
-												</div>
-												<a target="_blank" className="center" href={project.URL}><h4>View</h4></a>	
-											</div>
-										) : ""}
-									</>))
-								} />	
-							</>
-						))}
+			  {(!tab || tab==TAB.PROJECTS) && (
+			    <div className="content tab-content">
+				  {projects.length < 1 && (
+				    <p>{"No Projects Yet :("}</p>
+				  )}
+				  {Object.keys(projectLevels).map(group=>(
+				    <>
+				      <Accordion group={group} text={
+					    projectLevels[group].map(project => (
+						 <>
+					      {project.Status === 'APPROVED' | (!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===profile.key)) ? (
+					      <Link target="_blank" to={project.URL} id={project.key}>
+						    <div dangerouslySetInnerHTML={{__html:project.Title}}/>
+					        <div className="status">
+							  {project.Status === 'APPROVED' ? 
+							  <i className="fa fa-flag green"></i> :
+							  <div>Draft</div>
+							  }
+					        </div>
+				           <div className="center">View</div>
+					    </Link>
+					) : ""}
+					</>))
+				  } />	
+				    </>
+				))}
 					</div>
-				)}
+			  )}
 			</div>
 			<div className="tab untutorials">
-				{(tab==TAB.UNTUTORIALS) && (
-					<div className="content tab-content">
-						{untutorials.length < 1 && (
-							<p>{"No Untutorials Yet :("}</p>
-						)}
-						{Object.keys(untutorialLevels).map(group=>(
-							<>
-								<Accordion group={group} text = {
-									untutorialLevels[group].map(untutorial => (<>
-										{untutorial.Status === 'APPROVED' | (!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===profile.key)) ? (
-											<div id={untutorial.key}>
-												
-												<a href={ ROUTES.LAUNCHPAD + '/' + untutorial.key}>
-													<h4 dangerouslySetInnerHTML={{__html:untutorial.Title}}/>
-												</a>
-												<div className="status">
-													<div className={untutorial.Status === 'APPROVED' ? 'green' : untutorial.Status === 'PENDING' ? 'yellow' :'red'}></div>
-												</div>
-												
-												<a target="_blank" className="center" href={ROUTES.LAUNCHPAD + '/' + untutorial.key}><h4>View</h4></a>
-	
-											</div>
-										) : ""}
-									</>))
-								}/>	
-							</>
-						))}
-					</div>
-				)}
+			  {(tab==TAB.UNTUTORIALS) && (
+			    <div className="content tab-content">
+				  {untutorials.length < 1 && (
+				    <p>{"No Untutorials Yet :("}</p>
+				  )}
+				  {Object.keys(untutorialLevels).map(group=>(
+				    <>
+					<Accordion group={group} text = {
+					  untutorialLevels[group].map(untutorial => (
+					  <>
+					  {untutorial.Status === 'APPROVED' | (!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===profile.key)) ? (
+					    <Link id={untutorial.key} to={ROUTES.LAUNCHPAD + '/' + untutorial.key}>
+						  <div dangerouslySetInnerHTML={{__html:untutorial.Title}}/>
+						  <div className="center">View</div>
+						  <div className="status">
+							{untutorial.Status==="APPROVED" ?
+							<i className="fa fa-flag green"></i> : 
+							<div>Draft</div>
+					      }    
+					      </div>
+					    
+						</Link>
+					  ) : ""}
+					  </>))
+					}/>	
+					</>
+				  ))}
+				</div>
+			  )}
 			</div>
 			<div className="tab progress">
 			  {(tab==TAB.PROGRESS) && (
@@ -488,54 +491,46 @@ class ProfilePageBase extends React.Component {
 				    <p>{"No Progress Yet :("}</p>
 				  )}
 				  <div className="instructions">
-				    <span class="fa fa-star white"> = to do</span>
-				    <span class="fa fa-star yellow"> = pending teacher approval</span>
-				    <span class="fa fa-star green"> = done!</span>
+				    <div><span class="fa fa-star white"></span> = to do</div>
+					<div><span class="fa fa-star approved fa-spin"></span> = waiting for teacher to approve</div>
+					<div><span class="fa fa-star approved"></span> = approved by teacher</div>
+
+					<div className="complete"><img src='/images/roket.png'/> = you finished!</div>
 				  </div>
 				  {Object.keys(progressLevels).map(group=>(
 				    <>
 					  <Accordion group={group} text = {
 					  progressLevels[group].sort(progress=>progress.LastModified).map(progress => (
 					  <>
-					    { !!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===profile.key) ? (
-						<div id={progress.LastModified}>	
-							<a href={ ROUTES.LAUNCHPAD + '/' + progress.Untutorial.key}>
-								<div dangerouslySetInnerHTML={{__html:progress.Untutorial.Title}}/>
-							</a>
+					    {!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===profile.key) && (
+						  <Link id={progress.LastModified} to={ROUTES.LAUNCHPAD + '/' + progress.Untutorial.key + '?loadProgress=true'}>
+						    <div dangerouslySetInnerHTML={{__html:progress.Untutorial.Title}}/>
 							<div className="status">
-							  {Object.keys(progress.Untutorial.steps).map(slot=>(<>
-									{(!!progress.steps[slot] && progress.steps[slot].Status == 'DRAFT') ? (
-										<div class="fa fa-star white"></div>
-										// <img className={'pixel'} src='/images/rocket-coin-slot.png'/>
-									) : (!!progress.steps[slot] && progress.steps[slot].Status == 'PENDING') ? (
-										<div class="fa fa-star yellow"></div>
-										// <img className={'pixel'} src='/images/inprogress-coin.gif'/>
-									) : (
-										<div className="fa fa-star green"></div>
-										// <img className={'pixel'} src='/images/rocket-coin.gif'/>
-									)}
-
-								</>))}
-							  {progress.Status == 'APPROVED' ? (
-									<div className="green"></div>
-								) : (
-									<div className="white"></div>
-
-									// <div className="white"></div>
-									// <img className={'pixel explorer'} src='/images/explorer-coin-slot.png'/>
-								)}		
+							  {Object.keys(progress.Untutorial.steps).map(slot=>(  
+							<>
+							  {(!!progress.steps[slot] && progress.steps[slot].Status == 'DRAFT') ? (
+								    <div class="fa fa-star white"></div>
+								    // <img className={'pixel'} src='/images/rocket-coin-slot.png'/>
+							          ) : (!!progress.steps[slot] && progress.steps[slot].Status == 'PENDING') ? (
+								      <div class="fa fa-star approved fa-spin"></div>
+								      // <img className={'pixel'} src='/images/inprogress-coin.gif'/>
+							          ) : (
+								     <div className="fa fa-star approved"></div>
+								       // <img className={'pixel'} src='/images/rocket-coin.gif'/>
+							    )}
+                              </>
+								))}
 							</div>						
-							<Link target="_blank" className="center" to={ROUTES.LAUNCHPAD + '/' + progress.Untutorial.key + '?loadProgress=true'}>
-								<div>
-									{progress.Status == 'APPROVED' ? 'FINISHED!' :
-									progress.Status == 'PENDING' ? 'Waiting for Teacher Approval' :
-									!!progress.nextStep ? ('Work on Step ' + (progress.nextStep)) :
-									'Work on Project'}
-								</div>
-							</Link>
-						</div>
-					    ) : ""}
-				       </>))
+							{progress.Status == 'APPROVED' ? 									
+							<div className="complete"><img src='/images/roket.png'/></div>:
+							progress.Status == 'PENDING' ? 'Waiting for Teacher Approval' :
+							!!progress.nextStep ? ('Work on Step ' + (progress.nextStep)) :
+							'Work on Project'}
+						 	</Link>
+						
+						  )}
+					   </>
+					   ))
 					  }/>	
 					</>
 				  ))}

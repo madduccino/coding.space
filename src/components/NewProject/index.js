@@ -391,13 +391,11 @@ class NewProjectPageBase extends React.Component {
 	return (
 	  <section id="new-project">
 		<div className="main">
-		 <div className="toolbar">
-				<button onClick={this.addStepHandler}>Add Step</button>
-				<button onClick={this.saveChangesHandler}>Save</button> 
-			</div> 
-							
-				
-           <div className="main-content"> 
+		  <div className="toolbar">
+		    <button onClick={this.addStepHandler}>Add Step</button>
+		    <button onClick={this.saveChangesHandler}>Save</button> 
+		  </div> 	
+          <div className="main-content"> 
 		   <div className="steps"> 
 			  {Object.keys(untutorial.steps).map(step => (
 			    <div className="step">
@@ -444,10 +442,9 @@ class NewProjectPageBase extends React.Component {
 				</div>
 			  ))}
 			  </div>
-			</div>
-			<div className="sidebar">
-			  <div className={'container'}>
-			
+		  </div>
+		  <div className="sidebar">
+		    <div className={'container'}>
 					<h4>Title</h4>
 						<TCSEditor 
 						disabled={false}
@@ -458,51 +455,47 @@ class NewProjectPageBase extends React.Component {
 						buttonText={untutorial.Title.length > 0 ? "Edit" : "Add"}
 						text={untutorial.Title}/>
 			</div>
-
-			<div className={'container'}>
-							<h4>Description</h4>
-							<TCSEditor 
-								disabled={false}
-								type='text'
-								onEditorChange={this.handlePDescriptionOnChange} 
-								onEditorSave={this.handlePDescriptionOnSave}
-								placeholder={'Project Description'} 
-								buttonText={untutorial.Description.length > 0 ? "Edit" : "Add"}
-								text={untutorial.Description}/>
-						</div>
-
-						<div className="container">
- <h4>Level</h4>
- <TCSEditor 
-	 disabled={false}
-	 type='select'
-	 selectOptions={[1,2,3,4,5,6]}
-	 onEditorChange={this.handleLevelOnChange} 
-	 onEditorSave={this.handleLevelOnSave}
-	 text={untutorial.Level}/>	
-</div>
-
-<div className="container">
- <h4>Tags</h4>
- <div className="filter">
-
-	 {Object.keys(untutorial.Categories).length != Object.keys(FILTERS).length && (
-		 <select onChange={this.handlePCategoryOnChange}>
-			 <option value='-1'>-------</option>
-			 {Object.keys(FILTERS).filter(f=>!Object.keys(untutorial.Categories).includes(f)).map(catName=><option value={catName}>{FILTERS[catName]}</option>)}
-		 </select>
-	 )}
- </div>
- {Object.keys(untutorial.Categories).length > 0 && (
- <div className="filter-categories">
-	 {Object.keys(untutorial.Categories).map(f=>(
-		 <a onClick={()=>this.handleCategoryOnClick(f)}>{f}</a>
-	 ))}
- </div>
-)}
- </div>
-<div className="container">
-<div className="thumbnail">
+		    <div className={'container'}>
+			<h4>Description</h4>
+			<TCSEditor 
+				disabled={false}
+				type='text'
+				onEditorChange={this.handlePDescriptionOnChange} 
+				onEditorSave={this.handlePDescriptionOnSave}
+				placeholder={'Project Description'} 
+				buttonText={untutorial.Description.length > 0 ? "Edit" : "Add"}
+				text={untutorial.Description}/>
+			</div>
+            <div className="container">
+		    <h4>Level</h4>
+		    <TCSEditor 
+			  disabled={false}
+			  type='select'
+			  selectOptions={[1,2,3,4,5,6]}
+			  onEditorChange={this.handleLevelOnChange} 
+			  onEditorSave={this.handleLevelOnSave}
+			  text={untutorial.Level}/>	
+          </div>
+            <div className="container">
+              <h4>Tags</h4>
+              <div className="filter">
+                {Object.keys(untutorial.Categories).length != Object.keys(FILTERS).length && (
+		          <select onChange={this.handlePCategoryOnChange}>
+		            <option value='-1'>-------</option>
+			        {Object.keys(FILTERS).filter(f=>!Object.keys(untutorial.Categories).includes(f)).map(catName=><option value={catName}>{FILTERS[catName]}</option>)}
+		        </select>
+	            )}
+               </div>
+              {Object.keys(untutorial.Categories).length > 0 && (
+              <div className="filter-categories">
+	            {Object.keys(untutorial.Categories).map(f=>(
+		          <a onClick={()=>this.handleCategoryOnClick(f)}>{FILTERS[f]}</a>
+	            ))}
+               </div>
+              )}
+            </div>
+            <div className="container">
+              <div className="thumbnail">
 <h4>Add Image</h4>
 {this.state.uploading && (
 	<progress value={this.state.uploadPercent} max="100"/>
@@ -514,26 +507,9 @@ class NewProjectPageBase extends React.Component {
 	<input id="files" type="file" onChange={this.handleThumbnailUpload}/>
 </label>
 </div>
-</div>
-
-
-
-						{	/* 
-
-
-
-
-
-</div>	
-
-</div>
-
-</div>
-</div> */ }
-		</div> 
-		
-		  </div>
-
+            </div>
+		  </div> 
+		</div>
 	  </section>	
 	)
   }
