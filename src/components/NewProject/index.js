@@ -456,6 +456,7 @@ class NewProjectPageBase extends React.Component {
 						text={untutorial.Title}/>
 			</div>
 		    <div className={'container'}>
+<<<<<<< Updated upstream
 			<h4>Description</h4>
 			<TCSEditor 
 				disabled={false}
@@ -466,6 +467,18 @@ class NewProjectPageBase extends React.Component {
 				buttonText={untutorial.Description.length > 0 ? "Edit" : "Add"}
 				text={untutorial.Description}/>
 			</div>
+=======
+							<h4>Description</h4>
+							<TCSEditor 
+								disabled={false}
+								type='text'
+								onEditorChange={this.handlePDescriptionOnChange} 
+								onEditorSave={this.handlePDescriptionOnSave}
+								placeholder={'Project Description'} 
+								buttonText={untutorial.Description.length > 0 ? "Edit" : "Add"}
+								text={untutorial.Description}/>
+						</div>
+>>>>>>> Stashed changes
             <div className="container">
 		    <h4>Level</h4>
 		    <TCSEditor 
@@ -489,7 +502,11 @@ class NewProjectPageBase extends React.Component {
               {Object.keys(untutorial.Categories).length > 0 && (
               <div className="filter-categories">
 	            {Object.keys(untutorial.Categories).map(f=>(
+<<<<<<< Updated upstream
 		          <a onClick={()=>this.handleCategoryOnClick(f)}>{FILTERS[f]}</a>
+=======
+		          <a onClick={()=>this.handleCategoryOnClick(f)}>{f}</a>
+>>>>>>> Stashed changes
 	            ))}
                </div>
               )}
