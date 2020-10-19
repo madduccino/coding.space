@@ -492,7 +492,7 @@ class ProfilePageBase extends React.Component {
 				  )}
 				  <div className="instructions">
 				    <div><span class="fa fa-star white"></span> = to do</div>
-					<div><span class="fa fa-star approved fa-spin"></span> = waiting for teacher to approve</div>
+					<div><span class="fa fa-star pending fa-spin"></span> = waiting for teacher to approve</div>
 					<div><span class="fa fa-star approved"></span> = approved by teacher</div>
 
 					<div className="complete"><img src='/images/roket.png'/> = you finished!</div>
@@ -512,7 +512,7 @@ class ProfilePageBase extends React.Component {
 								    <div class="fa fa-star white"></div>
 								    // <img className={'pixel'} src='/images/rocket-coin-slot.png'/>
 							          ) : (!!progress.steps[slot] && progress.steps[slot].Status == 'PENDING') ? (
-								      <div class="fa fa-star approved fa-spin"></div>
+								      <div class="fa fa-star pending fa-spin"></div>
 								      // <img className={'pixel'} src='/images/inprogress-coin.gif'/>
 							          ) : (
 								     <div className="fa fa-star approved"></div>

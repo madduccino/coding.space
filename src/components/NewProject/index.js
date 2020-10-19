@@ -335,7 +335,7 @@ class NewProjectPageBase extends React.Component {
  			...this.state.untutorial
  		})
  		.then(()=>{
- 			console.log("Successfully Saved");
+			 console.log("Successfully Saved");
  			this.props.history.push(ROUTES.LAUNCHPAD +'/' + this.state.untutorial.key);
  		})
  		.catch(error=>console.log(error));
@@ -390,26 +390,29 @@ class NewProjectPageBase extends React.Component {
 	
 	return (
 	  <section id="new-project">
-		<div className="main">
+	    <div className="main">
 		  <div className="toolbar">
 		    <button onClick={this.addStepHandler}>Add Step</button>
 		    <button onClick={this.saveChangesHandler}>Save</button> 
 		  </div> 	
           <div className="main-content"> 
-		   <div className="steps"> 
-			  {Object.keys(untutorial.steps).map(step => (
+		    <div className="steps"> 
+		     {Object.keys(untutorial.steps).map(step => (
 			    <div className="step">
-					<div className={'step-title status'}>
-						Step {parseInt(step)+1}
-						<TCSEditor
-						disabled={!(!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===untutorial.Author.key))}
-						type={'text'}
-						className={'editor header'}
-						onEditorChange={(value)=>this.handleStepTitleOnChange(value,step)} 
-						onEditorSave={this.handleStepOnSave} 
-						placeholder={'Step Title'}
-						buttonText={untutorial.steps[step].Description.length > 0 ? 'Edit Title' : 'Add Title'} 
-						text={!!untutorial.steps[step].Title ? untutorial.steps[step].Title : ""}/> 
+				  <div className={'step-title status'}>
+				    Step {parseInt(step)+1}
+					{!!untutorial.steps[step] && !!untutorial.steps[step].Title.length && (
+						<>:&nbsp;</>
+					)}
+				    <TCSEditor
+				    disabled={!(!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===untutorial.Author.key))}
+				    type={'plain'}
+				    className={'editor header'}
+				    onEditorChange={(value)=>this.handleStepTitleOnChange(value,step)} 
+				    onEditorSave={this.handleStepOnSave} 
+				    placeholder={'Step Title'}
+				    buttonText={untutorial.steps[step].Title.length > 0 ? 'Edit' : '+'} 
+				    text={!!untutorial.steps[step].Title ? untutorial.steps[step].Title : ""}/> 
 					</div>
 					<div className="step-content">
 					<TCSEditor 
@@ -456,29 +459,16 @@ class NewProjectPageBase extends React.Component {
 						text={untutorial.Title}/>
 			</div>
 		    <div className={'container'}>
-<<<<<<< Updated upstream
-			<h4>Description</h4>
-			<TCSEditor 
-				disabled={false}
-				type='text'
-				onEditorChange={this.handlePDescriptionOnChange} 
-				onEditorSave={this.handlePDescriptionOnSave}
-				placeholder={'Project Description'} 
-				buttonText={untutorial.Description.length > 0 ? "Edit" : "Add"}
-				text={untutorial.Description}/>
+				<h4>Description</h4>
+				<TCSEditor 
+					disabled={false}
+					type='text'
+					onEditorChange={this.handlePDescriptionOnChange} 
+					onEditorSave={this.handlePDescriptionOnSave}
+					placeholder={'Project Description'} 
+					buttonText={untutorial.Description.length > 0 ? "Edit" : "Add"}
+					text={untutorial.Description}/>
 			</div>
-=======
-							<h4>Description</h4>
-							<TCSEditor 
-								disabled={false}
-								type='text'
-								onEditorChange={this.handlePDescriptionOnChange} 
-								onEditorSave={this.handlePDescriptionOnSave}
-								placeholder={'Project Description'} 
-								buttonText={untutorial.Description.length > 0 ? "Edit" : "Add"}
-								text={untutorial.Description}/>
-						</div>
->>>>>>> Stashed changes
             <div className="container">
 		    <h4>Level</h4>
 		    <TCSEditor 
@@ -502,11 +492,7 @@ class NewProjectPageBase extends React.Component {
               {Object.keys(untutorial.Categories).length > 0 && (
               <div className="filter-categories">
 	            {Object.keys(untutorial.Categories).map(f=>(
-<<<<<<< Updated upstream
 		          <a onClick={()=>this.handleCategoryOnClick(f)}>{FILTERS[f]}</a>
-=======
-		          <a onClick={()=>this.handleCategoryOnClick(f)}>{f}</a>
->>>>>>> Stashed changes
 	            ))}
                </div>
               )}

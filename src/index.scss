@@ -653,6 +653,66 @@
         width: 100%;
        }
      }
+     .iframe-off {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 2;
+      background-color: #fff;
+      border-radius: 50%;
+      padding: 10px;
+    }
+     .iframe-on {
+      z-index: 99;
+      position: fixed;
+      top: 0;
+      left: 0;
+      display: flex;
+      flex-flow: column wrap;
+      justify-content: center;
+      align-content: center;
+      width: 100%;
+      height: 100%;
+
+      p {
+       width: 485px;
+       padding: 10px;
+      }
+      .popup {
+        background-color: #fff;
+        border-bottom: 1px solid #ccc;
+        box-shadow: 0 2px 8px 0 rgba(0,0,0,0.8);
+        border-radius: 4px;
+        position: relative;
+        max-width: 600px;
+        padding-bottom: 20px;
+        button {
+          background-color: $darkgreen;
+          color: #fff;
+          padding: 4px 20px;
+          width: auto;
+        }
+        .toggle-iframe {
+          display: none;
+        }
+        &:before {
+          content: "Try It Out!";
+          display: block;
+          background-color: $orange;
+          padding: 10px;
+          font-weight: bold;
+          text-align: center;
+          font-size: 2rem;
+          border-top-left-radius: 4px;
+          border-top-right-radius: 4px;
+        }
+      }
+      iframe {
+        display: block;
+        margin: 0 auto;
+      }
+
+    }
      .scratch {
       grid-column: span 2;
       img {
@@ -664,100 +724,6 @@
         color: $darkgreen; 
         margin-top: 20px;
         margin-right: 20px;
-        .iframe-on {
-          z-index: 99;
-          position: fixed;
-          top: 0;
-          left: 0;
-          display: flex;
-          flex-flow: column wrap;
-          justify-content: center;
-          align-content: center;
-          width: 100%;
-          height: 100%;
-          background-color: $darkgreen;
-          p {
-           width: 485px;
-           padding: 10px;
-          }
-          .popup {
-            background-color: #fff;
-            border-bottom: 1px solid #ccc;
-            box-shadow: 0 2px 8px 0 rgba(0,0,0,0.8);
-            border-radius: 4px;
-            position: relative;
-            max-width: 600px;
-            padding-bottom: 20px;
-            h3 {
-              padding: 4px 20px;            
-            }
-            button {
-              background-color: $darkgreen;
-              color: #fff;
-              padding: 4px 20px;
-            }
-            &:before {
-              content: "Try It Out!";
-              display: block;
-              background-color: $orange;
-              padding: 10px;
-              font-weight: bold;
-              text-align: center;
-              font-size: 2rem;
-              border-top-left-radius: 4px;
-              border-top-right-radius: 4px;
-            }
-            .toggle-iframe {
-              cursor: pointer;
-              top: 10px;
-              position: absolute;
-              right: 20px;
-              &:after {
-              content: "X";
-              background-color:$darkgreen;
-              color: #fff;
-              border-radius: 50%;
-              width: 30px;
-              height: 30px;
-              display: block;
-              font-size: 24px;
-              font-weight: bold;
-              text-align: center;
-              }
-            }
-          }
-          iframe {
-            display: block;
-            margin: 0 auto;
-          }
-   
-        }
-        .iframe-off {
-          .toggle-iframe {
-            position: fixed;
-            right: 20px;
-            bottom: 20px;
-            cursor: pointer;
-            &:after {
-            content:"?";
-            background-color: $lightGreen;
-            display: block;
-            width: 30px;
-            height:  30px;
-            text-align: center;
-            border-radius: 50%;
-            font-weight: bold;
-            padding: 10px;
-            font-size:24px;
-            }
-          }
-          button {
-            display: none;
-          }
-          iframe {
-            display:none;
-          }
-        }
         .filter-categories {
           a {
             display: block;
@@ -916,16 +882,32 @@
             }
           
         .header {
+          display: flex;
+          flex-flow: row wrap;
+          align-content: center;
           > div:not(.quill) {
             font-size: 2rem;
             margin: 0;
           }
+          input {
+            border: 0;
+            border-bottom: 2px solid $darkgreen;
+            margin-left: 10px;
+            &:focus {
+              outline: 0;
+            }
+          }
+          button {
+            width: auto;
+            padding: 2px 4px;
+            margin-left: 10px;
+
+          }
           .editor-button {
             width: auto;
-            display: block;
             margin: 0;
+            display: flex;
             margin-left: 10px;
-         
           }
          }
         }
@@ -1014,12 +996,19 @@
           color: #fff;
           background-color: $darkgreen;
           width: 15%;
+          transition: 2s;
+          &:hover {
+            background-color: $darkergreen;
+          }
         }
       }
     .sidebar { 
        padding-top: 30px;   
        width: 300px;
       .container {
+        .thumbnail {
+          height: 150px;
+        }
         p {
           margin: 0;
         }
@@ -1238,11 +1227,25 @@
           text-align: center;
           border: 3px solid #7ae2da;
         }
-        > div {
+        .instructions {
+          grid-template-columns: repeat(4,1fr);
+
+        }
+        > a {
           padding: 10px;
           padding-top: 20px;
           grid-template-columns: 1fr 2fr 1fr;
           box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.15);
+          display: grid;
+          margin-bottom: 10px;
+          transition: 1s;
+          &:hover {
+            box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.25);
+
+          }
+        }
+        img {
+          width: 25px;
         }
         
      }
@@ -1342,7 +1345,14 @@
     .fa {
       font-size: 1.6rem;
     }
-    .yellow {
+    .pending, .approved {
+      color:rgb(206, 22, 190);
+      text-shadow: 0 0 3px #FF0000, 0 0 5px #0000FF;
+    }
+    .complete {
+      text-align: center;
+    }
+    .yellow {     
       color:$orange;
       text-shadow: 0 0 3px #FF0000, 0 0 5px #0000FF;
     }
@@ -1355,14 +1365,8 @@
       text-shadow: 0 0 3px #FF0000, 0 0 5px #0000FF;
     }
     .status {
-      @include flexh; 
      > div:not(.field) {
-      width: 15px;
-      height: 15px;
-      border-radius: 50%;
-      text-align: center;
-      margin: 10px;
-
+      margin: 5px;
       &.red {
         background-color:rgb(247, 48, 48);
         background:radial-gradient(circle, rgb(236, 99, 99), rgb(247, 48, 48),);

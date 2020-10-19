@@ -7,6 +7,7 @@ import TCSEditor from '../TCSEditor';
 import { v4 as uuidv4 } from 'uuid';
 import * as ROUTES from '../../constants/routes';
 import * as FILTERS from '../../constants/filter';
+import { Link } from 'react-router-dom';
 
 class UntutorialPageBase extends React.Component {
 	constructor(props){
@@ -657,9 +658,28 @@ class UntutorialPageBase extends React.Component {
 			  {!!progress && progress.Status == 'DRAFT' && nextStep>0 && (
 			    <h3>Keep it Up! You're on Step {nextStep}!</h3>
 			  )}
-				<a href="/launchpad">Back</a>
 			</div>
-		    <div className="main-content">
+			<div className={showiframe ? 'iframe-on' : "iframe-off"}>
+			  <div className="popup">
+			  {showiframe && (
+			  <>
+
+			    <h3 dangerouslySetInnerHTML={{__html:untutorial.Title}}/>
+			    <div dangerouslySetInnerHTML={{__html:untutorial.Description}}/>
+			    <button onClick={this.loadProgress}>Code This Project</button>	
+				<Link style={{position:"absolute",right:"20px",top:"20px",color:"black"}} to={ROUTES.LAUNCHPAD}><i className="fa fa-undo"></i></Link>
+			  </>
+			  )}
+			  <div onClick={()=> this.setState({showiframe:!showiframe})} className="toggle-iframe">
+			      <i class="fa fa-info-circle"></i>
+			  </div>
+{/* 			
+				{!!authUser && !progress && (
+				<button onClick={this.loadProgress}>Code This Project</button>
+				)} */}
+			</div>
+			</div>
+			<div className="main-content">
 			  {!!progress  && (
 			    <TCSEditor 
 			    disabled={false}
@@ -767,10 +787,10 @@ class UntutorialPageBase extends React.Component {
 			placeholder={'Step Description'} 
 			text={untutorial.Title} />
 			</div>		
-			{!!authUser && !progress && (
+			{/* {!!authUser && !progress && (
 				<button className="checkout"
 				onClick={this.loadProgress}>Get Coding!</button>
-			)}
+			)} */}
 			</div>
 			<div className="container">
 		      Level:
@@ -789,24 +809,7 @@ class UntutorialPageBase extends React.Component {
 			    <h3>by: <a href={'/profile/' + untutorial.Author.key} dangerouslySetInnerHTML={{__html:untutorial.Author.DisplayName}}/></h3>
 		      )}
 		    </div>	
-			<div className={showiframe ? 'iframe-on' : "iframe-off"}>
-			  <div className="popup">
-			  {showiframe && (
-			  <>
-			    <h3 dangerouslySetInnerHTML={{__html:untutorial.Title}}/>
-			    <div dangerouslySetInnerHTML={{__html:untutorial.Description}}/>
-			    <button onClick={this.loadProgress}>Code This Project</button>	
-			  </>
-			  )}
-			  <div onClick={()=> this.setState({showiframe:!showiframe})} className="toggle-iframe">
-			      <i class="fa fa-info-circle"></i>
-			  </div>
-{/* 			
-				{!!authUser && !progress && (
-				<button onClick={this.loadProgress}>Code This Project</button>
-				)} */}
-			</div>
-			</div>
+
 			<div className="container">
 				<TCSEditor 
 				  disabled={!(authUser && (!!authUser.roles['ADMIN'] || authUser.uid===untutorial.Author.key))}
