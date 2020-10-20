@@ -39,6 +39,7 @@
   @mixin flexhc {
     @include flexh;
     justify-content: center;
+    align-content: center;
     margin: 0 auto;
  }
 
@@ -634,6 +635,10 @@
       }
     }
     .main {
+      .publish {
+        width: auto;
+        margin-top: 30px;
+      }
       grid-template-columns: 3fr 1fr;
       margin-top: 372px;
       border-top: 2px solid $darkgreen;
@@ -643,14 +648,19 @@
        color: #fff;
        text-align: center;
        margin: 0;
-       h3 {
-        background-color: $darkgreen;
-        padding-top: 4px;
-        border-top-left-radius: 8px;
-        border-top-right-radius: 8px;
-        margin-top: -40px;
-        height: 34px;
-        width: 100%;
+       > a, h3 {
+       @include flexhc;
+       width: 100%;
+       background-color: $darkgreen;
+       padding-top: 4px;
+       border-top-left-radius: 8px;
+       border-top-right-radius: 8px;
+       margin-top: -40px;
+       height: 34px;
+       align-items: baseline;
+       a {
+         margin-left: 10px;
+       }
        }
      }
      .iframe-off {
@@ -658,7 +668,6 @@
       bottom: 20px;
       right: 20px;
       z-index: 2;
-      background-color: #fff;
       border-radius: 50%;
       padding: 10px;
     }
@@ -820,10 +829,7 @@
           width: auto;
         }
       }
-      .publish {
-        width: 350px;
-        margin-top: 10px;
-      }
+
       .url {
         margin: 0 0 40px;
         font-size: 1.4rem;
@@ -1229,7 +1235,13 @@
         }
         .instructions {
           grid-template-columns: repeat(4,1fr);
-
+          text-align: center;
+        }
+        .fa {
+          transition: 1s ease-in-out;
+          &:hover {
+            animation: spin 1s infinite;
+          }
         }
         > a {
           padding: 10px;
@@ -1241,9 +1253,9 @@
           transition: 1s;
           &:hover {
             box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.25);
-
           }
         }
+
         img {
           width: 25px;
         }
@@ -1345,10 +1357,19 @@
     .fa {
       font-size: 1.6rem;
     }
-    .pending, .approved {
-      color:rgb(206, 22, 190);
-      text-shadow: 0 0 3px #FF0000, 0 0 5px #0000FF;
+    .fa-code {
+      background-color: $darkgreen;
+      color: #fff;
+      padding: 10px;
+      border-radius: 50%;
+      cursor: pointer;
     }
+    .progress {
+    .pending, .approved {
+      color:$orange;
+      text-shadow: 0 0 3px $orange, 0 0 5px #e9dd33;
+    }
+  }
     .complete {
       text-align: center;
     }
@@ -1358,11 +1379,11 @@
     }
     .green {
       color:rgb(80, 221, 15);
-      text-shadow: 0 0 3px #FF0000, 0 0 5px #0000FF;
+      text-shadow: 0 0 3px #046404, 0 0 5px #0bec3c;
     }
     .white {
       color:rgb(255, 255, 255);
-      text-shadow: 0 0 3px #FF0000, 0 0 5px #0000FF;
+      text-shadow: 0 0 3px $orange, 0 0 5px #dfb704;
     }
     .status {
      > div:not(.field) {

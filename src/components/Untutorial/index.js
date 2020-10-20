@@ -647,10 +647,9 @@ class UntutorialPageBase extends React.Component {
 		  <div className="main">		 
 		    <div className="workOnProject">
 			  {!!progress && progress.Status == 'APPROVED' &&(
-			  <>
-			    <h3>GREAT JOB! You finished this project!</h3>
-			    <button className="publish" onClick={()=>window.location = ROUTES.UNIVERSE + '/' + progress.untut}>Publish to the UNIVERSE!</button>
-			  </>
+			  <Link to={ROUTES.UNIVERSE + '/' + progress.untut}>
+			    GREAT JOB! You finished this project!  Publish to the UNIVERSE!
+			  </Link>
 			  )}
 			  {!!progress && progress.Status == 'PENDING' && (
 			    <h3>Your teacher is reviewing your project! Take it easy!</h3>
@@ -667,11 +666,12 @@ class UntutorialPageBase extends React.Component {
 			    <h3 dangerouslySetInnerHTML={{__html:untutorial.Title}}/>
 			    <div dangerouslySetInnerHTML={{__html:untutorial.Description}}/>
 			    <button onClick={this.loadProgress}>Code This Project</button>	
-				<Link style={{position:"absolute",right:"20px",top:"20px",color:"black"}} to={ROUTES.LAUNCHPAD}><i className="fa fa-undo"></i></Link>
+				<Link style={{position:"absolute",left:"20px",top:"20px",color:"black"}} to={ROUTES.LAUNCHPAD}><i className="fa fa-times-circle"></i></Link>
+				<Link  style={{position:"absolute",right:"20px",top:"20px",color:"black"}} onClick={()=> this.setState({showiframe:false, progress:null})}><i className="fa fa-eye"></i></Link>
 			  </>
 			  )}
 			  <div onClick={()=> this.setState({showiframe:!showiframe})} className="toggle-iframe">
-			      <i class="fa fa-info-circle"></i>
+			      <i className="fa fa-code"></i>
 			  </div>
 {/* 			
 				{!!authUser && !progress && (

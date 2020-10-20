@@ -473,8 +473,7 @@ class ProfilePageBase extends React.Component {
 							<i className="fa fa-flag green"></i> : 
 							<div>Draft</div>
 					      }    
-					      </div>
-					    
+					      </div>	
 						</Link>
 					  ) : ""}
 					  </>))
