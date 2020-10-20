@@ -70,9 +70,19 @@ class UntutorialPageBase extends React.Component {
 			return; //replace control with rich text editor
 		}
 	}
+
+
+	handleClick = (e) => {
+      const {showiframe} = this.state;
+		if (e.target.parentNode.className ==="main") {
+         this.setState({showiframe: false})
+		}
+	}
+
 	componentDidMount(){
 		//console.log(this.authUser);
-		
+		document.body.addEventListener('click', this.handleClick);
+
 		const {key} = this.props.match.params;
 
 		this.props.firebase.untutorial(key).on('value', snapshot => {
@@ -666,7 +676,7 @@ class UntutorialPageBase extends React.Component {
 			    <h3 dangerouslySetInnerHTML={{__html:untutorial.Title}}/>
 			    <div dangerouslySetInnerHTML={{__html:untutorial.Description}}/>
 			    <button onClick={this.loadProgress}>Code This Project</button>	
-				<Link style={{position:"absolute",left:"20px",top:"20px",color:"black"}} to={ROUTES.LAUNCHPAD}><i className="fa fa-times-circle"></i></Link>
+				<Link style={{position:"absolute",left:"20px",top:"20px",color:"black"}} to={ROUTES.LAUNCHPAD}><i className="fa fa-undo"></i></Link>
 				<Link  style={{position:"absolute",right:"20px",top:"20px",color:"black"}} onClick={()=> this.setState({showiframe:false, progress:null})}><i className="fa fa-eye"></i></Link>
 			  </>
 			  )}
@@ -703,7 +713,7 @@ class UntutorialPageBase extends React.Component {
 					  )}
 					  <TCSEditor
 						disabled={!(!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===untutorial.Author.key))}
-						type={'text'}
+						type={'plain'}
 						className={!!progress  ? 'no-button' : 'header'} 
 						onEditorChange={(value)=>this.handleStepTitleOnChange(value,index)} 
 						onEditorSave={(value)=>this.handleStepTitleOnSave(value,index)} 
