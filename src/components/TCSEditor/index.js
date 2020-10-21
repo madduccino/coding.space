@@ -53,6 +53,7 @@ class TCSEditor extends React.Component {
 		this.setState({editing:!editing});
 		this.props.onEditorSave(text);
 	}
+	
 	render(){
 
 		const {className} = this.props;
@@ -76,6 +77,14 @@ class TCSEditor extends React.Component {
 					)}
 			        <button onClick={this.handleEdit}>{buttonText}</button>
 			      </div>
+				)
+			}
+			else if (this.props.name==='description') {	
+				return (
+				  <div className={'field ' + className}>
+					<div>{text.replace(/<(.|\n)*?>/g, '').trim()}</div>
+					<button className="editor-button" onClick={this.handleEdit}>{buttonText}</button>
+				  </div>
 				)
 			}
 			return (

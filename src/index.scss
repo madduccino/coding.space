@@ -623,14 +623,14 @@
         object-fit: cover;
       }
       &.hero {
-        height: 472px;
+        height: 372px;
         border: 0;
         position: fixed !important;  
         z-index: -99;
         margin-top: 0;
         top: 0;
         img,label {
-          height: 472px;
+          height: 372px;
         }
       }
     }
@@ -640,7 +640,7 @@
         margin-top: 30px;
       }
       grid-template-columns: 3fr 1fr;
-      margin-top: 372px;
+      margin-top: 272px;
       border-top: 2px solid $darkgreen;
       padding: 0 5%;
      .workOnProject {
@@ -733,6 +733,7 @@
         color: $darkgreen; 
         margin-top: 20px;
         margin-right: 20px;
+        padding-top: 30px;
         .filter-categories {
           a {
             display: block;
