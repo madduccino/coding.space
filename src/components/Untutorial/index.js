@@ -672,12 +672,13 @@ class UntutorialPageBase extends React.Component {
 			  <div className="popup">
 			  {showiframe && (
 			  <>
-
-			    <h3 dangerouslySetInnerHTML={{__html:untutorial.Title}}/>
-			    <div dangerouslySetInnerHTML={{__html:untutorial.Description}}/>
-			    <button onClick={this.loadProgress}>Code This Project</button>	
+                <div>
+				  <h3 dangerouslySetInnerHTML={{__html:untutorial.Title}}/>
+			      <div dangerouslySetInnerHTML={{__html:untutorial.Description}}/>
+				  <button onClick={this.loadProgress}>Code This Project</button>	
+				</div>
 				<Link style={{position:"absolute",left:"20px",top:"20px",color:"black"}} to={ROUTES.LAUNCHPAD}><i className="fa fa-undo"></i></Link>
-				<Link  style={{position:"absolute",right:"20px",top:"20px",color:"black"}} onClick={()=> this.setState({showiframe:false, progress:null})}><i className="fa fa-eye"></i></Link>
+				<Link style={{position:"absolute",right:"20px",top:"20px",color:"black"}} onClick={()=> this.setState({showiframe:false, progress:null})}><i className="fa fa-eye"></i></Link>
 			  </>
 			  )}
 			  <div onClick={()=> this.setState({showiframe:!showiframe})} className="toggle-iframe">

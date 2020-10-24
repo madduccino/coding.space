@@ -321,7 +321,7 @@ class NewProjectPageBase extends React.Component {
  }
  handleCategoryValidate(){
  	const {untutorial,errors} = this.state;
- 	if(Object.keys(untutorial.Categories).length < 3){
+ 	if(Object.keys(untutorial.Categories).length < 2){
  		errors["Categories"] = 'CATS.<span class="red">GR8TR.THAN.2.REQUIRED</span>';
  	}
  	else
@@ -479,7 +479,7 @@ class NewProjectPageBase extends React.Component {
 			  onEditorSave={this.handleLevelOnSave}
 			  text={untutorial.Level}/>	
           </div>
-            <div className="container">
+            <div className="container tags">
               <h4>Tags</h4>
               <div className="filter">
                 {Object.keys(untutorial.Categories).length != Object.keys(FILTERS).length && (

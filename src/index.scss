@@ -360,11 +360,10 @@
       // padding: 60px 30px;
       background-color: $darkgreen;
       word-wrap: break-word;
-      .sidebar-content {
         padding: 60px 30px;
         > div {
           margin-bottom: 40px;
-        }
+        
       }
       button {
         padding: 0 6px;
@@ -623,14 +622,12 @@
         object-fit: cover;
       }
       &.hero {
-        height: 372px;
+        height: 272px;
         border: 0;
-        position: fixed !important;  
-        z-index: -99;
         margin-top: 0;
         top: 0;
         img,label {
-          height: 372px;
+          height: 272px;
         }
       }
     }
@@ -640,7 +637,6 @@
         margin-top: 30px;
       }
       grid-template-columns: 3fr 1fr;
-      margin-top: 272px;
       border-top: 2px solid $darkgreen;
       padding: 0 5%;
      .workOnProject {
@@ -648,6 +644,7 @@
        color: #fff;
        text-align: center;
        margin: 0;
+       z-index:1;
        > a, h3 {
        @include flexhc;
        width: 100%;
@@ -689,12 +686,11 @@
         border-radius: 4px;
         position: relative;
         max-width: 600px;
-        padding-bottom: 20px;
-        p {
+        > div {
           padding: 20px;
         }
-        h3 {
-          padding: 20px 20px 0;
+        iframe {
+          margin-top: 20px;
         }
         button {
           background-color: $darkgreen;
@@ -736,6 +732,9 @@
         margin-top: 20px;
         margin-right: 20px;
         padding-top: 30px;
+        .tags {
+          z-index:9;
+        }
         .filter-categories {
           a {
             display: block;
@@ -995,7 +994,7 @@
         width: 100%;
         height: 50px;
         top: 0;
-        z-index: 3;
+        z-index: 99;
         padding: 10px;
         background-color: #fff;
         box-shadow: 0 2px 8px 0 rgba(0,0,0,.15);
@@ -1017,7 +1016,10 @@
        width: 300px;
       .container {
         .thumbnail {
-          height: 150px;
+          height: auto;
+          label {
+            height: 200px;
+          }
         }
         p {
           margin: 0;
@@ -1288,6 +1290,24 @@
       }
     }
     .profile {
+    .copy {
+      display: flex;
+      margin-bottom: 4px;
+      i {
+        margin-left: 10px;
+        cursor: pointer;
+      }
+    }
+    textarea {
+      border: none;
+      overflow: auto;
+      outline: none;
+      box-shadow: none;
+      resize: none;
+      width: 100%;
+      font-family: $bodyFont;
+      font-size: $fontSize;
+    }
       button {
         margin: 5px 0;
         width: auto;
