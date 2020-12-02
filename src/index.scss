@@ -346,11 +346,11 @@
     color: #fff;
   }
  
-  #profile, #clazz, #untutorial, #new-project, #jetfuel, #question, #progress-reviews {
+  #profile, #clazz, #untutorial, #new-project, #jetfuel, #question, #progress-reviews,#launchpad   {
     .main {
       color: #fff;
       display: grid;
-      grid-template-columns: 1fr 3fr;
+      grid-template-columns: 1fr 5fr;
       height: 100%;
       background-color: #fff;
       color: $darkgreen;
@@ -520,22 +520,35 @@
     .main {
       color: #fff;
       display: grid;
-      @include flexhc;
-      margin: 40px;
+      .sidebar {
+        .selected {
+          &:after {
+            content: "x";
+            display: block;
+          }
+        }
+      }
+      .main-content {
+      
+        display: grid;
+        grid-template-columns:repeat(3,1fr);
+      grid-gap: 40px;
+      h1 {
+        grid-column: span 3;
+      }
+      // @include flexhc;
+      // margin: 40px;
       > a {
         background-color: #fff;
-        border-radius: 8px;
         color: $darkgreen;
-        width: 21%;
-        margin: 2%;
+        border:1px solid $darkgreen;
+  
         // flex-grow: 1;
         img {
            width: 100%;
            height: 130px;
            object-fit: cover;
-           border-top-left-radius: 8px;
-           border-top-right-radius: 8px;
-        }
+         }
         > div {
           padding: 40px 20px;
           font-size: 1rem;
@@ -550,6 +563,7 @@
           }
         }
       }
+    }
     }
   }
 
@@ -631,35 +645,38 @@
         }
       }
     }
+    .workOnProject {
+      text-align: center;
+    }
     .main {
       .publish {
         width: auto;
         margin-top: 30px;
       }
-      grid-template-columns: 3fr 1fr;
+      grid-template-columns: 4fr 2fr;
       border-top: 2px solid $darkgreen;
       padding: 0 5%;
-     .workOnProject {
-       grid-column: span 2;
-       color: #fff;
-       text-align: center;
-       margin: 0;
-       z-index:1;
-       > a, h3 {
-       @include flexhc;
-       width: 100%;
-       background-color: $darkgreen;
-       padding-top: 4px;
-       border-top-left-radius: 8px;
-       border-top-right-radius: 8px;
-       margin-top: -40px;
-       height: 34px;
-       align-items: baseline;
-       a {
-         margin-left: 10px;
-       }
-       }
-     }
+    //  .workOnProject {
+    //    grid-column: span 2;
+    //    color: #fff;
+    //    text-align: center;
+    //    margin: 0;
+    //    z-index:1;
+    //    > a, h3 {
+    //    @include flexhc;
+    //    width: 100%;
+    //    background-color: $darkgreen;
+    //    padding-top: 4px;
+    //    border-top-left-radius: 8px;
+    //    border-top-right-radius: 8px;
+    //    margin-top: -40px;
+    //    height: 34px;
+    //    align-items: baseline;
+    //    a {
+    //      margin-left: 10px;
+    //    }
+    //    }
+    //  }
      .iframe-off {
       position: fixed;
       bottom: 20px;
@@ -1100,16 +1117,13 @@
   #launchpad, #universe, #classes {
     color: $orange;
     a {
-      display: inline-block;
+      display: block;
+      margin-bottom: 20px;
       cursor: pointer;
       color: $orange;
     }
     .filter {
-    display:flex;
-    flex-flow: row wrap;
-    justify-content: center;
-    margin: 30px auto;
-    max-width: 600px;
+
     div {
      text-align: center;
      margin:1rem;
@@ -1144,10 +1158,14 @@
 }
 
   #profile {
+    .main {
+      grid-template-columns: 1fr 3fr;
+    }
    a {
       color: $darkgreen;
     }
     .sidebar {
+      
       > div {
         margin-bottom: 20px;
         cursor: pointer;

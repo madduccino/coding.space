@@ -310,7 +310,9 @@ class UntutorialPageBase extends React.Component {
 	 	const {untutorial} = this.state;
 	 	if(event.target.value != '-1'){
 	 		untutorial.Categories[event.target.value] = event.target.value;
-	 		this.setState({untutorial:untutorial},this.handleCategoryValidate);	
+			 this.setState({untutorial:untutorial},this.handleCategoryValidate);	
+			 console.log(event.target.value)
+			 console.log(this.state.untutorial)
 	 	}
 	}
 	handleCategoryOnClick(text){
@@ -654,8 +656,7 @@ class UntutorialPageBase extends React.Component {
 		    <LazyImage file={this.props.firebase.storage.ref('/public/' + untutorial.Author.key + '/' + untutorial.ThumbnailFilename)}/>
 		  )}
 		  </div>
-		  <div className="main">		 
-		    <div className="workOnProject">
+		  <div className="workOnProject">
 			  {!!progress && progress.Status == 'APPROVED' &&(
 			  <Link to={ROUTES.UNIVERSE + '/' + progress.untut}>
 			    GREAT JOB! You finished this project!  Publish to the UNIVERSE!
@@ -668,6 +669,9 @@ class UntutorialPageBase extends React.Component {
 			    <h3>Keep it Up! You're on Step {nextStep}!</h3>
 			  )}
 			</div>
+				
+		  <div className="main">		 
+	
 			<div className={showiframe ? 'iframe-on' : "iframe-off"}>
 			  <div className="popup">
 			  {showiframe && (
@@ -856,13 +860,12 @@ class UntutorialPageBase extends React.Component {
 					{Object.keys(FILTERS).filter(f=>!Object.keys(untutorial.Categories).includes(f)).map(catName=><option value={catName}>{FILTERS[catName]}</option>)}
 				</select>
 			        )}
-			        {Object.keys(untutorial.Categories).length > 0 && (
 				    <div className="filter-categories">
 					{Object.keys(untutorial.Categories).map(f=>(
 					  <a onClick={()=>this.handleCategoryOnClick(f)}>{FILTERS[f]}</a>
 					))}
 				</div>
-			    )}
+			    
 			</div>
 			</div>
 				)}
