@@ -1,6 +1,6 @@
 	function goBack() {
 	 var back = document.createElement("a");
-	  back.href = "./";
+	  back.href = document.referrer;
 	  back.id = "back";
 	  back.innerHTML = "Back"
 	  var h1 = document.querySelector("h1");
