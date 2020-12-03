@@ -777,9 +777,17 @@ class UntutorialPageBase extends React.Component {
 									className={'done-button'}
 									onClick={()=>this.studentApprove(index)}>Teacher Reviewing!</button>
 							</div>
+							
 						)}
 						</div>
+						{!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===untutorial.Author) && (
+						<button  
+							onClick={(event)=>this.deleteStepHandler(event,step)}
+							text="Delete Step">Delete Step</button>
+					)}
 				  </div>
+
+				
 			    ))}
 			  </div>
 			</div>
