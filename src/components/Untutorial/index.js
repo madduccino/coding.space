@@ -55,7 +55,7 @@ class UntutorialPageBase extends React.Component {
 		this.validateLevel = this.validateLevel.bind(this);
 		this.validateStep = this.validateStep.bind(this);
 		this.loadProgress = this.loadProgress.bind(this);
-
+        this.deleteProjectHandler = this.deleteProjectHandler.bind(this);
 		this.studentApprove = this.studentApprove.bind(this);
 
 
@@ -434,7 +434,7 @@ class UntutorialPageBase extends React.Component {
 			oCopy.Status = 'DRAFT';
 		delete oCopy.steps[key];
 		//shift steps up
-		var newSteps = {};
+		var newSteps = [];
 		var steps  = Object.values(oCopy.steps);
 		steps.forEach((step,i)=>{
 			newSteps[i] = step;
@@ -454,9 +454,8 @@ class UntutorialPageBase extends React.Component {
 		this.setState({untutorial:oCopy,dirty:true},this.saveChangesHandler);
 		console.log("Add Step");
 	}
-	deleteProjectHandler(value){
+	deleteProjectHandler(){
 		const {key} = this.props.match.params;
-
 		this.props.firebase.untutorial(key).remove();
 		window.location = ROUTES.LANDING;
 		
@@ -683,7 +682,7 @@ class UntutorialPageBase extends React.Component {
 				  <button onClick={this.loadProgress}>Code This Project</button>	
 				</div>
 				<Link style={{position:"absolute",left:"20px",top:"20px",color:"black"}} to={ROUTES.LAUNCHPAD}><i className="fa fa-undo"></i></Link>
-				<Link style={{position:"absolute",right:"20px",top:"20px",color:"black"}} onClick={()=> this.setState({showiframe:false, progress:null})}><i className="fa fa-eye"></i></Link>
+				<Link style={{position:"absolute",right:"20px",top:"20px",color:"black"}} onClick={()=> this.setState({showiframe:false, progress:null})}><i className="fa fa-close"></i></Link>
 			  </>
 			  )}
 			  <div onClick={()=> this.setState({showiframe:!showiframe})} className="toggle-iframe">
@@ -780,15 +779,18 @@ class UntutorialPageBase extends React.Component {
 							
 						)}
 						</div>
-						{!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===untutorial.Author) && (
-						<button  
-							onClick={(event)=>this.deleteStepHandler(event,step)}
-							text="Delete Step">Delete Step</button>
-					)}
-				  </div>
+						{!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===untutorial.Author.key) && (
+						<button className="del" onClick={(event)=>this.deleteStepHandler(event,index)} text="Delete Step">Delete Step</button>
+					)}	
+								  
+					</div>
 
-				
+
 			    ))}
+			   <div class="addDelete">
+				   <button onClick={(event)=>this.addStepHandler(event)} text="Add Step">Add Step</button>
+				<button onClick={this.deleteProjectHandler}>Delete Untutorial</button>
+				</div>
 			  </div>
 			</div>
 		    <div className="sidebar">
@@ -829,9 +831,8 @@ class UntutorialPageBase extends React.Component {
 			  text={untutorial.Level}/>
 		    </div>	
 			<div className="container">
-		      {untutorial.Author.Status === 'APPROVED' &&(
 			    <h3>by: <a href={'/profile/' + untutorial.Author.key} dangerouslySetInnerHTML={{__html:untutorial.Author.DisplayName}}/></h3>
-		      )}
+		    
 		    </div>	
 
 			<div className="container">
