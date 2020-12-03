@@ -459,6 +459,7 @@ class UntutorialPageBase extends React.Component {
 
 		this.props.firebase.untutorial(key).remove();
 		window.location = ROUTES.LANDING;
+		
 	}
 	saveChangesHandler(event){
 
