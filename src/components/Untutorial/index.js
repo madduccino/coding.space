@@ -779,7 +779,7 @@ class UntutorialPageBase extends React.Component {
 							
 						)}
 						</div>
-						{!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===untutorial.Author.key) && (
+						{stepCount > 1 && !!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===untutorial.Author.key) && (
 						<button className="del" onClick={(event)=>this.deleteStepHandler(event,index)} text="Delete Step">Delete Step</button>
 					)}	
 								  
@@ -787,10 +787,14 @@ class UntutorialPageBase extends React.Component {
 
 
 			    ))}
+							   {!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===untutorial.Author.key) && (
+
 			   <div class="addDelete">
-				   <button onClick={(event)=>this.addStepHandler(event)} text="Add Step">Add Step</button>
+				<button onClick={(event)=>this.addStepHandler(event)} text="Add Step">Add Step</button>
 				<button onClick={this.deleteProjectHandler}>Delete Untutorial</button>
+				
 				</div>
+				)}
 			  </div>
 			</div>
 		    <div className="sidebar">
@@ -843,7 +847,7 @@ class UntutorialPageBase extends React.Component {
 				  onEditorSave={this.handleDescriptionOnSave}
 				  placeholder={'Untutorial Description'} 
 				  name={'description'}
-				  text={untutorial.Description} />
+				  text={untutorial.Description.replace(/<(.|\n)*?>/g, '').trim()} />
 				</div>	
 				{!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===untutorial.Author.key) && (
 				<div className="container">

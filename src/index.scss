@@ -1,10 +1,60 @@
-@import url('https://use.typekit.net/eia0pww.css');
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=B612+Mono&family=Share+Tech+Mono&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Overpass+Mono:wght@700&family=Roboto+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=Space+Mono:wght@700&display=swap');
 @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css');
+
+
+/* Proxima Nova - Light */
+@font-face {
+  font-display: swap;
+  font-family: "Proxima Nova";
+  src: url(./fonts/proxima-nova-reg.woff2) format("woff2"),
+    url(./fonts/proxima-nova-reg.woff) format("woff"),
+    url(./fonts/proxima-nova-reg.otf) format("opentype");
+  font-style: normal;
+  font-weight: 200;
+}
+
+/* Proxima Nova - Regular */
+@font-face {
+  font-display: swap;
+  font-family: "Proxima Nova";
+  src: url(./fonts/proxima-nova-reg.woff2) format("woff2"),
+    url(./fonts/proxima-nova-reg.woff) format("woff"),
+    url(./fonts/proxima-nova-reg.otf) format("opentype");
+  font-style: normal;
+  font-weight: 400;
+}
+
+/* Proxima Nova - Bold */
+@font-face {
+  font-display: swap;
+  font-family: "Proxima Nova";
+  src: url(./fonts/proxima-nova-bold.woff2) format("woff2"),
+    url(./fonts/proxima-nova-bold.woff) format("woff"),
+    url(./fonts/proxima-nova-bold.otf) format("opentype");
+  font-style: normal;
+  font-weight: 600;
+}
+
+/* Futura - Book */
+@font-face {
+  font-display: swap;
+  font-family: "Futura";
+  src: url(./fonts/futura-book.woff2) format("woff2"),
+    url(./fonts/futura-book.woff) format("woff"),
+    url(./fonts/futura-book.ttf) format("truetype");
+  font-style: normal;
+  font-weight: 400;
+}
+
+/* Futura - Bold */
+@font-face {
+  font-display: swap;
+  font-family: "Futura";
+  src: url(./fonts/futura-bold.woff2) format("woff2"),
+    url(./fonts/futura-bold.woff) format("woff"),
+    url(./fonts/futura-bold.ttf) format("truetype");
+  font-style: normal;
+  font-weight: 600;
+}
 
 $darkgreen: #274548;
 $lightGreen:#9FE2DD;
@@ -15,8 +65,8 @@ $orange: #EDC034;
 $darkerOrange: #d8a200;
 $darkOrangeTransparent:rgba(216,162,0,0.7);
 $fontSize: 18px;
-$headerFont: 'futura-pt-bold',sans-serif;
-$bodyFont: 'Montserrat';
+$headerFont: 'Futura',sans-serif;
+$bodyFont: 'Proxima Nova', sans-serif;
 // $headerFont: 'roboto mono','futura-pt-bold',sans-serif;
 // $bodyFont: 'VT323',monospace;
 $breakpoint-tablet: 768px;
