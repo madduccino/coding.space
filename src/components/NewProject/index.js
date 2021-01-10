@@ -404,7 +404,7 @@ class NewProjectPageBase extends React.Component {
 					{!!untutorial.steps[step] && !!untutorial.steps[step].Title.length && (
 						<>:&nbsp;</>
 					)}
-				    {/* <TCSEditor
+				    <TCSEditor
 				    disabled={false}
 				    type={'plain'}
 				    className={'editor header'}
@@ -412,7 +412,7 @@ class NewProjectPageBase extends React.Component {
 				    onEditorSave={this.handleStepOnSave} 
 				    placeholder={'Step Title'}
 				    buttonText={untutorial.steps[step].Title.length > 0 ? 'Edit' : '+'} 
-				    text={!!untutorial.steps[step].Title ? untutorial.steps[step].Title : ""}/>  */}
+				    text={!!untutorial.steps[step].Title ? untutorial.steps[step].Title : ""}/>  
 					</div>
 					<div className="step-content">
 					<TCSEditor 
