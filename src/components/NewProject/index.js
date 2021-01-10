@@ -404,15 +404,15 @@ class NewProjectPageBase extends React.Component {
 					{!!untutorial.steps[step] && !!untutorial.steps[step].Title.length && (
 						<>:&nbsp;</>
 					)}
-				    <TCSEditor
-				    disabled={!(!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===untutorial.Author.key))}
+				    {/* <TCSEditor
+				    disabled={false}
 				    type={'plain'}
 				    className={'editor header'}
 				    onEditorChange={(value)=>this.handleStepTitleOnChange(value,step)} 
 				    onEditorSave={this.handleStepOnSave} 
 				    placeholder={'Step Title'}
 				    buttonText={untutorial.steps[step].Title.length > 0 ? 'Edit' : '+'} 
-				    text={!!untutorial.steps[step].Title ? untutorial.steps[step].Title : ""}/> 
+				    text={!!untutorial.steps[step].Title ? untutorial.steps[step].Title : ""}/>  */}
 					</div>
 					<div className="step-content">
 					<TCSEditor 
@@ -448,15 +448,15 @@ class NewProjectPageBase extends React.Component {
 		  </div>
 		  <div className="sidebar">
 		    <div className={'container'}>
-					<h4>Title</h4>
-						<TCSEditor 
-						disabled={false}
-						type='plain'
-						onEditorChange={this.handlePTitleOnChange} 
-						onEditorSave={this.handlePTitleOnSave}
-						placeholder={'Untutorial Title'} 
-						buttonText={untutorial.Title.length > 0 ? "Edit" : "Add"}
-						text={untutorial.Title}/>
+			  <h4>Title</h4>
+				<TCSEditor 
+				disabled={false}
+				type='plain'
+				onEditorChange={this.handlePTitleOnChange} 
+				onEditorSave={this.handlePTitleOnSave}
+				placeholder={'Untutorial Title'} 
+				buttonText={untutorial.Title.length > 0 ? "Edit" : "Add"}
+				text={untutorial.Title}/>
 			</div>
 		    <div className={'container'}>
 				<h4>Description</h4>
@@ -470,15 +470,15 @@ class NewProjectPageBase extends React.Component {
 					text={untutorial.Description}/>
 			</div>
             <div className="container">
-		    <h4>Level</h4>
-		    <TCSEditor 
+		      <h4>Level</h4>
+		      <TCSEditor 
 			  disabled={false}
 			  type='select'
 			  selectOptions={[1,2,3,4,5,6]}
 			  onEditorChange={this.handleLevelOnChange} 
 			  onEditorSave={this.handleLevelOnSave}
 			  text={untutorial.Level}/>	
-          </div>
+            </div>
             <div className="container tags">
               <h4>Tags</h4>
               <div className="filter">
@@ -499,17 +499,17 @@ class NewProjectPageBase extends React.Component {
             </div>
             <div className="container">
               <div className="thumbnail">
-<h4>Add Image</h4>
-{this.state.uploading && (
-	<progress value={this.state.uploadPercent} max="100"/>
-)}
-{!!untutorial.ThumbnailFilename && untutorial.ThumbnailFilename!=='' && !this.state.uploading &&(
-	<LazyImage file={this.props.firebase.storage.ref('/public/' + untutorial.Author + '/' + untutorial.ThumbnailFilename)}/>
-)}
-<label for="files" className="upload">
-	<input id="files" type="file" onChange={this.handleThumbnailUpload}/>
-</label>
-</div>
+                <h4>{untutorial.ThumbnailFilename && !this.state.uploading ? '+Replace' : '+ Add'} Image</h4>
+                {this.state.uploading && (
+	             <progress value={this.state.uploadPercent} max="100"/>
+               )}
+              {!!untutorial.ThumbnailFilename && untutorial.ThumbnailFilename!=='' && !this.state.uploading &&(
+	            <LazyImage file={this.props.firebase.storage.ref('/public/' + untutorial.Author + '/' + untutorial.ThumbnailFilename)}/>
+              )}
+              <label for="files" className="upload">
+	            <input id="files" type="file" onChange={this.handleThumbnailUpload}/>
+              </label>
+              </div>
             </div>
 		  </div> 
 		</div>

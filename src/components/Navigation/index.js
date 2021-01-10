@@ -41,10 +41,11 @@ class Navigation extends React.Component{
         <>
         <Link className="logo" to={ROUTES.LANDING}><img src={logo} /></Link>
         <div className="nav">
-            <Link to={ROUTES.UNIVERSE}>Universe</Link>
+            {/* <Link to={ROUTES.UNIVERSE}>Universe</Link> */}
+            <Link to={ROUTES.LAUNCHPAD}>Launchpad</Link>
             <Link to={ROUTES.NEW_PROJECT}>New Untutorial</Link>
-            <Link to={ROUTES.JETFUEL}>Jet Fuel</Link>   
-            <Link to={ROUTES.SIMULATOR}>Simulator</Link>   
+            {/* <Link to={ROUTES.JETFUEL}>Jet Fuel</Link>    */}
+            {/* <Link to={ROUTES.SIMULATOR}>Simulator</Link>    */}
             {!!authUser.roles[ROLES.ADMIN] && (
                 <Link to={ROUTES.NEW_USER}>New User</Link>            
               )}
@@ -66,10 +67,12 @@ class Navigation extends React.Component{
           <div className={this.props.showNav ? "showMenu" : "hideMenu"}> 
             <a href={'/profile/' + authUser.uid}>My Profile</a>
             {(!!authUser.roles[ROLES.ADMIN] || !!authUser.roles[ROLES.TEACHER]) && (
-              <Link to={ROUTES.RESOURCE_HOME}>Resources</Link>
+              <>
+              {/* <Link to={ROUTES.RESOURCE_HOME}>Resources</Link> */}
+              <Link to={ROUTES.CLASSES}>My Classes</Link>       
+              </>
             )}
-            <Link to={'/launchpad'}>Launch Pad</Link>
-            <Link to={ROUTES.CLASSES}>My Classes</Link>       
+            {/* <Link to={'/launchpad'}>Launch Pad</Link> */}
 
             <SignOutButton />
           </div>

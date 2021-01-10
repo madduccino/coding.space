@@ -641,9 +641,27 @@ class UntutorialPageBase extends React.Component {
 
 		//can edit
 
-		return (
-		<section id="untutorial">
-		  <div className="thumbnail hero">
+	return (
+	  <section id="untutorial">
+	    <div className={showiframe ? 'iframe-on' : "iframe-off"}>
+		  <div className="popup">
+		    {showiframe && (
+			  <>
+                <div>
+				  <h3 dangerouslySetInnerHTML={{__html:untutorial.Title}}/>
+			      <div dangerouslySetInnerHTML={{__html:untutorial.Description}}/>
+				  <button onClick={this.loadProgress}>Code This Project</button>	
+				</div>
+				<Link style={{position:"absolute",left:"20px",top:"20px",color:"black"}} to={ROUTES.LAUNCHPAD}><i className="fa fa-undo"></i></Link>
+				<Link style={{position:"absolute",right:"20px",top:"20px",color:"black"}} onClick={()=> this.setState({showiframe:false, progress:null})}><i className="fa fa-close"></i></Link>
+			  </>
+			)}
+			<div onClick={()=> this.setState({showiframe:!showiframe})} className="toggle-iframe">
+		      <i className="fa fa-code"></i>
+			</div>
+			</div>
+		</div>
+	    <div className={`thumbnail hero ${showiframe ? 'blur':''}`}>
 		  {!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===untutorial.Author.key) && (	
 		    <label for="files" className="upload">
 			<input id="files" type="file" onChange={this.handleThumbnailUpload}/>
@@ -656,7 +674,7 @@ class UntutorialPageBase extends React.Component {
 		    <LazyImage file={this.props.firebase.storage.ref('/public/' + untutorial.Author.key + '/' + untutorial.ThumbnailFilename)}/>
 		  )}
 		  </div>
-		  <div className="workOnProject">
+	    <div className="workOnProject">
 			  {!!progress && progress.Status == 'APPROVED' &&(
 			  <Link to={ROUTES.UNIVERSE + '/' + progress.untut}>
 			    GREAT JOB! You finished this project!  Publish to the UNIVERSE!
@@ -668,48 +686,24 @@ class UntutorialPageBase extends React.Component {
 			  {!!progress && progress.Status == 'DRAFT' && nextStep>0 && (
 			    <h3>Keep it Up! You're on Step {nextStep}!</h3>
 			  )}
-			</div>
-				
-		  <div className="main">		 
-	
-			<div className={showiframe ? 'iframe-on' : "iframe-off"}>
-			  <div className="popup">
-			  {showiframe && (
-			  <>
-                <div>
-				  <h3 dangerouslySetInnerHTML={{__html:untutorial.Title}}/>
-			      <div dangerouslySetInnerHTML={{__html:untutorial.Description}}/>
-				  <button onClick={this.loadProgress}>Code This Project</button>	
-				</div>
-				<Link style={{position:"absolute",left:"20px",top:"20px",color:"black"}} to={ROUTES.LAUNCHPAD}><i className="fa fa-undo"></i></Link>
-				<Link style={{position:"absolute",right:"20px",top:"20px",color:"black"}} onClick={()=> this.setState({showiframe:false, progress:null})}><i className="fa fa-close"></i></Link>
-			  </>
-			  )}
-			  <div onClick={()=> this.setState({showiframe:!showiframe})} className="toggle-iframe">
-			      <i className="fa fa-code"></i>
-			  </div>
-{/* 			
-				{!!authUser && !progress && (
-				<button onClick={this.loadProgress}>Code This Project</button>
-				)} */}
-			</div>
-			</div>
-			<div className="main-content">
-			  {!!progress  && (
-			    <TCSEditor 
-			    disabled={false}
-			    type={'plain'}
-			    className="url"
-			    onEditorChange={this.handleProgressURLOnChange}
-			    onEditorSave={this.handleProgressURLOnSave}
-			    placeholder={'Project URL...'} 
-			    url={true}
-			    buttonText={progress.URL ? 'Edit Link' : 'Add Link'}
-				text={progress.URL}/>		
-				)}
-				<div className="steps">
-				{!!untutorial && untutorial.steps.map((step,index) => (
-				  <div className={"step " + ((!!progress && (progress.steps[index].Status == 'PENDING')) ? "" : "")}>
+			</div>			
+	    <div className={`main ${showiframe ? 'blur':''}`}>		 
+          <div className='main-content'>
+			{!!progress  && (
+			<TCSEditor 
+			disabled={false}
+			type={'plain'}
+			className="url"
+			onEditorChange={this.handleProgressURLOnChange}
+			onEditorSave={this.handleProgressURLOnSave}
+			placeholder={'Project URL...'} 
+			url={true}
+			buttonText={progress.URL ? 'Edit Link' : 'Add Link'}
+			text={progress.URL}/>		
+			)}
+			<div className="steps">
+			  {!!untutorial && untutorial.steps.map((step,index) => (
+				<div className={"step " + ((!!progress && (progress.steps[index].Status == 'PENDING')) ? "" : "")}>
 				  <div className="checkOff">
 				    <div className={'step-title status'}>
 					  Step {index+1}
@@ -725,13 +719,12 @@ class UntutorialPageBase extends React.Component {
 						placeholder={'Step Title'}
 						buttonText={!!progress  ? '' : 'Edit Title'} 
 						text={!!untutorial.steps[index].Title ? untutorial.steps[index].Title : ""}/> 
-						
 						{(!!progress && !!progress.steps[index] && progress.steps[index].Status == 'DRAFT') ? (
-							<div className="red"></div>
+							<div className="todo"></div>
 							) : (!!progress && !!progress.steps[index] && progress.steps[index].Status == 'PENDING') ? (
-							<div className="yellow"></div>
+							<div className="pending"></div>
 							) : !!progress && (
-							<div className="green"></div>
+							<div className="approved"></div>
 							)}
 						</div>	
 				  </div>
@@ -746,9 +739,11 @@ class UntutorialPageBase extends React.Component {
 					buttonText={!!progress ? '' : 'Edit Description'} 
 					text={untutorial.steps[index].Description}/>
 					{!!progress && !!progress.steps[index] && progress.steps[index].Comments != '' && (
-						<div className={'comments'}>{progress.steps[index].Comments}</div>
-							)}
-							<div className="thumbnail">
+					    <div className={'comments'}>
+							<h4>Teacher comments:</h4> {progress.steps[index].Comments}
+						</div>
+					)}
+                    <div className="thumbnail">
 								{!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===untutorial.Author.key) && (		
 								<label for={'step' + index + '-thumbnail-upload'} className="upload">
 									<input id={'step' + index + '-thumbnail-upload'} type="file" onChange={(event)=>this.handleStepThumbnailUpload(event,index)}/>
@@ -761,34 +756,26 @@ class UntutorialPageBase extends React.Component {
 								<LazyImage id={'step' + index + '-thumbnail'} file={this.props.firebase.storage.ref('/public/' + untutorial.Author.key + '/' + untutorial.steps[index].ThumbnailFilename)}/>
 								)}
 							</div>	
-							{!!progress && (!progress.steps[index] || progress.steps[index].Status == 'DRAFT') && (
-								<div>
-									<button 
-										disabled={false} 
-										className={'done-button'}
-										onClick={()=>this.studentApprove(index)}>Done</button>
-								</div>
-							)}
-							{!!progress && (!progress.steps[index] || progress.steps[index].Status == 'PENDING') && (
-							<div>
-								<button 
-									disabled={false} 
-									className={'done-button'}
-									onClick={()=>this.studentApprove(index)}>Teacher Reviewing!</button>
-							</div>
-							
+					{!!progress && (!progress.steps[index] || progress.steps[index].Status == 'DRAFT') && (
+					  <div>
+						<button disabled={false} className={'done-button'} onClick={()=>this.studentApprove(index)}>Done</button>
+					  </div>
+					)}
+					  {!!progress && (!progress.steps[index] || progress.steps[index].Status == 'PENDING') && (
+					  <div>
+						<button 
+							disabled={false} 
+							className={'done-button'}
+							onClick={()=>this.studentApprove(index)}>Teacher Reviewing!</button>
+						</div>
 						)}
 						</div>
-						{stepCount > 1 && !!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===untutorial.Author.key) && (
-						<button className="del" onClick={(event)=>this.deleteStepHandler(event,index)} text="Delete Step">Delete Step</button>
-					)}	
-								  
-					</div>
-
-
-			    ))}
-							   {!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===untutorial.Author.key) && (
-
+				  {stepCount > 1 && !!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===untutorial.Author.key) && (
+				  <button className="del" onClick={(event)=>this.deleteStepHandler(event,index)} text="Delete Step">Delete Step</button>
+				  )}				  
+				  </div>
+			  ))}
+			  {!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===untutorial.Author.key) && (
 			   <div class="addDelete">
 				<button onClick={(event)=>this.addStepHandler(event)} text="Add Step">Add Step</button>
 				<button onClick={this.deleteProjectHandler}>Delete Untutorial</button>
@@ -797,7 +784,7 @@ class UntutorialPageBase extends React.Component {
 				)}
 			  </div>
 			</div>
-		    <div className="sidebar">
+		  <div className="sidebar">
 			{!!progress && (
 			<>	 				
 			  {!!untutorial.Categories['SCRATCH'] && (
@@ -884,10 +871,10 @@ class UntutorialPageBase extends React.Component {
 			</div>
 				)}
 			  </div>
-		  </div>	
-		</section>
-		)
-	}
+		</div>	
+      </section>
+	)
+  }
 }
 
 const ProjectPage = withFirebase(withAuthentication(UntutorialPageBase));
