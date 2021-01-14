@@ -633,6 +633,20 @@ a {
 }
 }
 
+#clazz {
+  .avatar {
+    border:0;
+  }
+  .main-content {
+    >div {
+      margin: 40px auto;
+      h3 {
+        margin-bottom: 20px;
+      }
+    }
+  }
+}
+
 #page-container { 
  #launchpad {
   .main {
@@ -1021,6 +1035,42 @@ a {
 
 }
 
+#untutorial {
+  .status {
+    .approved {
+      background-color:rgb(80, 221, 15);
+      background:radial-gradient(circle,#0bec3c, #0f9c0f);
+      width:15px;
+      height:15px;
+      border-radius:50%;
+    }
+    .todo {
+      width:15px;
+      height:15px;
+      border-radius:50%;
+      background-color:rgb(247, 48, 48);
+      background:radial-gradient(circle, rgb(236, 99, 99), rgb(247, 48, 48),);
+    }
+    .pending {     
+      background-color:$orange;
+      background:radial-gradient(circle, #e9dd33,$orange);
+      height:15px;
+      width:15px;
+      border-radius:50%;
+    }
+   > div:not(.field) {
+    margin: 5px;
+    &.red {
+      background-color:rgb(247, 48, 48);
+      background:radial-gradient(circle, rgb(236, 99, 99), rgb(247, 48, 48),);
+    }
+    &.blue {
+      background-color:blue;
+      background:radial-gradient(circle, rgb(17, 147, 233), rgb(4, 61, 136),);
+    }
+  }
+  }
+}
 
 #new-project { 
   .main {
@@ -1113,8 +1163,6 @@ a {
 
  }
  
-
-
 #signin, #forget, #signup, #signIn {
   background:url('/images/bg2.png') no-repeat;
   background-size: cover;
@@ -1197,6 +1245,11 @@ a {
 #profile {
  a {
     color: $darkgreen;
+  }
+  .status {
+    > div {
+      margin: 5px;
+    }
   }
   .sidebar {
     > div {
@@ -1460,40 +1513,7 @@ margin: 0 auto;
     color:rgb(255, 255, 255);
     text-shadow: 0 0 3px $orange, 0 0 5px #dfb704;
   }
-  .status {
-    .approved {
-      background-color:rgb(80, 221, 15);
-      background:radial-gradient(circle,#0bec3c, #0f9c0f);
-      width:15px;
-      height:15px;
-      border-radius:50%;
-    }
-    .todo {
-      width:15px;
-      height:15px;
-      border-radius:50%;
-      background-color:rgb(247, 48, 48);
-      background:radial-gradient(circle, rgb(236, 99, 99), rgb(247, 48, 48),);
-    }
-    .pending {     
-      background-color:$orange;
-      background:radial-gradient(circle, #e9dd33,$orange);
-      height:15px;
-      width:15px;
-      border-radius:50%;
-    }
-   > div:not(.field) {
-    margin: 5px;
-    &.red {
-      background-color:rgb(247, 48, 48);
-      background:radial-gradient(circle, rgb(236, 99, 99), rgb(247, 48, 48),);
-    }
-    &.blue {
-      background-color:blue;
-      background:radial-gradient(circle, rgb(17, 147, 233), rgb(4, 61, 136),);
-    }
-  }
-  }
+
 }
 
 #profile {

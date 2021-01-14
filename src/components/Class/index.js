@@ -333,7 +333,6 @@ class ClassPageBase extends React.Component {
  	const {clazz, loading,dirty,uploading,uploadPercent, profiles} = this.state;
  	const {authUser} = this.props;
  	
- 	//console.log(Object.keys(project));
  	if(loading)
  		return (<div className="loading">Loading ...</div>);
  	const isInvalid = 
@@ -363,8 +362,7 @@ class ClassPageBase extends React.Component {
 	
 
 	return (
-	 <section id="clazz">
-
+	  <section id="clazz">
 		<div className="main">
 		  <div className="sidebar">
 			<div className="content">
@@ -382,7 +380,9 @@ class ClassPageBase extends React.Component {
 			{!!clazz.ThumbnailFilename && !uploading &&(
 					<LazyImage file={this.props.firebase.storage.ref('/classes/' + clazz.ThumbnailFilename)}/>
 				)}
-				<input type="file" onChange={this.handleThumbnailUpload}/>
+			<label for="files" className="upload">
+				<input id="files" type="file" onChange={this.handleThumbnailUpload}/>
+			</label>
 				{uploading && (
 					<progress value={uploadPercent} max="100"/>
 				)}
@@ -433,19 +433,30 @@ class ClassPageBase extends React.Component {
 
         </div>
 		</div>
-			{/* <button onClick={this.deleteClassHandler}>Delete Class</button> */}
-		<div className="main-content">
-		<h3>Students and Teachers</h3>
-	
-			{!!profiles && (
+		  <div className="main-content">
+		   <div>
+		   <h3>Class Members</h3>
+		  {!!profiles && ( 
+			  listBoxSelected.map(profile=>{
+		      return <p><a href={`../profile/${profile}`}>{profiles[profile].Username.replace('.',' ')}</a></p>
+		    })
+		 )}
+		 </div>
+		 <div>
+		 <h3>Students and Teachers</h3>
+		{!!profiles && (
+			<div className={'container'}>
 
-				<div className={'container'}>
-				<ListBox 
-					options={listBoxOptions} 
-					onChange={this.handleMembersOnChange} 
-					selected={listBoxSelected}/>
+			<ListBox 
+			 options={listBoxOptions} 
+			 onChange={this.handleMembersOnChange} 
+			 selected={listBoxSelected}/>
+	
 			</div>
 		)}
+		</div>
+		<button onClick={this.deleteClassHandler}>Delete Class</button> 
+
 		</div>
 		</div>
 		</section>
