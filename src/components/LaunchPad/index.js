@@ -72,7 +72,13 @@ class LaunchPad extends React.Component {
  	
  	const {untutorials, loading, filter, textFilter} = this.state;
  	const selectedFilters = Object.keys(FILTER).filter(v=>filter.includes(v));
- 	var untutorialLevels = groupBy(untutorials,'Level');
+ 	var filteredUntutorials = untutorials.filter(untutorial => 
+ 		untutorial.Status === 'APPROVED' &&
+			(filter.length === 0 || 
+			filter.filter(f=>Object.values(untutorial.Categories).includes(f)).length > 0) &&
+ 			untutorial.Title.toLowerCase().includes(textFilter.toLowerCase())
+ 	)
+ 	var untutorialLevels = groupBy(filteredUntutorials,'Level');
  	if(loading)
  	  return (<div className="loading">Loading...</div>);
  	//console.log("hiya")
@@ -101,9 +107,7 @@ class LaunchPad extends React.Component {
 	      {Object.keys(untutorialLevels).map(level=>(<>	
 			<>
 		    <h1>{'Level ' + level}</h1>
-			{untutorialLevels[level].filter(untutorial=>
-			  untutorial.Status === 'APPROVED' && 
-			  (filter.length === 0 || filter.filter(f=>Object.values(untutorial.Categories).includes(f)).length > 0) && untutorial.Title.toLowerCase().includes(textFilter.toLowerCase())).map(untutorial => (
+			{untutorialLevels[level].map(untutorial => (
 			    <a id={untutorial.key} href={ROUTES.LAUNCHPAD + '/' + untutorial.key} path={'/public/' + untutorial.Author + '/' + untutorial.ThumbnailFilename}>
 			    <LazyImage key={untutorial.key} file={this.props.firebase.storage.ref('/public/' + untutorial.Author + '/' + untutorial.ThumbnailFilename)}/>
 			    <div>

@@ -111,6 +111,15 @@ class Universe extends React.Component {
  render(){
  	
  	const {projects, loading, filter, textFilter,classFilter,classMembers} = this.state;
+ 	var filteredProjects = projects.filter(project=>
+					project.Status === 'APPROVED' && 
+						(filter.length === 0 || 
+						filter.filter(f=>Object.keys(project.Categories).includes(f)).length > 0) && 
+						(project.Title.toLowerCase().includes(textFilter.toLowerCase()) || 
+						project.Author.DisplayName.toLowerCase().includes(textFilter.toLowerCase())) &&
+						(!classFilter || classMembers.includes(project.Author.key))
+					)
+					
  	const selectedFilters = Object.keys(CATEGORIES).filter(v=>filter.includes(v));
  	//var projectLevels = groupBy(projects,'Level');
 
@@ -144,12 +153,7 @@ class Universe extends React.Component {
 				</div>	
 
 			<div className="main">	
-				{projects.filter(project=>
-					project.Status === 'APPROVED' && 
-					(filter.length === 0 || filter.filter(f=>Object.keys(project.Categories).includes(f)).length > 0) && 
-					(project.Title.toLowerCase().includes(textFilter.toLowerCase()) || project.Author.DisplayName.toLowerCase().includes(textFilter.toLowerCase())) &&
-					(!classFilter || classMembers.includes(project.Author.key)))
-					.map(project => (
+				{filteredProjects.map(project => (
 				
 						<a id={project.key} href={project.URL} path={'/public/' + project.Author.key + '/' + project.ThumbnailFilename}>
 							<LazyImage key={project.key} file={this.props.firebase.storage.ref('/public/' + project.Author.key + '/' + project.ThumbnailFilename)}/>
