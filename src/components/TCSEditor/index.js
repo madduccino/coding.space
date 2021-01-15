@@ -1,6 +1,8 @@
 import React from 'react';
 import ReactQuill from 'react-quill';
 import './quill.snow.scss';
+import { htmlEditButton } from "quill-html-edit-button";
+ReactQuill.Quill.register("modules/htmlEditButton", htmlEditButton);
 
 
 
@@ -27,7 +29,11 @@ class TCSEditor extends React.Component {
 		this.handleSave = this.handleSave.bind(this);
 		this.handleSelectChange = this.handleSelectChange.bind(this);
 		this.handleTextChange = this.handleTextChange.bind(this);
+
 	}
+	
+	
+	
 	handleChange = value => {
 		this.setState({text:value});
 		this.props.onEditorChange(value);
@@ -82,7 +88,7 @@ class TCSEditor extends React.Component {
 			else if (this.props.name==='description') {	
 				return (
 				  <div className={'field ' + className}>
-					<div>{text.replace(/<(.|\n)*?>/g, '').trim()}</div>
+					<div  dangerouslySetInnerHTML={{__html:text}}/>
 					<button className="editor-button" onClick={this.handleEdit}>{buttonText}</button>
 				  </div>
 				)
@@ -128,8 +134,8 @@ class TCSEditor extends React.Component {
 		}
 		return (
 			<div className={'field ' + className}>
-
-				<ReactQuill theme={'snow'} placeholder={this.props.placeholder} value={this.state.text} onChange={this.handleChange}/>
+				
+				<ReactQuill modules={TCSEditor.modules} theme={'snow'} placeholder={this.props.placeholder} value={this.state.text} onChange={this.handleChange}/>
 
 				{save && (
 					<button className="done" onClick={this.handleSave}>Done</button>
@@ -140,4 +146,28 @@ class TCSEditor extends React.Component {
 			)
 	}
 }
+
+TCSEditor.modules = {
+  // ...
+  htmlEditButton: {
+    debug: true, // logging, default:false
+    msg: "Edit the content in HTML format", //Custom message to display in the editor, default: Edit HTML here, when you click "OK" the quill editor's contents will be replaced
+    okText: "Ok", // Text to display in the OK button, default: Ok,
+    cancelText: "Cancel", // Text to display in the cancel button, default: Cancel
+    buttonHTML: "&lt;&gt;", // Text to display in the toolbar button, default: <>
+    buttonTitle: "Show HTML source", // Text to display as the tooltip for the toolbar button, default: Show HTML source
+    syntax: false, // Show the HTML with syntax highlighting. Requires highlightjs on window.hljs (similar to Quill itself), default: false
+    prependSelector: '#root', // a string used to select where you want to insert the overlayContainer, default: null (appends to body),
+    editorModules: {} // The default mod
+  }
+}
+
+/*TCSEditor.modules = {
+  toolbar: {
+    container: "#toolbar",
+    handlers: {
+      "EditHTML": EditHTMLClick,
+    }
+  }
+}*/
 export default TCSEditor;

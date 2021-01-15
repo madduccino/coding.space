@@ -834,7 +834,7 @@ class UntutorialPageBase extends React.Component {
 				  onEditorSave={this.handleDescriptionOnSave}
 				  placeholder={'Untutorial Description'} 
 				  name={'description'}
-				  text={untutorial.Description.replace(/<(.|\n)*?>/g, '').trim()} />
+				  text={untutorial.Description} />
 				</div>	
 				{!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===untutorial.Author.key) && (
 				<div className="container">
