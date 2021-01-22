@@ -6,6 +6,7 @@ import { withAuthentication } from '../Session';
 import { withFirebase } from '../Firebase';
 import * as ROUTES from '../../constants/routes';
 import * as FILTER from '../../constants/filter';
+import * as LEVELS from '../../constants/levels'
 
  const groupBy = function(xs, key) {
   return xs.reduce(function(rv, x) {
@@ -19,9 +20,10 @@ class LaunchPad extends React.Component {
  	this.state = {
  		loading:true,
  		untutorials: [],
- 		filter:[
+ 		cfilter:[
  			FILTER.SCRATCH.toUpperCase()
  		],
+ 		lfilter:[],
  		textFilter:'',
  		
  	}
@@ -29,7 +31,8 @@ class LaunchPad extends React.Component {
  	this.categoryFilterOnChange = this.categoryFilterOnChange.bind(this);
  	this.textFilterOnChange = this.textFilterOnChange.bind(this);
  	this.filterOnClick = this.filterOnClick.bind(this);
-
+ 	this.toggleCFilter = this.toggleCFilter.bind(this);
+ 	this.toggleLFilter = this.toggleLFilter.bind(this);
  }
  
  categoryFilterOnChange(event){
@@ -51,6 +54,24 @@ class LaunchPad extends React.Component {
  	this.setState({filter:filter.filter(f=>f!==text)});
 
  }
+ toggleCFilter(e){
+ 	const {cfilter} = this.state;
+ 	if(cfilter.includes(e.target.value))
+ 		this.setState({cfilter:cfilter.filter(f=>f!==e.target.value)});
+ 	else {
+ 		cfilter.push(e.target.value);
+ 		this.setState({cfilter:cfilter});
+ 	}
+ }
+ toggleLFilter(e){
+ 	const {lfilter} = this.state;
+ 	if(lfilter.includes(e.target.value))
+ 		this.setState({lfilter:lfilter.filter(f=>f!==e.target.value)});
+ 	else {
+ 		lfilter.push(e.target.value);
+ 		this.setState({lfilter:lfilter});
+ 	}
+ }
  componentDidMount(){
  	this.props.firebase.untutorials().on('value', snapshot => {
  		const untutsObj = snapshot.val();
@@ -70,12 +91,13 @@ class LaunchPad extends React.Component {
  }
  render(){
  	
- 	const {untutorials, loading, filter, textFilter} = this.state;
- 	const selectedFilters = Object.keys(FILTER).filter(v=>filter.includes(v));
+ 	const {untutorials, loading, cfilter,lfilter, textFilter} = this.state;
  	var filteredUntutorials = untutorials.filter(untutorial => 
  		untutorial.Status === 'APPROVED' &&
-			(filter.length === 0 || 
-			filter.filter(f=>Object.values(untutorial.Categories).includes(f)).length > 0) &&
+			(cfilter.length === 0 || 
+			cfilter.filter(f=>Object.values(untutorial.Categories).includes(f)).length > 0) &&
+			(lfilter.length === 0 ||
+			lfilter.filter(f=>f == "LEVEL" + untutorial.Level).length > 0) &&
  			untutorial.Title.toLowerCase().includes(textFilter.toLowerCase())
  	);
  	var untutorialLevels = groupBy(filteredUntutorials,'Level');
@@ -87,22 +109,15 @@ class LaunchPad extends React.Component {
 	  <section id="launchpad">
 	   <div className="filter">
 		  {loading && <div className="loading">Loading ...</div>}
-			{selectedFilters.length != Object.keys(FILTER).length && (
-			<select onChange={this.categoryFilterOnChange}>
-			  <option value='-1'>Filter...</option>
-			  {Object.keys(FILTER).filter(f=>!selectedFilters.includes(f)).map(filterName=>
-			  <option value={filterName}>{FILTER[filterName]}</option>)}
-				</select>
-			)}
+		  	{Object.keys(FILTER).map(f => (
+		  		<button onClick={this.toggleCFilter} value={f} class={cfilter.includes(f) ? "f" : ""}>{FILTER[f]}</button>
+		  	))}
+		  	{Object.keys(LEVELS).map(f => (
+		  		<button onClick={this.toggleLFilter} value={f} class={lfilter.includes(f) ? "f" : ""}>{LEVELS[f]}</button>
+		  	))}
 			<input className="search" type='text' onChange={this.textFilterOnChange} placeholder="Search..."/>
 			</div>	
-	   {selectedFilters.length > 0 && (
-	     <div className="filter-categories">
-		  {selectedFilters.map(f=>(
-		    <a onClick={()=>this.filterOnClick(f)}>{FILTER[f]}</a>
-		  ))}
-	     </div>
-	    )}		
+
         <div className="main">	
 	      {Object.keys(untutorialLevels).map(level=>(<>	
 			<>
