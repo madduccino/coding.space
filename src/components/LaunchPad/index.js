@@ -77,7 +77,7 @@ class LaunchPad extends React.Component {
 			(filter.length === 0 || 
 			filter.filter(f=>Object.values(untutorial.Categories).includes(f)).length > 0) &&
  			untutorial.Title.toLowerCase().includes(textFilter.toLowerCase())
- 	)
+ 	);
  	var untutorialLevels = groupBy(filteredUntutorials,'Level');
  	if(loading)
  	  return (<div className="loading">Loading...</div>);
@@ -107,7 +107,7 @@ class LaunchPad extends React.Component {
 	      {Object.keys(untutorialLevels).map(level=>(<>	
 			<>
 		    <h1>{'Level ' + level}</h1>
-			{untutorialLevels[level].map(untutorial => (
+			{untutorialLevels[level].sort(untutorial=>untutorial.Priority).reverse().map(untutorial => (
 			    <a id={untutorial.key} href={ROUTES.LAUNCHPAD + '/' + untutorial.key} path={'/public/' + untutorial.Author + '/' + untutorial.ThumbnailFilename}>
 			    <LazyImage key={untutorial.key} file={this.props.firebase.storage.ref('/public/' + untutorial.Author + '/' + untutorial.ThumbnailFilename)}/>
 			    <div>

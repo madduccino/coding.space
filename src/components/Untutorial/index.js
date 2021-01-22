@@ -36,6 +36,8 @@ class UntutorialPageBase extends React.Component {
 		this.handleDescriptionOnSave = this.handleDescriptionOnSave.bind(this);
 		this.handleLevelOnChange = this.handleLevelOnChange.bind(this);
 		this.handleLevelOnSave = this.handleLevelOnSave.bind(this);
+		this.handlePriorityOnChange = this.handlePriorityOnChange.bind(this);
+		this.handlePriorityOnSave = this.handlePriorityOnSave.bind(this);
 		this.handleStepTitleOnChange = this.handleStepTitleOnChange.bind(this);
 		this.handleStepTitleOnSave = this.handleStepTitleOnSave.bind(this);
 		this.handleStepOnChange = this.handleStepOnChange.bind(this);
@@ -52,6 +54,7 @@ class UntutorialPageBase extends React.Component {
 		this.handleCategoryOnClick = this.handleCategoryOnClick.bind(this);
 		this.handleProgressURLOnChange = this.handleProgressURLOnChange.bind(this);
 		this.handleProgressURLOnSave = this.handleProgressURLOnSave.bind(this);
+		this.validatePriority = this.validatePriority.bind(this);
 		this.validateLevel = this.validateLevel.bind(this);
 		this.validateStep = this.validateStep.bind(this);
 		this.loadProgress = this.loadProgress.bind(this);
@@ -338,9 +341,9 @@ class UntutorialPageBase extends React.Component {
 			const {authUser} = this.props;
 			if(authUser && !!authUser.roles['STUDENT'])
 				oCopy.Status = 'DRAFT';
-			this.validateLevel();
+			
 
-			this.setState({untutorial:oCopy,dirty:true});
+			this.setState({untutorial:oCopy,dirty:true},this.validateLevel);
 			
 		}
 		
@@ -361,6 +364,40 @@ class UntutorialPageBase extends React.Component {
 		}
 		else{
 			delete errors['Level'];
+		}
+		this.setState({errors:errors});
+
+	}
+	handlePriorityOnChange(value){
+		var oCopy = this.state.untutorial;
+		if(value !== oCopy.Priority){
+			oCopy.Priority = value;
+			const {authUser} = this.props;
+			if(authUser && !!authUser.roles['STUDENT'])
+				oCopy.Status = 'DRAFT';
+			
+
+			this.setState({untutorial:oCopy,dirty:true},this.validatePriority);
+			
+		}
+		
+		
+	}
+	handlePriorityOnSave(event){
+		this.saveChangesHandler();
+	}
+	validatePriority(){
+		const {untutorial,errors} = this.state;
+		const {Priority} = untutorial;
+		if(isNaN(Priority)){
+			errors['Priority'] = 'PRIORITY.<span class="red">ISINVALID</span>'; 		
+		}
+		if(![1,2,3,4,5,6].includes(parseInt(Priority))){
+
+			errors['Priority'] = 'PRIORITY.<span class="red">ISOUTSIDERANGE</span>';
+		}
+		else{
+			delete errors['Priority'];
 		}
 		this.setState({errors:errors});
 
@@ -821,6 +858,20 @@ class UntutorialPageBase extends React.Component {
 			  placeholder={'Level'} 
 			  text={untutorial.Level}/>
 		    </div>	
+		    {authUser && !!authUser.roles['ADMIN'] && (
+		    	<div className="container">
+			      Priority:
+			      <TCSEditor 
+				  disabled={false}
+				  type={'select'}
+				  className="priority"
+				  selectOptions={["1","2","3","4","5","6"]}
+				  onEditorChange={this.handlePriorityOnChange}
+				  onEditorSave={this.handlePriorityOnSave}
+				  placeholder={'Priority'} 
+				  text={untutorial.Priority}/>
+			    </div>
+		    )}	
 			<div className="container">
 			    <h3>by: <a href={'/profile/' + untutorial.Author.key} dangerouslySetInnerHTML={{__html:untutorial.Author.DisplayName}}/></h3>
 		    
