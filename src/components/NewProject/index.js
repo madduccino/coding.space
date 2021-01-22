@@ -431,14 +431,14 @@ class NewProjectPageBase extends React.Component {
 						{this.state.uploading && (
 							<progress value={this.state.uploadPercent} max="100"/>
 						)}
-							<p className={!!untutorial.steps[step].ThumbnailFilename ? 
+						<p className={!!untutorial.steps[step].ThumbnailFilename ? 
 							"change" : "add"}>{!!untutorial.steps[step].ThumbnailFilename ? 
-							"Update Screenshot" : "Add Screenshot"}</p>
+							"Update Screenshot" : "+ Add Screenshot"}</p>
 					
 						{!!untutorial.steps[step].ThumbnailFilename && untutorial.steps[step].ThumbnailFilename!=='' && !this.state.uploading &&(
 							<LazyImage file={this.props.firebase.storage.ref('/public/' + untutorial.Author + '/' + untutorial.steps[step].ThumbnailFilename)}/>
 						)}
-						<label for={'step' + step + '-thumbnail-upload'} className="upload">
+						<label for={'step' + step + '-thumbnail-upload'} className={!!untutorial.steps[step].ThumbnailFilename ? "replace" : "upload replace"}>
 							<input id={'step' + step + '-thumbnail-upload'} type="file" onChange={(event)=>{this.handleStepThumbnailUpload(event,step)}}/>
 						</label>
 					</div>

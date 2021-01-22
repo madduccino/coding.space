@@ -115,7 +115,7 @@ body {
 #page-container {
   .loading {text-align: center;margin-top: 20px;}
 
-  #signIn, #landing,#forget,#signup,#launchpad,#universe,#classes {
+  #signIn, #landing,#forget,#signup,#launchpad,#universe,#classes,#new-class {
     background-color:$darkgreen;
     color: #fff;
     h1 {
@@ -607,13 +607,17 @@ button {
 }
 
 #classes {
+h1 {
+  margin-top: 20px;
+}
 .button {
   display: block;
   margin: 0 auto;
   color: $darkgreen;
+  text-align: center;
 }
 .main {
-@include flexhc;  
+ @include flexhc;  
 a {
   color: $darkergreen;
   width: 200px;
@@ -622,6 +626,19 @@ a {
   margin: 40px;
   text-align: center;
   border-radius: 8px;
+  position: relative;
+  h4 {
+    margin-top: 30px;
+  }
+  button {
+    background-color: $darkgreen;
+    color: #fff;
+    bottom: 10px;
+    position: absolute;
+    margin: 0 auto;
+    left: 0;
+    right: 0;
+  }
   img {
     max-width:100%;
     height: 100px;
@@ -629,8 +646,8 @@ a {
     display: block;
     object-fit: contain;
   }
-}
-}
+ }
+ }
 }
 
 #clazz {
@@ -661,46 +678,37 @@ a {
 #untutorial,#new-project  {
   .blur {
    opacity:0.5;
-
   }
   .thumbnail {
-    width: 100%;
-    height: 400px;
-    margin: 0;
-    margin-top: 40px;
-    object-fit: cover;
-    border: 1px solid #ECECEC;
-    position: relative;
+    height: auto;
     .add {
-      position: absolute;
-      top: 40%;
-      left: 0;
-      right: 0;
+      text-align:left;
+      margin: 20px 0 0;
+      font-weight: bold;  
+
     }
-    .change {
-      position: absolute;
-      bottom: 0;
-      text-align: center;
-      background-color: #000;
-      width: 100%;
-      color: #fff;
+    .upload {
+    border:0;
+    height: 20px;
+    margin: 20px 0 0;
     }
-    img, label {
-      width: 100%;
-      height: 400px;
-      margin: 0;
-      border: 0;
-      object-fit: cover;
-    }
-    &.hero {
-      height: 272px;
-      border: 0;
-      margin-top: 0;
-      top: 0;
-      img,label {
-        height: 272px;
-      }
-    }
+
+   .replace {
+     position:absolute;
+     left:0;
+     width:100%;
+     height:100%;
+     cursor:pointer;
+
+   }
+   .change {
+     position:absolute;
+     bottom:-30px;
+     margin: 0 auto;
+     left:0;
+     right:0;
+   }
+
   }
   .workOnProject {
     h3 {
@@ -773,12 +781,14 @@ a {
   }
   .main {
     background-color: #f7f7f7; 
-
     .addDelete {
       @include flexhc;
     }
     .del {
       margin-top: 20px;
+      width:auto; 
+      background-color: $darkgreen;
+      color:#fff;
     }
     .publish {
       width: auto;
@@ -787,12 +797,12 @@ a {
     grid-template-columns: 2fr 1fr;
     border-top: 2px solid $darkgreen;
     padding: 0 5%;
-
    .scratch {
     grid-column: span 2;
     img {
     width: 130px;
   }
+
   }
   .sidebar {
       background-color:transparent;
@@ -811,7 +821,7 @@ a {
       }
       .quill {
         button {
-          background-color: #fff;
+          // background-color: #fff;
         }
       }
       .titleStatus {
@@ -843,7 +853,8 @@ a {
           }
           .quill {
             button {
-              background-color: #fff;
+              background-color: transparent;
+              color: $darkergreen;
             }
           }
           input {
@@ -865,7 +876,6 @@ a {
       }
    }
   .main-content {  
-
     .status {
       > div  {
         margin-left: 2px;
@@ -878,6 +888,7 @@ a {
     }
     .thumbnail {
       width: auto;
+      margin: 40px 0;
       img {
         width: auto;
       }
@@ -886,7 +897,7 @@ a {
       margin: 0 0 40px;
       font-size: 1.4rem;
       h2 {
-        margin-top: 5px;
+        margin-top: 20px;
       }
       input {
         padding: 8px;
@@ -922,6 +933,9 @@ a {
       box-shadow: 0 2px 8px 0 rgba(0,0,0,.15);
       padding: 0 20px 60px;
       border-radius: 10px;
+      .step-title {
+        font-size: 2rem;
+      }
       .no-button {
         button, .editor-button {
         display: none;
@@ -1032,10 +1046,37 @@ a {
     }
   }
 }
-
+.sidebar {
+  iframe {
+    display:none;
+  }
+}
 }
 
 #untutorial {
+  .thumbnail {
+    width: 100%;
+    margin: 0;
+    margin-top: 40px;
+    object-fit: cover;
+    position: relative;
+    img, label {
+      width: 100%;
+      height: 400px;
+      margin: 0;
+      border: 0;
+      object-fit: cover;
+    }
+    &.hero {
+      height: 272px;
+      border: 0;
+      margin-top: 0;
+      top: 0;
+      img,label {
+        height: 272px;
+      }
+    }
+  }
   .status {
     .approved {
       background-color:rgb(80, 221, 15);
@@ -1078,7 +1119,14 @@ a {
     justify-content: center;
     margin: 0;
     padding: 0;
-    border-top: 0;  
+    border-top: 0;
+    .main-content {
+      .steps {
+        .step {
+        padding-bottom:0;
+        }
+      }
+    }
     .toolbar {
       position: sticky;
       @include flexhc;
@@ -1101,7 +1149,7 @@ a {
           background-color: $darkergreen;
         }
       }
-    }
+  }
   .sidebar { 
      padding-top: 30px;   
      width: 300px;
@@ -1136,31 +1184,27 @@ a {
     }
    }
   }
-      .field {
+  .field {
         margin: 0;
         position:static;
         padding: 0;
-        background-color: inherit;
         button {
           z-index: 2;
           top: 0;
           display: block;
           text-align: left;
           .quill {
-            button {
-              background-color: #fff;
-            }
+        
           }
         }
-      }
-      .delete {
+  }
+  .delete {
         bottom: 2px;
         margin: 0 auto;
         left: 0;
         right: 0;
-      }
-    }
-
+  }
+  }
  }
  
 #signin, #forget, #signup, #signIn {
@@ -1179,6 +1223,18 @@ a {
   }
 } 
 
+#resources {
+  .toolbar {
+  }
+  .main {
+    @include flexvc;
+  }
+  button {
+    display: block;
+    width: auto;
+    margin: 20px auto;
+  }
+}
 #rocket {
   background:url('/images/roket.png') no-repeat;
   position: absolute;

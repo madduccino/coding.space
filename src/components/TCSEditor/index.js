@@ -77,12 +77,14 @@ class TCSEditor extends React.Component {
 		else if(!disabled && !editing){
 			if (this.props.url) {
 				return ( 
-				  <div className={'field ' + className}>
-					Link to My Project {text  && ( 
-					<h2><a target="_blank" href={text}>Go to Project</a></h2>
-					)}
-			        <button onClick={this.handleEdit}>{buttonText}</button>
-			      </div>
+				  <div className={'field ' + className}>	
+					{text ? <a target='_blank' href={text}>Go to Project</a> : 
+					 <>
+					   <h2>Link to Project</h2>
+					   <button onClick={this.handleEdit}>{buttonText}</button>
+					</>
+				}
+					</div>
 				)
 			}
 			else if (this.props.name==='description') {	
@@ -149,6 +151,7 @@ class TCSEditor extends React.Component {
 
 TCSEditor.modules = {
   // ...
+  
   htmlEditButton: {
     debug: true, // logging, default:false
     msg: "Edit the content in HTML format", //Custom message to display in the editor, default: Edit HTML here, when you click "OK" the quill editor's contents will be replaced
@@ -156,7 +159,7 @@ TCSEditor.modules = {
     cancelText: "Cancel", // Text to display in the cancel button, default: Cancel
     buttonHTML: "&lt;&gt;", // Text to display in the toolbar button, default: <>
     buttonTitle: "Show HTML source", // Text to display as the tooltip for the toolbar button, default: Show HTML source
-    syntax: false, // Show the HTML with syntax highlighting. Requires highlightjs on window.hljs (similar to Quill itself), default: false
+	syntax: false, // Show the HTML with syntax highlighting. Requires highlightjs on window.hljs (similar to Quill itself), default: false
     prependSelector: '#root', // a string used to select where you want to insert the overlayContainer, default: null (appends to body),
     editorModules: {} // The default mod
   }

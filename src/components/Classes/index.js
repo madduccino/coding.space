@@ -96,7 +96,6 @@ class ClassesPageBase extends React.Component {
  	//console.log(Object.keys(project));
  	if(loading)
  		return (<div className="loading">Loading ...</div>);
-
 	return (
 		 <section id="classes">
 			<h1>My Classes</h1>
@@ -117,12 +116,13 @@ class ClassesPageBase extends React.Component {
 						<>
 						<a id={clazz.key} href={'/classes/' + clazz.key} path={'/classes/' + clazz.ThumbnailFilename}>
 							<LazyImage file={this.props.firebase.storage.ref('/classes/' + clazz.ThumbnailFilename)}/>
-						<div>
+					
 							<h4 className={'container'} dangerouslySetInnerHTML={{__html:clazz.Title}}/>
 							{!!authUser && !!authUser.roles['ADMIN'] && clazz.Status != 'APPROVED' && (
 								<h5>{clazz.Status}</h5>
 							)}
-						</div> 
+							<button>Go to Class</button>
+						
 								</a>
 							</>
 						))}

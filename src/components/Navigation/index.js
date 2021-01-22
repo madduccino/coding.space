@@ -68,7 +68,7 @@ class Navigation extends React.Component{
             <a href={'/profile/' + authUser.uid}>My Profile</a>
             {(!!authUser.roles[ROLES.ADMIN] || !!authUser.roles[ROLES.TEACHER]) && (
               <>
-              {/* <Link to={ROUTES.RESOURCE_HOME}>Resources</Link> */}
+              <Link to={ROUTES.RESOURCE_HOME}>Resources</Link> 
               <Link to={ROUTES.CLASSES}>My Classes</Link>       
               </>
             )}
