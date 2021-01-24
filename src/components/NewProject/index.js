@@ -22,7 +22,7 @@ class NewProjectPageBase extends React.Component {
  		uploadPercent:0,
  		untutorialRef:null,
  		errors:{
-			"Thumbnail" : 'THUMBNAIL.<span class="red">ISREQUIRED</span>',
+			// "Thumbnail" : 'THUMBNAIL.<span class="red">ISREQUIRED</span>',
 			"Title" : 'TITLE.<span class="red">ISREQUIRED</span>',
 			"Step1" : 'STEP1.<span class="red">ISREQUIRED</span>',
 			"Stepcount" : 'STEPS.<span class="red">R_REQUIRED</span>',
@@ -321,8 +321,8 @@ class NewProjectPageBase extends React.Component {
  }
  handleCategoryValidate(){
  	const {untutorial,errors} = this.state;
- 	if(Object.keys(untutorial.Categories).length < 2){
- 		errors["Categories"] = 'CATS.<span class="red">GR8TR.THAN.2.REQUIRED</span>';
+ 	if(Object.keys(untutorial.Categories).length < 1){
+ 		errors["Categories"] = 'CATS.<span class="red">At least 1 category required.</span>';
  	}
  	else
  		delete errors["Categories"];

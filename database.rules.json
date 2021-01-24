@@ -21,7 +21,7 @@
       ".read":"true",
       "$uid": {
         ".read":"true",
-        ".write" : "auth!= null && $uid === auth.uid || root.child('db/Profiles/' + auth.uid + '/roles/ADMIN').exists()",
+        ".write" : "auth!= null && $uid === auth.uid || root.child('db/Profiles/' + auth.uid + '/roles/ADMIN').exists() || root.child('db/Profiles/' + auth.uid + '/roles/TEACHER').exists()",
         "Username":{
             ".read":"auth!= null && $uid === auth.uid || root.child('db/Profiles/' + auth.uid + '/roles/ADMIN').exists() || root.child('db/Profiles/' + auth.uid + '/roles/TEACHER').exists()"
          }

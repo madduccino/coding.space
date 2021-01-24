@@ -569,18 +569,60 @@ button {
  }
 }
 
-#launchpad, #universe {
+#launchpad, #universe,#clazz {
+  .filter {
+    div {
+      width: 100%;
+    }
+    button {
+      margin-bottom: 5px;  
+      display:block;
+      width: 100%;
+      position: relative;
+      background-color: #fff;   
+      transition: normal;  
+    }
+    .f {
+      background-color: #eeefef;
+      &:after {
+        content:"x";
+        position: absolute;
+        right: 10px;
+      }
+    }
+  }
   .main {
     color: #fff;
     display: grid;
-    @include flexhc;
-    margin: 40px;
+    display: grid;
+    grid-template-columns: 1fr 5fr;
+    .main-content {
+      background-color: $darkgreen;
+      color: #fff;
+      input {
+        padding: 10px;
+        width: 50%;
+        display:block;
+        margin: 0 auto;
+        border: 3px solid $orange;
+        outline: 0;
+        border-radius: 4px;
+        margin: 40px auto;
+      }
+    .items {
+     @include flexhc;
+     h1 {
+       margin: 20px 0;
+     }
+
     > a {
       background-color: #fff;
       border-radius: 8px;
       color: $darkgreen;
-      width: 21%;
+      width: 28%;
       margin: 2%;
+      position: relative;
+      box-shadow: 0 1px 3px 0 rgba(0,0,0,.12), 0 1px 2px 0 rgba(0,0,0,.24);
       // flex-grow: 1;
       img {
          width: 100%;
@@ -588,6 +630,8 @@ button {
          object-fit: cover;
          border-top-left-radius: 8px;
          border-top-right-radius: 8px;
+         box-shadow: 0 1px 3px 0 rgba(0,0,0,.12), 0 1px 2px 0 rgba(0,0,0,.24)
+
       }
       > div {
         padding: 40px 20px;
@@ -601,6 +645,25 @@ button {
         p {
          line-height: 1.6rem;
         }
+        button {
+          width: auto;
+          background-color: $darkgreen;
+          color: #fff;
+          position: absolute;
+          bottom: 40px;
+          left: 0;
+          right: 0;
+        }
+      }
+    }
+  }
+    }
+    .sidebar {
+      background-color: #fff;
+      border-right: 5px solid $orange;
+      h2 {
+        color: $darkgreen;
+        margin-bottom: 20px;
       }
     }
   }
@@ -651,18 +714,56 @@ a {
 }
 
 #clazz {
-  .avatar {
-    border:0;
-  }
-  .main-content {
-    >div {
-      margin: 40px auto;
-      h3 {
-        margin-bottom: 20px;
+  .main {
+    .main-content {
+      h1 {
+        text-align: center;
+      }
+      .items {
+        > a {
+          padding: 30px;
+          transition: 2s;
+          &:hover {
+            background-color: #AAA;
+          }
+        }
       }
     }
+  .sidebar {
+    max-width: 200px;
+    padding: 20px;
+    color: $darkgreen;
+    .avatar {
+      border:0;
+      width: 100%;
+      padding: 0;
+    }
+
+  }
   }
 }
+// #clazz {
+//   .main {
+//   .main-content {
+//     >div {
+//       margin: 40px auto;
+//       h3 {
+//         margin-bottom: 20px;
+//       }
+//     }
+//   }
+//   .sidebar {
+//     max-width: 300px;
+//     padding: 20px;;
+//     .avatar {
+//       border:0;
+//       width: 100%;
+//       padding: 0;
+//     }
+
+//   }
+// }
+// }
 
 #page-container { 
  #launchpad {
@@ -744,6 +845,20 @@ a {
       border-radius: 4px;
       position: relative;
       max-width: 600px;
+      a {
+          position: absolute;
+        cursor: pointer;
+          top: 20px;
+          font-family: $headerFont;
+          font-weight: bold;
+          color: black;
+        &.back {
+          left: 20px;
+        }
+        &.close {
+          right: 20px;
+        }
+      }
       > div {
         padding: 20px;
         text-align:center;

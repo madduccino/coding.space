@@ -365,7 +365,6 @@ class ClassPageBase extends React.Component {
 	  <section id="clazz">
 		<div className="main">
 		  <div className="sidebar">
-			<div className="content">
 			<div className="approve"> 
 			<TCSEditor 
 					disabled={!(!!authUser && !!authUser.roles['ADMIN'] )}
@@ -431,31 +430,37 @@ class ClassPageBase extends React.Component {
 				text={clazz.Location}/>
 			</div>
 
-        </div>
 		</div>
 		  <div className="main-content">
-		   <div>
-		   <h3>Class Members</h3>
+		  
+		   <h1>Class Members</h1>
+		   <div className="items">
+
 		  {!!profiles && ( 
-			  listBoxSelected.map(profile=>{
-		      return <p><a href={`../profile/${profile}`}>{profiles[profile].Username.replace('.',' ')}</a></p>
-		    })
-		 )}
+			  listBoxSelected.map((profile) => (
+
+		
+				<a href={`../profile/${profile}`}>{profiles[profile].Username.replace('.',' ')}</a>
+			
+			  
+			  ))
+		  )}
 		 </div>
 		 <div>
-		 <h3>Students and Teachers</h3>
-		{!!profiles && (
+		 {!!authUser && !!authUser.roles["ADMIN"] && !!profiles && (
 			<div className={'container'}>
+		 <h3>Students and Teachers</h3>
 
 			<ListBox 
 			 options={listBoxOptions} 
 			 onChange={this.handleMembersOnChange} 
 			 selected={listBoxSelected}/>
-	
+			<button onClick={this.deleteClassHandler}>Delete Class</button> 
+
 			</div>
+			
 		)}
 		</div>
-		<button onClick={this.deleteClassHandler}>Delete Class</button> 
 
 		</div>
 		</div>
