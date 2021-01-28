@@ -321,7 +321,7 @@ class NewProjectPageBase extends React.Component {
  }
  handleCategoryValidate(){
  	const {untutorial,errors} = this.state;
- 	if(Object.keys(untutorial.Categories).length < 1){
+ 	if(Object.keys(untutorial.Categories).length < 2){
  		errors["Categories"] = 'CATS.<span class="red">At least 1 category required.</span>';
  	}
  	else

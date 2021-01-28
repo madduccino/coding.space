@@ -26,9 +26,7 @@ class ClassPageBase extends React.Component {
  		uploading:false,
  		uploadPercent:0,
  		dirty:false,
-
-
-
+        editClass: false
  	}
  	this.handleClassTitleOnChange = this.handleClassTitleOnChange.bind(this);
  	this.handleClassTitleValidate = this.handleClassTitleValidate.bind(this);
@@ -132,7 +130,7 @@ class ClassPageBase extends React.Component {
  	if(text.length == 0){
  		errors["Description"] = 'DESCRIPTION.<span class="red">ISREQUIRED</span>'; 		
  	}
- 	else if(text.length <= 20){
+ 	else if(text.length <= 5){
  		errors["Description"] = 'DESCRIPTION.<span class="red">ISTOOSHORT</span>'; 		
  	}
  	else delete errors["Description"];
@@ -157,7 +155,7 @@ class ClassPageBase extends React.Component {
  	if(text.length == 0){
  		errors["Schedule"] = 'SCHEDULE.<span class="red">ISREQUIRED</span>'; 		
  	}
- 	else if(text.length <= 20){
+ 	else if(text.length <= 5){
  		errors["Schedule"] = 'SCHEDULE.<span class="red">ISTOOSHORT</span>'; 		
  	}
  	else delete errors["Schedule"];
@@ -181,7 +179,7 @@ class ClassPageBase extends React.Component {
  	if(text.length == 0){
  		errors["Location"] = 'LOCATION.<span class="red">ISREQUIRED</span>'; 		
  	}
- 	else if(text.length <= 10){
+ 	else if(text.length <= 5){
  		errors["Location"] = 'LOCATION.<span class="red">ISTOOSHORT</span>'; 		
  	}
  	else delete errors["Location"];
@@ -330,7 +328,7 @@ class ClassPageBase extends React.Component {
 
  render(){
  	
- 	const {clazz, loading,dirty,uploading,uploadPercent, profiles} = this.state;
+ 	const {clazz, loading,dirty,uploading,uploadPercent, profiles, editClass} = this.state;
  	const {authUser} = this.props;
  	
  	if(loading)
@@ -375,7 +373,15 @@ class ClassPageBase extends React.Component {
 					placeholder={'Class Status'} 
 					text={clazz.Status}/>
 		</div>
-			<div className="avatar">
+		<h4>Class Title</h4>
+				<TCSEditor 
+					disabled={!(!!authUser && !!authUser.roles['ADMIN'] )}
+					type='plain'
+					onEditorChange={this.handleClassTitleOnChange} 
+					onEditorSave={this.handleClassTitleOnSave}
+					placeholder={'Class Title'} 
+					text={clazz.Title}/>
+		<div className="avatar">
 			{!!clazz.ThumbnailFilename && !uploading &&(
 					<LazyImage file={this.props.firebase.storage.ref('/classes/' + clazz.ThumbnailFilename)}/>
 				)}
@@ -387,14 +393,7 @@ class ClassPageBase extends React.Component {
 				)}
 			</div>
 			<div>
-			  <h4>Class Title</h4>
-				<TCSEditor 
-					disabled={!(!!authUser && !!authUser.roles['ADMIN'] )}
-					type='plain'
-					onEditorChange={this.handleClassTitleOnChange} 
-					onEditorSave={this.handleClassTitleOnSave}
-					placeholder={'Class Title'} 
-					text={clazz.Title}/>
+
 			</div>
 
 			<div>
@@ -434,23 +433,25 @@ class ClassPageBase extends React.Component {
 		  <div className="main-content">
 		  
 		   <h1>Class Members</h1>
+
 		   <div className="items">
 
 		  {!!profiles && ( 
 			  listBoxSelected.map((profile) => (
-
-		
-				<a href={`../profile/${profile}`}>{profiles[profile].Username.replace('.',' ')}</a>
+				<a href={`../profile/${profile}`}>
+					<span>{profiles[profile].Username.replace('.',' ')}</span>
+				</a>
 			
-			  
 			  ))
 		  )}
 		 </div>
-		 <div>
 		 {!!authUser && !!authUser.roles["ADMIN"] && !!profiles && (
-			<div className={'container'}>
-		 <h3>Students and Teachers</h3>
-
+			<div className="console">
+		   
+		   <button onClick={()=>this.setState({editClass: !editClass})}>
+				{editClass ? "Done" : "Edit Class"}
+			</button>
+<div className={editClass ? "showConsole" : "hideConsole"}>
 			<ListBox 
 			 options={listBoxOptions} 
 			 onChange={this.handleMembersOnChange} 
@@ -458,9 +459,8 @@ class ClassPageBase extends React.Component {
 			<button onClick={this.deleteClassHandler}>Delete Class</button> 
 
 			</div>
-			
+			</div>	
 		)}
-		</div>
 
 		</div>
 		</div>

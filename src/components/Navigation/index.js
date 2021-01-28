@@ -46,7 +46,7 @@ class Navigation extends React.Component{
             <Link to={ROUTES.NEW_PROJECT}>New Untutorial</Link>
             {/* <Link to={ROUTES.JETFUEL}>Jet Fuel</Link>    */}
             {/* <Link to={ROUTES.SIMULATOR}>Simulator</Link>    */}
-            {!!authUser.roles[ROLES.ADMIN] && (
+            {(!!authUser.roles[ROLES.ADMIN] || !!authUser.roles[ROLES.TEACHER])  && (
                 <Link to={ROUTES.NEW_USER}>New User</Link>            
               )}
             {!!authUser.roles[ROLES.TEACHER] && (

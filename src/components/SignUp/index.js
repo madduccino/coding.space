@@ -58,19 +58,19 @@ class NewUserFormBase extends Component {
                 Status:'DRAFT',
               })
               .then(res=>{
+                alert('account created!')
                 this.props.setGlobalState({
-                  messages:[{
+                  // messages:[{
 
-                    html:`CREATE.<span class="green">GOOD</span>`,
-                    type:true},{
+                  //   html:`CREATE.<span class="green">GOOD</span>`,
+                  //   type:true},{
 
-                    html:`Press any key to continue...`,
-                    type:false,
+                  //   html:`Press any key to continue...`,
+                  //   type:false,
 
-                    }],
-                  showMessage:true
+                  //   }],
+                  // showMessage:true
                 });
-
               })
           });
           

@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import { PasswordForgetLink } from '../PasswordForget';
 import { withFirebase } from '../Firebase';
+import {withAuthorization} from '../Session';
+
 import * as ROUTES from '../../constants/routes';
 const SignInPage = () => (
   <section id="signIn">

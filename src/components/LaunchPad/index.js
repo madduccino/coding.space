@@ -69,7 +69,7 @@ class LaunchPad extends React.Component {
     if (lfilter.includes(e.target.value)) {
       const copyLfilter = lfilter.filter((l) => l !== e.target.value);
       this.setState({ lfilter: copyLfilter});
-      queryParams.set("l", copyLfilter);
+      queryParams.set("l", lfilter);
   }
     else {
       lfilter.push(e.target.value);

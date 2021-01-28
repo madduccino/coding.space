@@ -115,7 +115,7 @@ body {
 #page-container {
   .loading {text-align: center;margin-top: 20px;}
 
-  #signIn, #landing,#forget,#signup,#launchpad,#universe,#classes,#new-class {
+  #signIn, #landing,#forget,#signup,#launchpad,#universe,#classes,#new-class,#clazz,#universe-publish {
     background-color:$darkgreen;
     color: #fff;
     h1 {
@@ -599,7 +599,7 @@ button {
     .main-content {
       background-color: $darkgreen;
       color: #fff;
-      input {
+      .search {
         padding: 10px;
         width: 50%;
         display:block;
@@ -661,9 +661,16 @@ button {
     .sidebar {
       background-color: #fff;
       border-right: 5px solid $orange;
+      width: 250px;
       h2 {
         color: $darkgreen;
         margin-bottom: 20px;
+      }
+      button {
+        transition: background-color 2s;
+        &:hover {
+          background-color:#eeefef;
+        }
       }
     }
   }
@@ -715,33 +722,69 @@ a {
 
 #clazz {
   .main {
-    .main-content {
+  .main-content {
       h1 {
         text-align: center;
       }
       .items {
         > a {
-          padding: 30px;
           transition: 2s;
+          margin: 40px auto;
+          width: 300px;
+          height: 300px;
+          text-align: center;
+          font-family: $headerFont;
+          text-transform: capitalize;
+          background:url(/static/media/logo.5a255a59.png) no-repeat center center;
+          background-size: contain;
+          background-color: $lightGreen;
+          color: #fff;
+          border-radius: 8px;
+          position: relative;
+          padding-bottom: 0;
+
+         span {
+           position: absolute;
+           bottom: 10px;
+           color: $darkgreen;
+           left: 0;
+           right: 0;
+           margin: 0 auto;
           &:hover {
-            background-color: #AAA;
+            background-color:#61bbb5;
           }
+        }
+        }
+      }
+      .console {
+        .showConsole {
+          display: block;
+          margin: 40px auto;
+        }
+        .hideConsole {
+          display: none;
         }
       }
     }
   .sidebar {
-    max-width: 200px;
+    width: 250px;
     padding: 20px;
     color: $darkgreen;
+    text-align: center;
     .avatar {
       border:0;
-      width: 100%;
+      width: 200px;
+      height: 100px;
       padding: 0;
+      img {
+        position: static;
+        width: 100%;
+        height: 100%;
+      }
     }
-
+   }
   }
-  }
-}
+ }
 // #clazz {
 //   .main {
 //   .main-content {
@@ -817,6 +860,9 @@ a {
       border-top: 2px solid $darkgreen;
       background-color:$orange;
       padding: 10px;
+      a {
+        text-decoration: underline;
+      }
     }
   }
   .iframe-off {
@@ -991,6 +1037,9 @@ a {
       }
    }
   .main-content {  
+    button {
+      margin-bottom: 20px;
+    }
     .status {
       > div  {
         margin-left: 2px;
@@ -1343,6 +1392,10 @@ a {
   }
   .main {
     @include flexvc;
+    margin: 80px auto;
+    .title {
+      margin: 40px auto;
+    }
   }
   button {
     display: block;
@@ -1362,7 +1415,7 @@ a {
   margin: 0 auto;
 }
 
-#launchpad, #universe, #classes {
+#launchpad, #universe, #classes, #universe-publish {
   color: $orange;
   a {
     display: inline-block;
@@ -1377,7 +1430,7 @@ a {
   max-width: 600px;
   div {
    text-align: center;
-   margin:1rem;
+   margin:1rem; 
   }
   }
   .filter-categories {
@@ -1402,7 +1455,11 @@ a {
     position: relative;
     margin: 0 auto;
 .field {
-
+ .quill {background-color: #fff;
+  h4 {
+    margin: 20px 0;
+  }
+ }
 .edit {
   position: absolute;
   
@@ -1778,23 +1835,28 @@ margin: 0 auto;
 }
 
 #new-class {
-  color: #fff;
   .main-area {
     max-width: 600px;
     margin: 0 auto;
-  .container {
-    display: grid;
-    position: relative;
-    margin: 20px auto;
-    grid-template-columns: 1fr 2fr;
-  }
+    background-color: #fff;
+    color: $darkgreen;
+    padding: 20px;
+    @include flexvc;
+    border-radius: 8px;
+    h4 {
+      text-align: center;
+    }
   .thumbnail {
     margin-top: 20px;
     .upload {
       border: 1px solid #ccc;
     }
   }  
-}
+ } 
+ button {
+   width: auto;
+   margin: 20px auto 40px;
+ }
 }
 
 #jetfuel, #question {

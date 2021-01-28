@@ -317,6 +317,7 @@ class NewClassPageBase extends React.Component {
 			<h1>New Class</h1>
 			<div className="main-area">
 			<div className='thumbnail'>
+				Add Image
 				{this.state.uploading && (
 						<progress value={this.state.uploadPercent} max="100"/>
 					)}	
@@ -327,7 +328,6 @@ class NewClassPageBase extends React.Component {
 						<input id="files" type="file" onChange={this.handleThumbnailUpload}/>
 					</label>
 			</div>
-				<div className={'container'}>
 				<h4>Title</h4>
 				<TCSEditor 
 					disabled={false}
@@ -336,11 +336,7 @@ class NewClassPageBase extends React.Component {
 					onEditorSave={this.handleClassTitleOnSave}
 					placeholder={'Class Title'} 
 					text={clazz.Title}/>
-			</div>
-				<div className={'container'}>
 				<h4>Description</h4>
-			</div>
-				<div className={'container'}>
 				<TCSEditor 
 					disabled={false}
 					type='text'
@@ -348,11 +344,7 @@ class NewClassPageBase extends React.Component {
 					onEditorSave={this.handleClassDescriptionOnSave}
 					placeholder={'Class Description'} 
 					text={clazz.Description}/>
-			</div>
-				<div className={'container'}>
 				<h4>Schedule</h4>
-			</div>
-				<div className={'container'}>
 				<TCSEditor 
 					disabled={false}
 					type='text'
@@ -360,11 +352,7 @@ class NewClassPageBase extends React.Component {
 					onEditorSave={this.handleClassScheduleOnSave}
 					placeholder={'Class Schedule'} 
 					text={clazz.Schedule}/>
-			</div>
-				<div className={'container'}>
 				<h4>Location</h4>
-			</div>
-				<div className={'container'}>
 				<TCSEditor 
 					disabled={false}
 					type='text'
@@ -372,7 +360,6 @@ class NewClassPageBase extends React.Component {
 					onEditorSave={this.handleClassLocationOnSave}
 					placeholder={'Class Location'} 
 					text={clazz.Location}/>
-			</div>
 			</div>
 			
 			<button disabled={false} onClick={this.saveChangesHandler}>Save Changes</button>

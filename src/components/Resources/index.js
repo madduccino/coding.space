@@ -318,7 +318,7 @@ createResource(){
 					text={resource.Body} />
 
 			</div>
-			<div className={'container'}>
+			{/* <div className={'container'}>
 			    <h4>Files</h4>
 				<input type="file" onChange={this.handleFileUpload}/>
 				{this.state.uploading && (
@@ -326,8 +326,8 @@ createResource(){
 				)}
 
 				
-			</div>
-			{!!files && files.length > 0 && (
+			</div> */}
+			{/* {!!files && files.length > 0 && (
 				<div className={'container'}>
 					<ul>
 					{files.map(file=>(
@@ -335,7 +335,7 @@ createResource(){
 					))}
 					</ul>
 				</div>
-			)}
+			)} */}
 		
 			
 		</div>

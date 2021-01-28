@@ -325,7 +325,7 @@ class UntutorialPageBase extends React.Component {
 	}
 	handleCategoryValidate(){
 	 	const {untutorial,errors} = this.state;
-	 	if(Object.keys(untutorial.Categories).length < 1){
+	 	if(Object.keys(untutorial.Categories).length < 2){
 	 		errors["Categories"] = 'CATS.<span class="red">At least 1 category</span>';
 	 	}
 	 	else
@@ -716,9 +716,9 @@ class UntutorialPageBase extends React.Component {
         </div>
         <div className="workOnProject">
           {!!progress && progress.Status == "APPROVED" && (
-            <Link to={ROUTES.UNIVERSE + "/" + progress.untut}>
-              GREAT JOB! You finished this project! Publish to the UNIVERSE!
-            </Link>
+           <h3> 
+              GREAT JOB! You finished this project! <Link to={ROUTES.UNIVERSE + "/" + progress.untut}>Publish to the UNIVERSE!
+            </Link></h3>
           )}
           {!!progress && progress.Status == "PENDING" && (
             <h3>Your teacher is reviewing your project!</h3>
