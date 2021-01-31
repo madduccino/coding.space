@@ -730,7 +730,7 @@ class UntutorialPageBase extends React.Component {
 
         <div className={`main ${showiframe ? "blur" : ""}`}>
           <div className="main-content">
-		  <button onClick={()=>this.props.history.goBack()}>Back</button>
+		  <a className="back" onClick={()=>this.props.history.goBack()}><i class="fa fa-backward"></i></a>
 
             {!!progress && (
               <TCSEditor
@@ -739,7 +739,7 @@ class UntutorialPageBase extends React.Component {
                 className="url"
                 onEditorChange={this.handleProgressURLOnChange}
                 onEditorSave={this.handleProgressURLOnSave}
-                placeholder={"Project URL..."}
+                placeholder={"http://"}
                 url={true}
                 buttonText={progress.URL ? "Edit Link" : "Add Link"}
                 text={progress.URL}
@@ -760,10 +760,19 @@ class UntutorialPageBase extends React.Component {
                     
                     <div className="checkOff">
                       <div className={"step-title status"}>
-                        Step {index + 1}
-                        
-                        {!!step.Title && !!step.Title.length && <>:&nbsp;</>}
-                        
+					  {/* {!!progress &&
+                        !!progress.steps[index] &&
+                        progress.steps[index].Status == "DRAFT" ? (
+                          <div className="todo"></div>
+                        ) : !!progress &&
+                          !!progress.steps[index] &&
+                          progress.steps[index].Status == "PENDING" ? (
+                          <div className="pending"></div>
+                        ) : (
+                          !!progress && <div className="approved"></div>
+                        )} */}
+					   <p> Step {index + 1}{!!step.Title && !!step.Title.length && <>:</> }</p>
+				
                         <TCSEditor
                           disabled={
                             !(
@@ -773,7 +782,7 @@ class UntutorialPageBase extends React.Component {
                             )
                           }
                           type={"plain"}
-                          className={!!progress ? "no-button" : "header"}
+                          className="header"
                           onEditorChange={(value) =>
                             this.handleStepTitleOnChange(value, index)
                           }
@@ -788,17 +797,7 @@ class UntutorialPageBase extends React.Component {
                               : ""
                           }
                         />
-                        {!!progress &&
-                        !!progress.steps[index] &&
-                        progress.steps[index].Status == "DRAFT" ? (
-                          <div className="todo"></div>
-                        ) : !!progress &&
-                          !!progress.steps[index] &&
-                          progress.steps[index].Status == "PENDING" ? (
-                          <div className="pending"></div>
-                        ) : (
-                          !!progress && <div className="approved"></div>
-                        )}
+                   
                       </div>
                     </div>
                     <div className={"step-content"}>
@@ -889,28 +888,28 @@ class UntutorialPageBase extends React.Component {
                       {!!progress &&
                         (!progress.steps[index] ||
                           progress.steps[index].Status == "DRAFT") && (
-                          <div>
                             <button
                               disabled={false}
-                              className={"done-button"}
+                              className={"done-button todo"}
                               onClick={() => this.studentApprove(index)}
                             >
-                              Done
+                           Mark   Done
                             </button>
-                          </div>
                         )}
                       {!!progress &&
                         (!progress.steps[index] ||
                           progress.steps[index].Status == "PENDING") && (
-                          <div>
-                            <button
-                              disabled={false}
-                              className={"done-button"}
-                              onClick={() => this.studentApprove(index)}
-                            >
-                              Teacher Reviewing!
-                            </button>
-                          </div>
+                          
+							<div className="done-button pending">In Review</div>
+
+                        )}
+						{!!progress &&
+                        (!progress.steps[index] ||
+                          progress.steps[index].Status == "APPROVED") && (
+                          
+                            <div className="done-button approved">
+                             Approved
+                            </div>
                         )}
                     </div>
                     {stepCount > 1 &&

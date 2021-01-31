@@ -423,11 +423,11 @@ copyText(e) {
 			)}
 			{(tab==TAB.NOTES) && (
 			  <div className="tab notes">
-			    {!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===profile.key) && (
+			    {!!authUser && (!!authUser.roles['ADMIN'] || !!authUser.roles['TEACHER'] || authUser.uid===profile.key) && (
 			    <>
 				  <h4>Notes</h4>
 				  <TCSEditor 
-				  disabled={!(!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===profile.key))}
+				  disabled={!(!!authUser && (!!authUser.roles['ADMIN'] || !!authUser.roles['TEACHER'] || authUser.uid===profile.key))}
 				  type='text'
 				  onEditorChange={this.handleNotesOnChange} 
 				  onEditorSave={this.handleNotesOnSave}
@@ -505,11 +505,23 @@ copyText(e) {
 				    <p>{"No Progress Yet :("}</p>
 				  )}
 				  <div className="instructions">
-				    <div><span class="fa fa-star white"></span> = to do</div>
-					<div><span class="fa fa-star pending fa-spin"></span> = waiting for teacher to approve</div>
-					<div><span class="fa fa-star approved"></span> = approved by teacher</div>
+				    <div>
+						<span class="fa fa-star white"></span>
+						<p>to do</p>
+					</div>
+					<div>
+						<span class="fa fa-star pending fa-spin"></span>
+						<p>waiting for teacher to approve</p>
+					</div>
+					<div>
+						<span class="fa fa-star approved"></span>
+					    <p>approved by teacher</p>
+					</div>
 
-					<div className="complete"><img src='/images/roket.png'/> = you finished!</div>
+					<div className="complete">
+						<img src='/images/roket.png'/>
+					   <p>you finished!</p> 
+					</div>
 				  </div>
 				  {Object.keys(progressLevels).map(group=>(
 				    <>

@@ -81,9 +81,10 @@ class TCSEditor extends React.Component {
 					{text ? <a target='_blank' href={text}>Go to Project</a> : 
 					 <>
 					   <h2>Link to Project</h2>
-					   <button onClick={this.handleEdit}>{buttonText}</button>
 					</>
 				}
+					<button onClick={this.handleEdit}>{buttonText}</button>
+
 					</div>
 				)
 			}

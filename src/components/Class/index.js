@@ -373,7 +373,7 @@ class ClassPageBase extends React.Component {
 					placeholder={'Class Status'} 
 					text={clazz.Status}/>
 		</div>
-		<h4>Class Title</h4>
+		    <h4>Class Title</h4>
 				<TCSEditor 
 					disabled={!(!!authUser && !!authUser.roles['ADMIN'] )}
 					type='plain'
@@ -381,10 +381,10 @@ class ClassPageBase extends React.Component {
 					onEditorSave={this.handleClassTitleOnSave}
 					placeholder={'Class Title'} 
 					text={clazz.Title}/>
-		<div className="avatar">
+		   <div className="avatar">
 			{!!clazz.ThumbnailFilename && !uploading &&(
-					<LazyImage file={this.props.firebase.storage.ref('/classes/' + clazz.ThumbnailFilename)}/>
-				)}
+				<LazyImage file={this.props.firebase.storage.ref('/classes/' + clazz.ThumbnailFilename)}/>
+			)}
 			<label for="files" className="upload">
 				<input id="files" type="file" onChange={this.handleThumbnailUpload}/>
 			</label>
@@ -446,12 +446,12 @@ class ClassPageBase extends React.Component {
 		  )}
 		 </div>
 		 {!!authUser && !!authUser.roles["ADMIN"] && !!profiles && (
-			<div className="console">
+		<div className="console">
 		   
 		   <button onClick={()=>this.setState({editClass: !editClass})}>
 				{editClass ? "Done" : "Edit Class"}
 			</button>
-<div className={editClass ? "showConsole" : "hideConsole"}>
+            <div className={editClass ? "showConsole" : "hideConsole"}>
 			<ListBox 
 			 options={listBoxOptions} 
 			 onChange={this.handleMembersOnChange} 

@@ -1,5 +1,4 @@
-@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css');
-
+@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css");
 
 /* Proxima Nova - Light */
 @font-face {
@@ -57,33 +56,39 @@
 }
 
 $darkgreen: #274548;
-$lightGreen:#9FE2DD;
+$lightGreen: #9fe2dd;
 $darkergreen: rgb(18, 33, 34);
-$lightblue: #9FE2DD;
-$beige: #FBF6EE;
-$orange: #EDC034;
+$lightblue: #9fe2dd;
+$beige: #fbf6ee;
+$orange: #edc034;
 $darkerOrange: #d8a200;
-$darkOrangeTransparent:rgba(216,162,0,0.7);
+$darkOrangeTransparent: rgba(216, 162, 0, 0.7);
 $fontSize: 18px;
-$headerFont: 'Futura',sans-serif;
-$bodyFont: 'Proxima Nova', sans-serif;
+$headerFont: "Futura", sans-serif;
+$bodyFont: "Proxima Nova", sans-serif;
 // $headerFont: 'roboto mono','futura-pt-bold',sans-serif;
 // $bodyFont: 'VT323',monospace;
 $breakpoint-tablet: 768px;
 $breakpoint-phone: 600px;
 
 @keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
-html,body,#root {
-    height: 100%;
+html,
+body,
+#root {
+  height: 100%;
 }
 
 @mixin flexh {
-   display: flex;
-   flex-flow: row wrap;
+  display: flex;
+  flex-flow: row wrap;
 }
 
 @mixin flexhc {
@@ -104,6 +109,15 @@ html,body,#root {
   justify-content: center;
 }
 
+@mixin approve {
+  background-color: rgb(80, 221, 15);
+}
+
+@mixin todo {
+  background-color: rgb(216, 61, 61);
+
+}
+
 body {
   color: $darkgreen;
   font-size: $fontSize;
@@ -113,15 +127,27 @@ body {
 }
 
 #page-container {
-  .loading {text-align: center;margin-top: 20px;}
+  .loading {
+    text-align: center;
+    margin-top: 20px;
+  }
 
-  #signIn, #landing,#forget,#signup,#launchpad,#universe,#classes,#new-class,#clazz,#universe-publish {
-    background-color:$darkgreen;
+  #signIn,
+  #landing,
+  #forget,
+  #signup,
+  #launchpad,
+  #universe,
+  #classes,
+  #new-class,
+  #clazz,
+  #universe-publish {
+    background-color: $darkgreen;
     color: #fff;
     h1 {
       font-size: 6rem;
       color: #fff;
-      text-shadow: rgb(53, 173, 185) 2px 1px 0px;  
+      text-shadow: rgb(53, 173, 185) 2px 1px 0px;
       text-align: center;
     }
   }
@@ -131,10 +157,15 @@ img {
   max-width: 100%;
 }
 
-h1,h2,h3,h4,h5,h6 {
-    font-family: $headerFont;
-    padding: 0;
-    margin: 0;
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: $headerFont;
+  padding: 0;
+  margin: 0;
 }
 
 #landing h1 {
@@ -152,14 +183,14 @@ h2 {
 }
 
 a {
-    text-decoration: none;
-    outline: none;
-    color: $darkgreen;
-} 
+  text-decoration: none;
+  outline: none;
+  color: $darkgreen;
+}
 
-button { 
-    font-size: $fontSize;
-    font-family: $bodyFont;
+button {
+  font-size: $fontSize;
+  font-family: $bodyFont;
 }
 
 .center {
@@ -172,130 +203,129 @@ button {
   font-family: $headerFont;
 }
 
-img.pixel{
+img.pixel {
   // image-rendering:pixelated;
 }
 
 #page-container {
-    display: grid;
-    height: 100%;
-    grid-template-rows: 70px 1fr;
-    position: relative;
+  display: grid;
+  height: 100%;
+  grid-template-rows: 70px 1fr;
+  position: relative;
   .loading {
     text-align: center;
   }
 }
 
 #header {
-    background-color: #fff;
+  background-color: #fff;
+  width: 100%;
+  border-bottom: 5px solid $lightGreen;
+  display: flex;
+  .logo {
+    @include flexvc;
+    margin: 0 40px;
+    img {
+      width: 50px;
+      height: 50px;
+      object-fit: contain;
+    }
+  }
+  .nav {
+    @include flexh;
+    line-height: 70px;
     width: 100%;
-    border-bottom: 5px solid $lightGreen;
-    display: flex;
-    .logo {
-      @include flexvc;
-      margin: 0 40px;
-      img {
-        width: 50px;
-        height: 50px;
-        object-fit: contain;
+    height: 70px;
+    justify-content: flex-end;
+    .signIn {
+      color: #fff;
+      text-align: center;
+      border-radius: 8px;
+      transition: background-color 2s;
+      background-color: $orange;
+      padding: 10px 20px;
+
+      &:hover {
+        background-color: $darkerOrange;
       }
     }
-    .nav {
-      @include flexh;
-      line-height: 70px;
-      width:100%;
-      height: 70px;
-      justify-content: flex-end;
-      .signIn {
-        color: #fff;
-        text-align: center;
-        border-radius: 8px;
-        transition: background-color 2s;
-        background-color: $orange;
-        padding: 10px 20px;
-
-        &:hover {
-          background-color: $darkerOrange;
-        }
+    > a {
+      margin: 0 20px;
+      &:hover {
+        border-top: 4px solid $lightGreen;
       }
-     > a {
-        margin: 0 20px;
-        &:hover {
-          border-top: 4px solid $lightGreen;
- 
-        }
-        &:not(.logo) {
-          text-align:right;
-        }
-      }
-      .hideMenu {
-        display:none;
-      }   
-      .showMenu {
-        @include flexv;
-        text-align: left;
-        line-height: 1rem;
-        background-color: $lightblue;
-        z-index: 9999;
-        position: absolute;
-        top: 70px;
-        margin: 0 40px 0 0;
-        button {
-          border-radius: 0;
-          padding: 5px 20px;
-          width: 100%;
-          background-color: $darkerOrange;
-        }
-        a {
-          padding: 10px 40px;
-          text-align:left;
-          z-index: 1;
-        }
-        a:hover {
-          background-color: $orange;
-        }
-      }
-      .dropdown {
-        cursor: pointer;
+      &:not(.logo) {
         text-align: right;
-        height: 70px;
-        z-index: 99;
-        margin: 0 40px;
-        #menu {
-          @include flexh;
-          justify-content: flex-end;
-          padding: 0 5px;
-          &.highlight {
-            border-top: 4px solid $lightGreen;
-          }
-          img {
-            width: 40px;
-            height: 40px;
-            object-fit: contain;
-            margin-right: 10px;
-            margin-top:  15px;
-          }
-          &:after {
-          width: 0; 
-          height: 0; 
+      }
+    }
+    .hideMenu {
+      display: none;
+    }
+    .showMenu {
+      @include flexv;
+      text-align: left;
+      line-height: 1rem;
+      background-color: $lightblue;
+      z-index: 9999;
+      position: absolute;
+      top: 70px;
+      margin: 0 40px 0 0;
+      button {
+        border-radius: 0;
+        padding: 5px 20px;
+        width: 100%;
+        background-color: $darkerOrange;
+      }
+      a {
+        padding: 10px 40px;
+        text-align: left;
+        z-index: 1;
+      }
+      a:hover {
+        background-color: $orange;
+      }
+    }
+    .dropdown {
+      cursor: pointer;
+      text-align: right;
+      height: 70px;
+      z-index: 99;
+      margin: 0 40px;
+      #menu {
+        @include flexh;
+        justify-content: flex-end;
+        padding: 0 5px;
+        &.highlight {
+          border-top: 4px solid $lightGreen;
+        }
+        img {
+          width: 40px;
+          height: 40px;
+          object-fit: contain;
+          margin-right: 10px;
+          margin-top: 15px;
+        }
+        &:after {
+          width: 0;
+          height: 0;
           border-left: 5px solid transparent;
           border-right: 5px solid transparent;
           border-top: 5px solid $darkgreen;
           content: "";
           cursor: pointer;
           margin: 35px 0 0 5px;
-          }
-          &:hover {
-            border-top: 4px solid $lightGreen;
-          }
+        }
+        &:hover {
+          border-top: 4px solid $lightGreen;
         }
       }
     }
+  }
 }
 
-button, .button {  
+button,
+.button {
   border-radius: 4px;
-  display: flex;
   align-content: center;
   justify-content: center;
   flex-flow: column wrap;
@@ -303,7 +333,7 @@ button, .button {
   border: 0;
   outline: 0;
   width: 100px;
-  padding: 10px;
+  padding: 6px 10px;
   grid-column: 10;
   background-color: $orange;
   cursor: pointer;
@@ -318,21 +348,21 @@ button, .button {
 
 button {
   background-color: $orange;
-
 }
 
 .main {
-    a {
-      font-weight: bold;
-      color: $orange;
-    }
-    form {
+  a {
+    font-weight: bold;
+    color: $orange;
+  }
+  form {
     position: relative;
     display: flex;
     flex-flow: column wrap;
     align-content: center;
     margin: 0 auto;
-    input, button {
+    input,
+    button {
       display: block;
       margin: 10px auto;
       padding: 10px 0;
@@ -344,7 +374,7 @@ button {
     input {
       padding-left: 10px;
     }
-    input[type=checkbox] {
+    input[type="checkbox"] {
       display: inline-block;
       width: auto;
       margin: 20px 10px;
@@ -352,20 +382,22 @@ button {
     label {
       color: $orange;
       display: inline-block;
-  }  
+    }
     button {
       width: 260px;
     }
     p {
       color: $lightblue;
-      background-color:black;
+      background-color: black;
     }
   }
- 
 }
 
-#landing, #signup, #signIn,#forget {
-  background:url('/images/bg.png') no-repeat;
+#landing,
+#signup,
+#signIn,
+#forget {
+  background: url("/images/bg.png") no-repeat;
   background-size: cover;
   background-position: 10% 50%;
   #rocket {
@@ -382,14 +414,14 @@ button {
     height: 100%;
     .button {
       color: #fff;
+      padding: 10px;
     }
-  } 
+  }
 }
 
 #signin {
-
   .roles {
-    display:flex;
+    display: flex;
     flex-flow: row wrap;
   }
 }
@@ -399,7 +431,13 @@ button {
   color: #fff;
 }
 
-#profile, #clazz, #untutorial, #new-project, #jetfuel, #question, #progress-reviews {
+#profile,
+#clazz,
+#untutorial,
+#new-project,
+#jetfuel,
+#question,
+#progress-reviews {
   .main {
     color: #fff;
     display: grid;
@@ -407,185 +445,184 @@ button {
     height: 100%;
     background-color: #fff;
     color: $darkgreen;
-  .sidebar {
-    color: #fff;
-    background-color:$beige;
-    // padding: 60px 30px;
-    background-color: $darkgreen;
-    word-wrap: break-word;
+    .sidebar {
+      color: #fff;
+      background-color: $beige;
+      // padding: 60px 30px;
+      background-color: $darkgreen;
+      word-wrap: break-word;
       padding: 60px 30px;
       > div {
         margin-bottom: 40px;
-      
-    }
-    button {
-      padding: 0 6px;
-      width: auto;
-      margin: 4px auto;
-    }
-    h1 {
-      font-size: 1.4rem;
-      color: $darkgreen;
-      text-shadow: none;
-    }
-    p {
-      margin: 0;
-      padding: 0;
-
-    }
-    span {
-      font-size: 0.8rem;
-    }
-    .container {
-      position: relative;
-      .description {
-        margin-top: 20px;
-      }
-      p {
-        margin-top: 20px;
-      }
-    }
-    select {
-      margin-right: 5px;
-    }
-    .field {
-      line-height: 1.8rem;
-      &.draft > div {
-        background-color: red;
-      }
-      &.approved  {
-        div {
-        background-color:#00b700;
-        }
-      }
-      &.level {
-        font-size: 1.6rem;
       }
       button {
+        padding: 0 6px;
+        width: auto;
+        margin: 4px auto;
+      }
+      h1 {
+        font-size: 1.4rem;
+        color: $darkgreen;
+        text-shadow: none;
+      }
+      p {
+        margin: 0;
+        padding: 0;
+      }
+      span {
+        font-size: 0.8rem;
+      }
+      .container {
+        position: relative;
+        .description {
+          margin-top: 20px;
+        }
+        p {
+          margin-top: 20px;
+        }
+      }
+      select {
+        margin-right: 5px;
+      }
+      .field {
+        line-height: 1.8rem;
+        &.draft > div {
+          background-color: red;
+        }
+        &.approved {
+          div {
+            background-color: #00b700;
+          }
+        }
+        &.level {
+          font-size: 1.6rem;
+        }
+        button {
           font-size: 1rem;
           padding: 2px 6px;
           background-color: $lightGreen;
           color: $darkgreen;
           display: inline;
-      }
-      &.display-name {
-        font-size: 2rem;
-        margin-top: 10px;
-        font-family: $headerFont;
-        line-height: 2rem;
-        position: relative;
-        background-color: $darkgreen;
-        color: #fff;
-        text-align: center; 
-        .edit {
-          top: 0;
-          right: 30px;
         }
-      }
-    }
-    .content {
-      border-radius: 4px;
-      .field {
-        position: relative;
-        text-align: center;
-        padding: 0 30px;
-        h1 {
+        &.display-name {
           font-size: 2rem;
-          color: $darkgreen;
+          margin-top: 10px;
+          font-family: $headerFont;
+          line-height: 2rem;
+          position: relative;
+          background-color: $darkgreen;
+          color: #fff;
+          text-align: center;
+          .edit {
+            top: 0;
+            right: 30px;
+          }
         }
-        img {
-          position: absolute;
-          right: 0;
-          top: 0;
+      }
+      .content {
+        border-radius: 4px;
+        .field {
+          position: relative;
+          text-align: center;
+          padding: 0 30px;
+          h1 {
+            font-size: 2rem;
+            color: $darkgreen;
+          }
+          img {
+            position: absolute;
+            right: 0;
+            top: 0;
+          }
         }
-    }
-      .container {
-        margin: 20px 0;
-      }
-    }
-  }
-  .main-content {
-    color: $darkgreen;
-    position: relative;
-    padding: 60px;
-    position: relative;
-    .approve {
-      text-align: center;
-      margin-top: 20px; 
-      div {
-        color: $orange;
-        position: relative; 
-        display: inline;
-        padding-right: 20px;
-      }
-    }
-    .container {
-      .field {
-        position: relative;
-        margin: 0;
-        background-color: $beige;
-        padding: 0 40px;
-        border-radius: 8px; 
-        font-weight: bold;
-        .edit {
-          right: 2px;
-          top: 5px;
+        .container {
+          margin: 20px 0;
         }
       }
     }
-    .content {
-      > div { 
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      .field {
-        position: 2px solid red;
-
-        img {
-          width: 25px;
-          height: auto;
-          cursor: pointer;
-          position: absolute;
-          right: 0;
-          top: 0;
-        }
-      }
-      h4 {
-        p {
-          margin: 0;
+    .main-content {
+      color: $darkgreen;
+      position: relative;
+      padding: 60px;
+      position: relative;
+      .approve {
+        text-align: center;
+        margin-top: 20px;
+        div {
+          color: $orange;
+          position: relative;
           display: inline;
-          padding: 0;
+          padding-right: 20px;
         }
       }
+      .container {
+        .field {
+          position: relative;
+          margin: 0;
+          background-color: $beige;
+          padding: 0 40px;
+          border-radius: 8px;
+          font-weight: bold;
+          .edit {
+            right: 2px;
+            top: 5px;
+          }
+        }
       }
+      .content {
+        > div {
+          display: grid;
+          grid-template-columns: 1fr 1fr 1fr;
+          .field {
+            position: 2px solid red;
 
-    } 
+            img {
+              width: 25px;
+              height: auto;
+              cursor: pointer;
+              position: absolute;
+              right: 0;
+              top: 0;
+            }
+          }
+          h4 {
+            p {
+              margin: 0;
+              display: inline;
+              padding: 0;
+            }
+          }
+        }
+      }
+    }
+    .quill {
+      color: $darkgreen;
+      // max-width: 525px;
+      border: 1px solid #d1d1d1;
+      border-radius: 4px;
+    }
   }
-  .quill {
-    color: $darkgreen;
-    // max-width: 525px;
-    border: 1px solid #D1D1D1;
-    border-radius: 4px;
-  }
- }
 }
 
-#launchpad, #universe,#clazz {
+#launchpad,
+#universe,
+#clazz {
   .filter {
     div {
       width: 100%;
     }
     button {
-      margin-bottom: 5px;  
-      display:block;
+      margin-bottom: 5px;
       width: 100%;
       position: relative;
-      background-color: #fff;   
-      transition: normal;  
+      background-color: #fff;
+      transition: normal;
+      display: flex;
     }
     .f {
       background-color: #eeefef;
       &:after {
-        content:"x";
+        content: "x";
         position: absolute;
         right: 10px;
       }
@@ -602,61 +639,62 @@ button {
       .search {
         padding: 10px;
         width: 50%;
-        display:block;
+        display: block;
         margin: 0 auto;
         border: 3px solid $orange;
         outline: 0;
         border-radius: 4px;
         margin: 40px auto;
       }
-    .items {
-     @include flexhc;
-     h1 {
-       margin: 20px 0;
-     }
+      .items {
+        @include flexhc;
+        h1 {
+          margin: 20px 0;
+        }
 
-    > a {
-      background-color: #fff;
-      border-radius: 8px;
-      color: $darkgreen;
-      width: 28%;
-      margin: 2%;
-      position: relative;
-      box-shadow: 0 1px 3px 0 rgba(0,0,0,.12), 0 1px 2px 0 rgba(0,0,0,.24);
-      // flex-grow: 1;
-      img {
-         width: 100%;
-         height: 130px;
-         object-fit: cover;
-         border-top-left-radius: 8px;
-         border-top-right-radius: 8px;
-         box-shadow: 0 1px 3px 0 rgba(0,0,0,.12), 0 1px 2px 0 rgba(0,0,0,.24)
-
+        > a {
+          background-color: #fff;
+          border-radius: 8px;
+          color: $darkgreen;
+          width: 28%;
+          margin: 2%;
+          position: relative;
+          box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.12),
+            0 1px 2px 0 rgba(0, 0, 0, 0.24);
+          padding-bottom: 30px;
+          img {
+            width: 100%;
+            height: 130px;
+            object-fit: cover;
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.12),
+              0 1px 2px 0 rgba(0, 0, 0, 0.24);
+          }
+          > div {
+            padding: 40px 20px;
+            font-size: 1rem;
+            font-family: $bodyFont;
+            font-weight: 300;
+            min-height: 200px;
+            h2 {
+              margin-bottom: 20px;
+            }
+            p {
+              line-height: 1.6rem;
+            }
+            button {
+              width: auto;
+              background-color: $darkgreen;
+              color: #fff;
+              position: absolute;
+              bottom: 10px;
+              left: 0;
+              right: 0;
+            }
+          }
+        }
       }
-      > div {
-        padding: 40px 20px;
-        font-size: 1rem;
-        font-family: $bodyFont;
-        font-weight: 300;
-        min-height: 200px;
-        h2 {
-          margin-bottom: 20px;
-        }
-        p {
-         line-height: 1.6rem;
-        }
-        button {
-          width: auto;
-          background-color: $darkgreen;
-          color: #fff;
-          position: absolute;
-          bottom: 40px;
-          left: 0;
-          right: 0;
-        }
-      }
-    }
-  }
     }
     .sidebar {
       background-color: #fff;
@@ -669,7 +707,7 @@ button {
       button {
         transition: background-color 2s;
         &:hover {
-          background-color:#eeefef;
+          background-color: #eeefef;
         }
       }
     }
@@ -677,52 +715,63 @@ button {
 }
 
 #classes {
-h1 {
-  margin-top: 20px;
-}
-.button {
-  display: block;
-  margin: 0 auto;
-  color: $darkgreen;
-  text-align: center;
-}
-.main {
- @include flexhc;  
-a {
-  color: $darkergreen;
-  width: 200px;
-  height: 300px;
-  background-color: white;
-  margin: 40px;
-  text-align: center;
-  border-radius: 8px;
-  position: relative;
-  h4 {
-    margin-top: 30px;
+  h1 {
+    margin-top: 20px;
   }
-  button {
-    background-color: $darkgreen;
-    color: #fff;
-    bottom: 10px;
-    position: absolute;
-    margin: 0 auto;
-    left: 0;
-    right: 0;
-  }
-  img {
-    max-width:100%;
-    height: 100px;
-    margin: 0 auto;
+  .button {
     display: block;
-    object-fit: contain;
+    margin: 0 auto;
+    color: $darkgreen;
+    text-align: center;
   }
- }
- }
+  .main {
+    @include flexhc;
+    a {
+      color: $darkergreen;
+      width: 200px;
+      background-color: white;
+      margin: 40px;
+      text-align: center;
+      border-radius: 8px;
+      position: relative;
+      padding-bottom: 50px;
+      min-height: 300px;
+      div {
+        padding-bottom: 10px;
+      }
+      h4 {
+        margin-top: 30px;
+        word-break: break-word;
+      }
+      h5 {
+        margin: 10px 0;
+      }
+      button {
+        background-color: $darkgreen;
+        color: #fff;
+        bottom: 10px;
+        position: absolute;
+        margin: 0 auto;
+        left: 0;
+        right: 0;
+        width: auto;
+      }
+      img {
+        width: 100%;
+        height: 130px;
+        object-fit: cover;
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+        box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.12),
+          0 1px 2px 0 rgba(0, 0, 0, 0.24);
+      }
+    }
+  }
 }
 
 #clazz {
   .main {
-  .main-content {
+    .main-content {
       h1 {
         text-align: center;
       }
@@ -730,30 +779,32 @@ a {
         > a {
           transition: 2s;
           margin: 40px auto;
-          width: 300px;
-          height: 300px;
+          width: 200px;
+          height: 150px;
           text-align: center;
           font-family: $headerFont;
           text-transform: capitalize;
-          background:url(/static/media/logo.5a255a59.png) no-repeat center center;
+          background: url(/static/media/logo.5a255a59.png) no-repeat center
+            center;
           background-size: contain;
           background-color: $lightGreen;
           color: #fff;
           border-radius: 8px;
           position: relative;
-          padding-bottom: 0;
+          margin-bottom: 10px;
 
-         span {
-           position: absolute;
-           bottom: 10px;
-           color: $darkgreen;
-           left: 0;
-           right: 0;
-           margin: 0 auto;
-          &:hover {
-            background-color:#61bbb5;
+          span {
+            position: absolute;
+            font-size: 14px;
+            bottom: 0;
+            color: $darkgreen;
+            left: 0;
+            right: 0;
+            margin: 0 auto;
+            &:hover {
+              background-color: #61bbb5;
+            }
           }
-        }
         }
       }
       .console {
@@ -764,27 +815,31 @@ a {
         .hideConsole {
           display: none;
         }
+
+        button {
+          display: flex;
+        }
       }
     }
-  .sidebar {
-    width: 250px;
-    padding: 20px;
-    color: $darkgreen;
-    text-align: center;
-    .avatar {
-      border:0;
-      width: 200px;
-      height: 100px;
-      padding: 0;
-      img {
-        position: static;
-        width: 100%;
-        height: 100%;
+    .sidebar {
+      width: 250px;
+      padding: 20px;
+      color: $darkgreen;
+      text-align: center;
+      .avatar {
+        border: 0;
+        width: 200px;
+        height: 100px;
+        padding: 0;
+        img {
+          position: static;
+          width: 100%;
+          height: 100%;
+        }
       }
     }
-   }
   }
- }
+}
 // #clazz {
 //   .main {
 //   .main-content {
@@ -808,57 +863,55 @@ a {
 // }
 // }
 
-#page-container { 
- #launchpad {
-  .main {
-    h1 {
-      width: 100%;
-      font-size: 3rem;  
+#page-container {
+  #launchpad {
+    .main {
+      h1 {
+        width: 100%;
+        font-size: 3rem;
+      }
     }
   }
 }
-}
 
-#untutorial,#new-project  {
+#untutorial,
+#new-project {
   .blur {
-   opacity:0.5;
+    opacity: 0.5;
   }
   .thumbnail {
     height: auto;
     .add {
-      text-align:left;
+      text-align: left;
       margin: 20px 0 0;
-      font-weight: bold;  
-
+      font-weight: bold;
     }
     .upload {
-    border:0;
-    height: 20px;
-    margin: 20px 0 0;
+      border: 0;
+      height: 20px;
+      margin: 20px 0 0;
     }
 
-   .replace {
-     position:absolute;
-     left:0;
-     width:100%;
-     height:100%;
-     cursor:pointer;
-
-   }
-   .change {
-     position:absolute;
-     bottom:-30px;
-     margin: 0 auto;
-     left:0;
-     right:0;
-   }
-
+    .replace {
+      position: absolute;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      cursor: pointer;
+    }
+    .change {
+      position: absolute;
+      bottom: -30px;
+      margin: 0 auto;
+      left: 0;
+      right: 0;
+    }
   }
   .workOnProject {
     h3 {
       text-align: center;
       border-top: 2px solid $darkgreen;
-      background-color:$orange;
+      background-color: $orange;
       padding: 10px;
       a {
         text-decoration: underline;
@@ -873,7 +926,7 @@ a {
     border-radius: 50%;
     padding: 10px;
   }
-   .iframe-on {
+  .iframe-on {
     z-index: 99;
     position: fixed;
     top: 0;
@@ -887,17 +940,25 @@ a {
     .popup {
       background-color: #fff;
       border-bottom: 1px solid #ccc;
-      box-shadow: 0 2px 8px 0 rgba(0,0,0,0.8);
+      box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.8);
       border-radius: 4px;
       position: relative;
       max-width: 600px;
+      p {
+        margin-bottom: 10px;
+      }
       a {
+        color: $orange;
+        font-weight: bold;
+        &.back,
+        &.close {
           position: absolute;
-        cursor: pointer;
+          cursor: pointer;
           top: 20px;
           font-family: $headerFont;
           font-weight: bold;
           color: black;
+        }
         &.back {
           left: 20px;
         }
@@ -907,7 +968,7 @@ a {
       }
       > div {
         padding: 20px;
-        text-align:center;
+        text-align: center;
       }
       iframe {
         margin-top: 20px;
@@ -938,18 +999,18 @@ a {
       display: block;
       margin: 0 auto;
     }
-
   }
   .main {
-    background-color: #f7f7f7; 
+    background-color: #f7f7f7;
     .addDelete {
       @include flexhc;
     }
     .del {
-      margin-top: 20px;
-      width:auto; 
+      margin: 40px auto;
+      display: block;
+      width: auto;
       background-color: $darkgreen;
-      color:#fff;
+      color: #fff;
     }
     .publish {
       width: auto;
@@ -958,27 +1019,26 @@ a {
     grid-template-columns: 2fr 1fr;
     border-top: 2px solid $darkgreen;
     padding: 0 5%;
-   .scratch {
-    grid-column: span 2;
-    img {
-    width: 130px;
-  }
-
-  }
-  .sidebar {
-      background-color:transparent;
-      color: $darkgreen; 
+    .scratch {
+      grid-column: span 2;
+      img {
+        width: 130px;
+      }
+    }
+    .sidebar {
+      background-color: transparent;
+      color: $darkgreen;
       margin-top: 20px;
       margin-right: 20px;
       padding-top: 30px;
       .tags {
-        z-index:9;
+        z-index: 9;
       }
       .filter-categories {
         a {
           display: block;
           margin: 20px 0;
-        } 
+        }
       }
       .quill {
         button {
@@ -1002,7 +1062,7 @@ a {
       }
       .container {
         border-bottom: 1px solid #ccc;
-        padding-bottom:5px;
+        padding-bottom: 5px;
         margin-bottom: 20px;
         @include flexv;
         .field {
@@ -1010,7 +1070,7 @@ a {
             background-color: $darkgreen;
             color: #fff;
             display: block;
-            margin-left:0;
+            margin-left: 0;
           }
           .quill {
             button {
@@ -1035,186 +1095,203 @@ a {
           padding: 10px 30px;
         }
       }
-   }
-  .main-content {  
-    button {
-      margin-bottom: 20px;
     }
-    .status {
-      > div  {
-        margin-left: 2px;
-      }
-    }
-    padding-top: 30px;
-    text-align: center;
-    h3 {
-      font-size: 2rem;
-    }
-    .thumbnail {
-      width: auto;
-      margin: 40px 0;
-      img {
-        width: auto;
-      }
-    }
-    .url {
-      margin: 0 0 40px;
-      font-size: 1.4rem;
-      h2 {
-        margin-top: 20px;
-      }
-      input {
-        padding: 8px;
-        border:4px solid $orange;
-        border-radius: 4px;
-        width: 50%;
-        font-size: 1.5rem;
-        &:focus {
-          outline: 0;
-        }
+    .main-content {
+      .back {
+        cursor:pointer;
+        margin-bottom: 20px;
+        display:flex;
+        justify-content:center;
       }
       button {
-        background-color: $darkgreen;
-        color: #fff;
-        width: auto;
-        padding: 2px 6px;
-        margin: 10px auto;
-        font-size: 1rem;
+        margin-bottom: 20px;
       }
-    }
-    .steps {
-      &:hover {
-      // max-height: 800px;
-      // overflow-y: auto;
-      }
-    .step{
-      text-align: left;
-      background-color: #fff;
-      position: relative;
-      width: 533px;
-      margin: 20px auto 60px;
-      border-bottom: 1px solid #ccc;
-      box-shadow: 0 2px 8px 0 rgba(0,0,0,.15);
-      padding: 0 20px 60px;
-      border-radius: 10px;
-      .step-title {
-        font-size: 2rem;
-      }
-      .no-button {
-        button, .editor-button {
-        display: none;
+      .status {
+        > div {
+          margin-left: 2px;
         }
       }
-      .step-title {
-        @include flexh;     
-        font-weight: 700;
+      padding-top: 30px;
+      text-align: center;
+      h3 {
         font-size: 2rem;
-        padding-top: 10px;
-        word-break: break-all;
-        font-family: $bodyFont;
-          div{
-            img{
-              width:60px;
-            }
-          }
-        
-      .header {
-        display: flex;
-        flex-flow: row wrap;
-        align-content: center;
-        > div:not(.quill) {
-          font-size: 2rem;
-          margin: 0;
+      }
+      .thumbnail {
+        width: auto;
+        margin: 40px 0;
+        img {
+          width: auto;
+        }
+      }
+      .url {
+        margin: 0 0 40px;
+        font-size: 1.4rem;
+        h2 {
+          margin-top: 20px;
         }
         input {
-          border: 0;
-          border-bottom: 2px solid $darkgreen;
-          margin-left: 10px;
+          padding: 8px;
+          border: 4px solid $orange;
+          border-radius: 4px;
+          width: 50%;
+          font-size: 1.5rem;
           &:focus {
             outline: 0;
           }
         }
         button {
+          background-color: $darkgreen;
+          color: #fff;
           width: auto;
-          padding: 2px 4px;
-          margin-left: 10px;
-
+          padding: 2px 6px;
+          margin: 10px auto;
+          font-size: 1rem;
+          display: block;
         }
-        .editor-button {
-          width: auto;
-          margin: 0;
-          display: flex;
-          margin-left: 10px;
+      }
+      .steps {
+        &:hover {
+          // max-height: 800px;
+          // overflow-y: auto;
         }
-       }
-      }
-      .step-content {
-        margin-top: 20px;
-       button {
-         width: auto;
-         display: block;
-         margin: 0;
-       }
-       .done-button {
-         position: absolute;
-         top: 0;
-         right: 0;
-       }
-      }
-      .delete {
-        position: absolute;
-        bottom: 10px;
-      }
-      .comments {
-        margin-top:10px;
-        background-color:$lightGreen;
-        padding:10px;
-      }
-      // button {
-      //   position: absolute;
-      //   width: auto;
-      //   &:not(.delete) {
-      //     top: 0;
-      //   }
-      // }
-      // &.done {
-      //   bottom: 0;
-      // }
-      // .editor {
-      //     button {
-      //     right: 0;
-      //     }
-      //     &.header {
-      //       width: 100%;
-      //       button {
-      //         left: 0;
-      //       }
-      //     }
-      // }
-      .field {
-        > div {
-          font-size: 1.2rem;
-          font-weight: 300;
+        .step {
           text-align: left;
-          margin-bottom: 10px;
-        }
+          background-color: #fff;
+          position: relative;
+          width: 533px;
+          margin: 20px auto 60px;
+          border-bottom: 1px solid #ccc;
+          box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.15);
+          padding: 0 20px 60px;
+          border-radius: 10px;
+          .step-title {
+            font-size: 2rem;
+          }
+          .no-button {
+            font-size: 32px;
+            button,
+            .editor-button {
+              display: none;
+            }
+          }
+          .step-title {
+            @include flexh;
+            font-weight: 700;
+            font-size: 2rem;
+            padding-top: 10px;
+            word-break: break-all;
+            font-family: $bodyFont;
+            p {
+              width:100%;
+            }
+            div {
+              img {
+                width: 60px;
+              }
+            }
 
-
-          iframe {
+            .header {
+              display: flex;
+              flex-flow: row wrap;
+              align-content: center;
+              justify-content: center;
+              align-items: center;
+              .editor-button {
+                padding: 0 4px;
+              }
+              > div:not(.quill) {
+                font-size: 2rem;
+                margin: 0;
+              }
+              input {
+                border: 0;
+                border-bottom: 2px solid $darkgreen;
+                margin-left: 10px;
+                &:focus {
+                  outline: 0;
+                }
+              }
+              button {
+                width: auto;
+                margin-left: 10px;
+                padding: 2px 10px;
+              }
+              .editor-button {
+                width: auto;
+                margin: 0;
+                display: flex;
+                margin-left: 10px;
+              }
+            }
+          }
+          .step-content {
+ 
             margin-top: 20px;
-            display: block;
-            margin: 20px auto;
+            button {
+              width: auto;
+              display: block;
+              margin: 0;
+            }
+
+            .done-button {
+              position: absolute;
+              top: 20px;
+              right: 20px;
+              border-radius:50%;
+              width:60px;
+              height:60px;
+              font-size: 12px;
+              @include flexvc;
+              &.todo {
+                background-color: rgb(175, 23, 23);
+                background: radial-gradient(circle, rgb(236, 99, 99), rgb(247, 48, 48));
+                &:hover {
+                  background: radial-gradient(circle, rgb(206, 73, 73), rgb(247, 48, 48));
+
+                }
+              }
+              &.pending {
+                background-color: $orange;
+                background: radial-gradient(circle, #e9dd33, $orange);
+              }
+              &.approved {
+                background-color: rgb(80, 221, 15);
+                background: radial-gradient(circle, #0bec3c, #11bd11);
+              }
+            }
+
+          }
+          .delete {
+            position: absolute;
+            bottom: 10px;
+          }
+          .comments {
+            margin-top: 10px;
+            background-color: $lightGreen;
+            padding: 10px;
+          }
+          .field {
+            > div {
+              font-size: 1.2rem;
+              font-weight: 300;
+              text-align: left;
+              margin-bottom: 10px;
+            }
+            iframe {
+              margin-top: 20px;
+              display: block;
+              margin: 20px auto;
+            }
           }
         }
       }
     }
   }
-}
-.sidebar {
-  iframe {
-    display:none;
+  .sidebar {
+    iframe {
+      display: none;
+    }
   }
-}
 }
 
 #untutorial {
@@ -1224,7 +1301,8 @@ a {
     margin-top: 40px;
     object-fit: cover;
     position: relative;
-    img, label {
+    img,
+    label {
       width: 100%;
       height: 400px;
       margin: 0;
@@ -1236,48 +1314,31 @@ a {
       border: 0;
       margin-top: 0;
       top: 0;
-      img,label {
+      img,
+      label {
         height: 272px;
       }
     }
   }
   .status {
-    .approved {
-      background-color:rgb(80, 221, 15);
-      background:radial-gradient(circle,#0bec3c, #0f9c0f);
-      width:15px;
-      height:15px;
-      border-radius:50%;
+    display: flex;
+    align-items: center;
+ 
+    > div:not(.field) {
+      margin: 5px;
+      &.red {
+        background-color: rgb(247, 48, 48);
+        background: radial-gradient(circle, rgb(236, 99, 99), rgb(247, 48, 48));
+      }
+      &.blue {
+        background-color: blue;
+        background: radial-gradient(circle, rgb(17, 147, 233), rgb(4, 61, 136));
+      }
     }
-    .todo {
-      width:15px;
-      height:15px;
-      border-radius:50%;
-      background-color:rgb(247, 48, 48);
-      background:radial-gradient(circle, rgb(236, 99, 99), rgb(247, 48, 48),);
-    }
-    .pending {     
-      background-color:$orange;
-      background:radial-gradient(circle, #e9dd33,$orange);
-      height:15px;
-      width:15px;
-      border-radius:50%;
-    }
-   > div:not(.field) {
-    margin: 5px;
-    &.red {
-      background-color:rgb(247, 48, 48);
-      background:radial-gradient(circle, rgb(236, 99, 99), rgb(247, 48, 48),);
-    }
-    &.blue {
-      background-color:blue;
-      background:radial-gradient(circle, rgb(17, 147, 233), rgb(4, 61, 136),);
-    }
-  }
   }
 }
 
-#new-project { 
+#new-project {
   .main {
     @include flexhc;
     justify-content: center;
@@ -1287,7 +1348,7 @@ a {
     .main-content {
       .steps {
         .step {
-        padding-bottom:0;
+          padding-bottom: 0;
         }
       }
     }
@@ -1300,7 +1361,7 @@ a {
       z-index: 99;
       padding: 10px;
       background-color: #fff;
-      box-shadow: 0 2px 8px 0 rgba(0,0,0,.15);
+      box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.15);
       text-align: center;
       button {
         width: auto;
@@ -1313,79 +1374,81 @@ a {
           background-color: $darkergreen;
         }
       }
-  }
-  .sidebar { 
-     padding-top: 30px;   
-     width: 300px;
-    .container {
-      .thumbnail {
-        height: auto;
-        border:0;
-        img {
+    }
+    .sidebar {
+      padding-top: 30px;
+      width: 300px;
+      .container {
+        .thumbnail {
           height: auto;
-        }
-        label {
-          height: 50px;
-        }
-      }
-      p {
-        margin: 0;
-      }
-    > div {
-      h4 {
-        position: relative;
-        text-align:left;
-      }
-      position: relative;
-      margin-bottom: 10px;
-    }
-    .filter-categories {
-     @include flexv;
-     a {
-       margin: 5px 0;
-       cursor: pointer;
-     }
-    }
-   }
-  }
-  .field {
-        margin: 0;
-        position:static;
-        padding: 0;
-        button {
-          z-index: 2;
-          top: 0;
-          display: block;
-          text-align: left;
-          .quill {
-        
+          border: 0;
+          img {
+            height: auto;
+          }
+          label {
+            height: 50px;
           }
         }
+        p {
+          margin: 0;
+        }
+        > div {
+          h4 {
+            position: relative;
+            text-align: left;
+          }
+          position: relative;
+          margin-bottom: 10px;
+        }
+        .filter-categories {
+          @include flexv;
+          a {
+            margin: 5px 0;
+            cursor: pointer;
+          }
+        }
+      }
+    }
+    .field {
+      margin: 0;
+      position: static;
+      padding: 0;
+      button {
+        z-index: 2;
+        top: 0;
+        display: block;
+        text-align: left;
+        .quill {
+        }
+      }
+    }
+    .delete {
+      bottom: 2px;
+      margin: 0 auto;
+      left: 0;
+      right: 0;
+    }
   }
-  .delete {
-        bottom: 2px;
-        margin: 0 auto;
-        left: 0;
-        right: 0;
-  }
-  }
- }
- 
-#signin, #forget, #signup, #signIn {
-  background:url('/images/bg2.png') no-repeat;
+}
+
+#signin,
+#forget,
+#signup,
+#signIn {
+  background: url("/images/bg2.png") no-repeat;
   background-size: cover;
   background-position: 10% 20%;
   #rocket {
     top: -40px;
-    z-index:0;
+    z-index: 0;
   }
 }
 
 #signup {
   labels {
-    @include flexh;    
+    @include flexh;
   }
-} 
+}
 
 #resources {
   .toolbar {
@@ -1404,9 +1467,9 @@ a {
   }
 }
 #rocket {
-  background:url('/images/roket.png') no-repeat;
+  background: url("/images/roket.png") no-repeat;
   position: absolute;
-  z-index:99;
+  z-index: 99;
   width: 100px;
   height: 190px;
   background-size: contain;
@@ -1415,7 +1478,10 @@ a {
   margin: 0 auto;
 }
 
-#launchpad, #universe, #classes, #universe-publish {
+#launchpad,
+#universe,
+#classes,
+#universe-publish {
   color: $orange;
   a {
     display: inline-block;
@@ -1423,15 +1489,15 @@ a {
     color: $orange;
   }
   .filter {
-  display:flex;
-  flex-flow: row wrap;
-  justify-content: center;
-  margin: 30px auto;
-  max-width: 600px;
-  div {
-   text-align: center;
-   margin:1rem; 
-  }
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    margin: 30px auto;
+    max-width: 600px;
+    div {
+      text-align: center;
+      margin: 1rem;
+    }
   }
   .filter-categories {
     text-align: center;
@@ -1454,24 +1520,25 @@ a {
     width: 50%;
     position: relative;
     margin: 0 auto;
-.field {
- .quill {background-color: #fff;
-  h4 {
-    margin: 20px 0;
+    .field {
+      .quill {
+        background-color: #fff;
+        h4 {
+          margin: 20px 0;
+        }
+      }
+      .edit {
+        position: absolute;
+
+        right: 0;
+        top: 0;
+      }
+    }
   }
- }
-.edit {
-  position: absolute;
-  
-  right: 0;
-  top: 0;
-  }
-}
-}
 }
 
 #profile {
- a {
+  a {
     color: $darkgreen;
   }
   .status {
@@ -1492,215 +1559,237 @@ a {
     }
   }
   .main {
-  .tab-labels {
-    text-align: center;
-    list-style: none;
-    padding: 0;
-    line-height: 35px;
-    height: 37px;
-    overflow: hidden;
-    font-size: 12px;
-    position: relative;
-    div {
-      border: 1px solid #AAA;
-      background: #D1D1D1;
-      background: linear-gradient(top, #ECECEC 50%, #D1D1D1 100%);
-      display: inline-block;
-      position:relative;
-      z-index: 0;
-      border-bottom-left-radius: 6px;
-      border-bottom-right-radius: 6px;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4), inset 0 1px 0 #FFF;
-      text-shadow: 0 1px #FFF;
-      margin: 0 -5px;
-      padding: 0 30px;
-      &.selected {
-        background: #FFF;
-        color: #333;
-        z-index: 2;
-        border-top-color: #FFF;
+    .tab-labels {
+      text-align: center;
+      list-style: none;
+      padding: 0;
+      line-height: 35px;
+      height: 37px;
+      overflow: hidden;
+      font-size: 12px;
+      position: relative;
+      div {
+        border: 1px solid #aaa;
+        background: #d1d1d1;
+        background: linear-gradient(top, #ececec 50%, #d1d1d1 100%);
+        display: inline-block;
+        position: relative;
+        z-index: 0;
+        border-bottom-left-radius: 6px;
+        border-bottom-right-radius: 6px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4), inset 0 1px 0 #fff;
+        text-shadow: 0 1px #fff;
+        margin: 0 -5px;
+        padding: 0 30px;
+        &.selected {
+          background: #fff;
+          color: #333;
+          z-index: 2;
+          border-top-color: #fff;
+          &:before {
+            box-shadow: 2px 0px 0 #fff;
+          }
+          &:after {
+            box-shadow: -2px 0px 0 #fff;
+          }
+        }
+        &:before,
+        &:after {
+          border: 1px solid #aaa;
+          position: absolute;
+          top: -1px;
+          width: 6px;
+          height: 6px;
+          content: "";
+        }
         &:before {
-          box-shadow: 2px 0px 0 #FFF;
+          left: -7px;
+          border-top-right-radius: 6px;
+          border-width: 1px 1px 0px 0px;
+          box-shadow: 2px 0px 0 #ececec;
         }
         &:after {
-          box-shadow: -2px 0px 0 #FFF;
+          right: -7px;
+          border-top-left-radius: 6px;
+          border-width: 1px 0px 0px 1px;
+          box-shadow: -2px 0px 0 #ececec;
         }
       }
-      &:before,&:after {
-       border: 1px solid #AAA;
-       position: absolute;
-       top: -1px;
-        width: 6px;
-        height: 6px;
-        content: "";
+      h3 {
+        cursor: pointer;
       }
       &:before {
-        left: -7px;
-        border-top-right-radius: 6px;
-        border-width: 1px 1px 0px 0px;
-        box-shadow: 2px 0px 0 #ECECEC;
-      }
-      &:after {
-        right: -7px;
-        border-top-left-radius: 6px;
-        border-width: 1px 0px 0px 1px;
-        box-shadow: -2px 0px 0 #ECECEC;
-      }
-    }        
-    h3 {
-      cursor: pointer;
-    }
-    &:before {
-      position: absolute;
-      content: "";
-      width: 100%;
-      top: 0;
-      left: 0;
-      border-top: 1px solid #AAA;
-      z-index: 1;
-    }
-  }
-  .tabs {
-    .field {
-      position: relative
-    }
-
-    .tab-content {
-      .title {
-        background-color: $lightGreen;
-        text-align: center;
-        border: 3px solid #7ae2da;
-      }
-      .instructions {
-        grid-template-columns: repeat(4,1fr);
-        text-align: center;
-      }
-      .fa {
-        transition: 1s ease-in-out;
-        &:hover {
-          animation: spin 1s infinite;
-        }
-      }
-      > a {
-        padding: 10px;
-        padding-top: 20px;
-        grid-template-columns: 1fr 2fr 1fr;
-        box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.15);
-        display: grid;
-        margin-bottom: 10px;
-        transition: 1s;
-        &:hover {
-          box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.25);
-        }
-      }
-
-      img {
-        width: 25px;
-      }
-      
-   }
-   .progress,.projects, .untutorials {
-    h3 {
-      background-color: $lightGreen;
-      padding: 0 5px;
-      margin-top: 20px;
-      grid-column: span 3;
-      cursor: pointer;
-      position: relative;
-      &:after {
-        content: '^';
         position: absolute;
-        right: 10px;
-        top: 5px;
-      }
-      &.down {
-        &:after {
-        transform: rotate(180deg);
+        content: "";
+        width: 100%;
         top: 0;
+        left: 0;
+        border-top: 1px solid #aaa;
+        z-index: 1;
       }
+    }
+    .tabs {
+      .field {
+        position: relative;
+        div {
+          margin: 20px 0;
+        }
       }
-    }
-  }
-  .profile {
-  .copy {
-    display: flex;
-    margin-bottom: 4px;
-    i {
-      margin-left: 10px;
-      cursor: pointer;
-    }
-  }
-  textarea {
-    border: none;
-    overflow: auto;
-    outline: none;
-    box-shadow: none;
-    resize: none;
-    width: 100%;
-    font-family: $bodyFont;
-    font-size: $fontSize;
-  }
-    button {
-      margin: 5px 0;
-      width: auto;
-      font-size: 1rem;
-      padding: 2px 4px;
-    }
-  h2 {
-    text-align: center;
-    margin-bottom: 40px;
-    font-size: 2rem;
-  }
- .avatar {
-  margin-bottom: 40px;
- }
-  > div {
-    margin-bottom: 20px;
-    word-wrap: break-word;  
-  }
-  }  
-  .email {
-    max-width: 960px;
-    background-color: #fff;
-    h1,h2,h3,h4,h5,h6,button,ul,li {
-      color: initial;
-      font-size: initial;
-      text-shadow: initial;
-    }
-    #emailloader {
-      display: block;
-      > ul {
-          list-style: none;
-          margin: 0;
-          word-wrap: break-word;
-          li {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          grid-template-rows: 100px 1fr;
-          margin-bottom: 40px;
-          border-bottom: 2px solid #ccc;
-          padding-bottom: 20px;
-          padding: 40px 10px;
-          margin: 0;
-          .email-date {
-            text-align: right;
-          }
-          .email-body {
-            grid-column: span 2;
+
+      .tab-content {
+        .title {
+          background-color: $lightGreen;
+          text-align: center;
+          border: 3px solid #7ae2da;
+        }
+        .instructions {
+          grid-template-columns: repeat(4, 1fr);
+          text-align: center;
+          font-size: 0.8rem;
+          .complete {
             img {
-              max-width: 100%;
+              width: 25px;
+              height:25px;
+              object-fit:contain;
+            }
+          }
+          > div {}
+        }
+        .fa {
+          transition: 1s ease-in-out;
+          &:hover {
+            animation: spin 1s infinite;
+          }
+        }
+        > a {
+          padding: 10px;
+          padding-top: 20px;
+          grid-template-columns: 1fr 2fr 1fr;
+          box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.15);
+          display: grid;
+          margin-bottom: 10px;
+          transition: 1s;
+          &:hover {
+            box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.25);
+          }
+        }
+
+        img {
+          width: 25px;
+        }
+      }
+      .progress,
+      .projects,
+      .untutorials {
+        h3 {
+          background-color: $lightGreen;
+          padding: 0 5px;
+          margin-top: 20px;
+          grid-column: span 3;
+          cursor: pointer;
+          position: relative;
+          &:after {
+            content: "^";
+            position: absolute;
+            right: 10px;
+            top: 5px;
+          }
+          &.down {
+            &:after {
+              transform: rotate(180deg);
+              top: 0;
             }
           }
         }
       }
-    } 
-   }
+      .profile {
+        .copy {
+          display: flex;
+          margin-bottom: 4px;
+          i {
+            margin-left: 10px;
+            cursor: pointer;
+          }
+        }
+        textarea {
+          border: none;
+          overflow: auto;
+          outline: none;
+          box-shadow: none;
+          resize: none;
+          width: 100%;
+          font-family: $bodyFont;
+          font-size: $fontSize;
+        }
+        button {
+          margin: 5px 0;
+          width: auto;
+          font-size: 1rem;
+          padding: 2px 4px;
+        }
+        h2 {
+          text-align: center;
+          margin-bottom: 40px;
+          font-size: 2rem;
+        }
+        .avatar {
+          margin-bottom: 40px;
+        }
+        > div {
+          margin-bottom: 20px;
+          word-wrap: break-word;
+        }
+      }
+      .email {
+        max-width: 960px;
+        background-color: #fff;
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6,
+        button,
+        ul,
+        li {
+          color: initial;
+          font-size: initial;
+          text-shadow: initial;
+        }
+        #emailloader {
+          display: block;
+          > ul {
+            list-style: none;
+            margin: 0;
+            word-wrap: break-word;
+            li {
+              display: grid;
+              grid-template-columns: 1fr 1fr;
+              grid-template-rows: 100px 1fr;
+              margin-bottom: 40px;
+              border-bottom: 2px solid #ccc;
+              padding-bottom: 20px;
+              padding: 40px 10px;
+              margin: 0;
+              .email-date {
+                text-align: right;
+              }
+              .email-body {
+                grid-column: span 2;
+                img {
+                  max-width: 100%;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
   }
- }
 }
 
 .status {
-margin: 0 auto;
+  margin: 0 auto;
 }
 
 .progress {
@@ -1709,7 +1798,9 @@ margin: 0 auto;
   }
 }
 
-#untutorial, #profile, #progress-reviews {
+#untutorial,
+#profile,
+#progress-reviews {
   .fa {
     font-size: 1.6rem;
   }
@@ -1720,35 +1811,60 @@ margin: 0 auto;
     border-radius: 50%;
     cursor: pointer;
   }
-  .progress {
-  .pending, .approved {
-    color:$orange;
-    text-shadow: 0 0 3px $orange, 0 0 5px #e9dd33;
-  }
-}
   .complete {
     text-align: center;
   }
-  .yellow {     
-    color:$orange;
-    text-shadow: 0 0 3px #FF0000, 0 0 5px #0000FF;
+  .yellow {
+    color: $orange;
+    text-shadow: 0 0 3px #ff0000, 0 0 5px #0000ff;
   }
   .green {
-    color:rgb(80, 221, 15);
+    color: rgb(80, 221, 15);
     text-shadow: 0 0 3px #046404, 0 0 5px #0bec3c;
   }
   .white {
-    color:rgb(255, 255, 255);
+    color: rgb(255, 255, 255);
     text-shadow: 0 0 3px $orange, 0 0 5px #dfb704;
+  }  .status {
+     font-size: 1.2rem;
+  .approved {
+    // background-color: rgb(80, 221, 15);
+    // background: radial-gradient(circle, #0bec3c, #0f9c0f);
+    // width: 15px;
+    // height: 15px;
+    // border-radius: 50%;
+    // display: inline-block;
+    // margin-left: 5px;
   }
+  .todo {
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background-color: rgb(247, 48, 48);
+    background: radial-gradient(circle, rgb(236, 99, 99), rgb(247, 48, 48));
+    display: inline-block;
+    margin-left: 5px;
 
+  }
+  
+  
+}
+  .progress {
+    .pending,
+    .approved {
+      color: $orange;
+      text-shadow: 0 0 3px $orange, 0 0 5px #e9dd33;
+    }
+  }
+ 
 }
 
 #profile {
-  #projects, #untutorials {
-  .status {
-    justify-content: center;
-  }
+  #projects,
+  #untutorials {
+    .status {
+      justify-content: center;
+    }
   }
 }
 
@@ -1760,7 +1876,8 @@ margin: 0 auto;
   }
 }
 
-.thumbnail, .avatar {   
+.thumbnail,
+.avatar {
   position: relative;
   text-align: center;
   margin: 0 auto 40px;
@@ -1771,7 +1888,7 @@ margin: 0 auto;
     object-fit: contain;
   }
   input[type="file"] {
-   display: none;
+    display: none;
   }
   .upload {
     display: inline-block;
@@ -1791,7 +1908,6 @@ margin: 0 auto;
     //   color: #fff;
     // }
   }
-
 }
 
 .avatar {
@@ -1806,9 +1922,9 @@ margin: 0 auto;
     position: absolute;
   }
   .upload {
-  width: 300px;
-  height: 300px;
-  padding: 5px;
+    width: 300px;
+    height: 300px;
+    padding: 5px;
   }
 }
 
@@ -1830,7 +1946,7 @@ margin: 0 auto;
     width: 200px;
     height: 150px;
     display: block;
-    border:1px solid black;
+    border: 1px solid black;
   }
 }
 
@@ -1846,56 +1962,71 @@ margin: 0 auto;
     h4 {
       text-align: center;
     }
-  .thumbnail {
-    margin-top: 20px;
-    .upload {
-      border: 1px solid #ccc;
+    .field {
+      text-align:center;
     }
-  }  
- } 
- button {
-   width: auto;
-   margin: 20px auto 40px;
- }
+    .thumbnail {
+      margin-top: 20px;
+      width: 100%;
+      height:auto;
+      font-weight: bold;
+      img {
+        width: 100%;
+        object-fit: contain;
+      }
+      .upload {
+        border: none;
+        height: 50px;
+      }
+    }
+  }
+  button {
+    width: auto;
+    margin: 20px auto 40px;
+    display: flex;
+  }
+  .quill {
+    border: 1px solid #ccc;
+  }
 }
 
-#jetfuel, #question {
+#jetfuel,
+#question {
   .main {
-  .sidebar {
-    padding: 0px;
-    h2 {
-      font-size: 3rem;
+    .sidebar {
+      padding: 0px;
+      h2 {
+        font-size: 3rem;
+      }
+      button {
+        margin-bottom: 20px;
+        display: block;
+      }
     }
-    button {
-      margin-bottom: 20px;
-      display: block;
+    .main-content {
+      h1 {
+        color: $darkgreen;
+      }
+      input {
+        display: block;
+        margin: 20px 0;
+      }
     }
   }
-  .main-content {
-  h1 {
-    color: $darkgreen;
-  }
-  input {
-    display: block;
-    margin: 20px 0;
-  }
-}
-}
   // color: #fff;
   .main {
     .main-content {
       a {
-      color:$darkgreen;
+        color: $darkgreen;
+      }
+      // max-width: 600px;
+      // margin: 0 auto;
+      > div {
+        background-color: #fff;
+        margin-bottom: 20px;
+      }
     }
-    // max-width: 600px;
-    // margin: 0 auto;
-    > div {
-      background-color: #fff;
-      margin-bottom: 20px;
-    }
-    
   }
-}
 }
 
 #jetfuel {
@@ -1915,13 +2046,13 @@ margin: 0 auto;
       flex-flow: column wrap;
       align-items: center;
       margin: 40px 0 0;
-      > div{
+      > div {
         margin: 10px 0;
         display: flex;
       }
       .search {
-       width: 80%;
-      padding: 10px 5px;
+        width: 80%;
+        padding: 10px 5px;
       }
     }
     ul {
@@ -1931,7 +2062,6 @@ margin: 0 auto;
         margin: 10px 0;
       }
     }
-
   }
   .main-content {
     h1 {
@@ -1942,24 +2072,56 @@ margin: 0 auto;
     > div {
       margin-bottom: 20px;
     }
-  .status {
-    h4 {
-      margin: 10px 0;
-    }
-  }
-  .giveFeedback,.aside {
-    display: flex;
-    button,a {
-      display: block;
-      margin: 10px;
-      width: auto;
-    }
-    a {
-      margin-top:0;
-    }
     textarea {
       width: 400px;
+     height: 100px;
     }
+    .project {
+      border-bottom: 1px solid #ccc;
+      padding: 10px 0;
+      a {
+        margin: 10px 0;
+        display:block;
+      }
+    }
+    .approved {
+      width:15px;
+      height:15px;
+      background-color: rgb(80, 221, 15);
+      background: radial-gradient(circle, #0bec3c, #11bd11);
+      border-radius:50%;
+      display: inline-block;
+      margin-left: 10px;
+    }
+    .approve {
+      @include approve;
+      width: 200px;
+      margin-bottom: 20px;
+    }    
+    .disapprove {
+      @include todo;
+      width: 200px;
+      margin-left: 10px;
+      margin-bottom: 20px;
+
+
+    }
+    .pending {
+        background-color: $orange;
+        background: radial-gradient(circle, #e9dd33, $orange);
+        height: 15px;
+        width: 15px;
+        border-radius: 50%;
+        display: inline-block;
+        margin-left: 5px;
+      
+    }
+    .status {
+      margin: 10px 0;
+      h4 {
+        margin: 10px 0;
+      }
+    }
+ 
   }
-}
 }
