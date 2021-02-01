@@ -59,6 +59,9 @@
           let scratchChallenges = [
             "Learn the name of everyone in your class, both teachers and students.</p><p>Use 4 different methods for moving sprites in one project.</p><p>Complete at least 3 steps in a new Scratch project.",
             "Use the <strong>when this sprite clicked</strong> block in a project.</p><p>Make a project that uses at least 5 different backdrops.</p><p>Make a sprite which follows the mouse around the screen.",
+            
+            // old challenges below
+            
             "Learn the definition of a <strong>boolean</strong> and which shaped blocks in Scratch are booleans.</p><p>Use a <strong>forever loop</strong> and an <strong>if block</strong> together in a project.</p><p>Make an animation with two sprites who talk to each other using the <strong>say</strong> and <strong>think</strong> blocks.",
             "Use the <strong>change size</strong> block to make a sprite grow.</p><p>Draw your own sprite and use it in a project.</p><p>Using costumes and motion, make an animation of a sprite dancing around the screen.",
             "Add and use any <strong>Extension</strong> in a Scratch project.</p><p>Make a project with looping background music.</p><p>Make a project using the <strong>ask</strong> block at least 3 times.",
@@ -79,6 +82,9 @@
           let woofChallenges = [
             "Learn the name of everyone in your class, both teachers and students.</p><p>Make a project with at least one of each of the types of sprites.</p><p>Complete 3 steps in a new WoofJS project.",
             "Make a sprite which follows the mouse.</p><p>Make your own <strong>array</strong> and use it in a project.</p><p>Use the WoofJS <strong>pen</strong> to draw a starry sky on a solid color background.",
+            
+            // old challenges below
+            
             "Make an image outside of WoofJS (pixilart.com is great for pixel art) and import it into WoofJS to use as a sprite.</p><p>Use the current time and date in a project.</p><p>Make a WoofJS project with a fixed size using <strong>fullScreen = false</strong> and <strong>setBackdropSize(x, y)</strong>",
             "Make a sprite which constantly changes color using <strong>randomColor()</strong>.</p><p>Research <strong>while</strong> and <strong>for</strong> loops and use them in a project.</p><p>Do the cloning tutorial and, after you complete it, explain to someone what each part of the code does.",
             "Make a project where the background is a random color.</p><p>Learn one new thing about Javascript from <strong>w3schools.com/js</strong> and test it in WoofJS.</p><p>Make a complete WoofJS project using only <strong>Text</strong> sprites.",
@@ -99,6 +105,9 @@
           let webChallenges = [
             "Learn the name of everyone in your class, both teachers and students.</p><p>Use at least 5 different HTML tags in a project.</p><p>Complete 3 steps in a new web project.",
             "Learn what <strong>deprecated</strong> means and learn about 5 deprecated HTML tags.</p><p>Use at least 3 <strong>button</strong> tags in your project with connected Javascript.</p><p>Create a website with all of your favorite YouTube videos embedded on it.",
+            
+            // old challenges below
+            
             "Choose a color palette for your next project using a helpful tool like <strong>colorhunt.co</strong> or <strong>paletton.com</strong></p><p>Research the difference between <strong>var</strong>, <strong>let</strong>, and <strong>const</strong> and revise a project to use the appropriate keywords.</p><p>Make the ugliest website you possibly can.",
             "Define your own function and use it in a project.</p><p>Research good techniques for organizing code, and organize the code of your current or a past project.</p><p>Make a website with only one link on it that is as hard to find as possible.",
             "Use CSS to style your links to change color when the user hovers over them.</p><p>Set a custom <strong>favicon</strong> for one of your projects.</p><p>Create a website with multiple background images layered together to make a cool effect.",
@@ -125,24 +134,28 @@
           var currentWeek = 0;
           //uses today's date to find current week index
           function findCurrentWeek() {
-            let firstWeek = new Date(2020, 8, 20)
-            let secondWeek = new Date(2020, 8, 27)
-            let thirdWeek = new Date(2020, 9, 4)
-            let fourthWeek = new Date(2020, 9, 11)
-            let fifthWeek = new Date(2020, 9, 18)
-            let sixthWeek = new Date(2020, 9, 25)
-            let seventhWeek = new Date(2020, 10, 1)
-            let eigthWeek = new Date(2020, 10, 8)
-            let ninthWeek = new Date(2020, 10, 15)
-            let tenthWeek = new Date(2020, 10, 22)
-            let eleventhWeek = new Date(2020, 10, 29)
-            let twelfthWeek = new Date(2020, 11, 6)
-            let thirteenthWeek = new Date(2020, 11, 13)
-            let fourteenthWeek = new Date(2020, 11, 20)
-            let fifteenthWeek = new Date(2021, 0, 10)
-            let sixteenthWeek = new Date(2021, 0, 17)
-            let seventeenthWeek = new Date (2021, 0, 24)
-            let eighteenthWeek = new Date (2021, 0, 31)
+            let firstWeek = new Date(2021, 1, 7)
+            let secondWeek = new Date(2021, 1, 14)
+            let thirdWeek = new Date(2021, 1, 21)
+            let fourthWeek = new Date(2021, 1, 28)
+            
+            let fifthWeek = new Date(2021, 2, 7)
+            let sixthWeek = new Date(2021, 2, 14)
+            let seventhWeek = new Date(2021, 2, 21)
+            let eigthWeek = new Date(2021, 2, 28)
+            
+            let ninthWeek = new Date(2021, 3, 4)
+            let tenthWeek = new Date(2021, 3, 11)
+            let eleventhWeek = new Date(2021, 3, 18)
+            let twelfthWeek = new Date(2021, 3, 25)
+            
+            let thirteenthWeek = new Date(2021, 4, 3)
+            let fourteenthWeek = new Date(2021, 4, 10)
+            let fifteenthWeek = new Date(2021, 4, 17)
+            let sixteenthWeek = new Date(2021, 4, 24)
+            
+            let seventeenthWeek = new Date (2021, 5, 6)
+            let eighteenthWeek = new Date (2021, 5, 13)
             
             let dateToday = new Date(/*add date here to test other dates*/)
             
@@ -186,7 +199,7 @@
             document.getElementById("webChallenge").innerHTML = "<h1>Web Challenges</h1> <p>" + webChallenges[currentWeek] + "</p>";
           } else {
             document.getElementById("title").innerHTML = "Coding Space Weekly Challenges";
-            document.getElementById("imageContainer").innerHTML = "<h1>The Coding Space Fall semester is over! But you can see all of the challenges by clicking the button below.</h1>"
+            document.getElementById("imageContainer").innerHTML = "<h1>The Coding Space Spring semester is over! But you can see all of the challenges by clicking the button below.</h1>"
             document.getElementById("scratchImage").style.display = "none";
             document.getElementById("woofJSImage").style.display = "none";
             document.getElementById("webImage").style.display = "none";
