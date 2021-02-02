@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>My To-Do List</title>
+        <link href="https://fonts.googleapis.com/css?family=Short+Stack" rel="stylesheet">
+        <link rel="stylesheet" href="./css/my-to-do-list.css">
+    </head>
+    <body>
+        <div id="container">
+        <h1>My To-Do List</h1>
+        <input id="textBox" placeholder="to do..." onfocus="this.value=''"><button id="add">add item</button>
+        <div id="postit">  
+        <img id="pushpin" src="https://cdn.pixabay.com/photo/2013/07/12/14/10/pushpin-147918__340.png">
+          <ul id="to-do"></ul>
+          <button id="save">Save</button>
+          <div id="error"></div>
+          </div>
+        </div>
+        <script src="./js/my-to-do-list.js"></script>
+    </body>
+</html>

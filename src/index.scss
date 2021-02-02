@@ -419,7 +419,12 @@ button {
   }
 }
 
-#signin {
+#signIn {
+  form {
+    p {
+      max-width: 600px;
+    }
+  }
   .roles {
     display: flex;
     flex-flow: row wrap;
@@ -714,9 +719,12 @@ button {
   }
 }
 
-#classes {
+#classes,#universe {
   h1 {
     margin-top: 20px;
+  }
+  h2 {
+    word-break: break-word;
   }
   .button {
     display: block;
@@ -727,7 +735,7 @@ button {
   .main {
     @include flexhc;
     a {
-      color: $darkergreen;
+      color: $darkgreen;
       width: 200px;
       background-color: white;
       margin: 40px;
@@ -738,6 +746,7 @@ button {
       min-height: 300px;
       div {
         padding-bottom: 10px;
+        font-weight: normal;
       }
       h4 {
         margin-top: 30px;
@@ -776,9 +785,12 @@ button {
         text-align: center;
       }
       .items {
+        margin-bottom: 10px;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
         > a {
           transition: 2s;
-          margin: 40px auto;
+          margin: 20px auto;
           width: 200px;
           height: 150px;
           text-align: center;
@@ -791,7 +803,6 @@ button {
           color: #fff;
           border-radius: 8px;
           position: relative;
-          margin-bottom: 10px;
 
           span {
             position: absolute;
@@ -1167,6 +1178,10 @@ button {
           .step-title {
             font-size: 2rem;
           }
+          p {
+            margin-right: 40px;
+
+          }
           .no-button {
             font-size: 32px;
             button,
@@ -1263,7 +1278,7 @@ button {
           }
           .delete {
             position: absolute;
-            bottom: 10px;
+            bottom: -60px;
           }
           .comments {
             margin-top: 10px;
@@ -1950,10 +1965,11 @@ button {
   }
 }
 
-#new-class {
+#new-class,#universe-publish {
+  padding: 40px 0;
   .main-area {
     max-width: 600px;
-    margin: 0 auto;
+    margin: 20px auto;
     background-color: #fff;
     color: $darkgreen;
     padding: 20px;
@@ -1961,12 +1977,12 @@ button {
     border-radius: 8px;
     h4 {
       text-align: center;
+      margin: 20px 0;
     }
     .field {
       text-align:center;
     }
     .thumbnail {
-      margin-top: 20px;
       width: 100%;
       height:auto;
       font-weight: bold;
@@ -1982,7 +1998,6 @@ button {
   }
   button {
     width: auto;
-    margin: 20px auto 40px;
     display: flex;
   }
   .quill {

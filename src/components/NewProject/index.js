@@ -139,9 +139,7 @@ class NewProjectPageBase extends React.Component {
  	if(untutorial.Title.length == 0){
  		errors["Title"] = 'TITLE.<span class="red">ISREQUIRED</span>'; 		
  	}
- 	else if(untutorial.Title.length <= 5){
- 		errors["Title"] = 'TITLE.<span class="red">ISTOOSHORT</span>'; 		
- 	}
+
  	else delete errors["Title"];
  	this.setState({errors:errors});
 
@@ -229,9 +227,7 @@ class NewProjectPageBase extends React.Component {
  	if(text.length == 0){
  		errors["Description"] = 'DESCRIPTION.<span class="red">ISREQUIRED</span>'; 		
  	}
- 	else if(text.length <= 20){
- 		errors["Description"] = 'DESCRIPTION.<span class="red">ISTOOSHORT</span>'; 		
- 	}
+
  	else delete errors["Description"];
  	this.setState({errors:errors});
  }
@@ -321,7 +317,7 @@ class NewProjectPageBase extends React.Component {
  }
  handleCategoryValidate(){
  	const {untutorial,errors} = this.state;
- 	if(Object.keys(untutorial.Categories).length < 2){
+ 	if(Object.keys(untutorial.Categories).length < 1){
  		errors["Categories"] = 'CATS.<span class="red">At least 1 category required.</span>';
  	}
  	else
@@ -341,37 +337,38 @@ class NewProjectPageBase extends React.Component {
  		.catch(error=>console.log(error));
  	}
  	else {
- 		var badFields = Object.keys(errors);
+		 var badFields = Object.keys(errors);
+		 console.log(badFields)
 		var messages = [];
-		messages.push({
-			html:`<span class="green">Saving</span>...`,
-			type:true
-		})
-		messages.push({
-			html:`<span class="red">ERROR!</span>`,
-			type:false
-		})
-		for(var i =0;i< badFields.length;i++){
+		// messages.push({
+		// 	html:`<span class="green">Saving</span>...`,
+		// 	type:true
+		// })
+		// messages.push({
+		// 	html:`<span class="red">ERROR!</span>`,
+		// 	type:false
+		// })
+		// for(var i =0;i< badFields.length;i++){
 
-			messages.push({
-				html:errors[badFields[i]],
-				type:true
-			});
-		}
+		// 	messages.push({
+		// 		html:errors[badFields[i]],
+		// 		type:true
+		// 	});
+		// }
 
-		messages.push({
-			html:`Press any key to continue...`,
-			type:false
-		})
+		// messages.push({
+		// 	html:`Press any key to continue...`,
+		// 	type:false
+		// })
 
 			
 		
 		
-		this.props.setGlobalState({
-			messages:messages,
-			showMessage:true
+		// this.props.setGlobalState({
+		// 	messages:messages,
+		// 	showMessage:true
 			
-		});
+		// });
  	}
  	
  	console.log("Save Changes");

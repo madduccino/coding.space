@@ -1,0 +1,107 @@
+<html>
+<head>
+<title>Web Guide</title>
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<link rel="shortcut icon" href="images/favicon.ico" type="images/x-icon">
+<style>
+	body {
+		max-width: 700px;
+		margin-left: auto;
+		margin-right: auto;
+	}
+	iframe {
+		width: 100%;
+		height: 300px;
+		
+	}
+	p {
+		padding-top: 10px;
+		padding-bottom: 10px;
+		line-height: 25px;
+		font-size: 18px;
+	}
+</style>
+</head>
+<body>
+<h1>Introduction to Web</h1>
+<p>
+	You probably already know what a webpage is... 
+	when you type a URL and press enter, a bunch of content shows up. 
+	That's a webpage. 
+	But how is a webpage made?
+</p>
+<p>
+	A Web page is code written in JavaScript, HTML, and CSS. 
+	Let's think about that code like a document written in a foreign language. 
+	If you were looking at a document written in German, you wouldn't know what 
+	it said in English... just like when you
+	look at a page of HTML/CSS/JS you won't really know what the web page is 
+	going to look like. (Look at the picture of HTML below -- do you have any 
+	idea what that will turn into? Probably not!)
+</p>
+<img src="https://weebly.com/uploads/6/0/5/0/60503695/2349507_orig.png" alt="Picture" style="width:auto;max-width:100%">
+<p>
+	Luckily, just like you can use Google Translate to input a foreign language and 
+	get english in return, a browser takes the document full of code and turns it into 
+	the kind of webpage you're used to seeing.
+</p>
+<p>
+	The code above is actually the code for the 
+	<a href="http://nytimes.com">New York Times website</a>. Not even a professional 
+	programmer could have figured that out just by looking that that snippet of code -- 
+	that's what we have browsers for.
+</p>
+<h2>So what are HTML, CSS, and JavaScript?</h2>
+<p>
+	HTML, CSS, and JS are three different coding languages that do different things. They are the three, and only three, different programming languages that our browser knows how to turn into a web page. Most web pages that you see online use all three of them.
+	Let's break it down:
+</p>
+<h3>HTML</h3>
+<p>
+	HTML is everything on the page that you see, including words, images, links, and embedded content. The following page uses only HTML: 
+</p>
+<iframe src="https://stevekrouse.github.io/embed-jsbin/?id=zovayu"></iframe>
+<h3>CSS</h3>
+<p>
+	CSS controls how the HTML looks by changing the fonts, the text or background color, 
+	the alignment, etc. Here is the same webpage as before with CSS to make it prettier: 
+</p>
+<iframe src="https://stevekrouse.github.io/embed-jsbin/?id=jekedu/2"></iframe>
+<p>
+	Did you notice anything different? 
+	(Hint: background color, content was centered, text color, font.) 
+	All of these changes were done using CSS.
+</p>
+<h3>JavaScript</h3>
+<p>
+	JavaScript makes things happen.
+	A webpage will remain exactly the same unless you use JavaScript. JavaScript also allows the user to interact with the webpage, 
+	by allowing you to trigger events. 
+	Here is the same page that has JS added: 
+</p>
+<iframe src="https://stevekrouse.github.io/embed-jsbin/?id=mujuza"></iframe> 
+<p>
+    Do you see how the background of the page is changing colors? 
+	That wouldn't be possible without JavaScript, because HTML/CSS can't change 
+	on their own. 
+	Also, did you try clicking on the icon? The title changes size because we 
+	told it in JavaScript that
+	if the picture was clicked the title should grow.
+</p>
+<p>
+	How do you start coding?At this point you have a pretty good idea of 
+	how the web works and the differences between HTML, CSS, and JavaScript. 
+	Now, <a href="./html-guide.html">let's start coding in HTML</a>.
+</p>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-86847686-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+</body>
+</html>

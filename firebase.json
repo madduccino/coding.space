@@ -7,10 +7,174 @@
   },
   "hosting": {
     "public": "build",
-    "ignore": [
-      "firebase.json",
-      "**/.*",
-      "**/node_modules/**"
+    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+    "redirects": [
+      {
+        "source": "/absences",
+        "destination": "/absences.html",
+        "type": 301
+      },
+      {
+        "source": "/bugs",
+        "destination": "https://forms.gle/cDKMJUjGt3QLDi4w9",
+        "type": 301
+      },
+      {
+        "source": "/bug",
+        "destination": "/bugs",
+        "type": 301
+      },
+      {
+        "source": "/camp",
+        "destination": "/camp.html",
+        "type": 301
+      },
+      {
+        "source": "/camp2020",
+        "destination": "/camp2020.html",
+        "type": 301
+      },
+      {
+        "source": "/camp2021",
+        "destination": "/camp.html",
+        "type": 301
+      },
+      {
+        "source": "/wintercamp2020",
+        "destination": "/wintercamp2020.html",
+        "type": 301
+      },
+      {
+        "source": "/seasons_of_code",
+        "destination": "https://scratch.mit.edu/projects/453925595",
+        "type": 301
+      },
+      {
+        "source": "/mentors",
+        "destination": "https://docs.google.com/document/d/18fhbObtWL2WxEV1kEw7zQb0XgTrqH4M_-poTmzCRuxU/edit?usp=sharing",
+        "type": 301
+      },
+      {
+        "source": "/mentor",
+        "destination": "/mentors",
+        "type": 301
+      },
+      {
+        "source": "/c4c",
+        "destination": "https://thecodingspace.com/code4change",
+        "type": 301
+      },
+      {
+        "source": "/c4csubmit",
+        "destination": "https://thecodingspace.com/mycode4change",
+        "type": 301
+      },
+      {
+        "source": "/pipeline",
+        "destination": "https://docs.google.com/spreadsheets/d/1UV9Sh9DNVUwXDopiDdXm-0CquDtV0m6NpEu8dRJCUA0/edit?usp=sharing",
+        "type": 301
+      },
+      {
+        "source": "/challenges",
+        "destination": "/challenge",
+        "type": 301
+      },
+      {
+        "source": "/activity",
+        "destination": "/activity/spring2021.html",
+        "type": 301
+      },
+      {
+        "source": "/activities",
+        "destination": "/activity",
+        "type": 301
+      },
+
+      {
+        "source": "/logins",
+        "destination": "/logins.html",
+        "type": 301
+      },
+      {
+        "source": "/arduino",
+        "destination": "/arduino.html",
+        "type": 301
+      },
+      {
+        "source": "/checklist",
+        "destination": "/checklist.html",
+        "type": 301
+      },
+      {
+        "source": "/code-org",
+        "destination": "/code-org.html",
+        "type": 301
+      },
+      {
+        "source": "/evaluation",
+        "destination": "/evaluation.html",
+        "type": 301
+      },
+      {
+        "source": "/gong",
+        "destination": "/gong.html",
+        "type": 301
+      },
+      {
+        "source": "/manual",
+        "destination": "/manual.html",
+        "type": 301
+      },
+      {
+        "source": "/nnjeval",
+        "destination": "/nnjeval.html",
+        "type": 301
+      },
+      {
+        "source": "/org",
+        "destination": "/org.html",
+        "type": 301
+      },
+      {
+        "source": "/passwords",
+        "destination": "/passwords.html",
+        "type": 301
+      },
+      {
+        "source": "/questions",
+        "destination": "/questions.html",
+        "type": 301
+      },
+      {
+        "source": "/resources",
+        "destination": "/resources.html",
+        "type": 301
+      },
+      {
+        "source": "/roster",
+        "destination": "/roster.html",
+        "type": 301
+      },
+      {
+        "source": "/socratic",
+        "destination": "/socratic.html",
+        "type": 301
+      },
+      {
+        "source": "/teacher-projects",
+        "destination": "/teacher-projects.html",
+        "type": 301
+      },
+      {
+        "source": "/usernames",
+        "destination": "/usernames.html",
+        "type": 301
+      },
+      {
+        "source": "/welcome",
+        "destination": "/welcome.html",
+        "type": 301
+      }
     ],
     "rewrites": [
       {

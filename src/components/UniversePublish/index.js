@@ -330,7 +330,7 @@ class UniversePublish extends React.Component {
  	
  	//console.log(Object.keys(project));
  	if(loading)
- 		return (<div>Loading ...</div>);
+ 		return (<div className="loading">Loading ...</div>);
 	
 	return (
 	  	<section id="universe-publish">
@@ -344,6 +344,7 @@ class UniversePublish extends React.Component {
 			    
 			    
 			</div>	
+
 		    {Object.keys(project.Categories).length > 0 && (
 		    	<div className="filter-categories">
 		    		{Object.keys(project.Categories).map(f=>(
@@ -353,7 +354,7 @@ class UniversePublish extends React.Component {
 		    )}	
 			<div className="main">
 
-				<div className="sidebar">
+				<div className="main-area">
 					<div className={'container'}>
 						<div>
 							<TCSEditor 

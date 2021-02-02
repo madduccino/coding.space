@@ -272,10 +272,6 @@ class UntutorialPageBase extends React.Component {
 
 			errors['Description'] = 'DESCRIPTION.<span class="red">ISREQUIRED</span>';
 		}
-		if(text.length < 10){
-
-			errors['Description'] = 'DESCRIPTION.<span class="red">ISTOOSHORT</span>';
-		}
 		else{
 			delete errors['Description'];
 		}
@@ -325,7 +321,7 @@ class UntutorialPageBase extends React.Component {
 	}
 	handleCategoryValidate(){
 	 	const {untutorial,errors} = this.state;
-	 	if(Object.keys(untutorial.Categories).length < 2){
+	 	if(Object.keys(untutorial.Categories).length < 1){
 	 		errors["Categories"] = 'CATS.<span class="red">At least 1 category</span>';
 	 	}
 	 	else

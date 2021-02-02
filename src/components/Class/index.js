@@ -437,11 +437,17 @@ class ClassPageBase extends React.Component {
 		   <div className="items">
 
 		  {!!profiles && ( 
+			  
 			  listBoxSelected.map((profile) => (
+				  <>
+				  {profiles[profile].roles["STUDENT"] && (
 				<a href={`../profile/${profile}`}>
 					<span>{profiles[profile].Username.replace('.',' ')}</span>
+					
+
 				</a>
-			
+				)}
+			</>
 			  ))
 		  )}
 		 </div>

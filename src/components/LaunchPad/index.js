@@ -82,7 +82,7 @@ class LaunchPad extends React.Component {
   componentDidMount() {
     console.log(window.location.search.split('l=').pop().split('&').shift());
     console.log(window.location.search.split('c=').pop().split('&').shift());
-
+  
     // console.log(this.state.cfilter)
     // console.log(this.state.lfilter)
     this.props.firebase.untutorials().on("value", (snapshot) => {
