@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="https://cdn.jsdelivr.net/gh/stevekrouse/WoofJS@d17fa61c/dist/woof.js"></script>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Platformer Step 11</title>
+</head>
+<body>
+
+<script>
+setBackdropURL("../images/platformer-backdrop1.png");
+
+var ground = new Rectangle({
+  width: width,
+  height: height / 5,
+  color: "rgba(0, 0, 0, 0.7)",
+  y: minY + height / 10
+});
+var groundLine = ground.y + ground.height / 2;
+
+var obstacle1 = new Rectangle({
+  color: "rgba(0, 0, 0, 0.7)",
+  height: 100,
+  width: 170,
+  y: groundLine + 49,
+  x: -100
+});
+
+var obstacle2 = new Rectangle({
+  color: "rgba(0, 0, 0, 0.7)",
+  height: 30,
+  width: 100,
+  y: groundLine + 85,
+  x: maxX - 200
+});
+
+var obstacles = [obstacle1, obstacle2];
+
+obstacles.forEach(obstacle => {
+  obstacle.top = obstacle.y + obstacle.height / 2;
+  obstacle.bottom = obstacle.y - obstacle.height / 2;
+});
+
+var player = new Image({
+  height: 40,
+  width: 40,
+  url: "../images/platformer-player.png",
+  x: minX + 30,
+  y: groundLine + 200
+});
+player.setRotationStyle("ROTATE LEFT RIGHT");
+
+var heartX = minX + 30;
+var hearts = [];
+for (var i = 0; i < 5; i++) {
+  var heart = new Image({
+    url: "../images/platformer-heart.png",
+    height: 30,
+    width: 30,
+    x: heartX,
+    y: maxY - 30
+  });
+  heartX += 30;
+  hearts.push(heart);
+}
+
+var fireballs = [];
+
+var enemies = [];
+
+var speed = 0.35;
+
+player.touchingSurface = () => {
+  return player.y <= groundLine + 21 || obstacles.some(obstacle => player.touching(obstacle));
+};
+
+forever(() => {
+  if (keysDown.includes("right")) {
+    player.angle = RIGHT;
+    player.x += 10;
+    obstacles.forEach(obstacle => {
+      if (player.touching(obstacle) && player.y < obstacle.top + 20) {
+        player.x -= 10;
+      }
+    });
+  }
+  if (keysDown.includes("left")) {
+    player.angle = LEFT;
+    player.x -= 10;
+    obstacles.forEach(obstacle => {
+      if (player.touching(obstacle) && player.y < obstacle.top + 20) {
+        player.x += 10;
+      }
+    });
+  }
+  if (!player.touchingSurface()) {
+    player.y -= speed;
+    speed += 0.35;
+  }
+  else if (player.touching(ground)) {
+    player.y = groundLine + 20;
+    speed = 0.35;
+  }
+  else {
+    obstacles.forEach(obstacle => {
+      if (player.touching(obstacle) && player.y >= obstacle.top)
+        player.y = obstacle.top + 20;
+        speed = 0.35;
+    });
+  }
+});
+
+forever(() => {
+  fireballs.forEach(fireball => {
+    fireball.move(fireball.speedX);
+    fireball.y += fireball.speedY;
+    fireball.speedY -= 0.35;
+    if (fireball.x > maxX || fireball.y > maxY || fireball.x < minX || fireball.y < minY) {
+      fireballs.remove(fireball);
+      fireball.delete();
+    }
+    if (fireball.touching(ground)) {
+      fireball.y += 5;
+      fireball.speedY = -(fireball.speedY * 0.8);
+    }
+    obstacles.forEach(obstacle => {
+      if (fireball.touching(obstacle)) {
+        if (fireball.y > obstacle.top) {
+          fireball.y += 5;
+          fireball.speedY = -(fireball.speedY * 0.8);
+        }
+        else if (fireball.y < obstacle.bottom) {
+          fireball.y -= 5;
+          fireball.speedY = -(fireball.speedY * 0.8);
+        }
+        else {
+          fireball.speedX = -fireball.speedX; 
+        }
+      }
+    });
+  });
+});
+
+forever(() => {
+  enemies.forEach(enemy => {
+    enemy.move(enemy.speedX);
+    if (enemy.x < minX || enemy.x > maxX) {
+      enemies.remove(enemy);
+      enemy.delete();
+    }
+    obstacles.forEach(obstacle => {
+      if (enemy.touching(obstacle)) {
+        enemy.speedX = -enemy.speedX;
+      }
+    });
+    fireballs.forEach(fireball => {
+      if (fireball.touching(enemy)) {
+        enemies.remove(enemy);
+        enemy.delete();
+      }
+    });
+  });
+});
+
+onKeyDown(() => {
+  if (keysDown.includes("up") && player.touchingSurface()) {
+    var jump = 20;
+    var jumpChange = 1;
+    repeat(15, () => {
+      player.y += jump;
+      jump -= jumpChange;
+      obstacles.forEach(obstacle => {
+        if (player.touching(obstacle) && player.y >= obstacle.bottom - 20) {
+          player.y = obstacle.bottom - 21;
+          jump = 0;
+          jumpChange = 0;
+        }
+      });
+    });
+  }
+  if (keysDown.includes("space")) {
+    var fireball = new Circle({
+      color: "#C72000",
+      radius: 6,
+      x: player.x,
+      y: player.y + 5,
+      angle: player.angle
+    });
+    fireball.speedX = 7;
+    fireball.speedY = -0.35;
+    fireball.move(10);
+    fireballs.push(fireball);
+  }
+});
+
+after(2, "second", () => {
+  every(() => random(1.9, 5.1), "second", () => {
+    var enemy = new Image({
+      url: "../images/platformer-enemy.png",
+      height: 35,
+      width: 35,
+      x: maxX,
+      y: 18 + ground.y + ground.height / 2
+    });
+    enemy.speedX = -2;
+    enemies.push(enemy);
+    if (enemy.touching(player)) {
+      enemies.remove(enemy);
+      enemy.delete();
+    }
+  });
+});
+
+</script>
+</body>
+</html>

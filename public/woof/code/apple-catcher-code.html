@@ -1,0 +1,88 @@
+<head>
+    <script src="https://cdn.jsdelivr.net/gh/stevekrouse/WoofJS@cb6d0621/dist/woof.js"></script>
+    <script>
+    // Woof Apple Catcher
+    setBackdropColor("white")
+    
+    // Create Apple Sprite
+    var apple = new Circle({radius: 15, color: "red", y: maxY - 30, x: 0});
+    
+    // Create Catcher Sprite
+    var catcher = new Rectangle({height: 35, width: 45, color: "green", y: minY + 30, x: 0});
+    
+    // Makes character move with the left and right arrow keys
+    forever (() => {
+    if(keysDown.includes("RIGHT")) {
+      catcher.x += 10;
+    }
+    if(keysDown.includes("LEFT")) {
+      catcher.x -= 10;
+    }
+    });
+    
+    // Creates movement that works on mobile
+    
+    forever(() => {
+      if(mouseDown && mouseX < 0) {
+        catcher.x -= 10;
+      }
+      if(mouseDown && mouseX > 0) {
+        catcher.x += 10;
+      }
+      
+    })
+    
+    
+    // Makes the apple fall 
+    ready(() => {
+      apple.x = random(minX, maxX);
+      apple.y = maxY - 30;
+      forever(() =>{
+        apple.y -= 5 + (0.5 * level); // Make the speed of the apple a function of the level (gets faster as levels increase)
+      });
+    });
+    
+    // Keeps character sprite from moving off-screen
+    forever(()=> {
+      if (catcher.x > maxX) {
+        catcher.x = maxX
+      }
+      if (catcher.x < minX) {
+        catcher.x = minX
+      }
+    });
+    
+    // Makes the apple sprite start at the top of the screen when touched by character sprite
+    forever(() => {
+      if (apple.touching(catcher)){
+        apple.x = random(minX, maxX); // Makes the apple start at a random point along the x-axis when it moves back to the top
+        apple.y = maxY - 30;
+        score += 1; // Increases score (by one) for each time apple is touched
+      }
+    });
+    
+    // Makes the game end if character is unable to catch an apple and it "touches" the ground
+    forever(() => {
+      if (apple.y < minY) {
+        new Text ({x: 0, X: 0, color: "red", size: 30, text: "GAME OVER"}) // Displays game over text if game over condition is reached
+      }
+    });
+    
+    // Adds a scoreboard that displays the "score" variable
+    var score = 0
+    var scoreText = new Text({y: maxY - 60, x: minX + 100, size: 30, text: () => `SCORE: ${score}`});
+    
+    // Adds a level counter that displays the "level" variable
+    var level = 1
+    var levelText = new Text({y: maxY - 120, x: minX + 95, size: 30, text: () => `LEVEL: ${level}`});
+    forever(() => {
+      if (score == 5) {
+        level ++;        // Makes it so that when a certain score is reached, the score resets to 0 and the level increases 
+        score = 0;
+      }
+    });
+    </script>
+</head>
+<body>
+    
+</body>

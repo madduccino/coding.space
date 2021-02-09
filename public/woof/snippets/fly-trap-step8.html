@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="https://cdn.jsdelivr.net/gh/stevekrouse/WoofJS@e0c90249/dist/woof.js"></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Fly Trap Step 8</title>
+    </head>
+  
+  <body>
+  
+  <script>
+  setBackdropURL('../images/fly-backdrop.jpg')
+
+  var frog = new Image({
+    url: "../images/fly-frog.png",
+    width: 150,
+    height: 129  ,
+    y: minY + 100,
+    angle: 0
+  })
+  
+ forever(() => {
+    if (keysDown.includes('LEFT')) {
+      frog.x -= 10
+    }
+    if (keysDown.includes('RIGHT')) {
+      frog.x += 10
+    }
+    if (keysDown.includes('UP')) {
+      frog.y += 10
+    }
+    if (keysDown.includes('DOWN')) {
+      frog.y -= 10
+    }
+  })
+  
+  var tongue = new Line({
+    color: "red",
+    width: 5,
+    x: frog.x,
+    y: frog.y,
+    x1: frog.x,
+    y1: frog.y + 100
+  })
+  
+    
+  forever(() => {
+    tongue.x = frog.x
+    tongue.y = frog.y
+    tongue.x1 = frog.x
+  })
+  
+  tongue.sendToBack()
+  
+  forever(() => {
+    if (keysDown.includes('SPACE')) {
+      tongue.y1 += 20
+    } else {
+      tongue.y1 -= 20
+    } 
+    if (tongue.y1 <= frog.y) {
+      tongue.y1 = frog.y
+    }
+    if (tongue.y1 >= maxY) {
+      tongue.y1 = frog.y
+    }
+  })
+  
+   var fly = new Image({
+    url: "../images/fly-fly.png",
+    width: 40,
+    height: 40,
+    x: minX + 40,
+    y: random(minY + 100, maxY - 50)
+  })
+  
+  
+  </script>
+  
+  </body>
+ </html>

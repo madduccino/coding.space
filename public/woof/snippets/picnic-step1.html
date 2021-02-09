@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="https://cdn.jsdelivr.net/gh/stevekrouse/WoofJS@cb6d0621/dist/woof.js"></script>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Picnic Step 1</title>
+</head>
+<body>
+
+<script>
+
+// Create blue rectangle for sky
+  var sky = new Rectangle({
+    color: "#1AEDED",
+    width: maxX - minX,
+    height: maxY - minY,
+    y: maxY - 200
+  })
+  sky.sendToBack()
+
+  // Create green rectangle for grass
+  var grass = new Rectangle({
+    color: "#66CD00",
+    width: maxX - minX,
+    height: maxY - minY,
+    y: minY + 200
+  })
+
+</script>
+</body>
+</html>

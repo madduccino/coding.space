@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="https://cdn.jsdelivr.net/gh/stevekrouse/WoofJS@cb6d0621/dist/woof.js"></script>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Magic Trick Step 3</title>
+</head>
+<body>
+
+<script>
+  
+  // Set backdrop to image
+  setBackdropURL('../images/magic-stage.jpg')
+  
+  // Create wand sprite. Hide for now.
+  var wand = new Image({
+    url: '../images/magic-wand.gif',
+    width: 100,
+    height: 100,
+    angle: 0,
+  })
+  
+  // Make wand follow mouse 
+  forever(() => {
+    wand.x = mouseX
+    wand.y = mouseY
+  })
+
+</script>
+</body>
+</html>

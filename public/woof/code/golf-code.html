@@ -1,0 +1,253 @@
+<head>
+    <script src="https://cdn.jsdelivr.net/gh/stevekrouse/WoofJS@cb6d0621/dist/woof.js"></script>
+
+    <script>
+    // Woof Golf
+    // Sets the backdrop to an image
+    setBackdropURL("../images/golf-backdrop.jpg")
+    
+    // Creates variable "ball"
+    var ball = new Circle({
+        color: "WHITE",
+        x: 375,
+        y: -250
+    })
+    // Creates variable "hole"
+    var hole = new Circle({
+        x: -400,
+        y: 300
+    })
+    
+    // Creates variable "wall1"
+    var wall1 = new Rectangle({
+        x: minX,
+        y: maxY,
+        width: maxX * (4),
+        height: 10,
+        color: "green"
+    });
+    // Creates variable "wall2"
+    var wall2 = new Rectangle({
+        x: minX,
+        y: minY,
+        width: maxX * (4),
+        height: 10,
+        color: "green"
+    });
+    // Creates variable "wall3"
+    var wall3 = new Rectangle({
+        x: minX,
+        y: minY,
+        width: 10,
+        height: minY * (-4),
+        color: "green"
+    });
+    // Creates variable "wall4"
+    var wall4 = new Rectangle({
+        x: maxX,
+        y: minY,
+        width: 10,
+        height: minY * (-4),
+        color: "green"
+    });
+    // Creates variable "barrier1"
+    var barrier1 = new Rectangle({
+        x: 300,
+        y: minY,
+        width: 10,
+        height: minY * (-3),
+        color: "green"
+    });
+    // Creates variable "barrier2"
+    var barrier2 = new Rectangle({
+        x: 100,
+        y: 100,
+        width: 10,
+        height: maxY * (2),
+        color: "green"
+    });
+    // Creates variable "barrier3"
+    var barrier3 = new Rectangle({
+        x: -100,
+        y: minY,
+        width: 10,
+        height: minY * (-3),
+        color: "green"
+    });
+    // Creates variable "barrier4"
+    var barrier4 = new Rectangle({
+        x: -300,
+        y: 100,
+        width: 10,
+        height: maxY * (2),
+        color: "green"
+    });
+    // Creates variable "pit1"
+    var pit1 = new Rectangle({
+        x: -100,
+        y: 315,
+        width: 390,
+        height: 140,
+        color: "#dfc19c"
+    });
+    // Creates variable "end1"
+    var end1 = new Rectangle({
+        x: 300,
+        y: 179,
+        height: 2,
+        color: "GREEN"
+    })
+    // Creates variable "end2"
+    var end2 = new Rectangle({
+        x: 100,
+        y: -256,
+        height: 2,
+        color: "GREEN"
+    })
+    // Creates variable "end3"
+    var end3 = new Rectangle({
+        x: -100,
+        y: 179,
+        height: 2,
+        color: "GREEN"
+    })
+    // Creates variable "end4"
+    var end4 = new Rectangle({
+        x: -300,
+        y: -253,
+        height: 2,
+        color: "GREEN"
+    })
+    
+    // Creates line variable "line"
+    var line = new Line({
+        color: "black",
+        lineWidth: 5,
+        showing: false
+    })
+    
+    // Creates variable "swings" and displays the value of "swings" through text variable "swingsc"
+    var swings = 0
+    var swingsc = new Text({
+        text: () => "Swings: " + swings,
+        size: 30,
+        fontFamily: "arial",
+        textAlign: "left",
+        x: minX + 10,
+        y: maxY - 30
+    });
+    
+    // Makes it so that when the mouse is clicked, "swings" increases by 1, "line" shows, and one of "line"s end points is the xy coordinates of the mouse pointer, and the other end point is the xy coordinate of the "ball"
+    onMouseDown(() => {
+        line.showing = true, swings++, forever(() => {
+            line.x = mouseX;
+            line.y = mouseY
+            line.x1 = ball.x;
+            line.y1 = ball.y;
+        })
+    })
+    
+    // Sends "line" and "ball" to the front layer
+    line.sendToFront()
+    ball.sendToFront()
+    
+    
+    
+  
+    // Creates the variables "liney" and "linex" and sets them to 0
+    var liney = 0;
+    var linex = 0;
+    
+    // When the mouse is released, "line" hides, then sets "liney" equal to the difference between the y1 and y value of "line", and sets "linex" equal to the difference between the x1 and x value of "line"
+    onMouseUp(() => {
+        line.showing = false, liney = line.y1 - line.y, linex = line.x1 - line.x
+    });
+    
+    // Movement
+    // Prevents "linex" or "liney" from exceeding the values of 200 or -200 
+    forever(() => {
+        if (liney > 200) {
+            liney = 200
+        }
+        if (liney < -200) {
+            liney = -200
+        }
+        if (linex > 200) {
+            linex = 200
+        }
+        if (linex < -200) {
+            linex = -200
+        }
+        ball.x += (linex) / 20, ball.y += (liney) / 20        // Changes "ball"s xy coordinates by linex/20 and liney/20 respectively 
+        if (linex > 0) {            
+            linex -= (linex) * (0.01)
+        }
+        if (linex < 0) {
+            linex += (linex) * (-0.01)
+        }                                    // Controls momentum. Makes the ball's changing coordinates change by less  and less until the values of "liney" and "linex" reach 0
+    
+        if (liney < 0) {
+            liney += (liney) * (-0.01)
+        }
+    
+        if (liney > 0) {
+            liney -= (liney) * (0.01)
+        }
+        if (ball.touching(hole)) {
+            swings_final = swings,         //If the ball touches the hole, then "swings_final" is set to "swings", the game over variables show, and the "ball" and all barriers/obstacles are hidden
+                ball.showing = false, wall1.showing = false, wall2.showing = false, wall3.showing = false, wall4.showing = false, barrier1.showing = false, barrier2.showing = false, barrier3.showing = false, barrier4.showing = false, pit1.showing = false, hole.showing = false, gameover.showing = true, gameovertxt.showing = true, swingsc.showing = false
+        }
+    
+    // Prevents ball from moving through walls or barriers
+        if (ball.touching(wall1) || ball.touching(wall2) || ball.touching(end1) || ball.touching(end2) || ball.touching(end3) || ball.touching(end4)) {
+            liney = (-1 * liney)
+        }
+    
+        if (ball.touching(wall3) || ball.touching(wall4) || ball.touching(barrier1) || ball.touching(barrier2) || ball.touching(barrier3) || ball.touching(barrier4)) {
+            linex = (-1 * linex)
+        }
+    })
+    
+    // Makes it harder for the "ball" to move if it is touching the "pit"
+    forever(() => {
+        if (ball.touching(pit1)) {
+            if (linex > 0) {
+                linex -= (linex) * (0.2)
+            }
+            
+            if (linex < 0) {
+                linex += (linex) * (-0.2)
+            }
+    
+            if (liney < 0) {
+                liney += (liney) * (-0.2)
+            }
+    
+            if (liney > 0) {
+                liney -= (liney) * (0.2)
+            }
+        }
+    });
+    
+    // Creates variable "gameover"
+    var gameover = new Image({
+        url: "../images/gameover.png",
+        height: 500,
+        width: 500
+    })
+    gameover.showing = false   // Starts thegame with "gameover" hiding
+    
+    var swings_final = 0  // Creates variable "swings_final" and sets it to 0
+    
+    // Creates the text variable "gameovertxt", that displays the variable "swings_final"
+    var gameovertxt = new Text({
+        text: () => "You made it in " + swings_final + " swings!",
+        size: 50,
+        fontFamily: "impact",
+        textAlign: "left",
+        x: -230,
+        y: -100
+    });
+    gameovertxt.showing = false   // Starts the game with "gameovertxt" hiding
+    </script>
+</head>

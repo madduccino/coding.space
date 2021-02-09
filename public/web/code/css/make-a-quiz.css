@@ -1,0 +1,201 @@
+
+html, body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: "Open Sans";
+}
+
+body {
+  background: #ededed;
+  font-size: 16px;
+}
+
+.header {
+  color: #e32;
+  font-family: "Maven Pro";
+  font-size: 4vh;
+  font-weight: 900;
+  background: #fff;
+  margin: 0;
+  box-shadow: 0 2px 2px #ccc;
+  width: 100%;
+  padding: 10px 0;
+}
+
+.smallD {
+  font-size: 3.5vh;
+}
+
+h1 {
+  font-size: 7vh;
+  margin-bottom: 0;
+}
+
+.container {
+  max-width: 1028px;
+  margin: 5% auto;
+  position: relative;
+  padding: 0 4%;
+}
+
+.container img {
+  max-width: 100%;
+}
+
+.description {
+  margin-bottom: 10px;
+  font-size: 3vh;
+  margin: 2vh 0;
+}
+
+.date {
+  color: #6d6f70;
+  font-size: 2vh;
+}
+
+.author {
+  vertical-align: middle;
+  font-size: 2vh;
+}
+
+.author img {
+  width: 5vh;
+}
+
+.question {
+   background-color: rgb(155, 93, 251);
+   padding: 120px auto;
+}
+
+
+h2 {
+  color: #fff;
+  font-size: 6vh;
+  font-family: "Roboto Condensed";
+  padding: 80px;
+}
+
+h3 {
+  text-transform: capitalize;
+  margin: 0;
+}
+
+.answers {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+  align-items: center;
+  color: #fff;
+  cursor: pointer;
+}
+
+.answers div {
+  text-align: center;
+  width: 49%;
+  height: 250px;
+  font-size: 3vh;
+  margin-bottom: 20px;
+  opacity: 0.6;
+  transition: all 0.6s;
+}
+
+.answers div p {
+  margin: 0 20px;
+}
+
+.answers div::before {
+  content: " ";
+  display: block;
+  margin-top: 75px;
+}
+
+.bg {
+  background-color:  #55a2e0;
+  transition: all 0.5s;
+  opacity: 1 !important;
+}
+
+.answers div img {
+  height: 250px !important;
+  width: 100%;
+  display: block;
+  margin: 0 auto;
+  transition: all 0.5s;
+  margin-top: -75px;
+  opacity: 0.6;
+}
+
+.answers span {
+  margin-top: 12%;
+  display: block;
+}
+
+.answers div:hover {
+  background-color: #1d6faf;
+}
+.answers div img:hover {
+  opacity: 1;
+}
+
+.answers div.highlight {
+  opacity: 1;
+  background-color: #0e548c;
+}
+
+.answers div.highlight img {
+  opacity: 1;
+}
+
+.result-outer-box {
+  background-color: rgb(155, 93, 251);
+  padding: 10px;
+  color: #fff;
+}
+
+.result-inner-box {
+  background-color: #fff;
+  padding: 20px;
+  margin: 20px 0;
+  color: #000;
+  display: flex;
+  flex-flow: row no-wrap;
+  align-items: center;
+}
+
+.result-inner-box div {
+  flex: 0 1 auto;
+}
+
+.result-inner-box p {
+  margin-right: 50px;
+  font-size: 22px;
+}
+
+.result-inner-box h3 {
+  color: #000;
+  font-size: 48px;
+}
+
+button {
+  border-radius: 4px;
+  padding: 10px;
+  font-size: 20px;
+  background-color: #55a2e0;
+  border: 0;
+  box-shadow: 0 2px 2px #0e548c;
+  color: #fff;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+button::focus {
+  outline: none;
+}
+
+button:hover {
+   background-color: #4196db;
+  box-shadow: 0 1px 2px #0e548c;
+}
+

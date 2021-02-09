@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Making Copies of Sprites</title>
+	<link href="./projects.css" rel="stylesheet">
+	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	<link href="https://cdn.jsdelivr.net/prism/1.2.0/themes/prism.css" rel="stylesheet" />
+	<script src="https://cdn.jsdelivr.net/prism/1.2.0/prism.js"></script>
+	<script type="text/javascript" src="https://unpkg.com/vue"></script>
+</head>
+<style type="text/css">
+	pre, code {
+		font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+		text-align: left;
+	}
+	.codeblock {
+    position: relative;
+    margin-bottom: 20px; 
+    margin-right: 10px;
+    -webkit-touch-callout: none;
+		-webkit-user-select: none;
+		-khtml-user-select: none;
+		-moz-user-select: none;
+		-ms-user-select: none;
+		-o-user-select: none;
+		user-select: none;
+	}
+	.highlight {
+		background: #93C14C;
+		color: #333;
+		font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+	}
+	#attention {
+		font-size: 1.3em;
+	}
+</style>
+<body>
+	<div class="container" id="app">
+		
+		<h1><a href="./index.html"><span class="glyphicon glyphicon-arrow-left"></span></a>{{ project }}</h1>
+		
+		<div class="block">
+			<p>{{ header.text }}</p>
+			<br><a target="_blank" :href="header.url">Play this demo in full screen.</a>
+		</div>
+		
+		<div class="block">
+			<p id="attention">Attention!</p>
+			<p>{{ warning }}</p>
+		</div>
+		
+		<div class="block" v-for="step in steps">
+			<p v-html="step.text"></p>
+			<div v-if="step.code" class="codeblock">
+	      <pre><code v-html="step.code"></code></pre>
+      </div>
+			<br><a target="_blank" :href="step.url">Play this demo in full screen.</a>
+		</div>
+		
+	</div>
+
+
+
+<script>
+
+var app = new Vue({
+	el: "#app",
+	data: {
+		project: "Cloning Tutorial",
+		header: {
+			text: "Level 2 in WoofJS is all about making copies of sprites, so this project is designed to introduce you to cloning in WoofJS. Try the game first -- touch the circles with the mouse to get points:",
+			url: "./code/cloning-tutorial-code.html"
+		},
+		warning: "This tutorial displays some of the code you need to use, but you won't be able to copy and paste it!",
+		steps: [
+			{
+				text: "1) Set your backdrop to a color and create a variable for your score.",
+				url: "./snippets/cloning-tutorial-step1.html"
+			},
+			{
+				text: "2) Make a sprite that starts at a random spot on the left edge of the screen. You'll probably use code like this: ",
+				code: "var ghost = new Circle({\n  color: \"white\",\n  radius: 20,\n  x: minX,\n  y: randomY()\n})",
+				url: "./snippets/cloning-tutorial-step2.html"
+			},
+			{
+				text: "3) But we don't just want one of these sprites. Let's make a new one every 0.3 seconds by putting that code inside an <code>every()</code> function instead.",
+				code: "<span class='highlight'>every(0.3, \"second\", () => {</span>\n  var ghost = new Circle({\n    color: \"white\",\n    radius: 20,\n    x: minX,\n    y: randomY()\n  })\n<span class='highlight'>})</span>",
+				url: "./snippets/cloning-tutorial-step3.html"
+			},
+			{
+				text: "4) We need to make our sprites move. Many people try this code, but it won't work! Do you know why? (You don't have to do anything in this step.)",
+				code: "forever(() => {\n  ghost.move(10)\n})",
+				url: "./snippets/cloning-tutorial-step4.html"
+			},
+			{
+				text: "5) If we use the code in step 4, we get an error. That's because the variable \"ghost\" only exists inside the <code>every()</code> function. We can't tell the ghost what to do outside of that function, because the computer doesn't know which ghost we want to talk to.<br><br>To let us give instructions to our ghosts, we have to make an empty list before the <code>every()</code> function:",
+				code: "<span class='highlight'>var ghosts = []</span>\nevery(0.3, \"second\", () => {\n  var ghost = new Circle({\n    color: \"white\",\n    radius: 20,\n    x: minX,\n    y: randomY()\n  })\n})",
+				url: "./snippets/cloning-tutorial-step5.html"
+			},
+			{
+				text: "6) And we need to put our ghosts in the list. We can do this inside the <code>every()</code> loop, right after we make the new ghost:",
+				code: "var ghosts = []\nevery(0.3, \"second\", () => {\n  var ghost = new Circle({\n    color: \"white\",\n    radius: 20,\n    x: minX,\n    y: randomY()\n  })\n<span class='highlight'>  ghosts.push(ghost)</span>\n})",
+				url: "./snippets/cloning-tutorial-step6.html"
+			},
+			{
+				text: "7) Since we didn't create the list inside of a function, we can access it anywhere in our code. And, since all our ghosts are inside the list, that means we can access all our ghosts from anywhere.<br><br>To fix our problem from step 4 and talk to every ghost in the list, we use a <code>forEach()</code> function:",
+				code: "forever(() => {\n<span class='highlight'>  ghosts.forEach(ghost => {</span>\n    ghost.move(10)\n<span class='highlight'>  })</span>\n})",
+				url: "./snippets/cloning-tutorial-step7.html"
+			},
+			{
+				text: "8) Any time we want to tell our ghosts what to do, the instructions MUST be in a <code>forEach()</code> function.<br><br>When the ghosts get past the right edge of the screen, let's delete them and remove them from the list:",
+				code: "forever(() => {\n  ghosts.forEach(ghost => {\n    ghost.move(10)\n<span class='highlight'>    if (ghost.x > maxX) {\n      ghost.delete()\n      ghosts.remove(ghost)\n    }</span>\n  })\n})",
+				url: "./snippets/cloning-tutorial-step8.html"
+			},
+			{
+				text: "9) If we touch a ghost with the mouse, let's delete the ghost and remove it from the list. We're still talking to the ghosts using the <code>forEach()</code> function.",
+				code: "forever(() => {\n  ghosts.forEach(ghost => {\n    ghost.move(10)\n    if (ghost.x > maxX) {\n      ghost.delete()\n      ghosts.remove(ghost)\n    }\n<span class='highlight'>    if (ghost.mouseOver) {\n      ghost.delete()\n      ghosts.remove(ghost)\n    }</span>\n  })\n})",
+				url: "./snippets/cloning-tutorial-step9.html"
+			},
+			{
+				text: "10) And finally, let's make the score go up every time we click a ghost.",
+				url: "./snippets/cloning-tutorial-step10.html"
+			},
+		]
+	},
+});
+	
+	
+</script>
+
+</body>
+</html>

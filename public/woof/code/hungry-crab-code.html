@@ -1,0 +1,87 @@
+<head>
+    <script src="https://cdn.jsdelivr.net/gh/stevekrouse/WoofJS@cb6d0621/dist/woof.js"></script>
+    <script>
+    // Hungry Crab
+    
+    // Sets the backdrop to an image
+    setBackdropURL("../images/hungrycrab-backdrop.jpg")
+    
+    // Creates variable "crab"
+      var crab = new Image({url: "../images/hungrycrab-crab.png", height: 100, width: 150})
+    // Makes it so that variable "crab" moves when the arrow keys are pressed 
+      forever(() => {
+        if (keysDown.includes("UP")){
+          crab.y += 10;
+          crab.angle = RIGHT;
+      }
+        if (keysDown.includes("DOWN")){
+          crab.y -= 10;
+          crab.angle = LEFT;
+      }
+        if (keysDown.includes("RIGHT")){
+          crab.x += 10;
+          crab.angle = DOWN;
+      }
+        if (keysDown.includes("LEFT")){
+          crab.x -= 10;
+          crab.angle = UP;
+      }
+    });
+    // Makes it so that if the crab moves off the scren, it apprears on the opposite side of the screen
+      forever(() => {
+        if (crab.x > maxX){
+          crab.x = minX;
+      }
+        if (crab.x < minX){
+          crab.x = maxX;
+      }
+        if (crab.y > maxY){
+          crab.y = minY;
+      }
+        if (crab.y < minY){
+          crab.y = maxY;
+      }
+    });
+    
+    // Creates variable "score" that starts at 0, which is displayed through text variable "scoreText"
+      var score = 0;
+      var scoreText = new Text({x: 70, y: maxY - 50, size: 30, text: () => `Food: ${score}`});
+
+    // Makes it so that if variable "fish" touches "crab", "fish" moves to a random xy coordinate, and the variable "score" increases by 1 
+      forever(() =>{
+        if (fish.touching(crab)) {
+          score++;
+          fish.x = randomX();
+          fish.y = randomY();
+      }
+    });
+    
+    // Creates variable "fish", and starts it at a random xy coordinate
+      var fish = new Image({url:"../images/hungrycrab-fish.png", height: 30, width: 70});
+      fish.x = randomX();
+      fish.y = randomY();
+      
+    // Creates variable "timer" that starts at 30, and is displayed through the text variable "timerText"
+      var timer = 30;
+      var timerText = new Text({x: -70, y: maxY - 50, size: 30, text: () => `Timer: ${timer}`})
+    
+    // Makes it sot that "timer" decreases by 1 every second
+      every(1,"seconds", () => {
+        timer--;
+      });
+      forever(() => {
+        if (timer === 0) {
+          freeze();          // Makes it so that the game freezes when the timer reaches 0
+      }
+    });
+    
+    // Creates a reset key, that unfreezes the game, sets "timer" back to 30, and resets the "score" to 0 if the key "space" is pressed
+      forever(() => {
+        if (keysDown.includes("SPACE")) {
+          defrost();
+          timer = 30; 
+          score = 0;
+      }
+    });
+    </script>
+</head>

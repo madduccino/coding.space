@@ -1,0 +1,231 @@
+<head>
+    <script src="https://cdn.jsdelivr.net/gh/stevekrouse/WoofJS@cb6d0621/dist/woof.js"></script>
+    <script>
+    // Boss Fight
+    setBackdropURL("../images/boss-backdrop.jpg") // Sets the backdrop to an image
+   
+    // Creates the ship sprite
+    var ship = new Image({url: "../images/boss-ship.png", x: 0, y: minY + 30, height: 40, width: 35});
+    
+    // Makes the ship move when the arrow keys are pressed
+    forever(() => {
+      if (keysDown.includes("UP")){
+      ship.y += 5;
+   }
+      if (keysDown.includes("DOWN")){
+      ship.y -= 5;
+    }
+      if (keysDown.includes("RIGHT")){
+      ship.x += 5;
+    }
+      if (keysDown.includes("LEFT")){
+      ship.x -= 5;
+    }
+    });
+    
+    // Keeps the ship from moving off-screen
+    forever (() => {
+      if (ship.x > maxX){
+      ship.x = maxX;
+    }
+      if (ship.x < minX){
+      ship.x = minX;
+    }
+      if (ship.y > maxY){
+      ship.y = maxY;
+    }
+      if (ship.y < minY){
+      ship.y = minY;
+    }
+  })
+    // Ship Laser
+    var lasers = []
+    forever (() => {
+      if (keysDown.includes('SPACE')){   // Creates a sprite "laser" every time the space key is pressed 
+        var laser = new Image({url: "../images/boss-laser.png", x: ship.x, y: ship.y, height: 50, rotationStyle: "NO ROTATE"})
+        laser.showing = false;
+        lasers.push(laser);  // Pushes sprite "laser" to the "lasers" array
+    }
+  });
+    forever (() => {
+      lasers.forEach(laser => {
+        laser.y += 5;   // Makes the lasers move upwards
+        laser.showing = true;
+        if (laser.y > maxY) {   // Deletes the lasers if they reach the end of the screen
+          laser.showing = false;
+          }
+        if (laser.touching(boss)) {
+          laser.setImageURL("../images/boss-explosion.png")  // Changes the laser's costume when it touches the boss (for effect)
+          laser.height = 30
+          laser.width = 30
+          bossHealth -= 1;     // subtracts 1 from the variable "bossHealth" each time a laser touches the boss
+          after(0.1, "second", () => laser.delete());
+      }
+    })
+  });
+  
+    // Creates the boss sprite
+    var boss = new Image({url:"../images/boss-boss.png", x: 0, y: maxY - 120, height: 150, width: 150, rotationStyle: "NO ROTATE"});
+    // Makes the boss back and forth along the x-axis
+    forever (() => {
+      boss.move(1)
+      if (boss.x > maxX){
+        boss.angle = -180;
+    }
+      if (boss.x < minX) {
+        boss.angle = 0;
+    }
+  });
+  
+    // Creates a variable "health", that is displayed through the text variable "shipHealth" (displays the player ship's health)
+    var health = 20;  
+    var shipHealth = new Text({x: minX + 50, y: minY + 10, size: 30, color: "white", text: () => `HP: ${health}`});
+    
+    // Creates a variable "bossHealth", that is displayed through the text variable "bbossHealth" (displays the boss's health)
+    var bossHealth = 10000;
+    var bbossHealth = new Text ({x: minX + 100, y: maxY -30, size: 30, color: "white", text: () => `BOSS: ${bossHealth}`});
+    
+    //Boss Bomb
+    var bombs = []
+    every(4, "seconds", () => {  // Creates a variable "bomb" every 4 seconds, and pushes these to the "bombs" array
+      var bomb = new Image({url: "../images/boss-bomb.png", x: boss.x, y: boss.y, height: 35, width: 30});
+      bombs.push(bomb);
+  });
+  
+    forever (() => {
+      bombs.forEach(bomb => {
+        bomb.y -= 5               // Makes each "bomb" from array "bombs" move downward
+      if (bomb.y < minY) {
+        bomb.delete();            // Makes each "bomb" from array "bombs" delete if they touch end of the screen
+    }
+      if (bomb.touching(ship)) {
+        health -= 2;              // Subtracts 2 from the variable "health" if any "bomb" touches the variable "ship" (ship loses 2 health if hit with a bomb)
+        bomb.delete();
+    }
+    })
+  });
+  
+    //Boss Missiles
+    var missiles = []
+    every (4, "seconds", () => {  // Creates a variable "missile" every 4 seconds, and pushes these to the "missiles" array
+      var missile = new Image({url: "../images/boss-missile.png", x: boss.x, y: boss.y, });
+      missile.pointTowards(ship.x, ship.y);   // Makes the "missile" sprites point towards the variable "ship"
+      missiles.push(missile);
+  });
+  
+    forever(() => {
+      missiles.forEach(missile => {
+        missile.move(5.5);       // Makes each "missile" from array "missiles" move at a constant 5.5
+       if (missile.y < minY) {
+        missile.delete();
+    }
+      if (missile.touching(ship)) {
+        health -= 3;             // Subtracts 3 from the variable "health" if any "missile" touches the variable "ship" (ship loses 3 health if hit with a missile)
+        missile.delete();
+    }
+    })
+  });
+  
+    //Boss Laser
+    var blaser = new Image({url: "../images/boss-blaser.png", height: 500})
+    blaser.showing = false;       
+    forever(() => {              // Creats a sprite "blaser" that is hidden, and constantly follows the boss's pathing
+      blaser.x = boss.x;         
+      blaser.y = boss.y - 300;
+  });
+  
+    //Laser Timer
+    var timer = 0
+    every(1, "seconds", () => {    // Creates a hidden timer, "timer"
+      timer = timer+1
+  })
+  
+  //Creates variable "warning", and hides it
+    var warning = new Image ({url: "../images/boss-warning.jpg", x: 0, y: 0});
+    warning.showing = false; 
+    
+    forever(() => {
+      if (timer == 7) {
+        warning.showing = true;   // If "timer" equals 7, sprite "warning" shows
+    }
+      if (timer == 10) {
+        blaser.showing = true;
+        warning.showing = false;      // If "timer" equals 10, sprite "warning" hides, sprite "blaser" shows
+      if (blaser.touching(ship)) {
+        health -= 5;                  // If sprite "blaser" touches sprite "ship", variable health gets decreased by 5 (ship loses 5 health as long as it touches the laser)
+      }
+      after(3, "seconds", () => {
+        blaser.showing = false;       // After 3 seconds, sprite "blaser" hides, and variable "timer" is set back to 0
+        timer = 0;
+    });
+    } 
+  });
+  
+    //Boss shot
+    var shots = []      
+    every(1, "seconds", () => {        // Creats a variable "shot" every 1 seconds, and pushes these to the "shots" array
+      var shot = new Image({url: "../images/boss-shots.png", x: boss.x, y: boss.y, height: 30, width: 25})
+    shots.push(shot);
+  });
+  
+    forever(() => {
+      shots.forEach(shot => {
+        shot.y -= 3;          // Makes each "shot" in the "shots" array move down
+      if (shot.touching(ship)) {
+        health -= 1;          // Subtracts 1 from the variable "health" if any "shot" touches the variable "ship" (ship loses 3 health if hit with a shot)
+        shot.delete();
+      }
+    })
+  });
+  
+    // Makes it so that if the "ship" touches the sprite "boss", variable "health" is reduced by 15
+    forever(() => {
+      if (ship.touching(boss)) {
+        health -= 15;
+    }
+  });
+  
+    // Code that lets the player wipe the screen of all enemy projectiles 
+    var screenWipes = 3;        // Sets the amount of screen wipes to 3
+    var wipeText = new Text({x: maxX - 70, y: minY + 10, size: 30, color: "white", text: () => `Bombs: ${screenWipes}`})  //Displays the amount of screen wipes the player has
+    onKeyDown(() => {
+      if (screenWipes > 0 && keysDown.includes("S")) {  // Makes it so that the screen can be wiped if the "s" key is pressed and the player has at least 1 screen wipes
+        screenWipes -= 1;
+        shots.forEach(shot => shot.delete())
+        shots = []   // Deletes all "shot" in the "shots" array, resets the "shots" array
+        missiles.forEach(missile => missile.delete())
+        missiles = []  // Deletes all "missile" in the "missiles" array, resets the "missiles" array
+        bombs.forEach(bomb => bomb.delete())
+        bombs = []   // Deletes all "bomb" in the "bombs" array, resets the "bombs" array
+        blaser.showing = false;
+        timer = 0    // Hides sprite "blaser", and resets variable "timer"
+        setBackdropColor("white")  
+        after(0.2, "seconds", () => {
+          setBackdropURL("../images/boss-backdrop.jpg")     // Flashes the screen white for effect, then returns to image backdrop
+      })
+    }
+  });
+  
+    // Makes the game over condition, and displays game over when that condition is met
+    var gameOver= new Image({url:"../images/boss-gameover.jpg", x: 0, y:0})
+    gameOver.showing = false;
+    forever(() => {
+      if (health <= 0) {
+        gameOver.showing = true;  // Shows the previously hidden "gameOver" sprite if the variable health is equal to or less than 0
+        freeze();
+    }
+  });
+  
+    // Makes the win condition, and displays the win screen when that condition is met
+    var youWin = new Image({url:"../images/boss-youwin.png", height: 100, width: 500})
+    youWin.showing = false;  
+    forever (() => {
+      if (bossHealth <= 0) {
+      youWin.showing = true;   // Shows the previously hidden "youWin" sprite if the variable "bossHealth" is equal to or less than 0
+      boss.setImageURL("../images/boss-explosion.png")   // Changes the bosses costume to an explosion when variable "bossHealth" is equal to or less than 0
+      freeze();
+    }
+  });    
+
+    </script>
+</head>

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="https://cdn.jsdelivr.net/gh/stevekrouse/WoofJS@cb6d0621/dist/woof.js"></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>River Ride Step 2</title>
+    </head>
+  
+  <body>
+
+  <script>
+  
+  /*********** Background*******************
+  *****************************************/
+  
+    
+  // Store dimensions of screen in variables
+  var screenWidth = maxX - minX
+  var screenHeight = maxY - minY
+  var riverBorderLeft = -(0.4 * screenWidth)
+  var riverBorderRight = 0.4 * screenWidth
+  
+  // Set backdrop to color
+  setBackdropColor("#00CCCC")
+  
+  // Create tree sprites
+  var treea = new Image({
+    url: '../images/river-tree.png',
+    width: 100,
+    height: 100,
+    x: minX + 150,
+    y: maxY - 120
+  })
+
+  var treeb = new Image({
+    url: '../images/river-tree.png',
+    width: 100,
+    height: 100,
+    x: maxX - 150,
+    y: minY + 120
+  })
+  
+  // Create river sprites
+  var river1 = new Image({
+    url: '../images/river-river1.png',
+    width: screenWidth / 2,
+    height: screenHeight,
+    x: riverBorderLeft,
+    y: minY - screenHeight / 2
+  })
+
+  var river2 = new Image({
+    url: '../images/river-river1.png',
+    width: screenWidth / 2,
+    height: screenHeight,
+    x: riverBorderLeft,
+    y: minY + screenHeight / 2
+  })
+
+  var river3 = new Image({
+    url: '../images/river-river2.png',
+    width: screenWidth / 2,
+    height: screenHeight,
+    x: riverBorderRight,
+    y: minY - screenHeight / 2
+  })
+
+  var river4 = new Image({
+    url: '../images/river-river2.png',
+    width: screenWidth / 2,
+    height: screenHeight,
+    x: riverBorderRight,
+    y: minY + screenHeight / 2
+  })
+  
+  // Push river sprites to river array to create "one" river
+  var river = []
+  river.push(river1, river2, river3, river4)
+  
+  // Send trees to top layer, make them move down by flow, if they pass bottom edge, go to top
+  forever(() => {
+    treea.sendToFront()
+    treeb.sendToFront()
+    treea.y -= flow
+    treeb.y -= flow
+    if (treea.y < minY) {
+      treea.y = maxY
+    }
+    if (treeb.y < minY) {
+      treeb.y = maxY
+    }
+  })
+  
+  // Send river to back layer, make it move down by flow, if it passes bottom edge, go to top
+  forever(() => {
+    river.forEach(item => {
+      item.sendToBack()
+      item.y -= flow
+      if (item.y < minY - screenHeight / 2 + 30) {
+        item.y = maxY + screenHeight / 2 - 50
+      }
+    })
+  })
+  
+  // Create variable that will control the river flow
+  var flow = 1
+  
+   // Every 15 seconds, increase flowTime by 1
+  every(15, 'second', () => {
+    flow++
+  })
+  
+ </script>
+</body>
+</html>

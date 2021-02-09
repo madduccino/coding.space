@@ -1,0 +1,289 @@
+<head>
+  <script src="https://cdn.jsdelivr.net/gh/stevekrouse/WoofJS@cb6d0621/dist/woof.js"></script>
+  <script>
+  
+  // Create blue rectangle for sky
+  var sky = new Rectangle({
+    color: "#1AEDED",
+    width: maxX - minX,
+    height: maxY - minY,
+    y: maxY - 200
+  })
+  sky.sendToBack()
+
+  // Create green rectangle for grass
+  var grass = new Rectangle({
+    color: "#66CD00",
+    width: maxX - minX,
+    height: maxY - minY,
+    y: minY + 200
+  })
+
+  // Create picnic basket sprite
+  var basket = new Image({
+    url: '../images/picnic-basket.png',
+    width: 400,
+    height: 240,
+    x: 0,
+    y: 0
+  })
+
+  // Create sprites for picnic items. Have them appear in random locations below basket.
+  var watermelon = new Image({
+    url: '../images/picnic-watermelon.png',
+    width: 60,
+    height: 60,
+    x: randomX(),
+    y: random(-200, minY)
+  })
+
+  var cupcake = new Image({
+    url: '../images/picnic-cupcake.png',
+    width: 60,
+    height: 60,
+    x: randomX(),
+    y: random(-200, minY)
+  })
+
+  var cheese = new Image({
+    url: '../images/picnic-cheese.png',
+    width: 50,
+    height: 50,
+    x: randomX(),
+    y: random(-200, minY)
+  })
+
+  var sandwich = new Image({
+    url: '../images/picnic-sandwich.png',
+    width: 60,
+    height: 60,
+    x: random(minX + 100, maxX - 100),
+    y: random(-200, minY)
+  })
+
+  var milk = new Image({
+    url: '../images/picnic-milk.png',
+    width: 60,
+    height: 60,
+    x: randomX(),
+    y: random(-200, minY)
+  })
+ 
+  // Store these sprites in food aray.
+  var food = []
+  food.push(watermelon, cupcake, cheese, milk, sandwich)
+  
+  // Loop through food array and send each sprite to top layer.
+  forever(() => {
+    food.forEach(food => {
+      food.sendToFront()
+    })
+  })
+
+  // Create text variable intro
+  var packed = new Text({
+    text: () => "I'm going on a picnic and I'm bringing... ",
+    y: maxY - 50,
+    color: "#fff",
+    size: 26
+  })
+
+  // Create empty items array. 
+  var items = []
+  forever(() => {
+    // When sprites clicked, move them to basket if names not already in items array
+    // Push names to items array
+    if (watermelon.mouseOver && mouseDown && items.indexOf("watermelon") == -1) {
+      watermelon.x = basket.x - 60
+      watermelon.y = basket.y + 50
+      items.push("watermelon")
+    }
+    if (cupcake.mouseOver && mouseDown && items.indexOf("a cupcake") == -1) {
+      cupcake.x = basket.x
+      cupcake.y = basket.y + 50
+      items.push("a cupcake")
+    }
+    if (cheese.mouseOver && mouseDown && items.indexOf("cheese") == -1) {
+      cheese.x = basket.x + 75
+      cheese.y = basket.y + 50
+      items.push("cheese")
+    }
+    if (sandwich.mouseOver && mouseDown && items.indexOf("a sandwich") == -1) {
+      sandwich.x = basket.x + 150
+      sandwich.y = basket.y + 50
+      items.push("a sandwich")
+    }
+    if (milk.mouseOver && mouseDown && items.indexOf("milk") == -1) {
+      milk.x = basket.x - 130
+      milk.y = basket.y + 50
+      items.push("milk")
+    }
+  })
+  
+  // Create text variable to display the items array 
+  var packedList = new Text({
+    text: () => items.join(', '), // Separate each item with a space and comma
+    y: maxY - 100,
+    color: "#00008B",
+    size: 26
+  })
+  
+  // Check if all sprite names have been added to items array. If so, change intro text.
+  forever(() => {
+    if (items.length == 5) {
+      packedList.text = "Uh oh, the rain is coming! Hurry up and unpack. Make sure you take everything out in the same order you put it in."
+    }
+  })
+
+
+  // When sprites clicked and sprite touching basket, move them away from basket. 
+  // Create empty unpacked array. Push names of unpacked items into unpacked array as strings when sprite clicked. 
+  var unpacked = []
+  forever(() => {
+    if (items.length == 5) {
+    if (milk.mouseOver && mouseDown && milk.touching(basket) ) {
+      milk.x = randomX()
+      milk.y = random(-200, minY)
+      if (!unpacked.includes("milk")) {
+        unpacked.push("milk")
+      }
+    }
+    if (sandwich.mouseOver && mouseDown && sandwich.touching(basket)) {
+      sandwich.x = randomX()
+      sandwich.y = random(-200, minY)
+      if (!unpacked.includes("a sandwich")) {
+        unpacked.push("a sandwich")
+      }
+    }
+    if (watermelon.mouseOver && mouseDown && watermelon.touching(basket)) {
+      watermelon.x = randomX()
+      watermelon.y = random(-200, minY)
+      if (!unpacked.includes("watermelon")) {
+        unpacked.push("watermelon")
+      }
+    }
+    if (cheese.mouseOver && mouseDown && cheese.touching(basket)) {
+      cheese.x = randomX()
+      cheese.y = random(-200, minY)
+      if (!unpacked.includes("cheese")) {
+        unpacked.push("cheese")
+      }
+    }  
+    if (cupcake.mouseOver && mouseDown && cupcake.touching(basket)) {
+      cupcake.x = randomX()
+      cupcake.y = random(-200, minY)
+      if (!unpacked.includes("a cupcake")) {
+        unpacked.push("a cupcake")
+      }
+    }
+    }
+  })
+
+  // Create text variable to display each object in unpacked array
+  var unpackedList = new Text({
+    text: () => unpacked.join(', '), // Separate object with comma and space
+    y: maxY - 100,
+    color: "#00008B",
+    size: 26,
+    showing: false
+  })
+
+  // // Show the unpacked array when first item unpacked and hide the items array
+  forever(() => {
+    if (unpacked.length > 0) {
+      packedList.hide()
+      unpackedList.show()
+    }
+  })
+  
+  // Check whether each name in items array matches each name in unpacked array
+  var match = true
+  forever(() => {
+     items.forEach((item, index) => {
+      unpacked.forEach((item, index) => {
+        if (items[index] != unpacked[index]) {
+          match = false
+        }
+       })
+     })
+  })
+
+  // Create text to display if names in arrays don't match
+  var oops = new Text({
+    text: "oops! try again!",
+    y: maxY - 100,
+    color: "red",
+    size: 26,
+    showing: false
+  })
+  
+  // If names aren't a match, display oops text, empty  unpacked array, move all sprites back to basket.
+  forever(() => {
+    if (!match) {
+      unpackedList.hide()
+      oops.show()
+      unpacked = []
+      milk.x = basket.x - 130
+      milk.y = basket.y + 50
+      sandwich.x = basket.x + 150
+      sandwich.y = basket.y + 50
+      cheese.x = basket.x + 75
+      cheese.y = basket.y + 50
+      cupcake.x = basket.x
+      cupcake.y = basket.y + 50
+      watermelon.x = basket.x - 60
+      watermelon.y = basket.y + 50
+      // Start over by setting match back to true, hiding unpacked array text and oops message.
+      onMouseDown(() => {
+        match = true
+        unpackedList.show()
+        oops.hide()
+      })
+    }
+  })
+
+  // Create text to display when arrays match
+  var win = new Text({
+    text: () => "Let's eat!",
+    color: "#00008B",
+    size: 50,
+    y: maxY - 100,
+    showing: false
+  })
+  
+  // Create image to display when arrays match
+  var picnic = new Image({
+    url: '../images/picnic-eat.png',
+    width: 200,
+    height: 212,
+    x: 0,
+    y: 0,
+    showing: false
+  })
+
+
+  var n = 20 // Create variable that will increase as the array is traversed 
+  forever(() => {
+    // If basket sucessfully unpacked, hide everything on screen except food array. 
+    if (unpacked.length === 5) {
+      basket.hide()
+      unpackedList.hide()
+      packed.hide()
+      win.show() // Show win text
+      picnic.show() // Show picnic image
+      // Have each food item be separated by a distance of n to create a spread
+      repeatUntil(() => n > 225, () => {
+        food.forEach(food => {
+          food.x = -150 + n
+          food.y = picnic.y - 150
+          n += 50
+        })
+      })
+    }
+  })
+  
+  </script>
+</head>
+<body>
+    
+</body>

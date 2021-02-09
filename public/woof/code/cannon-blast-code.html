@@ -1,0 +1,313 @@
+<head>
+<script src="https://cdn.jsdelivr.net/gh/stevekrouse/WoofJS@d17fa61c/dist/woof.js"></script>
+
+</head>
+<body>
+<script>
+setBackdropColor("#74A358");
+
+// use a sprite to make the path
+var path = new Rectangle({
+  width: width,
+  height: 55,
+  color: "#F5DEB3",
+  y: -100
+});
+
+// wall for the base is just a rectangle under the base
+var baseWall = new Rectangle({
+  width: 100,
+  height: 100,
+  color: "#666"
+});
+
+// base
+var baseMain = new Rectangle({
+  width: 75,
+  height: 75,
+  color: "#BBB"
+});
+
+var cannon = new Image({
+  url: "../images/canon-canon.png",
+  height: 50,
+  width: 50,
+  angle: DOWN
+});
+
+var hpBackground = new Rectangle({
+  x: minX + 120,
+  y: maxY - 20,
+  width: 230,
+  height: 30
+});
+
+var hpBar = new Rectangle({
+  x: minX + 120,
+  y: maxY - 20,
+  width: 225,
+  height: 25,
+  color: "green"
+});
+
+var health = new Text({
+  color: "white",
+  x: minX + 50,
+  y: maxY - 20,
+  text: "HEALTH",
+  size: 16
+});
+
+var time = -1;
+var timer = new Text({
+  color: "white",
+  x: maxX - 50,
+  y: maxY - 20,
+  text: () => "Time: " + time,
+  size: 16
+});
+
+forever(() => {
+  
+  // turn the cannon with LEFT and RIGHT, but keep it from turning too far
+  if (keysDown.includes('left') && cannon.angle > 180) {
+    cannon.turnRight(5);
+  }
+  if (keysDown.includes('right') && cannon.angle < 360) {
+    cannon.turnLeft(5);
+  }
+  
+  // move the player's bullets and delete them if they go off screen
+  playerBullets.forEach(bullet => {
+    bullet.move(3);
+    if (bullet.y < minY) {
+    	playerBullets.remove(bullet);
+      bullet.delete();
+    }
+    
+    // check if the bullets are touching any enemies and delete both
+    enemies.forEach(enemy => {
+      if (bullet.touching(enemy)) {
+      	enemies.remove(enemy);
+        enemy.delete();
+        playerBullets.remove(bullet);
+        bullet.delete();
+      }
+    });
+    
+    // check if the bullets are touching any tanks and lower tank health
+    // delete bullet and delete tank if necessary
+    tanks.forEach(tank => {
+      if (bullet.touching(tank)) {
+      	playerBullets.remove(bullet);
+        bullet.delete();
+        tank.health -= 1;
+        if (tank.health <= 0) {
+        	tanks.remove(tank);
+          tank.delete();
+        }
+      }
+    });
+  });
+  
+  // move enemies across the screen and delete them if they go too far
+  enemies.forEach(enemy => {
+    enemy.move(-2);
+    if (enemy.x < minX) {
+    	enemies.remove(enemy);
+      enemy.delete();
+    }
+  });
+  
+  // basically the same as the enemy code, but tanks can shoot when farther away
+  tanks.forEach(tank => {
+    tank.move(-3);
+    if (tank.x < minX) {
+    	tanks.remove(tank);
+      tank.delete();
+    }
+  });
+  
+  // move enemy weapons and delete if off screen
+  enemyWeapons.forEach(weapon => {
+    weapon.move(4);
+    if (weapon.y > maxY) {
+    	enemyWeapons.remove(weapon);
+      weapon.delete();
+    }
+    
+    // if the weapon hits the wall, make the wall smaller
+    // once the wall is the same size as the base itself, start making the health bar smaller
+    if (weapon.touching(baseWall)) {
+    	enemyWeapons.remove(weapon);
+      weapon.delete();
+      if (baseWall.height > baseMain.height) {
+        baseWall.height -= 2;
+        baseWall.width -= 2;
+      }
+      else {
+        hpBar.width -= 6;
+        // changing sprite width does so from both ends, so we have to move the rectangle over to compensate
+        hpBar.x -= 3;
+        
+        // change the color to yellow if 50% or less
+        if (hpBar.width < 112 && hpBar.width > 56) {
+          hpBar.color = "#D2C533";
+        }
+        
+        // change the color to red if 25% or less
+        else if (hpBar.width < 56) {
+          hpBar.color = "#DB5D67";
+        }
+        
+        // end the game if it gets too small
+        if (hpBar.width < 3) {
+          hpBar.hide();
+          freeze();
+        }
+      }
+    }
+  });
+});
+
+
+// player shooting
+// set the bullet's angle to the same as the cannon so it shoots the right way
+// move the bullet so it lines up with the tip of the cannon
+var playerBullets = [];
+onKeyDown(() => {
+  if (keysDown.includes('space')) {
+    var wpn = new Circle({
+      radius: 5,
+      color: "#5D67DB",
+      angle: cannon.angle
+    });
+    wpn.move(29);
+    playerBullets.push(wpn);
+  }
+});
+
+
+// function to determine how often to spawn enemies -- as time increases, create them faster
+var enemySpawnTime = () => {
+	if (time < 60) 
+    return random(1.5, 2.8);
+  else if (time < 90)
+    return random(0.3, 1.5);
+  else if (time < 130)
+    return random(0.1, 0.7);
+};
+
+var enemies = [];
+
+every(enemySpawnTime, "second", () => {
+  var enemy = new Rectangle({
+    width: 15,
+    height: 15,
+    color: "#AF4042",
+    x: maxX,
+    y: -100
+  });
+  enemies.push(enemy);
+});
+
+// function to determine how often to spawn tanks - as the time increases, create them faster
+var tankSpawnTime = () => {
+	if (time < 75)
+    return random(4.55, 6.01);
+  else if (time < 105)
+    return random(2.55, 4.55);
+  else if (time < 120)
+    return random(1.5, 2.5);
+  else if (time < 150)
+    return random(0.75, 1.5);
+};
+
+var tanks = [];
+
+// create tanks after 30 seconds
+every(tankSpawnTime, "second", () => {
+  if (time >= 30) {
+		var tank = new Rectangle({
+			width: 25,
+      height: 25,
+      color: "#40AFAD",
+      x: maxX,
+      y: -100
+		});
+		tank.health = 3;
+		tanks.push(tank);
+	}
+});
+
+// another way to have the enemies spawn randomly and increase frequency
+// would be to follow a pattern like this:
+// every(() => random(1.5, 2.8), 'second', () => {
+//   if (time < 60) {
+//     var enemy = new Rectangle({
+//     width: 15,
+//     height: 15,
+//     color: "#AF4042",
+//     x: maxX,
+//     y: -100
+//   })
+//   enemies.basic.push(enemy)
+//   }
+// })
+// every(() => random(0.3, 1.5), 'second', () => {
+//   if (time > 60 && time < 90) {
+//     var enemy = new Rectangle({
+//     width: 15,
+//     height: 15,
+//     color: "#AF4042",
+//     x: maxX,
+//     y: -100
+//   })
+//   enemies.basic.push(enemy)
+//   }
+// })
+//
+// etc. etc. for each increase
+
+
+
+// have the enemies regularly shoot their weapons if they are close enough
+var enemyWeapons = [];
+every(2, 'second', () => {
+  enemies.forEach(enemy => {
+    if (enemy.distanceTo(baseMain) < 150) {
+      var wpn = new Circle({
+        radius: 3,
+        color: "#DBD15D",
+        x: enemy.x,
+        y: enemy.y
+      });
+      wpn.pointTowards(baseMain);
+      enemyWeapons.push(wpn);
+    }
+  });
+});
+
+// tank weapons shoot faster and look bigger
+every(0.5, 'second', () => {
+  tanks.forEach(tank => {
+    if (tank.distanceTo(baseMain) < 300) {
+      var wpn = new Circle({
+        radius: 5,
+        color: "#DBD15D",
+        x: tank.x,
+        y: tank.y
+      });
+      wpn.pointTowards(baseMain);
+      enemyWeapons.push(wpn);
+    }
+  });
+})
+
+// make the timer go up
+every(1, 'second', () => {
+  time += 1;
+});
+
+</script>  
+</body>

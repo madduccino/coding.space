@@ -1,0 +1,700 @@
+<head>
+  
+  <script src="https://cdn.jsdelivr.net/gh/stevekrouse/WoofJS@cb6d0621/dist/woof.js"></script>
+   <script>
+  
+  // Creates instructions for how to play the game
+  var instructions = new Text({
+    text: () => "Use the up arrow to move forward and the right and left arrows to rotate. Press the spacebar to shoot.",
+    color: "#ff6600",
+    x: 0,
+    y: 100,
+    size: 20
+  })
+  
+  after(5, 'second', () => {
+    instructions.hide()
+  })
+  
+
+  // Sets backdrop to color
+  setBackdropColor('black')
+  
+  // Creates ship sprite
+  var ship = new Text({
+    text: () => ">",
+    size: 50,
+    color: "white",
+    angle: 90
+  })
+  
+  // Creates invisible sprite that will allow ship to move forward while rotating.
+  var invisShip = new Text({
+    text: () => "",
+    size: 50,
+    showing: false,
+  })
+  
+  // Creates speed variable
+  var speed = 0
+  
+  // Increases speed when up arrow pressed and decreases speed when up arrow not pressed. Moves invisible sprite by speed.
+  forever(() => {
+    if (keysDown.includes('UP')) {
+      speed += 0.1
+    }
+    if (!keysDown.includes('UP') && speed > 0) {
+      speed -= 0.02
+    }
+    if (speed > 20) {
+      speed = 20
+    }
+    if (speed > 0) {
+      invisShip.move(speed)
+    }
+  })
+  
+  // If invisible sprite goes past one side of screen, makes it appear on opposite side.
+  forever(() => {
+    if (invisShip.y > maxY) {
+      invisShip.y = minY
+    }
+    if (invisShip.y < minY) {
+      invisShip.y = maxY
+    }
+    if (invisShip.x > maxX) {
+      invisShip.x = minX
+    }
+    if (invisShip.x < minX) {
+      invisShip.x = maxX
+    }
+  })
+  
+  // Allows ship to rotate while moving forward
+  forever(() => {
+    // Makes ship's position that of invisible sprite
+    ship.x = invisShip.x
+    ship.y = invisShip.y
+    // Rotates ship right and left when right and left arrow keys are pressed  
+    if (keysDown.includes('RIGHT')) {
+      ship.turnRight(10)
+    }
+    if (keysDown.includes('LEFT')) {
+      ship.turnLeft(10)
+    }
+    // When up arrow pressed, points ship in same direction as invisible sprite
+    if (keysDown.includes('UP')) {
+      invisShip.angle = ship.angle
+    }
+  })
+  
+  // Adds "thruster" to ship sprite
+  forever(() => {
+    if (keysDown.includes('UP')) {
+      ship.text = "->"
+      after(0.2, 'second', () => {
+        ship.text = ">"
+      })
+    }
+  })
+  
+  // Adds sound variable to play when ship fires weapon
+  var firesound = new Audio('../audio/asteroids-shoot.wav')
+  
+  // Make degrees always between -360 and 360. This helps align fire to ship.
+  forever(() => {
+    if (ship.angle > 360) {
+      ship.angle = 0
+    }
+    if (ship.angle < -360) {
+      ship.angle = 0
+    }
+  })
+  
+  // Creates fireball clones when spacebar is pressed
+  var firepower = []
+  var shoottime = 0
+  forever(() => {
+    if (keysDown.includes('SPACE')) {
+      shoottime++
+      if (shoottime < 2) { // Only lets ship fire one time when spacebar is pressed
+        firesound.play()
+        var fireball = new Text({
+          text: () => ".",
+          color: "white",
+          size: 40,
+          x: ship.x - 5,
+          y: ship.y + 10,
+          angle: ship.angle,
+        })
+        firepower.push(fireball)
+        // Aligns fire to ship
+        if (ship.angle > 0 && ship.angle < 90) {
+          fireball.x = ship.x - 5
+          fireball.y = ship.y + 10
+        }
+        if (ship.angle >= 90 && ship.angle < 180) {
+          fireball.x = ship.x - 10
+          fireball.y = ship.y - 8
+        }
+        if (ship.angle >= 180 && ship.angle < 270) {
+          fireball.x = ship.x + 9
+          fireball.y = ship.y - 10
+        }
+        if (ship.angle >= 270) {
+          fireball.x = ship.x + 10
+          fireball.y = ship.y + 5
+        }
+        if (ship.angle <= 0 && ship.angle > -90) {
+          fireball.x = ship.x + 10
+          fireball.y = ship.y + 10
+        }
+        if (ship.angle <= -90 && ship.angle > -180) {
+          fireball.x = ship.x + 10
+          fireball.y = ship.y - 10
+        }
+        if (ship.angle <= -180 && ship.angle > -270) {
+          fireball.x = ship.x - 10
+          fireball.y = ship.y - 5
+        }
+      }
+    }
+  })
+  
+  onKeyUp(() => {
+    shoottime = 0
+  })
+
+  // Loops through fireball clones
+  forever(() => {
+    firepower.forEach(fireball => {
+      fireball.move(15) // Gives each fireball movement
+      // Hides fireballs if touching ship
+      if (fireball.distanceTo(ship) < 40) {
+        fireball.hide()
+      } else {
+        fireball.show()
+      }
+      // Deletes fireball & removes it from firepower array when it moves beyond screen edges
+      if (fireball.x > maxX) {
+        fireball.delete()
+        firepower.remove(fireball)
+      }
+      if (fireball.y > maxY) {
+        fireball.delete()
+        firepower.remove(fireball)
+      }
+      if (fireball.x < minX) {
+        fireball.delete()
+        firepower.remove(fireball)
+      }
+      if (fireball.y < minY) {
+        fireball.delete()
+        firepower.remove(fireball)
+      }
+    })
+  })
+  
+  // Creates asteroid clones every 2 seconds
+  var asteroids = []
+   after(6, 'second', () => {
+     every(2, 'second', () => {
+       var asteroid = new Text({
+        text: () => "O",
+        color: "#0033FF",
+        size: 70,
+        angle: random(0, 360)
+      })
+      asteroids.push(asteroid)
+      // Creates variable with random integer value of 1 to 4. 
+      var wall = random(1, 4)
+      // Makes asteroids appear on particular wall depending on variable value.
+      if (wall === 1) {
+        asteroid.x = randomX()
+        asteroid.y = maxY
+      }
+      if (wall === 2) {
+        asteroid.x = randomX()
+        asteroid.y = minY
+      }
+      if (wall === 3) {
+        asteroid.x = minX
+        asteroid.y = randomY()
+      }
+      if (wall === 4) {
+        asteroid.x = maxX
+        asteroid.y = randomY()
+      }
+    })
+  })
+  
+  // Loops through asteroid clones
+  forever(() => {
+    asteroids.forEach(asteroid => {
+      asteroid.move(3) // Gives each asteroid movement
+      // If asteroid goes past one side of screen, makes it appear on opposite side.
+      if (asteroid.x > maxX) {
+        asteroid.x = minX
+      }
+      if (asteroid.y > maxY) {
+        asteroid.y = minY
+      }
+      if (asteroid.x < minX) {
+        asteroid.x = maxX     
+      }
+      if (asteroid.y < minY) {
+        asteroid.y = maxY    
+      }
+    })
+  })
+ 
+  // Creates score variable
+  var score = 0
+  
+  // Displays score on screen
+  var scoreText = new Text({
+    text: () => "Score: " + score,
+    x: 0,
+    y: maxY - 100,
+    size: 20,
+    color: "white"
+  })
+ 
+  // Adds sound variable to play when asteroids are hit
+  var bang = new Audio('../audio/asteroids-bang.wav')
+ 
+  // Creates two smaller asteroid clones when asteroid hit by fireball
+  var asteroidDouble = []
+  forever(() => {
+    asteroids.forEach(asteroid => {
+      firepower.forEach(fireball => {
+        if (asteroid.distanceTo(fireball) < 40) {            
+          fireball.delete()
+          firepower.remove(fireball)
+          score += 10 // Increases score
+          asteroid.delete() // Deletes asteroid
+          asteroids.remove(asteroid)
+          bang.play() // Plays sound effect
+          // Creates 2 smaller asteroid clones
+          repeat(2, () => {
+            var double = new Text({
+              text: () => "W",
+              size: 30,
+              color: "red",
+              angle: random(0, 360),
+              x: asteroid.x,
+              y: asteroid.y
+            })
+            asteroidDouble.push(double)
+          })
+        }
+      })
+    })
+  })
+  
+  // Loops through smaller asteroid clones
+  forever(() => {
+    asteroidDouble.forEach(asteroid => {
+      asteroid.move(3) // Gives clones movement
+      // If asteroid goes past one side of screen, makes it appear on opposite side.
+      if (asteroid.x > maxX) {
+        asteroid.x = minX
+      }
+      if (asteroid.y > maxY) {
+        asteroid.y = minY
+      }
+      if (asteroid.x < minX) {
+        asteroid.x = maxX     
+      }
+      if (asteroid.y < minY) {
+        asteroid.y = maxY    
+      }
+    })
+  })
+  
+  // Makes smaller asteroid clones when previous asteroid clones are hit by fireball
+  var asteroidDoubleDouble = []
+  forever(() => {
+    asteroidDouble.forEach(asteroid => {
+      firepower.forEach(fireball => {
+        if (asteroid.distanceTo(fireball) < 40) {                      
+          fireball.delete()
+          firepower.remove(fireball)
+          asteroid.delete()
+          asteroidDouble.remove(asteroid)
+          bang.play()
+          score += 20
+          repeat(2, () => {
+            var double = new Text({
+              text: () => "P",
+              size: 20,
+              color: "#66ff33",
+              angle: random(0, 360),
+              x: asteroid.x,
+              y: asteroid.y
+          })
+          asteroidDoubleDouble.push(double)
+          })
+        }
+      })
+    })
+  })
+  
+  // Loops through new asteroid clones
+  forever(() => {
+    asteroidDoubleDouble.forEach(asteroid => {
+      asteroid.move(3) // Gives asteroid movement
+      // If asteroid goes past one side of screen, makes it appear on opposite side.
+      if (asteroid.x > maxX) {
+        asteroid.x = minX
+      }
+      if (asteroid.y > maxY) {
+        asteroid.y = minY
+      }
+      if (asteroid.x < minX) {
+        asteroid.x = maxX     
+      }
+      if (asteroid.y < minY) {
+        asteroid.y = maxY    
+      }
+    })
+  })
+  
+  // Deletes smallest asteroid if it is hit by fireball
+  forever(() => {
+    asteroidDoubleDouble.forEach(asteroid => {
+      firepower.forEach(fireball => {
+        if (fireball.distanceTo(asteroid) < 40) {
+          asteroid.delete()
+          asteroidDoubleDouble.remove(asteroid)
+          fireball.delete()
+          firepower.remove(fireball)
+          bang.play()
+          score += 30
+        }
+      })
+    })
+  })
+ 
+  // Creates variable to keep track of lives
+  var lifecount = 3
+ 
+  // Creates clones in the same way as above if ship collides with asteroid
+  forever(() => {
+    asteroids.forEach(asteroid => {
+      if (ship.distanceTo(asteroid) < 40) {
+        // Hides ship if it collides with asteroid
+        ship.hide()
+        // Brings ship back to middle of screen
+        invisShip.x = 0 
+        invisShip.y = 0
+        asteroid.delete() // Deletes asteroid
+        asteroids.remove(asteroid) // Removes asteroid from asteroids array
+        lifecount-- // Decreases life count
+        blowup() // Calls function that creates explosion visual and sound effects
+        speed = 0 // Sets speed to zero
+        after(0.5, 'second', () => { // Makes ship reappear
+          ship.show()
+        })
+        // Creates smaller asteoid clone
+        repeat(2, () => {
+          var double = new Text({
+            text: () => "W",
+            size: 30,
+            color: "red",
+            angle: random(0, 360),
+            x: asteroid.x,
+            y: asteroid.y
+          })
+          asteroidDouble.push(double)
+        })
+      }
+    })
+    asteroidDouble.forEach(asteroid => {
+      if (ship.distanceTo(asteroid) < 40) {
+        ship.hide()
+        invisShip.x = 0
+        invisShip.y = 0
+        asteroid.delete()
+        asteroidDouble.remove(asteroid)
+        lifecount--
+        blowup()
+        speed = 0
+        after(0.5, 'second', () => {
+          ship.show()
+        })
+        repeat(2, () => {
+          var double = new Text({
+            text: () => "P",
+            size: 20,
+            color: "#66ff33",
+            angle: random(0, 360),
+            x: asteroid.x,
+            y: asteroid.y
+            })
+          asteroidDoubleDouble.push(double)
+        })
+      }
+    })
+    asteroidDoubleDouble.forEach(asteroid => {
+      if (ship.distanceTo(asteroid) < 40) {
+        ship.hide()
+        invisShip.x = 0
+        invisShip.y = 0
+        asteroid.delete()
+        asteroidDoubleDouble.remove(asteroid)
+        lifecount--
+        speed = 0
+        blowup()
+        after(0.5, 'second', () => {
+          ship.show()
+        })
+      }
+    })
+  })
+  
+  // Creates flame clones to add explosion visual & sound effects when ship hit
+  var explosion = []
+  var blowup = () => {
+    var k = 0 // Creates variable to limit number of flames
+    var n = 0 // Creates variable to change flame angle each time it's pushed into explosion array
+    forever(() => {
+      if (k < 10) {
+        k++
+        n += 30
+        var flames = new Text({
+          text: () => "/",
+          color: "white",
+          size: 30,
+          x: invisShip.x,
+          y: invisShip.y,
+          angle: ship.angle + n
+        })
+        explosion.push(flames)
+        bang.play()
+      }
+    })
+  }
+  
+  // Makes flame clones move
+  forever(() => {
+    explosion.forEach(flame => {
+      flame.move(10)
+      // Deletes flame clone and removes it from explosion array if it goes past edge of screen
+      if (flame.x > maxX) {
+        flame.delete()
+        explosion.remove(flame)
+      }
+      if (flame.y > maxY) {
+        flame.delete()
+        explosion.remove(flame)
+      }
+      if (flame.x < minX) {
+        flame.delete()
+        explosion.remove(flame)
+      }
+      if (flame.y < minY) {
+        flame.delete()
+        explosion.remove(flame)
+      }
+    })
+  })
+  
+  // Displays life count on the screen
+  var lives = new Text({
+    text: () => "^ ^ ^",
+    color: "white",
+    x: 0,
+    y: maxY - 50,
+    size: 40
+  })
+  
+  forever(() => {
+    if (lifecount == 2) {
+      lives.text = "^ ^"
+    }
+    if (lifecount == 1) {
+      lives.text = "^"
+    }
+    if (lifecount === 0) {
+      lives.text = "Out of Lives"
+      lives.size = 20
+    }
+  })
+ 
+  // Adds sound variable for flying saucer
+  var saucerSound = new Audio('../audio/asteroids-saucer.wav')
+  
+  // Creates flying saucer sprite
+  var saucer = new Text({
+    text: () => "<--()-->",
+    color: "#FFFF33",
+    size: 30,
+    showing: false,
+    x: randomX(),
+    y: randomY(),
+  })
+  // Sets random direction for saucer
+  saucer.pointTowards(randomX(), randomY())
+
+  // Makes saucerShow variable true every 5 seconds after 10 seconds of play. Makes if false every 10 seconds.
+  var saucerShow = false
+  after(10, 'second', () => {
+    every(5, 'second', () => {
+      if (lifecount > 0) {
+        saucerShow = true
+      }
+    })
+    every(10, 'second', () => {
+      saucerShow = false
+    })
+  })
+    
+  // Makes saucer turn in random direction every 3 seconds
+  every(3, 'second', () => {
+    if (saucerShow === true) {
+      saucer.turnLeft(random(0, 360))
+    }
+  })
+ 
+  var saucerFiring = []
+  var saucerFireTiming = 0
+  forever(() => {
+    if (saucerShow === true) {
+      saucer.show() // Shows saucer if saucerShow is true
+      saucerSound.play() // Plays saucer sound effect
+      // Gives saucer movement
+      saucer.move(3)
+      // If saucer goes past one side of screen, makes it appear on opposite side
+      if (saucer.x > maxX) {
+        saucer.x = minX
+      }
+      if (saucer.y > maxY) {
+        saucer.y = minY
+      }
+      if (saucer.x < minX) {
+        saucer.x = maxX     
+      }
+      if (saucer.y < minY) {
+        saucer.y = maxY
+      } 
+      // Times saucer firing so that a limited number of fire clones are created while saucer showing
+      saucerFireTiming++ 
+      if (saucerFireTiming % 50 === 0) {
+        var saucerFire = new Text({
+          text: () => "-",
+          color: "#FFFF33",
+          size: 40,
+          x: saucer.x,
+          y: saucer.y,
+          angle: random(0, 360)
+        })
+        saucerFiring.push(saucerFire)
+      }
+    } else {
+        saucer.hide() // Hides saucer if saucerShow is false
+    }
+  })
+  
+  forever(() => {
+    saucerFiring.forEach(fire => {
+      // Gives saucer fire movement
+      fire.move(10)
+      // Deletes saucer fire clone if it goes beyond edge of screen and removes it from saucerFiring array
+      if (fire.x > maxX) {
+        fire.delete()
+        saucerFiring.remove(fire)
+      }
+      if (fire.x < minX) {
+        fire.delete()
+        saucerFiring.remove(fire)
+
+      }
+      if (fire.y > maxY) {
+        fire.delete()
+        saucerFiring.remove(fire)
+      }
+      if (fire.y < minY) {
+        fire.delete()
+        saucerFiring.remove(fire)
+      }
+      if (fire.distanceTo(ship) < 40) {
+        lifecount-- // Removes life if saucer fire touching ship
+        blowup() // Calls blowup function
+        fire.delete() // Deletes saucer fire
+        saucerFiring.remove(fire) // Removes fire from saucerFiring array
+        // Brings ship back to center
+        invisShip.x = 0
+        invisShip.y = 0              
+        speed = 0 // Sets speed to 0
+        after(0.5, 'second', () => { // Makes ship reappear
+          ship.show()
+        })
+      }
+    })
+  })
+  
+  forever(() => {
+    firepower.forEach(fireball => {
+      if (fireball.distanceTo(saucer) < 40) {
+        saucerShow = false   // Hides saucer if hit by fireball
+        bang.play() // Plays sound effect
+        score += 50 // Increases score
+        // Deletes fireball and removes it from firepower array
+        fireball.delete()
+        firepower.remove(fireball)
+      }
+    })
+  })
+  
+  forever(() => {
+    if (saucer.touching(ship)) {
+      saucerShow = false // Hides saucer
+      ship.hide() // Hides ship if hit by saucer
+      lifecount-- // Removes life
+      blowup() // Calls blowup function
+      // Brings ship back to center
+      invisShip.x = 0
+      invisShip.y = 0
+      speed = 0 // Sets speed to 0
+      after(0.5, 'second', () => { // Makes ship reppear
+        ship.show()
+      })
+    }
+  })
+  
+  // Displays game over message when there are 0 lives and freezes the game
+  forever(() => {
+    if (lifecount <= 0) {
+      ship.hide() // Hides ship
+      // Deletes all clones and removes them from associated arrays
+      asteroids.forEach(asteroid => {
+        asteroid.delete()
+        asteroids.remove(asteroid)
+      })
+      asteroidDouble.forEach(asteroid => {
+        asteroid.delete()
+        asteroidDouble.remove(asteroid)
+      }) 
+      asteroidDoubleDouble.forEach(asteroid => {
+        asteroid.delete()
+        asteroidDoubleDouble.remove(asteroid)
+      })
+      saucerFiring.forEach(fire => {
+        fire.delete()
+        saucerFiring.remove(fire)
+      })
+      explosion.forEach(flame => {
+        flame.delete()
+        explosion.remove(flame)
+      })
+      saucerShow = false // Hides saucer
+      new Text({text: () => "Game Over", size: 50, color: "#ff6600", x: 0, y: 0}) // Displays Game Over message
+      after(0.5, 'second', () => {
+        freeze() // Freezes game
+      })
+    }
+  })
+  
+  </script>
+</head>

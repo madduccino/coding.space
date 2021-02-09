@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="https://cdn.jsdelivr.net/gh/stevekrouse/WoofJS@d17fa61c/dist/woof.js"></script>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Cannon Blast Step 9</title>
+</head>
+<body>
+
+<script>
+setBackdropColor("#74A358")
+
+var path = new Rectangle({
+  width: width,
+  height: 55,
+  color: "#F5DEB3",
+  y: -100
+})
+
+var baseWall = new Rectangle({
+  width: 100,
+  height: 100,
+  color: "#666"
+})
+
+var baseMain = new Rectangle({
+  width: 75,
+  height: 75,
+  color: "#BBB"
+})
+
+var cannon = new Image({
+  url: "../images/canon-canon.png",
+  height: 50,
+  width: 50,
+  angle: DOWN
+})
+
+var time = -1
+var timer = new Text({
+  color: "white",
+  x: maxX - 50,
+  y: maxY - 20,
+  text: () => "Time: " + time,
+  size: 16
+})
+
+forever(() => {
+  if (keysDown.includes('left') && cannon.angle > 180) {
+    cannon.turnRight(5)
+  }
+  if (keysDown.includes('right') && cannon.angle < 360) {
+    cannon.turnLeft(5)
+  }
+  
+  playerBullets.forEach(bullet => {
+    bullet.move(3)
+    enemies.forEach(enemy => {
+      if (bullet.touching(enemy)) {
+        enemies.remove(enemy);
+        enemy.delete();
+        playerBullets.remove(bullet);
+        bullet.delete();
+      }
+    })
+  })
+  
+  enemies.forEach(enemy => {
+    enemy.move(-1)
+    if (enemy.x < minX) {
+      enemies.remove(enemy);
+      enemy.delete();
+    }
+  })
+  
+  enemyWeapons.forEach(weapon => {
+    weapon.move(4)
+  })
+  
+})
+
+var playerBullets = []
+onKeyDown(() => {
+  if (keysDown.includes('space')) {
+    var wpn = new Circle({
+      radius: 5,
+      color: "#5D67DB",
+      angle: cannon.angle
+    })
+    wpn.move(29)
+    playerBullets.push(wpn)
+  }
+})
+
+var enemies = []
+every(() => random(0.5, 2), "second", () => {
+  var enemy = new Rectangle({
+    width: 15,
+    height: 15,
+    color: "#AF4042",
+    x: maxX,
+    y: -100
+  })
+  enemies.push(enemy)
+})
+
+var enemyWeapons = []
+every(2, 'second', () => {
+  enemies.forEach(enemy => {
+    if (enemy.showing) {
+      var wpn = new Circle({
+        radius: 3,
+        color: "#DBD15D",
+        x: enemy.x,
+        y: enemy.y
+      })
+      wpn.pointTowards(baseMain)
+      enemyWeapons.push(wpn)
+    }
+  })
+})
+
+every(1, 'second', () => {
+  time += 1
+})
+
+</script>
+</body>
+</html>

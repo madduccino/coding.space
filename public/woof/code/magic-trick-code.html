@@ -1,0 +1,182 @@
+<head>
+  <script src="https://cdn.jsdelivr.net/gh/stevekrouse/WoofJS@cb6d0621/dist/woof.js"></script>
+  
+  <script>
+  
+  // // Set backdrop to image
+  setBackdropURL('../images/magic-stage.jpg')
+
+  // Create text sprites for introduction
+  var intro1 = new Text({
+    text: () => "You are a world-famous magician,",
+    size: 30,
+    color: "white",
+    y: 100
+  })
+  
+  var intro2 = new Text({
+    text: () => "but a trick has gotten out of hand.",
+    size: 30,
+    color: "white",
+    y: 70
+  })
+  var intro3 = new Text({
+    text: () => "Save your terrified audience by",
+    size: 30,
+    color: "white",
+    y: 40
+  })
+  
+  var intro4 = new Text({
+    text: () => "clicking the doves with your wand",
+    size: 30,
+    color: "white",
+    y: 10
+  })
+  
+  var intro5 = new Text({
+    text: () => "to make them disappear.",
+    size: 30,
+    color: "white",
+    y: -20
+  })
+  
+  // // Create variable to store score
+  var doveCount = 0
+  
+  // // Create text sprite to display score. Hide for now.
+  var doveCountText = new Text({
+    text: () => "Doves: " + doveCount,
+    color: "white",
+    size: 30,
+    y: maxY - 30,
+    showing: false
+  })
+  
+  // Hide intro text after 5 seconds and show score.
+  after(5, 'second', () => {
+    intro1.hide()
+    intro2.hide()
+    intro3.hide()
+    intro4.hide()
+    intro5.hide()
+    doveCountText.show()
+  })
+  
+  // Create wand sprite. Hide for now.
+  var wand = new Image({
+    url: '../images/magic-wand.gif',
+    width: 100,
+    height: 100,
+    angle: 0,
+    showing: false
+  })
+  
+  // Make wand follow mouse and make it top layer. 
+  forever(() => {
+    wand.x = mouseX
+    wand.y = mouseY
+    // Send wand to front
+    wand.sendToFront()
+  })
+  
+  // Create hat sprite. Hide for now.
+  var hat = new Image({
+    url: "../images/magic-hat.png",
+    width: 250,
+    height: 150,
+    y: minY + 80,
+    showing: false
+  })
+  
+  // Create empty array called doves
+  var doves = []
+  
+  // After 5 seconds, show hat and wand
+  // and start pushing dove sprites into empty array
+  after(5, 'second', () => {
+    hat.show()
+    wand.show()
+    // Create dove sprites every 0.6 secs. 
+    every(0.6, 'second', () => {
+      var dove = new Image({
+        url: '../images/magic-dove.jpg',
+        width: 100,
+        height: 100,
+        x: hat.x,
+        y: hat.y + 115,
+        angle: random(45, 170) // Make dove's direction random
+      })
+      doves.push(dove) // Push dove sprite into doves array
+    })
+  })
+  
+  // Make doves change direction every 0.5 seconds
+  every(0.5, 'second', () => {
+    doves.forEach(dove => {
+      dove.angle = random(45, 170)
+    })
+  })
+  
+  // Loop through doves array
+  forever(() => {
+    doves.forEach(dove => {
+      // Only allow dove to rotate left and right
+      dove.setRotationStyle('ROTATE LEFT RIGHT')
+      // Give dove movement
+      dove.move(8)
+      // If dove clicked, delete it, remove from doves array, increase score
+      if (dove.mouseOver && mouseDown) {
+        doveCount++
+        dove.delete()
+        doves.remove(dove)
+      }
+      // Reduce the size of magic hat as doves fly away
+      if ((dove.x < minX || dove.y > maxY || dove.y < minY || dove.x > maxX) && hat.height > 0) {
+        hat.width -= 0.01
+        hat.height -= 0.01
+      }
+    })
+  })
+  
+  // Store applause sound in applause variable
+  var applause = new Audio('../audio/applause.mp3')
+  
+  // Create doveTense variable that will allow game over message to be singular or plural
+  // based on how many doves are caught
+  var doveTense;
+
+  // Create gameOver text sprite. Hide for now.
+  var gameOver = new Text({
+    text: () => "You made " + doveCount + doveTense + " disappear!",
+    color: "white",
+    size: 30,
+    showing: false
+  })
+  
+  // End game if hat width is less than 100.
+  // Play applause sound
+  // Display game over message
+  forever(() => {
+    if (doveCount == 1) {
+      doveTense = "dove"
+    } else {
+      doveTense = " doves"
+    }
+    if (hat.height < 0) {
+      if (applause.played.length === 0) {
+        applause.play()
+      }
+      gameOver.show()
+      doveCountText.hide()
+      freeze()
+      doves.forEach(dove => {
+        dove.delete()
+      })
+    }
+  })
+  </script>
+</head>
+<body>
+    
+</body>

@@ -1,0 +1,110 @@
+<head>
+    <script src="https://cdn.jsdelivr.net/gh/stevekrouse/WoofJS@cb6d0621/dist/woof.js"></script>
+    <script>
+    // Obstacle dodger
+    setBackdropColor("white")
+    
+    // Create character sprite
+    var runner = new Rectangle({height: 30, width: 30, color: "orange", x:0, Y:0})
+    // Create game over sprite
+    var game_over = new Image({url:"http://i.imgur.com/wMTCxbw.png?1", x: 0, y: 0, height: 200, width: 500})
+    
+    // Starts the game with the game over hidden 
+    game_over.showing = false;
+    
+    // Makes it so that the character moves when the arrow keys are pressed
+    forever(() => {
+      if (keysDown.includes('UP')) {
+        runner.y += 7;
+      }
+      if (keysDown.includes('DOWN')) {
+        runner.y -= 7;
+      }
+      if (keysDown.includes('RIGHT')) {
+        runner.x += 7;
+      }
+      if (keysDown.includes('LEFT')) {
+        runner.x -= 7;
+      }
+    });
+    
+    // Cloning 
+    var objects = [];    // Creates an array to store cloned sprites
+    
+    every(0.25, "seconds", () => { // Makes it so that this process repeats every 0.25 seconds
+      var object = new Rectangle({height: 50, width: 5, color: "blue"}) // This is the original sprite that will be cloned
+      var randomInt = random(1, 4); // Sets variable "random" to a random integer from 1 to 4
+        if (randomInt == 1) {
+        object.x = randomX();
+        object.y = maxY;
+          }
+        if (randomInt == 2) {
+        object.x = randomX();       // Changes the starting xy location of each clone depending on the int value of "random"
+        object.y = minY;
+          }
+        if (randomInt == 3) {
+        object.x = maxX;
+        object.y = randomY();
+          }
+        if (randomInt == 4) {
+        object.x = minX;
+        object.y = randomY();
+          }
+      
+        object.pointTowards(runner.x, runner.y); // Makes each clone start by pointing towards the character sprite
+        objects.push(object); // Pushes each created clone into the "objects" array
+    });
+    
+    // This controls the movement of each "object" in the "objects" array
+    forever(() => {
+      objects.forEach(object => {
+        object.move(6);
+      })
+    });
+    
+    // Adds a timer that counts the amount of seconds that have gone by (displays variable "timer")
+    var timer = 0
+    var timerText = new Text({x: 0, y: maxY - 60, size: 30, color: "black", text: () => "Timer: " + timer}); // Adds text to display the value of variable "timer"
+    every(1, "seconds", () => {
+      timer ++;
+    });
+    
+    // Makes it so that if anything in the array "objects" touches the character sprite, the game freezes, and the sprite "game_over" is displayed
+    forever(() =>{
+      objects.forEach(object => {
+        if (object.touching(runner)) {
+          game_over.showing = true;
+          freeze();
+        }
+      })
+    });
+    
+    // This is a reset key, if the key "space" is pressed, the game resets: the timer resets, the array "objects" is cleared, and sprite "game_over" hides
+  onKeyDown(key => {
+  if (key == 'SPACE') {
+    game_over.showing = false;
+    objects.forEach(object => object.delete())
+    objects = []
+    timer = 0
+    defrost();
+  }
+  })
+    
+    // Makes it so that the character sprite cannot move off-screen
+    forever(() => {
+      if (runner.x > maxX) {
+        runner.x = maxX;
+      }
+      if (runner.x < minX) {
+        runner.x = minX;
+      }
+      if (runner.y > maxY) {
+        runner.y = maxY;
+      }
+      if (runner.y < minY) {
+        runner.y = minY;
+      }
+    });    
+
+    </script>
+</head>

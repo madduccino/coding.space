@@ -1,0 +1,148 @@
+<html>
+
+<head>
+  <title>Create a Dueling Game Using a Canvas</title>
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css?family=Quicksand" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="./styles-2.css">
+  <link rel="shortcut icon" href="images/favicon.ico" type="images/x-icon">
+</head>
+
+<body>
+  <!---->
+  <!---->
+  <!--NAVBAR-->
+  <!---->
+  <!---->
+  <div class="navbar navbar-inverse navbar-fixed-left" style="width: 165px">
+    <span class="navbar-brand white">Need Help?</span>
+    <ul class="nav navbar-nav">
+      <li><a href="web-guide.html" target="_blank">Intro to Web Programming</a></li>
+      <li><a href="html-guide.html" target="_blank">Intro to HTML</a></li>
+      <li><a href="css-guide.html" target="_blank">Intro to CSS</a></li>
+      <li><a href="woof-to-js.html" target="_blank">From Woof to JavaScript</a></li>
+      <li><a href="reference-guide.html" target="_blank">Web Reference Guide</a></li>
+      <li>
+        <form method="get" action="https://www.google.com/search" target="_blank"><input id="g-input" type="text" name="q" placeholder="Search Google"></form>
+      </li>
+    </ul>
+  </div>
+
+  <div class="container">
+    <h1>Create a Dueling Game Using a Canvas</h1>
+    <div class="steps">
+      <p>In this project, you're going to create a dueling game using HTML Canvas.</p>
+      <iframe width="430" height="430" src="./code/canvas-duel-code.html" scrolling="no"></iframe>
+      <p><a href="./code/canvas-duel-code.html" target="_blank">Click here to view fullscreen.</a></p>
+    </div>
+
+    <div class="steps">
+      <p>1. Add a canvas element to your page, and make JavaScript variables for it and its 2D context.
+      </p>
+      <iframe width="430" height="430" src="./steps/canvas-duel/step-1.html" scrolling="no"></iframe>
+      <p><a href="./steps/canvas-duel/step-1.html" target="_blank">Click here to view fullscreen.</a></p>
+    </div>
+
+    <div class="steps">
+      <p>2. Create a constructor function for 'playerSprite' objects, giving them all of the necessary information (x, y, width, height, etc.). Create an array that all of these objects get pushed to.</p>
+    </div>
+
+    <div class="steps">
+      <p>3. Create two of these 'playerSprite' objects, and have them be drawn to the canvas to test them.</p>
+      <iframe width="430" height="430" src="./steps/canvas-duel/step-3.html" scrolling="no"></iframe>
+      <p><a href="./steps/canvas-duel/step-3.html" target="_blank">Click here to view fullscreen.</a></p>
+    </div>
+    
+    <div class="steps">
+      <p>4. Create a function that will be looped many times a second (try 30) that will draw all of the 'playerSprite' objects to the canvas.</p>
+      <iframe width="430" height="430" src="./steps/canvas-duel/step-4.html" scrolling="no"></iframe>
+      <p><a href="./steps/canvas-duel/step-4.html" target="_blank">Click here to view fullscreen.</a></p>
+    </div>
+
+    <div class="steps">
+      <p>5. Make your playerSprites move whenever a selected key is pressed. (The real challenge here is getting the game to react to multiple keys simultaneously.)</p>
+      <iframe width="430" height="430" src="./steps/canvas-duel/step-5.html" scrolling="no"></iframe>
+      <p><a href="./steps/canvas-duel/step-5.html" target="_blank">Click here to view fullscreen.</a></p>
+    </div>
+    
+    <div class="steps">
+      <p>6. (Part 1) Make an array that will keep track of all of the keys that are currently pressed.</p>
+      <img src="./steps/canvas-duel/step-6-part-1.png"></img>
+    </div>
+
+    <div class="steps">
+      <p>6. (Part 2) Make it so that when a key is pressed, its keyCode is used to set the value at that index of your array to true. For instance, the keyCode of the left arrow key is 37, so when you press the left arrow key, the value at index 37 in your array should become true.</p>
+      <img src="./steps/canvas-duel/step-6-part-2.png"></img>
+    </div>
+    
+    <div class="steps">
+      <p>6. (Part 3) Make it so that when a key is released, its keycode is used to set the value at that index of your array to false.</p>
+      <img src="./steps/canvas-duel/step-6-part-3.png"></img>
+    </div>
+    
+    <div class="steps">
+      <p>6. (Part 4) Make a function that will cause different things to happen dependent upon which values in that array are true. Call this function in the looping function.</p>
+    </div>
+    
+    <div class="steps">
+      <p>7. Make your characters constantly fall until they hit the ground.</p>
+      <iframe width="430" height="430" src="./steps/canvas-duel/step-7.html" scrolling="no"></iframe>
+      <p><a href="./steps/canvas-duel/step-7.html" target="_blank">Click here to view fullscreen.</a></p>
+    </div>
+    
+    <div class="steps">
+      <p>8. Make your characters jump when a specific key is pressed, but only if they aren't currently in the air.</p>
+      <iframe width="430" height="430" src="./steps/canvas-duel/step-8.html" scrolling="no"></iframe>
+      <p><a href="./steps/canvas-duel/step-8.html" target="_blank">Click here to view fullscreen.</a></p>
+    </div>
+    
+    <div class="steps">
+      <p>9. Create another constructor function for 'attackSprite' objects. These objects will be representative of your players' attacks. Give them all of the necessary information. Create an array that all of these objects get pushed to.</p>
+    </div>
+    
+    <div class="steps">
+      <p>10. Create two of these 'attackSprite' variables and have them be drawn to the canvas to test them.</p>
+    </div>
+    
+    <div class="steps">
+      <p>11. Make your attacks be drawn by the looping function, but only for a while after a specific button has been clicked. They should also show up at the right point in relation to their respective player.</p>
+      <iframe width="430" height="430" src="./steps/canvas-duel/step-11.html" scrolling="no"></iframe>
+      <p><a href="./steps/canvas-duel/step-11.html" target="_blank">Click here to view fullscreen.</a></p>
+    </div>
+    
+    <div class="steps">
+        <p>12. Create a function to detect if two rectangles are colliding. (It should work for both the Attacks and the Players.)</p>
+    </div>
+    
+    <div class="steps">
+        <p>13. Make your looping function detect if an Attack is colliding with a Player, and if so, stop the loop and tell the player they have won.</p>
+      <iframe width="430" height="430" src="./steps/canvas-duel/step-13.html" scrolling="no"></iframe>
+      <p><a href="./steps/canvas-duel/step-13.html" target="_blank">Click here to view fullscreen.</a></p>
+    </div>
+    
+    <div class="steps">
+        <p>Additional Challenges: Make your characters accelerate instead of moving at a constant speed, and make the characters get knocked away from each other if their attacks collide.</p>
+      <iframe width="430" height="430" src="./code/canvas-duel-code.html" scrolling="no"></iframe>
+      <p><a href="./code/canvas-duel-code.html" target="_blank">Click here to view fullscreen.</a></p>
+    </div>
+    
+  </div>
+  
+  <script>
+    (function(i, s, o, g, r, a, m) {
+      i['GoogleAnalyticsObject'] = r;
+      i[r] = i[r] || function() {
+        (i[r].q = i[r].q || []).push(arguments)
+      }, i[r].l = 1 * new Date();
+      a = s.createElement(o),
+        m = s.getElementsByTagName(o)[0];
+      a.async = 1;
+      a.src = g;
+      m.parentNode.insertBefore(a, m)
+    })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+    ga('create', 'UA-86847686-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+</body>
+
+</html>

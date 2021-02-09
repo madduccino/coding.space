@@ -1,0 +1,46 @@
+<head>
+  <script src="https://cdn.jsdelivr.net/gh/stevekrouse/WoofJS@cb6d0621/dist/woof.js"></script>
+    <script>
+    // Squid Chase
+    
+    // Sets the backdrop to a new image 
+    setBackdropURL("../images/squidchase-backdrop.jpg")
+    
+    // Creats variables "squid" and "fish"
+    var squid = new Image({url:"../images/squidchase-squid.png", height:140,width:140, x:-400})
+    var fish = new Image({url: "../images/squidchase-fish.png", height:50, width:50})
+    
+    // Creates a variable "timer" that starts at 0 and is displayed through the text variable "timertext"
+    var timer = 0
+    var timertext = new Text({text: () => "Time: " + timer, y:300, size:60})
+    
+    // Creates text variable "scoretext" that displays the variable "timer"
+    var scoretext = new Text({text: () => "You survived for " + timer + " seconds", y:300, size:60})
+    scoretext.showing = false  // Hides the variable "scoretext" when the game starts (is the game over message, displays the time the player survived)
+    every(1, "seconds", () => {
+      timer++       // Makes it so that "timer" increases by 1 every 1 second
+    })
+    
+    // Makes the "squid" follows the current xy coordinates of the mouse pointer, and increases its following speed based off of the value of the variable "timer"
+    forever (() => {
+      squid.pointTowards(mouseX, mouseY);
+      squid.move(0 +(timer));
+    // Makes the variable "fish" follow the mouse pointer's xy coordinate
+      fish.x = mouseX;
+      fish.y = mouseY;
+      fish.pointTowards(mouseX, mouseY)
+    })
+    
+    // The game ends if the "squid" touches the "fish"
+    forever (() => {
+      if (squid.touching(fish)){
+          fish.showing = false,
+          squid.showing = false,         // Hides the "squid", "fish", and "timertext" on contact
+          timertext.showing = false,
+          scoretext.showing = true,         // Shows the text variable "scoretext", for the player's final score
+          freeze()
+          }
+    })
+
+    </script>
+</head>

@@ -1,0 +1,304 @@
+<head>
+<script src="https://cdn.jsdelivr.net/gh/stevekrouse/WoofJS@703b2ce1/dist/woof.js"></script>
+<title>War!</title>
+</head>
+<body>
+<script>
+
+//FUNCTIONS!
+
+// makes it easier to align a sprite with the ground line
+var goToGround = (sprite) => {
+  if (sprite.radius)
+    sprite.y = groundLine + sprite.radius;
+  else
+    sprite.y = groundLine + sprite.height / 2;
+};
+
+// puts the ball into position before firing
+var setBall = (player) => {
+  player.ball.x = player.shooter.x;
+  player.ball.y = player.shooter.y;
+  player.ball.angle = player.shooter.angle;
+  player.ball.move(35);
+  player.ball.show();
+};
+
+// returns TRUE if the ball is offscreen or touching the ground, the middle, or the enemy
+var makeContact = (player) => {
+  return player.ball.x > maxX || player.ball.y > maxY || player.ball.x < minX || player.ball.y <= groundLine + 5 || player.ball.touching(middle) || player.ball.touching(player.enemy.shield) || player.ball.touching(player.enemy.shooter);
+};
+
+// makes the ball move and be affected by gravity
+var shoot = (player) => {
+  // divide power by 20 to make a smaller (and more reasonable) number for move()
+  player.ball.move(power / 20);
+  player.ball.y -= gravity;
+  gravity += 0.15;
+};
+
+// damages the enemy if necessary
+// sets up the next turn
+var finishTurn = (player) => {
+  // if it hits the shield, shrink until too small, then remove shield
+  if (player.ball.touching(player.enemy.shield)) {
+    player.enemy.shield.radius -= 10;
+    if (player.enemy.shield.radius <= 30)
+      player.enemy.shield.hide();
+  }
+  // if it hits the cannon, end the game
+  else if (player.ball.touching(player.enemy.shooter)) {
+    gameOver = true;
+    player.enemy.shooter.hide();
+    text.text = player.winText;
+    text.size = 40;
+    text.show();
+    instructions.text = "Press space to play again!";
+    instructions.show();
+  }
+  player.ball.hide();
+  // if the game is still going, reset power, gravity, and shooting, swap turns, reposition powerCircle
+  if (!gameOver) {
+    power = 0;
+    gravity = 0.15;
+    shooting = false;
+    player1.turn = !player1.turn;
+    player2.turn = !player2.turn;
+    after(0.5, "second", () => {
+      text.text = player.enemy.turnText;
+      text.show();
+      // the brighter shield indicates whose turn it is
+      player.enemy.shield.brightness = 50;
+      player.shield.brightness = 30;
+      powerCircle.x = player.enemy.shield.x;
+      powerCircle.radius = 0;
+    });
+  }
+};
+
+// restarts the game after it's ended
+var restart = () => {
+  shooterP1.show();
+  shooterP2.show();
+  shieldP1.radius = 100;
+  shieldP1.brightness = 50;
+  shieldP1.show();
+  shieldP2.radius = 100;
+  shieldP2.brightness = 30;
+  shieldP2.show();
+  powerCircle.radius = 0;
+  powerCircle.x = shooterP1.x;
+  powerCircle.y = shooterP1.y;
+  text.size = 24;
+  text.text = player1.turnText;
+  instructions.text = "Shoot the other player! Click and drag to aim. Release the mouse to shoot! (just like Angry Birds...)";
+  player1.turn = true;
+  player2.turn = false;
+  gravity = 0.15;
+  power = 0;
+  shooting = false;
+  gameOver = false;
+};
+
+// END OF FUNCTIONS!
+
+setBackdropURL("../images/war-backdrop.png");
+
+// VARIABLES!
+
+var gameOver = false;
+
+var gravity = 0.15;
+
+// create an invisible line to assist with aiming
+var aimLine = new Line({ showing: false });
+
+// this chooses where the ground should be based on the size of the screen
+var groundLine = (minY + height / 5);
+
+// middle obstacle
+var middle = new Rectangle({
+  color: "#223388",
+  width: width / 3,
+  height: height / 4,
+  y: (groundLine + height / 8) - 1
+});
+
+// player one sprites
+
+var ballP1 = new Circle({
+  color: "#DD3513",
+  radius: 10,
+  x: minX + 50,
+  showing: false
+});
+
+var shooterP1 = new Image({
+  url: "../images/war-cannon1.png",
+  width: 50,
+  height: 20,
+  x: minX + 40
+});
+goToGround(shooterP1);
+
+var shieldP1 = new Circle({
+  brightness: 50,
+  color: "#DD3513",
+  radius: 100,
+  x: shooterP1.x,
+  y: shooterP1.y - 20
+});
+
+// hold all player1 sprites and data in an object for easy access in functions
+var player1 = {
+  shooter: shooterP1,
+  ball: ballP1,
+  shield: shieldP1,
+  turn: true,
+  turnText: "Player One's Turn",
+  winText: "Player One Wins!"
+};
+
+// player two sprites
+
+var ballP2 = new Circle({
+  color: "#009940",
+  radius: 10,
+  showing: false
+});
+
+var shooterP2 = new Image({
+  url: "../images/war-cannon2.png",
+  width: 50,
+  height: 20,
+  x: maxX - 40,
+  angle: LEFT
+});
+goToGround(shooterP2);
+
+var shieldP2 = new Circle({
+  brightness: 30,
+  color: "#3CCC3C",
+  radius: 100,
+  x: shooterP2.x,
+  y: shooterP2.y - 20
+});
+
+// hold player two sprites and data in an object too
+var player2 = {
+  shooter: shooterP2,
+  ball: ballP2,
+  shield: shieldP2,
+  turn: false,
+  turnText: "Player Two's Turn",
+  winText: "Player Two Wins!"
+};
+
+// add .enemy property to players for easy access in functions
+player1.enemy = player2;
+player2.enemy = player1;
+
+// the ground
+var bottom = new Rectangle({
+  color: "#223388",
+  width: width,
+  height: height / 5,
+  y: groundLine - height / 10
+});
+
+var powerCircle = new Circle({
+  color: "yellow",
+  radius: 0,
+  x: shooterP1.x,
+  y: shooterP1.y,
+  brightness: 10
+});
+
+// this sprite is used to display whose turn it is and who wins
+var text = new Text({
+  text: "Player One's Turn",
+  font: "helvetica",
+  color: "white",
+  size: 24,
+  y: maxY - 200
+});
+
+var instructions = new Text({
+  text: "Shoot the other player! Click and drag to aim. Release the mouse to shoot! (just like Angry Birds...)",
+  font: "helvetica",
+  color: "#E6FFA2",
+  size: 18,
+  y: maxY - 300
+});
+
+// power determines the speed of the cannonball
+var power = 0;
+
+// we can only shoot when shooting is false
+var shooting = false;
+
+// when you click, hide the text, reset cannon angle and store the mouseX coordinate
+onMouseDown(() => {
+  if (!gameOver) {
+    text.hide();
+    if (instructions.showing)
+      instructions.hide();
+    aimLine.x1 = mouseX;
+    aimLine.y1 = mouseY;
+    if (player1.turn)
+      shooterP1.angle = 0;
+    else if (player2.turn)
+      shooterP2.angle = 180;
+  }
+});
+
+// when you move the mouse, aim the cannon with Y movement, and adjust the power with X movement
+onMouseMove(() => {
+  if (mouseDown && !shooting && !gameOver) {
+    aimLine.x = mouseX;
+    aimLine.y = mouseY;
+    if (player1.turn)
+      shooterP1.angle = aimLine.angle;
+    else if (player2.turn)
+      shooterP2.angle = aimLine.angle;
+    power = aimLine.height;
+    if (power > 400)
+      power = 400;
+    powerCircle.radius = power / 3;
+  }
+});
+
+// when you release the mouse, position the ball and fire it
+onMouseUp(() => {
+  if (power && !shooting && !gameOver) {
+    if (player1.turn) {
+      setBall(player1);
+      // move the ball until it makes contact or goes off-screen
+      repeatUntil(() => makeContact(player1), () => {
+        shoot(player1);
+      }, () => {
+        finishTurn(player1);
+      });
+    }
+    else if (player2.turn) {
+      setBall(player2);
+      // move the bass until it makes contact or goes off-screen
+      repeatUntil(() => makeContact(player2), () => {
+        shoot(player2);
+      }, () => {
+        finishTurn(player2);
+      });
+    }
+    // keep the player from shooting again mid-shot
+    shooting = true;
+  }
+});
+
+// if the game is over, press SPACE to restart
+onKeyDown(() => {
+  if (keysDown.includes("space") && gameOver)
+    restart();
+});
+
+</script>  
+</body>

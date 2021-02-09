@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="https://cdn.jsdelivr.net/gh/stevekrouse/WoofJS@cb6d0621/dist/woof.js"></script>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Star Catcher Step 5</title>
+</head>
+<body>
+
+<script>
+     //Star Spotter - Final 
+
+    // Creates variable "ball", and starts it at a random xy coordinate
+    var ball = new Circle({
+        x: randomX(),
+        y: randomY(),
+        radius: 30,      // Sets "ball" radius to 30, that's white
+        color: "white",
+    });
+    
+    // Sets backdrop to an image
+    setBackdropURL("../images/starcatcher-backdrop.jpg");
+    
+    //  Creates audio variable "pop"
+    var pop = new Audio('../audio/starcatcher-pop.wav')
+    
+    ball.onMouseDown(() => {
+        ball.x = randomX();          // Makes it so that if variable "ball" is clicked, its color, radius and xy coordinates change randomly
+    // ball.color = randomColor();
+        ball.y = randomY();
+        ball.radius = random(10, 100);
+    //   // Increases variable "score" by 1 when "ball" is clicked, and variable "pop" is played
+    //     score++;
+        pop.play()
+    })
+    
+
+
+</script>
+</body>
+</html>

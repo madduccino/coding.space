@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="https://cdn.jsdelivr.net/gh/stevekrouse/WoofJS@cb6d0621/dist/woof.js"></script>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Boss Fight Step 1</title>
+</head>
+<body>
+
+<script>
+// Shmup boss fight (for website) #1
+
+setBackdropURL("../images/boss-backdrop.jpg")
+
+//Step #1
+
+  // Ship
+  var ship = new Image({url: "../images/boss-ship.png", x: 0, y: minY + 30, height: 40, width: 35});
+  //Motion
+  forever(() => {
+    if (keysDown.includes("UP")){
+    ship.y += 5;
+  }
+    if (keysDown.includes("DOWN")){
+    ship.y -= 5;
+  }
+    if (keysDown.includes("RIGHT")){
+    ship.x += 5;
+  }
+    if (keysDown.includes("LEFT")){
+    ship.x -= 5;
+  }
+  });
+  //Blocking Commands
+  forever (() => {
+    if (ship.x > maxX){
+    ship.x = maxX;
+  }
+    if (ship.x < minX){
+    ship.x = minX;
+  }
+    if (ship.y > maxY){
+    ship.y = maxY;
+  }
+    if (ship.y < minY){
+    ship.y = minY;
+  }
+})
+  
+
+
+</script>
+</body>
+</html>

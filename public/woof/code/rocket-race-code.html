@@ -1,0 +1,133 @@
+<head>
+  <script src="https://cdn.jsdelivr.net/gh/stevekrouse/WoofJS@cb6d0621/dist/woof.js"></script>
+    <script>
+    
+     //Rocket Race
+    
+    // Creates a variable "rocket"
+    var rocket = new Image({
+        url: "../images/rr-rocket.png",
+        height: 60,
+        width: 120,
+        y: -150
+    })
+    rocket.turnLeft(90)
+    
+    // Sets the backrop to an image
+    setBackdropURL("../images/rr-backdrop.jpg")
+    
+    
+    // Changes the "rocket" when the left and right arrow keys are pressed 
+    forever(() => {
+        if (keysDown.includes("LEFT")) {
+            rocket.angle += 5
+        }
+        if (keysDown.includes("RIGHT")) {
+            rocket.angle -= 5
+        }
+    // Makes the "rocket" move when the key "space" is pressed 
+        if (keysDown.includes("SPACE")) {
+            rocket.move(10)
+        }
+    // Makes it so that when the "rocket" passes the edge of the screen, have it appear on the opposite edge
+        if (rocket.x > maxX){rocket.x = minX}
+        if (rocket.x < minX){rocket.x = maxX}
+        if (rocket.y < minY){rocket.y = maxY}
+        if (rocket.y > maxY){rocket.y = minY}
+    })
+    
+    // Cloning score sprites
+    // Creates the array "stars"
+    var stars = []
+    every(2, "seconds", () => {
+        var star = new Image({
+            url: "../images/rr-star.png",
+            height: 50,
+            width: 50,             // Creates a new variable "star" every 2 seconds that start at a random xy coordinate
+            x: randomX(),
+            y: randomY()
+        })
+        stars.push(star)     // Pushes the "star" variables into the "stars" array
+    })
+    
+    // Makes it so that if the "rocket" touches any "star" in the "stars" array, the "star" deletes and the variable "score" increases
+    forever(() => {
+        stars.forEach(star => {
+            if (star.touching(rocket)) {
+                star.delete()
+                score++
+            }
+        })
+    })
+    
+    // Creates the variable "score" and starts it at 0, which is displayed through the text variable "score_text"
+    var score = 0
+    var score_text = new Text({
+        text: () => "Score: " + score,
+        color: "rgb(100, 50, 240)",
+        size: 48,
+        x: 0,
+        y: 290,
+        fontFamily: "Impact"
+    })
+    
+    // Creates text variable "instruction_text"
+    var instruction_text = new Text({
+        text: "Use the left and right arrow keys to turn and the space bar to move forward",
+        color: "WHITE",
+        size: 30,
+        x: 0,
+        y: 0,
+        fontFamily: "Arial Black"
+    })
+    // Creates text variable "instruction_text2"
+    var instruction_text2 = new Text({
+        text: "Collect stars and watch out for planets!",
+        color: "WHITE",
+        size: 30,
+        x: 0,
+        y: -40,
+        fontFamily: "Arial Black"
+    })
+    // Hides the "instruction_text"s after 5 seconds
+    after(5, "seconds", () => {instruction_text.showing = false; instruction_text2.showing = false})
+    
+    // Creates variable "gameover"
+    var gameover = new Image({
+            url: "../images/rr-gameover.png",
+            height: 300,
+            width: 500, 
+            x: 0,
+            y: 0
+    })
+    gameover.showing = false    // Starts the game with "gameover" hidden
+    
+    // Obstacle sprite cloning
+    // Creates the array "planets"
+    var planets = []
+    every(10, "seconds", () => {
+        var planet = new Image({
+            url: "../images/rr-planet.png",
+            height: random(50,200),
+            width: 100,
+            x: randomX(),              // Creates new variable "planet" every 10 seconds
+            y: randomY()
+        } )
+        planets.push(planet)     // Pushes every "planet" to the "planets" array
+    })
+    
+    // Makes it so that if any "planet" in the "planets" array touches the "rocket", the "rocket" hides and "gameover" shows
+    forever(() => {
+        planets.forEach(planet => {planet.width = planet.height;
+            if (planet.touching(rocket)) {
+                rocket.showing = false
+                gameover.showing = true
+            }
+        })
+    })
+    instruction_text.sendToFront()
+    instruction_text2.sendToFront()
+    rocket.sendToFront()              // Sends the "instruction_text"s, "rocket", and "gameover" to the front layer
+    gameover.sendToFront()
+    </script>
+</head>

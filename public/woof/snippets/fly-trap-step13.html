@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="https://cdn.jsdelivr.net/gh/stevekrouse/WoofJS@e0c90249/dist/woof.js"></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Fly Trap Step 13</title>
+    </head>
+  
+  <body>
+  
+  <script>
+  setBackdropURL('../images/fly-backdrop.jpg')
+
+  var frog = new Image({
+    url: "../images/fly-frog.png",
+    width: 150,
+    height: 129  ,
+    y: minY + 100,
+    angle: 0
+  })
+  
+ forever(() => {
+    if (keysDown.includes('LEFT')) {
+      frog.x -= 10
+    }
+    if (keysDown.includes('RIGHT')) {
+      frog.x += 10
+    }
+    if (keysDown.includes('UP')) {
+      frog.y += 10
+    }
+    if (keysDown.includes('DOWN')) {
+      frog.y -= 10
+    }
+  })
+  
+  var tongue = new Line({
+    color: "red",
+    width: 5,
+    x: frog.x,
+    y: frog.y,
+    x1: frog.x,
+    y1: frog.y + 100
+  })
+  
+    
+  forever(() => {
+    tongue.x = frog.x
+    tongue.y = frog.y
+    tongue.x1 = frog.x
+  })
+  
+  tongue.sendToBack()
+  
+  forever(() => {
+    if (keysDown.includes('SPACE')) {
+      tongue.y1 += 20
+    } else {
+      tongue.y1 -= 20
+    } 
+    if (tongue.y1 <= frog.y) {
+      tongue.y1 = frog.y
+    }
+    if (tongue.y1 >= maxY) {
+      tongue.y1 = frog.y
+    }
+  })
+  
+   var fly = new Image({
+    url: "../images/fly-fly.png",
+    width: 40,
+    height: 40,
+    x: minX + 40,
+    y: random(minY + 100, maxY - 50)
+  })
+  
+  forever(() => {
+    fly.move(3)
+  })
+  
+  forever(() => {
+    // If tongue touching fly, increase score and bring fly back to random position on left side of screen
+    if (tongue.touching(fly) && !fly.touching(frog)) {
+      score++ 
+      fly.y = random(minY + 100, maxY - 50) 
+      fly.x = minX 
+    }
+  })
+  
+  var score = 0
+  var scoreText = new Text({
+    text: () => "Flies: " + score,
+    size: 20,
+    y: maxY - 30
+  })
+  
+    
+  var lilypad = new Image({
+    url: '../images/fly-lilypad.png',
+    width: 60,
+    height: 60,
+    x: randomX(),
+    y: maxY
+  })
+  
+  forever(() => {
+    lilypad.y -= 5
+    if (lilypad.y < minY) {
+      lilypad.y = maxY
+      lilypad.x = randomX()
+    }
+  })
+  
+  forever(() => {
+    if (fly.x > maxX + 40) {
+      new Text({
+        text: () => "Bye bye fly! Game Over",
+        color: "red",
+        size: 40
+      })
+      freeze()
+    } else
+    if (lilypad.distanceTo(frog) < 80) {
+      new Text({
+        text: () => "Ay Caramba! Game Over",
+        color: "red",
+        size: 40
+      })
+      freeze()
+    }
+  })
+  
+  </script>
+  
+  </body>
+ </html>

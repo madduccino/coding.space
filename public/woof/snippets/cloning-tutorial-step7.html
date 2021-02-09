@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="https://cdn.jsdelivr.net/gh/stevekrouse/WoofJS@d17fa61c/dist/woof.js"></script>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Clone Game Step 7</title>
+</head>
+<body>
+
+<script>
+setBackdropColor("black");
+
+var score = 0;
+var scoreBoard = new Text({
+  text: () => "Score: " + score,
+  color: "white",
+  size: 20,
+  x: maxX - 50,
+  y: maxY - 20
+});
+
+var ghosts = []
+
+every(0.3, "second", () => {
+  var ghost = new Circle({
+    color: "white",
+    radius: 20,
+    x: minX,
+    y: randomY()
+  })
+  ghosts.push(ghost)
+})
+
+forever(() => {
+  ghosts.forEach(ghost => {
+    ghost.move(4)
+  })
+})
+
+</script>
+</body>
+</html>

@@ -1,0 +1,77 @@
+<head>
+    <script src="https://cdn.jsdelivr.net/gh/stevekrouse/WoofJS@cb6d0621/dist/woof.js"></script>
+    <script>
+    
+    //Candyland Escape
+    // Creates a variable "mint"
+    var mint = new Image({
+        url: "../images/candyland-mint.png",
+        height: 200,
+        width: 200,
+        y: -140,
+        x: -400
+    })
+    // Sets the background to an image
+    setBackdropURL("../images/candyland-backdrop.jpg")
+    
+    // Creates a timer that starts at 0 and is dipslayed through the text variable "timer_text"
+    var timer = 0;
+    var timer_text = new Text({
+        text: () => "Score: " + timer,
+        y: 300,
+        fontFamily: "Arial Black",
+        size: 50,
+        color: "#e04386"
+    })
+    every(.1, "seconds", () => {
+        timer++            // Every 1 second, variable "timer" increases by 1
+    })
+     
+    var speed = 0;    // Creates variable speed, which starts at 0
+    var jump = true;  // Creates variable jump, which is true 
+    
+    forever(() => {
+    // Makes it so that "mint" is forever spinning
+        mint.turnRight(5),
+    // Sets "mint"s y position equal to variable "speed"  
+            mint.y += speed
+        if (mint.y > minY + 300) {
+            speed -= .35;        // as long "mint"s y is greater than the minimum y value plus 300, then speed continuously decreases by .35
+            jump = false         // "jump" is now false
+        }
+    // Makes it so that the 
+        if (mint.y < minY + 300) {
+            jump = true
+            speed = 0    // If "mint"s  y value is less than the minimum y value plus 300, then "jump" is true, and "speed" is 0
+        }
+    // sets speed to 20 if key "space" is pressed while "jump" is true
+        if (keysDown.includes('SPACE') && jump == true) {
+            speed = 20
+        }
+    })
+    
+    //  Creates a variable "obstacle"
+    var obstacle = new Image({
+            url: "../images/candyland-obstacle.png",
+            height: 200,
+            width: 200,
+            x: 600,
+      // Makes "obstacle" start at a random y point between 100 and -120
+            y: random(-120, 100)
+        })
+    
+    forever(() => {
+            obstacle.x += (-timer / 20 - 5) - random(1,4) // Make the "obstacle"s x value change at a rate related to the value of timer
+            if (obstacle.x < minX) {
+                obstacle.x = maxX + 100       // Starts the "obstacle" at the right of the screen at a random y point again if it reaches the end of the left side of the screen
+                obstacle.y = random(-120,120)
+            }
+    // Makes the game end if "obstacle" ever touches "mint"
+            if (obstacle.touching(mint)) {
+                obstacle.showing = false;
+                mint.showing = false;
+                freeze()
+            }
+        })
+    </script>
+</head>

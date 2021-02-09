@@ -1,0 +1,380 @@
+<head>    
+  <script src="https://cdn.jsdelivr.net/gh/stevekrouse/WoofJS@cb6d0621/dist/woof.js"></script>
+  <script>
+    // Sets backdrop to image
+    setBackdropURL('../images/bubbles-backdrop.jpeg')
+
+    // Displays introductory text explaining how to play the game
+    var intro1 = new Text({
+      text: () => "It's bubble time!",
+      x: 0,
+      y: maxY - 100,
+      size: 30,
+      color: "black"
+    })
+
+    // Hides first text variable after 3 seconds and shows second
+    var intro2
+      after(3, 'second', () => {
+        intro1.hide()
+        intro2 = new Text({
+        text: () => "Blow bubbles with the 'W' key and pop them with your mouse.",
+        x: 0,
+        y: maxY - 100,
+        size: 30,
+        color: "black"
+     })
+   })
+
+    // Hides second text variable 3 seconds later and shows third
+    var intro3
+     after(6, 'second', () => {
+       intro2.hide()
+       intro3 = new Text({
+         text: () => "Use the 'A' and 'D' keys to move around.",
+         x: 0,
+         y: maxY - 100,
+        size: 30,
+        color: "black"
+      })
+    })
+
+    // Hides third text variable 3 seconds later and shows fourth
+    var intro4
+    after(9, 'second', () => {
+      intro3.hide()
+      intro4 = new Text({
+        text: () => "Catch the candy and put it in the bowl with the down arrow.",
+        x: 0,
+        y: maxY - 100,
+        size: 30,
+        color: "black"
+      })
+    })
+
+    // Hides fourth text variable 3 seconds later and shows fifth
+    var intro5
+      after(12, 'second', () => {
+        intro4.hide()
+        intro5 = new Text({
+        text: () => "Watch out for hot tamales!",
+        color: "black",
+        x: 0,
+        y: maxY - 100,
+        size: 30
+      })
+    })
+
+    // Creates rectangular background to display instructions on during play
+    var instruxBox = new Rectangle({
+      width: 400,
+      height: 250,
+      show: false,
+      y: maxY,
+      x: 0,
+      color: "#F57DA5",
+      showing: false
+    })
+    
+    // Creates text variables to display instructions
+    var instrux1 = new Text({
+      color: "white",
+      x: instruxBox.x - 180,
+      y: maxY - 25,
+      text: () => "A => Move Left",
+      textAlign: "left",
+      showing: false,
+      size: 14
+    })
+
+    var instrux2 = new Text({
+      color: "white",
+      x: instruxBox.x - 180,
+      y: maxY - 45,
+      text: () => "D => Move Right",
+      textAlign: "left",
+      showing: false,
+      size: 14
+    })
+
+    var instrux3 = new Text({
+      color: "white",
+      x: instruxBox.x - 180,
+      y: maxY - 65,
+      text: () => "W => Blow Bubbles",
+      textAlign: "left",
+      showing: false,
+      size: 14
+    })
+
+    var instrux4 = new Text({
+      color: "white",
+      x: instruxBox.x - 180,
+      y: maxY - 85,
+      text: () => "Mouse Click => Pop Bubbles for Candy (Avoid Tamales!)",
+      textAlign: "left",
+      showing: false,
+      size: 14
+    })
+
+    var instrux5 = new Text({
+      color: "white",
+      x: instruxBox.x - 180,
+      y: maxY - 105,
+      text: () => "Down Arrow => Put Candy in Bowl",
+      textAlign: "left",
+      showing: false,
+      size: 14
+    })
+    
+    // Creates circular background to display score on
+    var scoreCircle = new Circle({
+      color: "yellow",
+      radius: 70,
+      x: maxX - 100,
+      y: maxY - 100,
+      showing: false
+    })
+    
+    // Creates score variable
+    var score = 0
+    
+    // Creates text variable to display score
+    var scoreText = new Text({
+      text: () => "Candy Count: " + score,
+      color: "black",
+      size: 16,
+      x: scoreCircle.x,
+      y: scoreCircle.y,
+      showing: false
+    })
+
+
+    // Hides final introductory text, displays instructions that will stay on screen, and shows scoreboard
+    after(15, 'second', () => {
+      intro5.hide()
+      instrux1.show()
+      instrux2.show()
+      instrux3.show()
+      instrux4.show()
+      instrux5.show()
+      instruxBox.show()
+      scoreText.show()
+      scoreCircle.show()
+    })
+
+    // Creates bubble blower sprite
+    var blower = new Image({
+      url: '../images/bubbles-wand.png',
+      width: 100,
+      height: 100,
+      x: minX + 100,
+      y: instruxBox.y - 200
+    })
+
+    // Creates bubble popper sprite
+    var hand = new Image({
+      url: '../images/bubbles-hand.png',
+      width: 25,
+      height: 25
+    })
+
+    // Makes bubble popper sprite follow mouse
+    forever(() => {
+      hand.x = mouseX
+      hand.y = mouseY
+    })
+
+   // Creates randomly sized bubble clones every 100 milliseconds that blow in random directions when W key is pressed
+    var bubbles = []
+    every(0.1, 'second', () => {
+      if (keysDown.includes('W')) {
+        var bubble = new Image({
+          url: '../images/bubbles-bubble.png',
+          width: random(50, 200), 
+          height: random(50, 200), 
+          x: blower.x + 60, 
+          y: blower.y + 60,
+          angle: random(300, 360) 
+        })
+        bubbles.push(bubble)
+      }
+    })
+
+    // Creates sound variable to play when bubbles pop
+    var bubblePop = new Audio('../audio/bubbles-pop.wav')
+
+    // Creates empty arrays to push candy and hot tamale clones into
+    var tamales = []
+    var candies = []
+
+    // Loops through bubble clones
+    forever(() => {
+      bubbles.forEach(bubble => {
+        bubble.move(5) // Makes each bubble clone move continuously
+        if (bubble.mouseOver && mouseDown) { 
+          bubble.delete() // Deletes bubble clone if clicked by mouse
+          bubblePop.play() // Plays bubble pop sound
+          var randomInt = random(1, 2) // Picks random integer between 1 and 2 
+          // Creates candy clone if random integer is 1
+          if (randomInt === 1) { 
+            var candy = new Image({
+              url: '../images/bubbles-candy.png',
+              width: 50,
+              height: 25,
+              x: bubble.x,
+              y: bubble.y
+            })
+            candies.push(candy)
+          }
+          // Creates hot tamale clone if random integer is 2
+          if (randomInt === 2) { 
+            var tamale = new Image({
+              url: '../images/bubbles-tamale.png',
+              width: 25,
+              height: 25,
+              x: bubble.x,
+              y: bubble.y
+            })
+            tamales.push(tamale)
+          }
+        }
+      })
+    })
+
+    // Makes candy and tamale clones fall continuously
+    forever(() => {
+      candies.forEach(candy => {
+        candy.y -= 3
+      })
+      tamales.forEach(candy => {
+        candy.y -= 3
+      })
+    })
+
+    // Creates character sprite
+    var girl = new Image({
+      url: '../images/bubbles-character.png',
+      width: 100,
+      height: 100,
+      y: minY + 100
+    })
+
+
+    // Gives character left and right movement when A and D keys are pressed and sets character rotation style. 
+    forever(() => {
+      girl.setRotationStyle("ROTATE LEFT RIGHT")
+      if (keysDown.includes('D')) {
+        girl.angle = 0
+        girl.x += 10
+      }
+      if (keysDown.includes('A')) {
+        girl.angle =  180
+        girl.x -= 10
+      }  
+      // Keeps the character on the screen
+      if (girl.x > maxX) {
+        girl.x = maxX
+      }
+      if (girl.x < minX) {
+        girl.x = minX
+      }
+    })
+
+
+    // Creates container sprite
+    var bowl = new Image({
+      url: '../images/bubbles-bowl.gif',
+      width: 60,
+      height: 60,
+      x: maxX - 150,
+      y: minY + 60
+    })
+
+    // Creates empty array to push new set of candies into
+    var bowlCandies = []
+    
+    // Loops through candy clones
+    forever(() => {
+      candies.forEach(candy => {
+        // Makes  character "catch" the candy if they are touching
+        if (candy.touching(girl)) {
+          candy.x = girl.x
+          candy.y = girl.y
+          candy.pointTowards(girl)
+          // "Releases" candy into container when down arrow pressed if character is close to container
+          if (keysDown.includes('DOWN') && girl.distanceTo(bowl) < 150) {
+            candy.x = maxX - 50
+            candy.y = minY + 50
+            score++ // Increases score when candy is dropped into container
+            candy.delete() // Deletes candy
+            // Creates new candy clone to stack in container
+            var candyInBowl = new Image({ 
+              url: '../images/bubbles-candy.png',
+              width: 25,
+              height: 25,
+              x: bowl.x,
+              y: bowl.y + score * 5
+            })
+              bowlCandies.push(candyInBowl)
+          }
+        }
+      })
+    })
+
+    // Loops through each tamale clone
+    forever(() => {
+      tamales.forEach(candy => {
+        if (candy.touching(girl)) { 
+          candy.delete() // Deletes tamale clone if touching character
+          score = 0 // Sets score to zero
+          // Changes container costume, then switches back
+          bowl.setImageURL('../images/bubbles-explosion.gif') 
+            after(0.2, 'second', () => {
+              bowl.setImageURL('../images/bubbles-bowl.gif')
+            })
+          bowlCandies.forEach(candy => {candy.delete()}) // Deletes all candy clones in container
+         candies.forEach(candy => {candy.delete()}) // Deletes other set of candy clones on screen
+        }
+      })
+    })
+
+
+    // Creates new bubble sprite
+    var newBubble = new Image({
+      url: '../images/bubbles-bubble.png',
+      width: 120,
+      height: 120,
+      showing: false
+    })
+
+    forever(() => {
+      if (score > 10) {
+        candies.forEach(candy => {candy.delete()}) // Deletes candy clones if score greater than 10
+        tamales.forEach(candy => {candy.delete()}) // Deletes tamale clones
+        // Shows new bubble sprite and makes it move upward with character
+        newBubble.x = girl.x
+        newBubble.y = girl.y
+        newBubble.show()
+        girl.y += 5
+        // Hides score and instructions
+        scoreText.hide()
+        scoreCircle.hide()
+        instruxBox.hide()
+        instrux1.hide()
+        instrux2.hide()
+        instrux3.hide()
+        instrux4.hide()
+        instrux5.hide()
+        hand.hide()
+        new Text({ text: () => "YOU WIN!!!", color: "#F57DA5", size: 80, y: maxY - 100}) // Displays "You Win" message
+        if (girl.y > maxY + 100) { 
+          freeze() // Freezes game once character moves beyond top of screen
+        }
+      }
+    })   
+  </script>
+</head>
+<body>
+    
+</body>

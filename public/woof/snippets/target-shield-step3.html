@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="https://cdn.jsdelivr.net/gh/stevekrouse/WoofJS@cb6d0621/dist/woof.js"></script>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Target Shield Step 3</title>
+</head>
+<body>
+
+<script>
+  // Set backdrop to color white
+  setBackdropColor('white')
+  
+  // Create base sprite
+  var base = new Image({
+    url: "../images/target-base.png",
+    width: 45,
+    height: 45,
+    x: 0,
+    y: 0
+  })
+  
+    // Create blocker sprite
+  var blocker = new Rectangle({
+    height: 37,
+    width: 37,
+    color: "orange"
+  })
+  
+  // Make blocker sprite follow mouse
+  forever(() => {
+    blocker.x = mouseX
+    blocker.y = mouseY
+  })
+  
+    
+  // Create shield
+  var shield = new Rectangle({
+    x: 50,
+    y: 5,
+    length: 10,
+    height: 120
+  })
+  shield.hide()
+  
+  var shield2 = new Rectangle({
+    x: -50,
+    y: 5,
+    length: 10,
+    height: 115
+  })
+  shield2.hide()
+  
+    // Show shield if S is pressed.
+  forever(() => {
+    if (keysDown.includes('S')) {
+      shield.show()
+      shield2.show()
+
+    }
+  })
+  
+</script>
+</body>
+</html>

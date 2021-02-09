@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" >
+
+<head>
+  <meta charset="UTF-8">
+  <title>Javascript Duel pt.2</title>
+  <style>
+  body{
+    background-color:tomato;
+  }
+  canvas{
+    background-color:honeydew;
+  }
+  </style>
+</head>
+<body>
+  <h1>FIGHT!</h1>
+  <p>First to be hit loses.</p>
+  <p>Controls: Red moves with WASD, slashes with E. Blue moves with Arrow Keys, slashes with /.</p>
+  <canvas id="gameCanvas" width=400px height=250px style="border:1px solid"></canvas>
+  <script>
+//Step 1:set up the canvas and contest in javascript
+var myCanvas=document.getElementById("gameCanvas");
+var myContext=myCanvas.getContext("2d");
+
+//Step 2: Create a constructor function and array for players.
+var players=[];
+function Player(initX,initY,width,height,color,name){
+  this.x=initX;
+  this.y=initY;
+  this.w=width;
+  this.h=height;
+  this.c=color;
+  players.push(this);
+  this.airborne=true;
+  this.name=name;
+}
+
+//Step 3: Create two Players
+var playerOne=new Player(10,10,10,10,"red","Player One");
+var playerTwo=new Player(380,10,10,10,"blue","Player Two");
+
+//Step 4:Create a function that loops ~30 times a second
+function cycle(){
+  myContext.clearRect(0,0,myCanvas.width,myCanvas.height);
+  players.forEach(function(player){
+    myContext.fillStyle=player.c;
+    myContext.fillRect(player.x,player.y,player.w,player.h);
+  })
+}
+
+//Step 4: make it loop
+var loop=setInterval(cycle,33);
+  </script>
+
+
+
+
+</body>
+
+</html>

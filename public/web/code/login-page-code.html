@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <!-- Google fonts-->
+  <link href="https://fonts.googleapis.com/css?family=Maven+Pro:900|Open+Sans|Roboto|Roboto+Condensed" rel="stylesheet">
+
+  <!--Meta-->
+  <meta charset="UTF-8" />
+  <title>Build a Login Page with Firebase</title>
+
+  <!-- Prevent zoom out on mobile devices -->
+  <meta name="viewport" content="width=device-width">
+
+  <!--Styles-->
+  <link rel="stylesheet" href="css/login-page.css">
+</head>
+
+<body>
+
+<link href="https://fonts.googleapis.com/css?family=Raleway:500" rel="stylesheet">
+
+<h1 id="header">This site is for members only</h1>
+
+<div id="form">
+<h2 id="message"></h2>
+<div class="row">
+<label class="hide" id="email-label">Email</label> <input class="hide" type="email" name="email" id="email">
+</div>
+<div class="row">
+<label id="password-label" class="hide">Password</label> <input class="hide" type="password" name="password" id="password">
+<p id="error"></p>
+</div>
+
+<div id="buttons">
+  <button id="signup-button">Sign Up</button>
+  <button id="login-button">Log In</button>
+</div>
+
+<p id="account-link"></p>
+<p class="hide" id="reset"><a href="#">Forgot password?</a></p>
+
+ <button id="close" class="hide"><span>&times;</span></button>
+ </div>
+
+<!-- Scripts -->
+<script src="https://www.gstatic.com/firebasejs/5.0.4/firebase.js"></script>
+<script>
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyADYhZH7y1NmEF1OzmDlYK4n5k48x95um0",
+    authDomain: "my-awesome-login-page.firebaseapp.com",
+    databaseURL: "https://my-awesome-login-page.firebaseio.com",
+    projectId: "my-awesome-login-page",
+    storageBucket: "my-awesome-login-page.appspot.com",
+    messagingSenderId: "939265143159"
+  };
+  firebase.initializeApp(config);
+</script>
+  <script src="./js/login-page.js"></script>
+</body>
+
+</html>

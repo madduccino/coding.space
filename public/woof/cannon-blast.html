@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Cannon Blast Game</title>
+	<link href="./projects.css" rel="stylesheet">
+	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	<script type="text/javascript" src="https://unpkg.com/vue"></script>
+</head>
+<body>
+	<div class="container" id="app">
+		
+		<h1><a href="./index.html"><span class="glyphicon glyphicon-arrow-left"></span></a>{{ project }}</h1>
+		
+		<div class="block">
+			<p>{{ header.text }}</p>
+			<br><a target="_blank" :href="header.url">Play this demo in full screen.</a>
+		</div>
+		
+		<div class="block" v-for="step in steps">
+			<p>{{ step.text }}</p>
+			<br><a target="_blank" :href="step.url">Play this demo in full screen.</a>
+		</div>
+		
+	</div>
+
+	<script>
+		var app = new Vue({
+			el: "#app",
+			data: {
+				project: "Cannon Blast",
+				header: {
+					text: "Protect your base from passing enemies by shooting with your cannon!",
+					url: "./code/cannon-blast-code.html"
+				},
+				steps: [
+					{
+						text: "1) Set your background to a color, and create a sprite for the \"road\" your enemies will follow.",
+						url: "./snippets/cannon-blast-step1.html"
+					},
+					{
+						text: "2) Make two rectangle sprites, one for your wall and one for your base. Make sure your base sprite isn't hidden by your wall sprite.",
+						url: "./snippets/cannon-blast-step2.html"
+					},
+					{
+						text: "3) Make a sprite for your cannon, and make it appear in the center of your base.",
+						url: "./snippets/cannon-blast-step3.html"
+					},
+					{
+						text: "4) Make your cannon rotate left and right when you press the left and right arrow keys.",
+						url: "./snippets/cannon-blast-step4.html"
+					},
+					{
+						text: "5) When you press the space bar, have your cannon shoot a weapon.",
+						url: "./snippets/cannon-blast-step5.html"
+					},
+					{
+						text: "6) Have enemies randomly appear on one end of the road and slowly move across the screen when they spawn.",
+						url: "./snippets/cannon-blast-step6.html"
+					},
+					{
+						text: "7) When a bullet hits an enemy, delete the enemy and the bullet.",
+						url: "./snippets/cannon-blast-step7.html"
+					},
+					{
+						text: "8) Make a timer variable that starts at zero and counts upwards.",
+						url: "./snippets/cannon-blast-step8.html"
+					},
+					{
+						text: "9) Make your enemies shoot their own bullets at your base.",
+						url: "./snippets/cannon-blast-step9.html"
+					},
+					{
+						text: "10) When an enemy bullet hits your wall, make the wall shrink, and delete the bullet",
+						url: "./snippets/cannon-blast-step10.html"
+					},
+					{
+						text: "11) Now make the health bar. Make two rectangles -- one for the border, and one for the actual health bar. Optional: create text that says \"Health\".",
+						url: "./snippets/cannon-blast-step11.html"
+					},
+					{
+						text: "12) When an enemy bullet hits the base (when the wall has disappeared), make the health bar shrink. (How can you make it shrink but keep it in the same spot?).",
+						url: "./snippets/cannon-blast-step12.html"
+					},
+					{
+						text: "13) When the health bar gets to 50%, change the color to yellow.",
+						url: "./snippets/cannon-blast-step13.html"
+					},
+					{
+						text: "14) When the health bar gets to 25%, change the color to red.",
+						url: "./snippets/cannon-blast-step14.html"
+					},
+					{
+						text: "15) When the health bar gets to 0%, end the game.",
+						url: "./snippets/cannon-blast-step15.html"
+					},
+					{
+						text: "16) Now customize your game! For example, make more enemies appear as the timer increases; make different types of enemies; make powerups that let you shoot faster -- anything you want!",
+						url: "./code/cannon-blast-code.html"
+					}
+				]
+			}
+		});
+		
+		
+	</script>
+
+</body>
+</html>

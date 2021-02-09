@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="https://cdn.jsdelivr.net/gh/stevekrouse/WoofJS@cb6d0621/dist/woof.js"></script>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Golf Step 1</title>
+</head>
+<body>
+
+<script>
+    // Woof Golf
+    // Sets the backdrop to an image
+    setBackdropURL("../images/golf-backdrop.jpg")
+    
+    // Creates variable "ball"
+    var ball = new Circle({
+        color: "WHITE",
+        x: 375,
+        y: -250
+    })
+    // Creates variable "hole"
+    var hole = new Circle({
+        x: -400,
+        y: 300
+    })
+</script>
+</body>
+</html>

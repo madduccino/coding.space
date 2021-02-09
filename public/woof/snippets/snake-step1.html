@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="https://cdn.jsdelivr.net/gh/stevekrouse/WoofJS@cb6d0621/dist/woof.js"></script>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Snake Step 1</title>
+</head>
+<body>
+
+<script>
+// Sets the backdrop to an image
+setBackdropURL("../images/snake-backdrop.png")
+
+// Creates a character "snakeHead"
+var snakeHead = new Circle({radius: 10, x: 0, y: 0, color: "green"});
+forever(() => {
+  snakeHead.move(3)
+})
+
+// Makes it so that if the left and right arrow keys are pressed, "snakeHead" turns left and right
+forever(() => {
+  if (keysDown.includes("LEFT")) {
+    snakeHead.turnLeft(5);
+  }
+  if (keysDown.includes("RIGHT")) {
+    snakeHead.turnRight(5);
+  }
+});
+
+// Makes it so that if the left side of the screen or right side of the screen is clicked, "snakeHead" turns left and right
+forever(() => {
+ if(mouseDown === true && mouseX > 0) {
+   snakeHead.turnRight(5);
+ }
+ if (mouseDown === true && mouseX < 0) {
+   snakeHead.turnLeft(5);
+ }
+})
+    
+
+</script>
+</body>
+</html>

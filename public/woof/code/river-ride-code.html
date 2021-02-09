@@ -1,0 +1,706 @@
+<head>
+  <script src="https://cdn.jsdelivr.net/gh/stevekrouse/WoofJS@cb6d0621/dist/woof.js"></script>
+  <script>
+
+  /*********** Introduction*****************
+  *****************************************/
+  
+  // Store dimensions of screen in variables
+  var screenWidth = maxX - minX
+  var screenHeight = maxY - minY
+  var riverBorderLeft = -(0.4 * screenWidth)
+  var riverBorderRight = 0.4 * screenWidth
+
+  // Create variable that will control the river flow
+  var flow = 0
+
+  // Add intro to game text
+  var introBox = new Rectangle({
+    color: "orange",
+    width: 570,
+    height: 150,
+    x: 0,
+    y: 80
+  })
+  
+  var ruleBox1 = new Rectangle({
+    color: "red",
+    width: 225,
+    height: 120,
+    x: introBox.x - 130,
+    y: introBox.y - 170,
+    showing: false
+  })
+
+  var ruleBox2 = new Rectangle({
+    color: "blue",
+    width: 225,
+    height: 120,
+    x: introBox.x + 130,
+    y: introBox.y - 170,
+    showing: false
+  })
+
+  var intro = new Text({
+    text: () => "Let's go for a river ride!",
+    color: "white",
+    size: 16,
+    x: 0,
+    y: introBox.y
+  })
+
+  // After 1 second, hide intro. Ask player how many players.
+  var playerSelection
+  after(2, 'second', () => {
+    intro.hide()
+    playerSelection = new Text({
+      text: () => "How many players? Type 1 or 2",
+      color: "white",
+      size: 16,
+      x: 0,
+      y: introBox.y
+    })
+  })
+  
+  // Variables initially set as false, will turn true when player number selected
+  var player1Selected = false
+  var player2Selected = false
+
+
+  // If 1 is pressed, choose player 1. Show canoe 1 and timer.
+  var time = 60
+  var timerText = new Text({
+    text: () => "Time: " + time,
+    y: minY + 40,
+    x: minX + 75,
+    size: 16,
+    showing: false
+  })
+  
+  forever(() => {
+    if (keysDown.includes('1')) {
+      canoe1.show()
+      timerText.show()
+      player1Selected = true
+    }
+  })
+  
+  // If 2 is pressed, choose player 2. Show canoe 1 and 2.
+  forever(() => {
+    if (keysDown.includes('2')) {
+      canoe1.show()
+      canoe2.show()
+      player2Selected = true
+    }
+  })
+
+  // Show rules based on 1 player or 2 players
+  var rules
+
+  var ruleText = new Text({
+    text: () => rules,
+    color: "white",
+    size: 16,
+    showing: false,
+    x: 0,
+    y: introBox.y
+  })
+
+  var player1RuleText = new Text({
+    text: () => "Player 1 Controls: Arrow Keys",
+    color: "white",
+    size: 16,
+    showing: false,
+    x: ruleBox1.x,
+    y: ruleBox1.y
+  })
+
+  var player2RuleText = new Text({
+    text: () => "Player2 Controls: WASD",
+    color: "white",
+    size: 16,
+    showing: false,
+    x: ruleBox2.x,
+    y: ruleBox2.y
+  })
+
+  // Initially set to false, will turn true 2 seconds after rules appear
+  var rulesSeen = false
+  
+  // When player number seleected, show rules
+  forever(() => {
+    if (player1Selected || player2Selected) {
+      playerSelection.hide()
+      ruleText.show()
+      rules = "You have 60 seconds to collect 20 coconuts! Use the arrow keys to move."
+      after(2, 'second', () => {
+        rulesSeen = true
+      })
+    }
+    if (player2Selected) {
+      rules = "Bounce your opponent out of the way and be the first to collect 20 coconuts!"
+      ruleBox1.show()
+      ruleBox2.show()
+      player1RuleText.show()
+      player2RuleText.show()
+      after(2, 'second', () => {
+        rulesSeen = true
+      })
+    }
+  })
+
+  // Initially set to false, will turn true when player presses space
+  var confirmed = false
+
+
+  var confirm = new Text({
+    text: () => "Stay away from gators and don't run aground. Got it? Press space.",
+    color: "white",
+    y: ruleText.y - 40,
+    size: 16,
+    showing: false
+  })
+
+  // When rulesSeen turns true, show the confirm text
+  forever(() => {
+    if (rulesSeen) { // Stops confirmed text from being shown before this point
+      confirm.show()
+      if (keysDown.includes('SPACE')) {
+        confirmed = true
+      }
+    }
+  })
+  
+  // Add audio to variable
+  var music =  new Audio('../audio/river-ride.mp3')
+  
+  // Display text asking if music should play
+  var musicSelection = new Text({
+    text: () => "Music? Type Y or N",
+    color: "white",
+    size: 16,
+    showing: false,
+    x: 0,
+    y: introBox.y
+  })
+  
+  // Initially set to false, will turn true when musicSelection shows
+  var musicSeen = false
+  
+  // When confirmed turns true, hide the rules and show musicSelection text
+  forever(() => {
+    if (confirmed) {
+      confirm.hide()
+      ruleText.hide()
+      ruleBox1.hide()
+      ruleBox2.hide()
+      player1RuleText.hide()
+      player2RuleText.hide()
+      musicSelection.show()
+      musicSeen = true
+    }
+  })
+
+  // Initially set to false, will turn true once player selects whether or not to play music
+  var musicSelected = false
+  
+  // Initially set to false, will turn true if player selects music to play
+  var musicOn = false
+
+  forever(() => {
+    if (musicSeen) { // Stops music from being selected before this point
+      // If player types Y, set musicOn to true
+      if (keysDown.includes('Y')) {
+        musicOn = true
+        musicSelected = true
+      }
+      // If player types N, set musicOn to false
+      if (keysDown.includes('N')) {
+        musicOn = false
+        musicSelected = true
+      }
+    }
+  })
+
+  // If musicOn is true, play music
+  forever(() => {
+    if (musicOn) {
+      music.play()
+    }  
+    else {
+      music.pause()
+    }
+  })
+  
+  // Create text sprite so player can toggle music play when clicked
+  var musicToggle = new Text({
+    text: () => "Music On/Off",
+    size: 16,
+    y: minY + 40,
+    x: maxX - 75
+  })
+
+  musicToggle.onMouseDown(() => {
+    if (musicOn === false) {
+      musicOn = true
+    } 
+    else {
+      musicOn = false
+    }
+  })
+
+  // Sets the rate of river flow
+  var flowTime = 1
+
+  // When music choice selected, hide musicSelection text and intro box. 
+  // Set flow to flowTime
+  forever(() => {
+    if (musicSelected) {
+      musicSelection.hide()
+      introBox.hide()
+      flow = flowTime / 2
+    }
+  })
+
+  // Every 15 seconds, increase flowTime by 1
+  every(15, 'second', () => {
+    flowTime++
+  })
+  
+  // If river is flowing, make timer count down.
+  every(1, 'second', () => {
+    if (flow > 0) {
+      time--
+    }
+  })
+
+  /*********** Background*******************
+  *****************************************/
+  
+  // Set backdrop to color
+  setBackdropColor("#00CCCC")
+  
+  // Create tree sprites
+  var treea = new Image({
+    url: '../images/river-tree.png',
+    width: 100,
+    height: 100,
+    x: minX + 150,
+    y: maxY - 120
+  })
+
+  var treeb = new Image({
+    url: '../images/river-tree.png',
+    width: 100,
+    height: 100,
+    x: maxX - 150,
+    y: minY + 120
+  })
+  
+  // Create river sprites
+  var river1 = new Image({
+    url: '../images/river-river1.png',
+    width: screenWidth / 2,
+    height: screenHeight,
+    x: riverBorderLeft,
+    y: minY - screenHeight / 2
+  })
+
+  var river2 = new Image({
+    url: '../images/river-river1.png',
+    width: screenWidth / 2,
+    height: screenHeight,
+    x: riverBorderLeft,
+    y: minY + screenHeight / 2
+  })
+
+  var river3 = new Image({
+    url: '../images/river-river2.png',
+    width: screenWidth / 2,
+    height: screenHeight,
+    x: riverBorderRight,
+    y: minY - screenHeight / 2
+  })
+
+  var river4 = new Image({
+    url: '../images/river-river2.png',
+    width: screenWidth / 2,
+    height: screenHeight,
+    x: riverBorderRight,
+    y: minY + screenHeight / 2
+  })
+  
+  // Push river sprites to river array to create "one" river
+  var river = []
+  river.push(river1, river2, river3, river4)
+  
+  // Send trees to top layer, make them move down by flow, if they pass bottom edge, go to top
+  forever(() => {
+    treea.sendToFront()
+    treeb.sendToFront()
+    treea.y -= flow
+    treeb.y -= flow
+    if (treea.y < minY) {
+      treea.y = maxY
+    }
+    if (treeb.y < minY) {
+      treeb.y = maxY
+    }
+  })
+  
+  // Send river to back layer, make it move down by flow, if it passes bottom edge, go to top
+  forever(() => {
+    river.forEach(item => {
+      item.sendToBack()
+      item.y -= flow
+      if (item.y < minY - screenHeight / 2 + 30) {
+        item.y = maxY + screenHeight / 2 - 50
+      }
+    })
+  })
+  
+  
+  /*********** Player Sprites*******************
+  *************************************************/
+  
+  // Create player 1 canoe sprite
+    var canoe1 = new Image({
+    url: '../images/river-canoe1.png',
+    width: 30,
+    height: 100,
+    x: -25,
+    y: minY + 50,
+    showing: false
+  })
+
+  // Create player 2 canoe sprite
+  var canoe2 = new Image({
+    url: '../images/river-canoe2.png',
+    width: 30,
+    height: 100,
+    x: 25,
+    y: minY + 50,
+    showing: false
+  })
+  
+  // Keep canoes on screen
+  forever(() => {
+    if (canoe1.y < minY) {
+      canoe1.y = minY
+    }
+    if (canoe1.y > maxY) {
+      canoe1.y = maxY
+    }
+    if (canoe2.y < minY) {
+      canoe2.y = minY
+    }
+    if (canoe2.y > maxY) {
+      canoe2.y = maxY
+    }
+  })
+
+
+  // Move player 1 sprite with directional arrows
+  forever(() => {
+    if (keysDown.includes('UP')) {
+      canoe1.angle = 0
+      canoe1.y += 2
+    }
+    else if (keysDown.includes('DOWN')) {
+      canoe1.angle = 0
+      canoe1.y -= 2
+    } 
+    else if (keysDown.includes('LEFT')) {
+      canoe1.angle = 30
+      canoe1.x -= 2
+    } 
+    else if (keysDown.includes('RIGHT')) {
+      canoe1.angle = -30
+      canoe1.x += 2
+    } 
+    else {
+      canoe1.angle = 0
+    }
+  })
+
+  // Move player 2 sprite with WASD keys
+  forever(() => {
+    if (keysDown.includes('W')) {
+      canoe2.angle = 0
+      canoe2.y += 2
+    } 
+    else if (keysDown.includes('S')) {
+      canoe2.angle = 0
+      canoe2.y -= 2
+    } 
+    else if (keysDown.includes('A')) {
+      canoe2.angle = 30
+      canoe2.x -= 2
+    } 
+    else if (keysDown.includes('D')) {
+      canoe2.angle = -30
+      canoe2.x += 2
+    } 
+    else {
+      canoe2.angle = 0
+    }
+  })
+
+  // Create score variables for players
+  var player1Score = 0
+  var player2Score = 0
+
+  // Create text variables to display scores for player 1 and player 2
+  var player1ScoreText = new Text({
+    text: () => "Player 1 Score: " + player1Score,
+    y: maxY - 50,
+    x: minX + 100,
+    size: 20,
+    color: "red",
+    showing: false
+  })
+
+  var player2ScoreText = new Text({
+    text: () => "Player 2 Score: " + player2Score,
+    y: maxY - 50,
+    x: maxX - 100,
+    size: 20,
+    color: "blue",
+    showing: false
+  })
+
+  // If only one player selected, modify text
+  forever(() => {
+    if (player1Selected) {
+      player1ScoreText.text = "Score: " + player1Score
+    }
+})
+ 
+  // Show or hide score text based on how many players selected
+  forever(() => {
+    if (player1Selected) {
+      player1ScoreText.show()
+    }
+    if (player2Selected) {
+      player1ScoreText.show()
+      player2ScoreText.show()
+    }
+  })
+  
+  // Create function for how sprite will behave when it crashes into something
+  var crash = (canoe) => {
+    if (canoe.x < 0) {
+      canoe.move(-10)
+    }
+    if (canoe.x > 0) {
+      canoe.move(10)
+    }
+    repeat(50, () => {
+      canoe.turnLeft(30)
+    })
+    after(1, 'second', () => {
+      canoe.x = 0
+    })
+  }
+  
+  // If either canoe touches river edge, call crash function and set that player's score to 0
+  forever(() => {
+    river.forEach(item => {
+      if (canoe1.touching(item)) {
+        crash(canoe1)
+        player1Score = 0
+      }
+      if (canoe2.touching(item)) {
+        crash(canoe2)
+        player2Score = 0
+      }
+    })
+  })
+
+  // If canoes hit, make them bounce off each other.
+  forever(() => {
+    if (canoe1.touching(canoe2)) {
+      canoe1.pointTowards(canoe2)
+      canoe1.turnLeft(180)
+      canoe1.move(20)
+      canoe1.angle = 0
+      canoe2.pointTowards(canoe1)
+      canoe2.turnLeft(180)
+      canoe2.move(20)
+      canoe2.angle = 0
+      canoe2.move(10)
+    }
+  })
+  
+  /************* Coconut Collection*****************
+  *************************************************/
+  
+  // Create empty array to store coconut objects in.
+  var coconuts = []
+  
+  // Create coconuts every 1 second. 
+  every(random(1, 2), 'second', () => {
+    if (flow > 0) {
+      var coconut = new Image({
+        url: '../images/river-coconut.png',
+        width: 25,
+        height: 25,
+        x: random(riverBorderLeft / 2 + 100, riverBorderRight / 2 - 100),
+        y: maxY + 50
+      })
+    coconuts.push(coconut)
+    }
+  })
+  
+  // Loop through coconuts array
+  forever(() => {
+    coconuts.forEach(coconut => {
+      coconut.y -= flow // Make each coconut move down by flow
+      if (canoe1.touching(coconut)) {
+        player1Score++ // If coconut touching canoe 1, increase player 1 score
+        coconut.delete() // Delete coconut
+        coconuts.remove(coconut) // Remove coconut from coconuts array
+      }
+      if (canoe2.touching(coconut)) {
+        player2Score++ // If coconut touching canoe 2, increase player 2 score
+        coconut.delete() // Delete coconut
+        coconuts.remove(coconut) // Remove coconut from coconuts array
+      }
+      // If coconut moves beyond bottom of screen, delete and remove from array
+      if (coconut.y < minY) {
+        coconut.delete()
+        coconuts.remove(coconut)
+      }
+    })
+  })
+
+  
+  /************* Gator Obstacles*******************
+  *************************************************/
+  
+  // Create empty array to store gator objects in.
+  var gators = []
+
+  // Create gators every 1 or 2 seconds. 
+  every(random(1, 2), 'second', () => {
+    if (flow > 0) {
+      var gator = new Image({
+        url: '../images/river-gator.png',
+        width: 45,
+        height: 25,
+        x: random(-20, 20),
+        y: maxY + 50,
+      })
+    // Make gator angle 0 or 180 at random
+    var randomInt = random(1, 2)
+    if (randomInt == 1) {
+      gator.angle = 0
+    }
+    if (randomInt == 2) {
+      gator.angle = 180
+    }
+    gators.push(gator)
+    }
+  })
+
+  // Loop through gators array
+  forever(() => {
+    gators.forEach(gator => {
+      gator.y -= flow //  // Make each gator move down by flow 
+      gator.setRotationStyle("ROTATE LEFT RIGHT") // Set gator rotation style
+      gator.move(flow * 2) // Make each gator move horizontally by twice the value of flow
+      river.forEach(item => {
+        if (gator.touching(item)) {
+          gator.turnLeft(180) // Make gator turn in opposite direction if it touches river edge
+        }
+      })
+      if (canoe1.touching(gator)) {
+        canoe1.pointTowards(gator) // If canoe 1 touches gator, bounce off gator
+        canoe1.y = minY // Make canoe go to bottom of screen
+        player1Score-- // Decrease player 1 score by 1
+      }
+      if (canoe2.touching(gator)) {
+        canoe2.pointTowards(gator) // If canoe 2 touches gator, bounce off gator
+        canoe2.y = minY // Make canoe go to bottom of screen
+        player2Score -- // Decrease player 2 score by 1
+      }
+      // If gator moves beyond bottom of screen, delete gator and remove from gators array
+      if (gator.y < minY) {
+        gator.delete()
+        gators.remove(gator)
+      }
+    })
+  })
+  
+  // Don't let score go below 0
+  forever(() => {
+    if (player1Score <= 0) {
+      player1Score = 0
+    }
+    if (player2Score <= 0) {
+      player2Score = 0
+    }
+  })
+  
+    
+  /************* Game End*****************
+  *************************************************/
+  
+
+  // Create text to display when game is over
+  var end = new Text({
+    text: "",
+    size: 60,
+    showing: false,
+    color: "#8BFF33"
+  })
+
+  // Send text sprites to top layer
+  forever(() => {
+    player1ScoreText.sendToFront()
+    player2ScoreText.sendToFront()
+    end.sendToFront()
+  })  
+  
+  forever(() => {
+    // If player 1 selected
+    if (player1Selected) {
+      // If player 1 score reaches 20
+      if (player1Score == 20) {
+        end.show() // Show end variable text
+        end.text = "You Win!" // Set end variable text to "You Win"
+        timerText.hide() // Hide timer text
+        player1ScoreText.hide() // Hide Score
+        freeze() // Freeze game
+      } 
+      // If time runs out, display different end message and freeze game
+      else if (time === 0) {
+        end.show()
+        end.text = "Time's up!"
+        player1ScoreText.hide()
+        player2ScoreText.hide()
+        freeze()
+      }
+    }
+  // If 2 players selected, end game when either gets to 10 and wins by at least 1. 
+    else if (player1Score >= 10 && player1Score > player2Score) {
+      end.show()
+      end.text = "Player 1 Wins!" // Display if Player 1 wins
+      player1ScoreText.hide()
+      player2ScoreText.hide()
+      freeze()
+    } 
+    else if (player2Score >= 10 && player2Score > player1Score) {
+      end.show()
+      end.text = "Player 2 Wins!" // Display if Player 2 wins
+      player1ScoreText.hide()
+      player2ScoreText.hide()
+      freeze()
+    }
+  })
+
+  </script>
+</head>
+<body>
+    
+</body>

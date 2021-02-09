@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="https://cdn.jsdelivr.net/gh/stevekrouse/WoofJS@d17fa61c/dist/woof.js"></script>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Clone Game</title>
+</head>
+<body>
+
+<script>
+setBackdropColor("black");
+
+// make score and scoreboard
+var score = 0;
+var scoreBoard = new Text({
+  text: () => "Score: " + score,
+  color: "white",
+  size: 20,
+  x: maxX - 50,
+  y: maxY - 20
+});
+
+// make empty array to hold copies of our "ghost"
+var ghosts = []
+
+// make a new "ghost" every 0.3 seconds, and add it to the array
+every(0.3, "second", () => {
+  var ghost = new Circle({
+    color: "white",
+    radius: 20,
+    x: minX,
+    y: randomY()
+  })
+  ghosts.push(ghost)
+})
+
+
+forever(() => {
+  // use forEach() to access all the ghosts in the array
+  ghosts.forEach(ghost => {
+    // move the ghost
+    ghost.move(4)
+    // get rid of the ghost if it goes off-screen
+    if (ghost.x > maxX) {
+      ghost.delete()
+      ghosts.remove(ghost)
+    }
+    // get rid of the ghost and get a point if you mouseover
+    if (ghost.mouseOver) {
+      ghost.delete()
+      ghosts.remove(ghost)
+      score++
+    }
+  })
+})
+
+</script>
+</body>
+</html>

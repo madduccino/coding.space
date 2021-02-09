@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="https://cdn.jsdelivr.net/gh/stevekrouse/WoofJS@d17fa61c/dist/woof.js"></script>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Cannon Blast Step 5</title>
+</head>
+<body>
+
+<script>
+setBackdropColor("#74A358")
+
+var path = new Rectangle({
+  width: width,
+  height: 55,
+  color: "#F5DEB3",
+  y: -100
+})
+
+var baseWall = new Rectangle({
+  width: 100,
+  height: 100,
+  color: "#666"
+})
+
+var baseMain = new Rectangle({
+  width: 75,
+  height: 75,
+  color: "#BBB"
+})
+
+var cannon = new Image({
+  url: "../images/canon-canon.png",
+  height: 50,
+  width: 50,
+  angle: DOWN
+})
+
+forever(() => {
+  if (keysDown.includes('left') && cannon.angle > 180) {
+    cannon.turnRight(5)
+  }
+  if (keysDown.includes('right') && cannon.angle < 360) {
+    cannon.turnLeft(5)
+  }
+  
+  playerBullets.forEach(bullet => {
+    bullet.move(3)
+  })
+  
+})
+
+var playerBullets = []
+onKeyDown(() => {
+  if (keysDown.includes('space')) {
+    var wpn = new Circle({
+      radius: 5,
+      color: "#5D67DB",
+      angle: cannon.angle
+    })
+    wpn.move(29)
+    playerBullets.push(wpn)
+  }
+})
+
+</script>
+</body>
+</html>

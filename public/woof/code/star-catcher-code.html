@@ -1,0 +1,74 @@
+<head>
+  <script src="https://cdn.jsdelivr.net/gh/stevekrouse/WoofJS@cb6d0621/dist/woof.js"></script>
+    <script>
+     //Star Spotter - Final 
+
+    // Creates variable "ball", and starts it at a random xy coordinate
+    var ball = new Circle({
+        x: randomX(),
+        y: randomY(),
+        radius: 30,      // Sets "ball" radius to 30, that's white
+        color: "white",
+    });
+    
+    // Sets backdrop to an image
+    setBackdropURL("../images/starcatcher-backdrop.jpg");
+    
+    // Creates audio variable "pop"
+    var pop = new Audio('../audio/starcatcher-pop.wav')
+    ball.onMouseDown(() => {
+        ball.x = randomX();          // Makes it so that if variable "ball" is clicked, its color, radius and xy coordinates change randomly
+        ball.color = randomColor();
+        ball.y = randomY();
+        ball.radius = random(10, 100);
+      // Increases variable "score" by 1 when "ball" is clicked, and variable "pop" is played
+        score++;
+        pop.play()
+    })
+    
+    // Creates variable "score" and sets it to 0
+    var score = 0;
+    var scoretext = new Text({
+        x: 0,
+        y: maxY - 100,              // Creates text variable "scoretext" that displayes the value of variable "score"
+        size: 40,
+        color: "white",
+        fontFamily: "Audiowide",
+        text: () => "Score: " + score
+    })
+    
+    // Creates variable "timer" and sets it to 21
+    var timer = 21;
+    var timertext = new Text({
+        x: 0,
+        y: maxY - 50,              // Creates text variable "timertext" that displays the value of variable "timer"
+        size: 40,
+        color: "white",
+        fontFamily: "Audiowide",
+        text: () => "Time Left: " + timer
+    })
+    
+    // 
+    every(1, "second", () => {
+        if (timer === 0) {
+            ball.showing = false;
+            scoretext.showing = false;    // Every 1 second, checks to see if variable timer is equal to 0. If equal to 0, then variables "ball", "scoretext", and "timertext" hide, and variable "gameovertext" shows.
+            timertext.showing = false;
+            gameovertext.showing = true;
+            stopAll();
+        }
+        timer--;                          // Else if variable timer doesn't equal 0, variable "timer" is decreased by 1
+    });
+    
+    // Creates text variable "gameovertext" 
+    var gameovertext = new Text({
+        x: 0,
+        y: 0,
+        size: 60,
+        color: "white",
+        fontFamily: "Audiowide",
+        text: () => "Good game! Your score was: " + score
+    })
+    gameovertext.showing = false   // Starts the game by hiding the game over text
+    </script>
+</head>

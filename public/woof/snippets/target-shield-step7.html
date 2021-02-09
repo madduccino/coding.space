@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="https://cdn.jsdelivr.net/gh/stevekrouse/WoofJS@cb6d0621/dist/woof.js"></script>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Target Shield Step 7
+  </title>
+</head>
+<body>
+
+<script>
+  // Set backdrop to color white
+  setBackdropColor('white')
+  
+  // Create base sprite
+  var base = new Image({
+    url: "../images/target-base.png",
+    width: 45,
+    height: 45,
+    x: 0,
+    y: 0
+  })
+  
+    // Create blocker sprite
+  var blocker = new Rectangle({
+    height: 37,
+    width: 37,
+    color: "orange"
+  })
+  
+  // Make blocker sprite follow mouse
+  forever(() => {
+    blocker.x = mouseX
+    blocker.y = mouseY
+  })
+  
+    
+  // Create shield
+  var shield = new Rectangle({
+    x: 50,
+    y: 5,
+    length: 10,
+    height: 120
+  })
+  shield.hide()
+  
+  var shield2 = new Rectangle({
+    x: -50,
+    y: 5,
+    length: 10,
+    height: 115
+  })
+  shield2.hide()
+  
+   // Show shield if S is pressed. Delete after 4 seconds.
+  forever(() => {
+    if (keysDown.includes('S')) {
+      shield.show()
+      shield2.show()
+      after(4, 'seconds', () => {
+        shield.delete()
+        shield2.delete()
+        shieldText.text = "shield time used up" // Change shield instructions
+      })
+    }
+  })
+  
+    
+  // Create text variable to display shield instructions
+  
+  var shieldText = new Text({
+    text: "Press 'S' for shield - 1 time use",
+    x: 137,
+    y: 230,
+    color: "green"
+  })
+  
+     
+  // Create health variable, start at 100, and display on screen
+  var health = 100
+  new Text({
+    text: () => "health: " + health,
+    x: 0,
+    y: 200,
+    size: 20
+  })
+  
+  // Create empty array to push clones into
+  var clones = []
+  
+  // Create red circle clone
+  every(1, "seconds", () => {
+    var clone = new Circle({
+        radius: 11,
+        color: "red",
+        x: 0,
+        y: 0
+      })
+    // Movement & Damage
+    clonespawn(clone) // Call clonespawn function
+    clones.push(clone) // Push clones into clones array
+    forever(() => {
+      clone.move(1) // Set initial speed to 1
+      if (clone.touching(base)) {
+        health -= 5 // Decrease health by 5 if clones touches base
+        clone.delete() // Delete clone
+      }
+    })
+  })
+  
+  
+  forever(() => {
+    clones.forEach(clone => {
+      // Point clone towards base
+      clone.pointTowards(base)
+      // Delete clone if it touches blocker and remove from clones array
+      if (clone.touching(blocker)) {
+        clone.delete()
+        clones.remove(clone)
+      }
+    })
+  })
+  
+  // Start clones at random spots along edge of screen
+  function clonespawn(clone) {
+    var edge = random(1, 4)
+    if (edge == 1) {
+      clone.y = maxY
+      clone.x = randomX()
+    }
+    if (edge == 2) {
+      clone.x = minX
+      clone.y = randomY()
+    }
+    if (edge == 3) {
+      clone.y = minY
+      clone.x = randomX()
+    }
+    if (edge == 4) {
+      clone.x = maxX
+      clone.y = randomY()
+    }
+  }
+
+  
+</script>
+</body>
+</html>

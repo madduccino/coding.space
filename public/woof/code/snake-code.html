@@ -1,0 +1,234 @@
+<head>
+  <script src="https://cdn.jsdelivr.net/gh/stevekrouse/WoofJS@cb6d0621/dist/woof.js"></script>
+    <script>
+     // Snake Game | Full Game
+
+    // Sets the backdrop to an image
+    setBackdropURL("../images/snake-backdrop.png")
+    
+    // Creates a character "snakeHead"
+    var snakeHead = new Circle({radius: 10, x: 0, y: 0, color: "green"});
+    
+    // Makes it so that if the left and right arrow keys are pressed, "snakeHead" turns left and right
+    forever(() => {
+      if (keysDown.includes("LEFT")) {
+        snakeHead.turnLeft(5);
+      }
+      if (keysDown.includes("RIGHT")) {
+        snakeHead.turnRight(5);
+      }
+    });
+    
+    // Makes it so that if the left side of the screen or right side of the screen is clicked, "snakeHead" turns left and right
+    forever(() => {
+     if(mouseDown === true && mouseX > 0) {
+       snakeHead.turnRight(5);
+     }
+     if (mouseDown === true && mouseX < 0) {
+       snakeHead.turnLeft(5);
+     }
+    })
+    
+    // Creates variable "score" (set to 0), which is then displayed through text variable "scoreText"
+    var score = 0;
+    var scoreText = new Text({text: () => "Score: " + score, x: 0, y: maxY - 50, size: 30})
+    
+    
+    //Food Cloning
+    var foodArray = []  // Creates array "foodArray" to store clones
+    every(2, "seconds", () => {  // Creates a new clone every 2 seconds
+      var food = new Circle({radius: 5, color: "purple"})   // Creates variable "food" that will be cloned
+      food.x = randomX()
+      food.y = randomY()            // Sets the clone's xy coordinates to a random spot along the screen 
+      foodArray.push(food)     // Pushes each "food" clone into the array "foodArray"
+    });
+    
+    
+    //Increases "score" by one if "snakeHead" touches anything in the "foodArray" array
+    forever(() => {
+      foodArray.forEach(food => {
+        if (food.touching(snakeHead)) {
+          score++
+        }
+      })
+    })
+    
+    //Body creation
+    var bodyArray = []  // Creates array "bodyArray" to store clones
+    forever(() => {
+      foodArray.forEach(food => {
+        if(food.touching(snakeHead)) {
+          var body = new Circle({radius: 5, x: snakeHead.x, y: snakeHead.y, color: "green"}); // Creates a new "body" clone each time "snakeHead" touches a "food" clone
+          bodyArray.push(body);  // Pushes "body" to array "bodyArray"
+          food.delete()  // Deletes "food" clones when "snakeHead" touches them
+        }
+      }) 
+    })
+    
+    //Index for body following the previously made piece
+    var follow_distance  // Creates variable "follow_distance"
+    
+    forever(() => {
+      bodyArray.forEach((piece, index) => {  // Creates an index for the array "bodyArray"
+        var following;  // Creates variable "following" 
+        if (index === 0){
+          following = snakeHead  // Makes it so that if "index" equals 0, then "following" equals "snakeHead" (the pieces follow "snakeHead")
+          
+        } else {
+          following = bodyArray[index - 1] // Makes it so that if "index" is at anything else, then "following" equals "bodyArray"s current "index" minus 1 (the pieces follow the previous piece)
+        }
+        if(piece.distanceTo(following) > 27) {  // Sets up code for the situation when a "piece"s distance to whatever "following" is is greater than 27
+          piece.pointTowards(following);  // Makes the "piece" point towards whatever "following" currently is
+          piece.move(2.5)     // Makes each piece move at the rate of "difficulty"
+        }
+      })
+    })  
+    
+    // Code for "snakeHead" touching the "body"
+    var touchable_bodyArray = []  // Creates array "touchable_bodyArray"
+    
+    forever(() => {
+      bodyArray.forEach(body => {
+         after(1, "seconds", () => {
+          if (snakeHead.touching(body)) {
+          gameover.showing = true
+          freeze()            // after 1 second, if anything in "bodyArray" is touching "snakeHead", the game ends
+          }
+         })
+      })
+    })
+    
+    // Creates obstacles for the snake to avoid
+    var borderTop = new Rectangle({height: 50, width: 3000, x: 0, y: maxY, color: "brown"})
+    var borderBottom = new Rectangle({height: 50, width: 3000, x: 0, y: minY, color: "brown"})
+    var borderLeft = new Rectangle({height: 2000, width: 50, x: minX, y: 0, color: "brown"})
+    var borderRight = new Rectangle({height: 2000, width: 50, x: maxX, y: 0, color: "brown"})
+    
+    var innerTop = new Rectangle({height: 25, width: 400, x: 0, y: 150, color:"brown"})
+    var innerBottom = new Rectangle({height: 25, width: 400, x: 0, y: -150, color:"brown"})
+    var innerLeft = new Rectangle({height: 170, width: 25, x: -300, y: 0, color:"brown"})
+    var innerRight = new Rectangle({height: 170, width: 25, x: 300, y: 0, color:"brown"})
+    
+    var branchTop = new Rectangle({height: 50, width: 25, x: 0, y: maxY - 90, color:"brown"})
+    var branchBottom = new Rectangle({height: 50, width: 25, x: 0, y: minY + 90, color:"brown"})
+    var branchLeft = new Rectangle({height: 25, width: 130, x: -500, y: 0, color:"brown"})
+    var branchRight = new Rectangle({height: 25, width: 130, x: 500, y: 0, color:"brown"})
+    
+    // Creates variable "gameover" and sets it to an image
+    var gameover = new Image({url:"../images/gameover.png", width: 500, height: 250, showing: false})
+    
+    // Makes it so that if "snakeHead" touches any of the obstacles, "gamover" shows, and the game freezes
+    forever(() => {
+      if(snakeHead.touching(borderTop) || snakeHead.touching(borderBottom) || snakeHead.touching(borderLeft) || snakeHead.touching(borderRight) || snakeHead.touching(innerTop) || snakeHead.touching(innerBottom) || snakeHead.touching(innerLeft) || snakeHead.touching(innerRight) || snakeHead.touching(branchTop) || snakeHead.touching(branchBottom) || snakeHead.touching(branchLeft) || snakeHead.touching(branchRight)) {
+        gameover.showing = true
+        freeze()
+      }
+    })
+    
+    // Prevents any "food" from the array "foodArray" from spawning inside any of the obstacles
+    forever(() => {
+      foodArray.forEach(food => {
+        if (food.touching(borderTop) || food.touching(borderBottom) || food.touching(borderLeft) || food.touching(borderRight) || food.touching(innerTop) || food.touching(innerBottom) || food.touching(innerLeft) || food.touching(innerRight) || food.touching(branchTop) || food.touching(branchBottom) || food.touching(branchLeft) || food.touching(branchRight)) {
+          food.delete()
+        }
+      }) 
+    })
+    
+    // Freezes the game at the start
+    var gamestart = false   // Creates variable "gamestart" and sets it to false
+    forever(() => {
+      if (gamestart === false){   // If "gamestart" is false, then "snakeHead"s movement is set to 0
+        snakeHead.move(0)
+      } else if (gamestart === true) {
+        snakeHead.move(2.5)    // If "gamestart" is true, then "snakeHead"s movement is set to "difficulty"
+      }
+    })
+      
+    // Creates the text variable "gameStartText"
+    var gameStartText = new Text ({y: 115, size: 30, color: "blue", text: "Press space to start and 'r' to restart if you lose"})
+    
+    // Game starting commands
+    onKeyDown(key => {
+     if (key == 'SPACE') {    // When the 'space' key is pressed...
+       gamestart = true       // "gamestart" is set to true
+       snakeHead.x = 0        
+       snakeHead.y = 0        // "snakeHead"s xy coordinates are set to 0
+       gameStartText.showing = false  // "gameStartText" hides
+      }
+    })
+    
+    // Restart commands
+    forever(() => {
+      if(keysDown.includes("R")) {   // When key 'r' is pressed...
+         gameover.showing = false    // "gameover" hides
+         snakeHead.x = 0            
+         snakeHead.y = 0             // "snakeHead"s xy coordinates are set to 0
+         score = 0                   // "score" is reset to 0
+         bodyArray.forEach(body => {
+           body.delete()             // Deletes each "body" in "bodyArray", and empties the array
+           bodyArray = []
+         })
+         foodArray.forEach (food => {
+           food.delete()             // Deletes each "food" in "foodArray", and empties the array
+           foodArray = []
+         })
+           bodyArray.forEach((piece, index) => {
+             following = snakeHead   // Sets the "bodyArray" index back to having "following" equal "snakeHead"
+           })
+         defrost()                   // Unfreezes the game
+         }
+    })
+    
+    // // Creates two variables "difficulty" and "modifier" and sets "modifier" to 0
+    // var difficulty
+    // var modifier = 0
+    
+    // // Increases and decreases "modifier" by one when the 'up' (increases) and 'down' (decreases) arrow keys are pressed
+    // onKeyDown(key => {
+    //  if (key == 'UP') {
+    //    modifier++
+    //   }
+    // })
+    // onKeyDown(key => {
+    //  if (key == 'DOWN') {
+    //    modifier--
+    //   }
+    // })
+    
+    // // Makes "difficulty" equal to the current value of "modifier" plus 2.5
+    // forever(() => {
+    // difficulty = 2.5 + modifier
+    // })
+    
+    // // Creates variable "diff"
+    // var diff
+    
+    // forever(() => {
+    //   if (difficulty == 2.5) {
+    //     diff = "easy"             // If difficulty is equal to 2.5 (modifier = 0), then "diff" is set to text "easy"
+    //   }
+    //   if (difficulty == 3.5) {
+    //     diff = "medium"           // If difficulty is equal to 3.5 (modifier = 1), then "diff" is set to text "medium"
+    //   }
+    //   if (difficulty == 4.5) {
+    //     diff = "hard"             // If difficulty is equal to 4.5 (modifier = 2), then "diff" is set to text "hard"
+    //   }
+    //   if (difficulty == 5.5) {
+    //     diff = "impossible"       // If difficulty is equal to 5.5 (modifier = 3), then "diff" is set to text "impossible"
+    //   }
+    //   if (difficulty < 2.5) {
+    //     diff = "You're going way too slow, speed up!"  // If difficulty is less than 2.5 (modifier = x<0), then "diff" is set to text "You're too slow..."
+    //   }
+    //   if (difficulty > 5.5) {
+    //     diff = "Woah, that's fast, slow down!"      // If difficulty is greater than 5.5 (modifier = x>4), then "diff" is set to text "Woah, that's fast..."
+    //   } 
+    // })
+    
+    // // Creates text variable "difficulty_text" which displays variable "diff"
+    // var difficulty_text = new Text({text: () => "Difficulty: " + diff, x: 0, y: minY + 40, size: 30, color: "black"})
+    
+    </script>
+</head>
+<body>
+    
+</body>

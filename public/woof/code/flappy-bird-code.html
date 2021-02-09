@@ -1,0 +1,78 @@
+<head>
+    <script src="https://cdn.jsdelivr.net/gh/stevekrouse/WoofJS@cb6d0621/dist/woof.js"></script>
+    <script>
+    // Flappy Bird
+    
+    // Sets backdrop to the flappy bird background
+    setBackdropURL("../images/flappybird-backdrop.png")
+    
+    // Creates the sprite "bird"
+    var bird = new Image({url: "../images/flappybird-bird.png", height: 30, width: 45, x: 0, y: 0, setRotationStyle: "NO ROTATE"});
+    
+    // Creates the text sprite "game_over"
+    var game_over = new Text({x: 0, y: 0, size: 50, text: "GAME OVER", color: "red", showing: false});
+    game_over.sendToFront()  // Sends sprite "game_over" to the front layer so it shows above the "pipe_" sprites
+    
+    // Makes the sprite "bird" fall along the y-axis at constant unit 2
+    forever(() => {
+      bird.y -= 4;
+    });
+    
+    // Makes the sprite "bird" move up 70 units each time the mouse is clicked
+    onMouseDown(() => {
+      bird.setRotationStyle("NO ROTATE")
+      bird.angle = UP;
+      bird.move(70);
+    });
+    
+    // If the sprite "bird" reaches the bottom of the screen (y < minY), new Text stating "GAME OVER" is created
+    forever(() => {
+      if (bird.y < minY) {
+      game_over.showing = true;
+      }
+    });
+    
+    
+    //Pipe cloning
+    pipes = []
+    every(2, "seconds", () => {  // Creates a new pipe_1 and pipe_2 every 2 seconds
+      var pipe_1 = new Image({url: "../images/flappybird-pipe1.png", height: 500, width: 100, y: random (minY, -50), x: maxX});
+      var pipe_2 = new Image({url: "../images/flappybird-pipe2.png", height: 500, width: 100, y: pipe_1.y + 650, x: maxX});
+      pipes.push(pipe_1);
+      pipes.push(pipe_2);  // Pushes "pipe_" sprites to the "pipes" array
+    });
+    
+    forever(() => {
+      pipes.forEach(pipe => {
+        pipe.x -= 3          // Moves each "pipe" in the "pipes" array leftward along the x-axis
+        if (pipe.x < minX) {
+          pipe.delete();     // Makes a "pipe" in the "pipes" array delete if it reaches the end of the left screen
+        }
+      })
+    });
+    
+    //Touching
+    forever(() => {
+      pipes.forEach(pipe => {
+        if (pipe.touching(bird)) {
+          game_over.showing = true;  // Makes it so that if the sprite "bird" touches any "pipe" in the "pipes" array, the sprite "game_over" shows
+          freeze()
+        }
+      })
+    });
+    
+    //Score
+    var score = 0
+    var scoreText = new Text ({size: 30, x: minX + 70, y: maxY - 30, text: () => "SCORE: " +score})  // Sets the variable "score" to 0, and var "scoreText" displays the value of var "sore"
+    forever(() => {
+      pipes.forEach(pipe => {
+        if (pipe.x < bird.x && pipe.x > bird.x - 2) {  // Increases the score by 1 if any "pipe" in array "pipes" reaches an xy coordinate between the sprite "bird" x and the sprite "bird" x - 2
+          score += 0.5;                                // > (If the bird manages to get through the pipe)
+        }
+      })
+    });
+    </script>
+</head>
+<body>
+    
+</body>

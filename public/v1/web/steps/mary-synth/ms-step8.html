@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" >
+
+<head>
+  <meta charset="UTF-8">
+  <title>Mary Had a Little Synth - Step 8</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.4.9/Tone.js"></script>
+  <style type="text/css">
+  .key{
+    display:inline-block;
+    border: 1px solid black;
+    background-color: blue;
+    padding: 30px;
+}
+  </style>
+</head>
+<body>
+  <div class="key" id="C"></div>
+  <div class="key" id="D"></div>
+  <div class="key" id="E"></div>
+</body>
+<script>
+  var synth = new Tone.Synth().toMaster();
+  var cNote = document.getElementById("C")
+  var dNote = document.getElementById("D")
+  var eNote = document.getElementById("E")
+  
+  document.addEventListener("keydown",keypressed)
+
+  function keypressed(key) {
+    switch(key.keyCode) {
+      case 65:  
+        cNote.style.backgroundColor="red"
+        synth.triggerAttackRelease("C4", "8n");
+        break;
+      case 83:
+        dNote.style.backgroundColor="red"
+        synth.triggerAttackRelease("d4", "8n");
+        break;
+      case 68:
+        eNote.style.backgroundColor="red"
+        synth.triggerAttackRelease("e4", "8n");
+        break;
+    }
+  }
+</script>
+</html>

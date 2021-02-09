@@ -1,0 +1,321 @@
+  <head>
+  <script src="https://cdn.jsdelivr.net/gh/stevekrouse/WoofJS@cb6d0621/dist/woof.js"></script>
+  <script>
+  
+  // Set backdrop to color white
+  setBackdropColor('white')
+  
+  // Create base sprite
+  var base = new Image({
+    url: "../images/target-base.png",
+    width: 45,
+    height: 45,
+    x: 0,
+    y: 0
+  })
+  
+  // Create shield
+  var shield = new Rectangle({
+    x: 50,
+    y: 5,
+    length: 10,
+    height: 120
+  })
+  shield.hide()
+  
+  var shield2 = new Rectangle({
+    x: -50,
+    y: 5,
+    length: 10,
+    height: 115
+  })
+  shield2.hide()
+  
+  // Create text variable to display shield instructions
+  var shieldText = new Text({
+    text: "Press 'S' for shield - 1 time use",
+    x: 137,
+    y: 230,
+    color: "green"
+  })
+  
+  // Show shield if S is pressed. Delete after 4 seconds.
+  forever(() => {
+    if (keysDown.includes('S')) {
+      shield.show()
+      shield2.show()
+      after(4, 'seconds', () => {
+        shield.delete()
+        shield2.delete()
+        shieldText.text = "shield time used up" // Change shield instructions
+      })
+    }
+  })
+  
+  // Create blocker sprite
+  var blocker = new Rectangle({
+    height: 37,
+    width: 37,
+    color: "orange"
+  })
+  
+  // Make blocker sprite follow mouse
+  forever(() => {
+    blocker.x = mouseX
+    blocker.y = mouseY
+  })
+  
+  // Create timer variable
+  var timer = 0
+  
+  // Increase timer by 1 every second
+  every(1, 'second', () => {
+    timer += 1
+  })
+  
+  // Display timer on screen
+  new Text({
+    text: () => "Time: " + timer,
+    x: 0,
+    y: 230,
+  })
+  
+  // Reset health to 100 every 30 seconds
+  every(30, "seconds", () => {
+    health = 100
+  })
+  
+  // Create health variable, start at 100, and display on screen
+  var health = 100
+  new Text({
+    text: () => "health: " + health,
+    x: 0,
+    y: 200,
+    size: 20
+  })
+  
+ 
+  // Create empty array to push clones into
+  var clones = []
+  
+  // Create red circle clone
+  every(1, "seconds", () => {
+    var clone = new Circle({
+        radius: 11,
+        color: "red",
+        x: 0,
+        y: 0
+      })
+    // Movement & Damage
+    clonespawn(clone) // Call clonespawn function
+    clones.push(clone) // Push clones into clones array
+    forever(() => {
+      if (timer < 30) {
+        clone.move(1) // Move by 1 if timer less than 30
+      }      
+      else if (timer.between(30, 60)) {
+        clone.move(2.6) // Increase speed it timer between 30 & 60
+      }
+      else if (timer > 60) {
+        clone.move(4.5) // Increase speed if timer greater than 60
+      }  
+      if (clone.touching(base)) {
+        health -= 5 // Decrease health by 5 if clones touches base
+        clone.delete() // Delete clone
+        clones.remove(clone) // Remove clone from clones array
+      }
+    })
+  })
+  
+  // Create green circle clone
+  every(1, 'seconds', () => {
+    var clone2 = new Circle({
+      radius: 7,
+      color: "green",
+      x: 0,
+      y: 0
+    })
+    clonespawn(clone2) // Call clonespawn function
+    clones.push(clone2) // Push clone into clones array
+    //Movement & Damage
+    forever(() => {
+      if (timer < 30) {
+          clone2.move(2.7) // Move by 2.7 if timer less than 30
+      }      
+      else if (timer.between(30, 60)) {
+          clone2.move(4.7) // Increase speed it timer between 30 & 60
+      }
+      else if (timer > 60) {
+          clone2.move(8) // Increase speed if timer greater than 60
+      }
+      if (clone2.touching(base)) {
+        health -= 5 // Decrease health by 5 if clones touches base
+        clone2.delete() // Celete clone
+        clones.remove(clone2) // Remove clone from clones array
+      }
+    })
+  })
+  
+  // Create blue rectange clone
+  every(1, 'seconds', () => {
+    var clone3 = new Rectangle({
+      length: 70,
+      width: 40,
+      color: "blue",
+      x: 0,
+      y: 0
+    })
+    clonespawn(clone3) // Call clonespawn function
+    clones.push(clone3) // Push clone into clones array
+    //Movement & Damage
+    forever(() => {
+      if (timer < 30) {
+        clone3.move(1.4) // Move by 1.4 if timer less than 30
+      }      
+      else if (timer.between(30, 60)) {
+        clone3.move(3.1) // Increase speed if timer between 30 & 60
+      }
+      else if (timer > 60) {
+        clone3.move(5.1) // Increase speed if timer greater than 60
+      }
+      if (clone3.touching(base)) {
+        health += -10 // Decrease health by 10 if clone touches base
+        clone3.delete() // Delete clone if clone touches base
+        clones.remove(clone3)
+      }
+    })
+  })
+  
+  forever(() => {
+    clones.forEach(clone => {
+      // Point clone towards base
+      clone.pointTowards(base)
+      // Delete clone if it touches blocker and remove from clones array
+      if (clone.touching(blocker)) {
+        clone.delete()
+        clones.remove(clone)
+      }
+      // Delete clone if it touches shield and remove from clones array
+      if (clone.touching(shield)) {
+        clone.delete()
+        clones.remove(clone)
+      }
+      if (clone.touching(shield2)) {
+        clone.delete()
+        clones.remove(clone)
+      }
+      // If timer reaches 30, clear screen of clones & remove from clones array
+      if (timer == 30) { 
+        clone.delete()
+        clones.remove(clone)
+      }
+      // If timer reaches 60, clear screen of clones & remove from clones array
+      if (timer == 60) {
+        clone.delete()
+        clones.remove(clone)
+      }
+    })
+  })
+  
+  // Start clones at random spots along edge of screen
+  function clonespawn(clone) {
+    var edge = random(1, 4)
+    if (edge == 1) {
+      clone.y = maxY
+      clone.x = randomX()
+    }
+    if (edge == 2) {
+      clone.x = minX
+      clone.y = randomY()
+    }
+    if (edge == 3) {
+      clone.y = minY
+      clone.x = randomX()
+    }
+    if (edge == 4) {
+      clone.x = maxX
+      clone.y = randomY()
+    }
+  }
+  
+  // Create level 2 text sprite
+  var level2 = new Text({
+    text: "Level #2!",
+    x: 0,
+    y: 0,
+    size: 50,
+    color: "green"
+  })
+  level2.hide()
+  
+  // Create level 3 text sprite
+  var level3 = new Text({
+    text: "Level #3!",
+    x: 0,
+    y: 0,
+    size: 50,
+    color: "yelow"
+  })
+  level3.hide()
+  
+  // If timer greater than 30, display level 2 text sprite on screen for 1 sec.
+  forever(() => {
+      if (timer > 30) {
+        level2.show()
+        after(1, 'second', () => {
+          level2.delete()
+        })
+      } // close if
+    }) // close forever
+  
+  // If timer greater than 60, display level 3 text sprite on screen for 1 sec.
+  forever(() => {
+      if (timer > 60) {
+        level3.show()
+        after(1, 'second', () => {
+          level3.delete()
+        })
+      } // close if
+    }) //close forever
+  
+  // Victory
+  
+  // Create "you win" text sprite
+  var winner = new Text({
+    text: "You Win!!!",
+    x: 0,
+    y: 0,
+    size: 80,
+    color: "orange"
+  })
+  winner.hide()
+  
+  // If timer greater than 90, show you win text sprite. Freeze game 1 sec later.
+  forever(() => {
+    if (timer > 90) {
+      winner.show()
+      after(1, 'second', () => {
+        freeze()
+      })
+    }
+  })
+  
+  // If 0 health, show game over message and freeze game
+  forever(() => {
+    if (health <= 0) {
+      new Text({
+        text: "Game Over",
+        x: 0,
+        y: 0,
+        size: 40,
+        color: "brown"
+      })
+    freeze()
+    }
+  })
+  
+  </script>
+  </head>
+  <body>
+      
+  </body>
