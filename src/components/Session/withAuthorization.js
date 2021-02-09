@@ -1,7 +1,5 @@
 import React from 'react';
-import {withRouter} from 'react-router-dom';
 import {withFirebase} from '../Firebase';
-import * as ROUTES from '../../constants/routes';
 import AuthUserContext from './context';
 
 

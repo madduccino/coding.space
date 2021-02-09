@@ -1,6 +1,4 @@
 import React from 'react';
-import LazyLink from '../LazyLink';
-import { AuthUserContext } from '../Session';
 import {withAuthorization} from '../Session';
 import {withFirebase} from '../Firebase';
 import TCSEditor from '../TCSEditor';

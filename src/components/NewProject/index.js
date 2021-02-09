@@ -1,6 +1,5 @@
 import React from 'react';
 import LazyImage from '../LazyImage';
-import { AuthUserContext } from '../Session';
 import {withAuthentication} from '../Session';
 import {withFirebase} from '../Firebase';
 import TCSEditor from '../TCSEditor';
@@ -106,7 +105,7 @@ class NewProjectPageBase extends React.Component {
 
  }
  componentWillReceiveProps(props){
- 	if(this.state.untutorial.Author != props.authUser.key){
+ 	if(this.state.untutorial.Author !== props.authUser.key){
  		var pCopy = this.state.untutorial;
  		pCopy.Author = props.authUser.key;
  		this.setState({ 
@@ -136,7 +135,7 @@ class NewProjectPageBase extends React.Component {
  }
  handlePTitleValidate(){
  	const {untutorial,errors} = this.state;
- 	if(untutorial.Title.length == 0){
+ 	if(untutorial.Title.length === 0){
  		errors["Title"] = 'TITLE.<span class="red">ISREQUIRED</span>'; 		
  	}
 
@@ -206,7 +205,7 @@ class NewProjectPageBase extends React.Component {
  handleThumbnailValidate(){
  	const {untutorial,errors} = this.state;
 	
- 	if(untutorial.ThumbnailFilename.length == 0){
+ 	if(untutorial.ThumbnailFilename.length === 0){
  		errors["Thumbnail"] = 'THUMBNAIL.<span class="red">ISREQUIRED</span>'; 		
  	}
  	
@@ -224,7 +223,7 @@ class NewProjectPageBase extends React.Component {
  handlePDescriptionValidate(){
  	const {untutorial,errors} = this.state;
 	const text = untutorial.Description.replace(/<(.|\n)*?>/g, '').trim();
- 	if(text.length == 0){
+ 	if(text.length === 0){
  		errors["Description"] = 'DESCRIPTION.<span class="red">ISREQUIRED</span>'; 		
  	}
 
@@ -263,7 +262,7 @@ class NewProjectPageBase extends React.Component {
  }
  handleStepValidate(step,index){
  	const {errors} = this.state;
- 	if(step.Description.length==0){
+ 	if(step.Description.length === 0){
  		errors["Step"+index] = 'STEP' +index+'.<span class="red">ISREQUIRED</span>'; 		
  	}
  	else if(step.Description.length < 20){
@@ -277,7 +276,14 @@ class NewProjectPageBase extends React.Component {
  }
  deleteStepHandler(event,key){
  	var pCopy = this.state.untutorial;
- 	delete pCopy.steps[key];
+	 delete pCopy.steps[key];
+	 //shift steps up
+	 var newSteps = [];
+	 var steps = Object.values(pCopy.steps);
+	 steps.forEach((step, i) => {
+	   newSteps[i] = step;
+	 });
+	pCopy.steps = newSteps;
  	this.setState({untutorial:pCopy},this.handleStepCountValidate);
  	console.log("Delete Step");
  	console.log(key);
@@ -292,7 +298,7 @@ class NewProjectPageBase extends React.Component {
  }
  handleStepCountValidate(){
  	const {errors,untutorial} = this.state;
- 	if(untutorial.steps.length == 0){
+ 	if(untutorial.steps.length === 0){
 		errors["Stepcount"] = 'STEPS.<span class="red">R_REQUIRED</span>'; 		
  	}
  	else if(untutorial.steps.length < -3/*disabled*/){
@@ -303,7 +309,7 @@ class NewProjectPageBase extends React.Component {
  }
  handlePCategoryOnChange(event){
  	const {untutorial} = this.state;
- 	if(event.target.value != '-1'){
+ 	if(event.target.value !== '-1'){
  		untutorial.Categories[event.target.value] = event.target.value;
  		this.setState({untutorial:untutorial},this.handleCategoryValidate);	
  	}
@@ -326,7 +332,7 @@ class NewProjectPageBase extends React.Component {
  }
  saveChangesHandler(event){
  	const {errors} = this.state;
- 	if(Object.keys(errors).length == 0){
+ 	if(Object.keys(errors).length === 0){
  		this.state.untutorialRef.set({
  			...this.state.untutorial
  		})
@@ -340,35 +346,35 @@ class NewProjectPageBase extends React.Component {
 		 var badFields = Object.keys(errors);
 		 console.log(badFields)
 		var messages = [];
-		// messages.push({
-		// 	html:`<span class="green">Saving</span>...`,
-		// 	type:true
-		// })
-		// messages.push({
-		// 	html:`<span class="red">ERROR!</span>`,
-		// 	type:false
-		// })
-		// for(var i =0;i< badFields.length;i++){
+		messages.push({
+			html:`<span class="green">Saving</span>...`,
+			type:true
+		})
+		messages.push({
+			html:`<span class="red">ERROR!</span>`,
+			type:false
+		})
+		for(var i =0;i< badFields.length;i++){
 
-		// 	messages.push({
-		// 		html:errors[badFields[i]],
-		// 		type:true
-		// 	});
-		// }
+			messages.push({
+				html:errors[badFields[i]],
+				type:true
+			});
+		}
 
-		// messages.push({
-		// 	html:`Press any key to continue...`,
-		// 	type:false
-		// })
+		messages.push({
+			html:`Press any key to continue...`,
+			type:false
+		})
 
 			
 		
 		
-		// this.props.setGlobalState({
-		// 	messages:messages,
-		// 	showMessage:true
+		this.props.setGlobalState({
+			messages:messages,
+			showMessage:true
 			
-		// });
+		});
  	}
  	
  	console.log("Save Changes");
@@ -377,8 +383,6 @@ class NewProjectPageBase extends React.Component {
  render(){
  	
  	const {untutorial, loading} = this.state;
- 	const {Title,Description,Level, steps} = untutorial;
- 	const {authUser} = this.props;
  	const stepCount = Object.keys(untutorial.steps).length;
  	
  	//console.log(Object.keys(project));
@@ -479,7 +483,7 @@ class NewProjectPageBase extends React.Component {
             <div className="container tags">
               <h4>Tags</h4>
               <div className="filter">
-                {Object.keys(untutorial.Categories).length != Object.keys(FILTERS).length && (
+                {Object.keys(untutorial.Categories).length !== Object.keys(FILTERS).length && (
 		          <select onChange={this.handlePCategoryOnChange}>
 		            <option value='-1'>-------</option>
 			        {Object.keys(FILTERS).filter(f=>!Object.keys(untutorial.Categories).includes(f)).map(catName=><option value={catName}>{FILTERS[catName]}</option>)}

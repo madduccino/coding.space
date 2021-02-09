@@ -165,7 +165,8 @@ class Universe extends React.Component {
 
         <div className="main">
           {filteredProjects.map((project) => (
-            <a target="_blank"
+            <a
+              target="_blank"
               id={project.key}
               href={project.URL}
               path={
@@ -187,8 +188,7 @@ class Universe extends React.Component {
 
               <h2 dangerouslySetInnerHTML={{ __html: project.Title }} />
               <div dangerouslySetInnerHTML={{ __html: project.Description }} />
-			  <button>View Project</button>
-
+              <button>View Project</button>
             </a>
           ))}
         </div>

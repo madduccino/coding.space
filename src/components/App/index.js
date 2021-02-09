@@ -22,7 +22,6 @@ import Universe from "../Universe";
 import UniversePublish from "../UniversePublish";
 import MessageOverlay from "../MessageOverlay";
 import * as ROUTES from "../../constants/routes";
-import { withAuthentication } from "../Session";
 import AuthUserContext from "../Session/context";
 import { withFirebase } from "../Firebase";
 import "../../index.scss";

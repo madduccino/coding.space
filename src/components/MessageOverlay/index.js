@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import {withAuthentication} from '../Session';
-import AuthUserContext from '../Session/context';
 import './index.css';
 import * as ASCII from './ascii.js';
 
@@ -16,7 +15,6 @@ class MessageOverlay extends Component {
 		this.setupTypewriter = this.setupTypewriter.bind(this);
 	}
 	componentDidMount(){
-		const {messages} = this.props;
 		document.querySelector('#overlay').focus();
 		
 		this.setupTypewriter(0).type();

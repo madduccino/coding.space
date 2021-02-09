@@ -20,8 +20,24 @@ class LaunchPad extends React.Component {
     this.state = {
       loading: true,
       untutorials: [],
-      cfilter: (window.location.search.length > 0 ?  window.location.search.split('c=').pop().split('&').shift().split("%2C") : ["SCRATCH"]),
-      lfilter: (window.location.search.length > 0 ?  window.location.search.split('l=').pop().split('&').shift().split("%2C") : ["LEVEL1"]),
+      cfilter:
+        window.location.search.length > 0
+          ? window.location.search
+              .split("c=")
+              .pop()
+              .split("&")
+              .shift()
+              .split("%2C")
+          : ["SCRATCH"],
+      lfilter:
+        window.location.search.length > 0
+          ? window.location.search
+              .split("l=")
+              .pop()
+              .split("&")
+              .shift()
+              .split("%2C")
+          : ["LEVEL1"],
       textFilter: "",
     };
     //console.log("hiya");
@@ -51,40 +67,31 @@ class LaunchPad extends React.Component {
     const { cfilter } = this.state;
     const queryParams = new URLSearchParams(window.location.search);
     if (cfilter.includes(e.target.value)) {
-    const copyCfilter = cfilter.filter((f) => f !== e.target.value);
-    this.setState({ cfilter: copyCfilter });
-    queryParams.set("c", copyCfilter);
-	}  
-    else {
+      const copyCfilter = cfilter.filter((f) => f !== e.target.value);
+      this.setState({ cfilter: copyCfilter });
+      queryParams.set("c", copyCfilter);
+    } else {
       cfilter.push(e.target.value);
-    this.setState({ cfilter: cfilter });
-    queryParams.set("c", cfilter);
-	}
-  window.history.pushState(null, null, "?"+queryParams.toString());
-
+      this.setState({ cfilter: cfilter });
+      queryParams.set("c", cfilter);
+    }
+    window.history.pushState(null, null, "?" + queryParams.toString());
   }
   toggleLFilter(e) {
     const { lfilter } = this.state;
     const queryParams = new URLSearchParams(window.location.search);
     if (lfilter.includes(e.target.value)) {
       const copyLfilter = lfilter.filter((l) => l !== e.target.value);
-      this.setState({ lfilter: copyLfilter});
+      this.setState({ lfilter: copyLfilter });
       queryParams.set("l", lfilter);
-  }
-    else {
+    } else {
       lfilter.push(e.target.value);
       this.setState({ lfilter: lfilter });
       queryParams.set("l", lfilter);
-
     }
-    window.history.pushState(null, null, "?"+queryParams.toString());
+    window.history.pushState(null, null, "?" + queryParams.toString());
   }
   componentDidMount() {
-    console.log(window.location.search.split('l=').pop().split('&').shift());
-    console.log(window.location.search.split('c=').pop().split('&').shift());
-  
-    // console.log(this.state.cfilter)
-    // console.log(this.state.lfilter)
     this.props.firebase.untutorials().on("value", (snapshot) => {
       const untutsObj = snapshot.val();
       const untutorials = Object.keys(untutsObj).map((key) => ({
@@ -99,8 +106,7 @@ class LaunchPad extends React.Component {
     const queryParams = new URLSearchParams(window.location.search);
     queryParams.set("c", this.state.cfilter);
     queryParams.set("l", this.state.lfilter);
-    window.history.pushState(null, null, "?"+queryParams.toString());
-  
+    window.history.pushState(null, null, "?" + queryParams.toString());
   }
   componentWillUnmount() {
     this.props.firebase.untutorials().off();
@@ -129,7 +135,7 @@ class LaunchPad extends React.Component {
             <div className="filter">
               {loading && <div className="loading">Loading ...</div>}
               <div>
-			  <h2>Category</h2>
+                <h2>Category</h2>
 
                 {/* {" "} */}
                 {Object.keys(FILTER).map((f) => (
@@ -143,7 +149,7 @@ class LaunchPad extends React.Component {
                 ))}
               </div>
               <div>
-				<h2>Level</h2>
+                <h2>Level</h2>
                 {Object.keys(LEVELS).map((f) => (
                   <button
                     onClick={this.toggleLFilter}

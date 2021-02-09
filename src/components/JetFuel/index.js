@@ -1,6 +1,5 @@
 import React from 'react';
 
-import LazyImage from '../LazyImage';
 
 import { withAuthentication } from '../Session';
 import { withFirebase } from '../Firebase';
@@ -36,7 +35,7 @@ class JetFuel extends React.Component {
 
  categoryFilterOnChange(event){
  	const {filter} = this.state;
- 	if(event.target.value != '-1'){
+ 	if(event.target.value !== '-1'){
  		filter.push(event.target.value);
  		this.setState({filter:filter});
  	}

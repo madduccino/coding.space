@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import {withAuthentication} from '../Session';
-import AuthUserContext from '../Session/context';
 import * as ROUTES from '../../constants/routes';
 
 
@@ -19,7 +18,7 @@ class EmailLoader extends Component {
 		const {label} = this.props;
 		fetch(ROUTES.GMAIL_WEBSERVICE + '?label=' + label)
 			.then(response => {
-				if(response.status == 200){
+				if(response.status === 200){
 					response.json()
 						.then(data=>{
 							this.setState({emails:data,loaded:true});		
@@ -35,7 +34,7 @@ class EmailLoader extends Component {
 	
 
 	render(){
-		const {loaded, authUser, emails} = this.state;
+		const {loaded, emails} = this.state;
 
 
 		return (

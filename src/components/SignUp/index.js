@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
-import { Link, withRouter } from 'react-router-dom';
 import { withFirebase } from '../Firebase';
 
 import {withAuthorization} from '../Session';
-import {withMail} from '../Mail';
 import * as ROUTES from '../../constants/routes';
 import * as ROLES from '../../constants/roles';
 
@@ -177,6 +175,7 @@ class NewUserFormBase extends Component {
 }
 
 const condition = authUser => authUser && (!!authUser.roles[ROLES.ADMIN] || !!authUser.roles[ROLES.TEACHER]);
-const NewUserForm =  withFirebase(withAuthorization(condition)(NewUserFormBase));//withMail(withAuthorization(withFirebase(SignUpFormBase)));
+const NewUserForm =  withFirebase(withAuthorization(condition)(NewUserFormBase));
+//withMail(withAuthorization(withFirebase(SignUpFormBase)));
   
 export default NewUserForm;

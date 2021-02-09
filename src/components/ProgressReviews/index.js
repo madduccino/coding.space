@@ -1,12 +1,9 @@
 import React from "react";
 
-import LazyImage from "../LazyImage";
 
 import { withAuthorization } from "../Session";
 import { withFirebase } from "../Firebase";
-import * as ROUTES from "../../constants/routes";
 import * as ROLES from "../../constants/roles";
-import * as FILTERS from "../../constants/jf_filter";
 import TCSEditor from "../TCSEditor";
 import { v4 as uuidv4 } from "uuid";
 

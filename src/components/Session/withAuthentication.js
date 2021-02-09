@@ -1,7 +1,6 @@
 import React from 'react';
 import {AuthUserContext} from '../Session';
 import {withFirebase} from '../Firebase';
-import * as ROUTES from '../../constants/routes';
 
 const withAuthentication = Component => {
 	class WithAuthentication extends React.Component {

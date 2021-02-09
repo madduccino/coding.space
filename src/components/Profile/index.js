@@ -2,16 +2,14 @@ import React from "react";
 import LazyImage from "../LazyImage";
 import EmailLoader from "../EmailLoader";
 import { Link } from "react-router-dom";
-import { AuthUserContext } from "../Session";
 import { withAuthentication } from "../Session";
 import { withFirebase } from "../Firebase";
 import TCSEditor from "../TCSEditor";
 import { v4 as uuidv4 } from "uuid";
 import * as ROUTES from "../../constants/routes";
-import gmailApi from "react-gmail";
-import ReactDOM from "react-dom";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCoffee } from "@fortawesome/free-solid-svg-icons";
+import * as FILTER from "../../constants/filter";
+
+console.log(Object.keys(FILTER))
 
 const TAB = {
   PROJECTS: 0,
@@ -90,13 +88,13 @@ class ProfilePageBase extends React.Component {
         const untutArr = Object.values(untutObj);
 
         untuts = untuts.concat(
-          untutArr.filter((untutorial) => untutorial.Author == key)
+          untutArr.filter((untutorial) => untutorial.Author === key)
         );
 
         this.props.firebase.projects().once("value", (snapshot3) => {
           var projArr = Object.values(snapshot3.val());
           projects = projects.concat(
-            projArr.filter((project) => project.Author == key)
+            projArr.filter((project) => project.Author === key)
           );
           this.props.firebase.progresses(key).once("value", (snapshot) => {
             var progObj = snapshot.val();
@@ -148,7 +146,6 @@ class ProfilePageBase extends React.Component {
       },
       (error) => {
         //error
-        console.log(error);
         this.setState({ uploadPercent: 0, uploading: false });
       },
       () => {
@@ -176,7 +173,7 @@ class ProfilePageBase extends React.Component {
   handlePDescriptionValidate() {
     const { errors, profile } = this.state;
     const text = profile.About.replace(/<(.|\n)*?>/g, "").trim();
-    if (text.length == 0) {
+    if (text.length === 0) {
       errors["About"] = 'ABOUT.<span class="red">ISREQUIRED</span>';
     } else if (text.length < 20) {
       errors["About"] = 'ABOUT.<span class="red">IS2SHORT</span>';
@@ -198,7 +195,7 @@ class ProfilePageBase extends React.Component {
   }
   handleAgeValidate() {
     const { errors } = this.state;
-    if (this.state.profile.Age.length == 0 /* && isNaN(profile.Age)*/) {
+    if (this.state.profile.Age.length === 0 /* && isNaN(profile.Age)*/) {
       errors["Age"] = 'AGE.<span class="red">ISREQUIRED</span>';
     } else delete errors["Age"];
     this.setState({ errors: errors });
@@ -221,7 +218,7 @@ class ProfilePageBase extends React.Component {
   }
   handleDisplayNameValidate() {
     const { errors, profile } = this.state;
-    if (profile.DisplayName.length == 0) {
+    if (profile.DisplayName.length === 0) {
       errors["Name"] = 'NAME.<span class="red">ISREQUIRED</span>';
     } else if (profile.DisplayName.length < 4) {
       errors["Name"] = 'NAME.<span class="red">IS2SHORT</span>';
@@ -257,7 +254,7 @@ class ProfilePageBase extends React.Component {
   saveChangesHandler(event) {
     const { errors } = this.state;
     const { key } = this.props.match.params;
-    if (Object.keys(errors).length == 0) {
+    if (Object.keys(errors).length === 0) {
       this.props.firebase
         .profile(key)
         .set({
@@ -367,14 +364,14 @@ class ProfilePageBase extends React.Component {
           </div>
           <div className="main-content">
             <div className="tabs">
-              {tab == TAB.PROFILE && (
+              {tab === TAB.PROFILE && (
                 <div className="tab profile">
                   <div className="avatar">
                     {this.state.uploading && (
                       <progress value={this.state.uploadPercent} max="100" />
                     )}
                     {!!profile.ThumbnailFilename &&
-                    profile.ThumbnailFilename != "" &&
+                    profile.ThumbnailFilename !== "" &&
                     !this.state.uploading ? (
                       <LazyImage
                         id={profile.ThumbnailFilename}
@@ -395,7 +392,7 @@ class ProfilePageBase extends React.Component {
                     {!!authUser &&
                       (!!authUser.roles["ADMIN"] ||
                         authUser.uid === profile.key) && (
-                        <label for="files" className="upload">
+                        <label htmlFor="files" className="upload">
                           <input
                             id="files"
                             type="file"
@@ -480,7 +477,7 @@ class ProfilePageBase extends React.Component {
                   </div>
                 </div>
               )}
-              {tab == TAB.NOTES && (
+              {tab === TAB.NOTES && (
                 <div className="tab notes">
                   {!!authUser &&
                     (!!authUser.roles["ADMIN"] ||
@@ -507,7 +504,7 @@ class ProfilePageBase extends React.Component {
                     )}
                 </div>
               )}
-              {tab == TAB.PROJECTS && (
+              {tab === TAB.PROJECTS && (
                 <div className="tab projects">
                   <div className="content tab-content">
                     {projects.length < 1 && <p>{"No Projects Yet :("}</p>}
@@ -551,7 +548,7 @@ class ProfilePageBase extends React.Component {
                   </div>
                 </div>
               )}
-              {tab == TAB.UNTUTORIALS && (
+              {tab === TAB.UNTUTORIALS && (
                 <div className="tab untutorials">
                   <div className="content tab-content">
                     {untutorials.length < 1 && <p>{"No Untutorials Yet :("}</p>}
@@ -594,37 +591,40 @@ class ProfilePageBase extends React.Component {
                   </div>
                 </div>
               )}
-              {tab == TAB.PROGRESS && (
+              {tab === TAB.PROGRESS && (
                 <div className="tab progress">
                   <div className="content tab-content">
-                    {progresses.length < 1 && <p>{"No Progress Yet :("}</p>}
-                    <div className="instructions">
-                      <div>
-                        <span class="fa fa-star white"></span>
-                        <p>to do</p>
-                      </div>
-                      <div>
-                        <span class="fa fa-star pending fa-spin"></span>
-                        <p>waiting for teacher to approve</p>
-                      </div>
-                      <div>
-                        <span class="fa fa-star approved"></span>
-                        <p>approved by teacher</p>
-                      </div>
+                    {progresses.length < 1 ? (
+                      <p>{"No Progress Yet :("}</p>
+                    ) : (
+                      <div className="instructions">
+                        <div>
+                          <span class="fa fa-star white"></span>
+                          <p>to do</p>
+                        </div>
+                        <div>
+                          <span class="fa fa-star pending fa-spin"></span>
+                          <p>waiting for teacher to approve</p>
+                        </div>
+                        <div>
+                          <span class="fa fa-star approved"></span>
+                          <p>approved by teacher</p>
+                        </div>
 
-                      <div className="complete">
-                        <img src="/images/roket.png" />
-                        <p>you finished!</p>
+                        <div className="complete">
+                          <img src="/images/roket.png" />
+                          <p>you finished!</p>
+                        </div>
                       </div>
-                    </div>
+                    )}
                     {Object.keys(progressLevels).map((group) => (
                       <>
-                        <Accordion
-                          group={group}
-                          text={progressLevels[group]
+                      {progressLevels[group]
                             .sort((progress) => progress.LastModified)
+                            // .filter(f=> f.Untutorial.Categories.includes("SCRATCH"))
                             .map((progress) => (
                               <>
+                               {console.log(progress.Untutorial)}
                                 {!!authUser &&
                                   (!!authUser.roles["ADMIN"] ||
                                     !!authUser.roles["TEACHER"] ||
@@ -653,27 +653,25 @@ class ProfilePageBase extends React.Component {
                                         ).map((slot) => (
                                           <>
                                             {!!progress.steps[slot] &&
-                                            progress.steps[slot].Status ==
+                                            progress.steps[slot].Status ===
                                               "DRAFT" ? (
                                               <div class="fa fa-star white"></div>
-                                            ) : // <img className={'pixel'} src='/images/rocket-coin-slot.png'/>
+                                            ) : 
                                             !!progress.steps[slot] &&
-                                              progress.steps[slot].Status ==
+                                              progress.steps[slot].Status ===
                                                 "PENDING" ? (
                                               <div class="fa fa-star pending fa-spin"></div>
                                             ) : (
-                                              // <img className={'pixel'} src='/images/inprogress-coin.gif'/>
                                               <div className="fa fa-star approved"></div>
-                                              // <img className={'pixel'} src='/images/rocket-coin.gif'/>
                                             )}
                                           </>
                                         ))}
                                       </div>
-                                      {progress.Status == "APPROVED" ? (
+                                      {progress.Status === "APPROVED" ? (
                                         <div className="complete">
                                           <img src="/images/roket.png" />
                                         </div>
-                                      ) : progress.Status == "PENDING" ? (
+                                      ) : progress.Status === "PENDING" ? (
                                         "Waiting for Teacher Approval"
                                       ) : !!progress.nextStep ? (
                                         authUser.uid === profile.key ? (
@@ -689,8 +687,7 @@ class ProfilePageBase extends React.Component {
                                     </Link>
                                   )}
                               </>
-                            ))}
-                        />
+                      ))}
                       </>
                     ))}
                   </div>
@@ -698,7 +695,7 @@ class ProfilePageBase extends React.Component {
               )}
               {!!authUser &&
                 (!!authUser.roles["ADMIN"] || authUser.uid === profile.key) &&
-                tab == TAB.EMAIL && (
+                tab === TAB.EMAIL && (
                   <div className="tab email">
                     <div className="content tab-content">
                       <EmailLoader label={profile.Username} />

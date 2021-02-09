@@ -1,6 +1,5 @@
 import React from "react";
 import LazyImage from "../LazyImage";
-import { AuthUserContext } from "../Session";
 import { withAuthentication } from "../Session";
 import { withFirebase } from "../Firebase";
 import TCSEditor from "../TCSEditor";
@@ -8,577 +7,543 @@ import { v4 as uuidv4 } from "uuid";
 import * as ROUTES from "../../constants/routes";
 import * as FILTERS from "../../constants/filter";
 import { Link } from "react-router-dom";
-import {useHistory} from "react-router-dom";
 
 class UntutorialPageBase extends React.Component {
-	constructor(props){
-		super(props);
-		this.state = {
-			authUser:null,
-			loading:true,
-			untutorial: {},
-			errors:{},
-			progress:null,
-			dirty:false,
-			uploading:false,
-			uploadPercent:0,
-            showiframe: true
-	  	}
-		this.handleStatusOnChange = this.handleStatusOnChange.bind(this);
-		this.handleStatusOnSave = this.handleStatusOnSave.bind(this);
-		this.handleThumbnailUpload = this.handleThumbnailUpload.bind(this);
-		this.handleStepThumbnailUpload = this.handleStepThumbnailUpload.bind(this);
-		this.handleTitleOnChange = this.handleTitleOnChange.bind(this);
-		this.handleTitleOnSave = this.handleTitleOnSave.bind(this);
-		this.handleDescriptionOnChange = this.handleDescriptionOnChange.bind(this);
-		this.handleDescriptionOnSave = this.handleDescriptionOnSave.bind(this);
-		this.handleLevelOnChange = this.handleLevelOnChange.bind(this);
-		this.handleLevelOnSave = this.handleLevelOnSave.bind(this);
-		this.handlePriorityOnChange = this.handlePriorityOnChange.bind(this);
-		this.handlePriorityOnSave = this.handlePriorityOnSave.bind(this);
-		this.handleStepTitleOnChange = this.handleStepTitleOnChange.bind(this);
-		this.handleStepTitleOnSave = this.handleStepTitleOnSave.bind(this);
-		this.handleStepOnChange = this.handleStepOnChange.bind(this);
-		this.handleStepOnSave = this.handleStepOnSave.bind(this);
-		this.addStepHandler = this.addStepHandler.bind(this);
-		this.deleteStepHandler = this.deleteStepHandler.bind(this);
-		this.saveChangesHandler = this.saveChangesHandler.bind(this);
-		this.saveProgressHandler = this.saveProgressHandler.bind(this);
-		this.validateTitle = this.validateTitle.bind(this);
-		this.validateStatus = this.validateStatus.bind(this);
-		this.validateDescription = this.validateDescription.bind(this);
-		this.handlePCategoryOnChange = this.handlePCategoryOnChange.bind(this);
-		this.handleCategoryValidate = this.handleCategoryValidate.bind(this);
-		this.handleCategoryOnClick = this.handleCategoryOnClick.bind(this);
-		this.handleProgressURLOnChange = this.handleProgressURLOnChange.bind(this);
-		this.handleProgressURLOnSave = this.handleProgressURLOnSave.bind(this);
-		this.validatePriority = this.validatePriority.bind(this);
-		this.validateLevel = this.validateLevel.bind(this);
-		this.validateStep = this.validateStep.bind(this);
-		this.loadProgress = this.loadProgress.bind(this);
-        this.deleteProjectHandler = this.deleteProjectHandler.bind(this);
-		this.studentApprove = this.studentApprove.bind(this);
+  constructor(props) {
+    super(props);
+    this.state = {
+      authUser: null,
+      loading: true,
+      untutorial: {},
+      errors: {},
+      progress: null,
+      dirty: false,
+      uploading: false,
+      uploadPercent: 0,
+      showiframe: true,
+    };
+    this.handleStatusOnChange = this.handleStatusOnChange.bind(this);
+    this.handleStatusOnSave = this.handleStatusOnSave.bind(this);
+    this.handleThumbnailUpload = this.handleThumbnailUpload.bind(this);
+    this.handleStepThumbnailUpload = this.handleStepThumbnailUpload.bind(this);
+    this.handleTitleOnChange = this.handleTitleOnChange.bind(this);
+    this.handleTitleOnSave = this.handleTitleOnSave.bind(this);
+    this.handleDescriptionOnChange = this.handleDescriptionOnChange.bind(this);
+    this.handleDescriptionOnSave = this.handleDescriptionOnSave.bind(this);
+    this.handleLevelOnChange = this.handleLevelOnChange.bind(this);
+    this.handleLevelOnSave = this.handleLevelOnSave.bind(this);
+    this.handlePriorityOnChange = this.handlePriorityOnChange.bind(this);
+    this.handlePriorityOnSave = this.handlePriorityOnSave.bind(this);
+    this.handleStepTitleOnChange = this.handleStepTitleOnChange.bind(this);
+    this.handleStepTitleOnSave = this.handleStepTitleOnSave.bind(this);
+    this.handleStepOnChange = this.handleStepOnChange.bind(this);
+    this.handleStepOnSave = this.handleStepOnSave.bind(this);
+    this.addStepHandler = this.addStepHandler.bind(this);
+    this.deleteStepHandler = this.deleteStepHandler.bind(this);
+    this.saveChangesHandler = this.saveChangesHandler.bind(this);
+    this.saveProgressHandler = this.saveProgressHandler.bind(this);
+    this.validateTitle = this.validateTitle.bind(this);
+    this.validateStatus = this.validateStatus.bind(this);
+    this.validateDescription = this.validateDescription.bind(this);
+    this.handlePCategoryOnChange = this.handlePCategoryOnChange.bind(this);
+    this.handleCategoryValidate = this.handleCategoryValidate.bind(this);
+    this.handleCategoryOnClick = this.handleCategoryOnClick.bind(this);
+    this.handleProgressURLOnChange = this.handleProgressURLOnChange.bind(this);
+    this.handleProgressURLOnSave = this.handleProgressURLOnSave.bind(this);
+    this.validatePriority = this.validatePriority.bind(this);
+    this.validateLevel = this.validateLevel.bind(this);
+    this.validateStep = this.validateStep.bind(this);
+    this.loadProgress = this.loadProgress.bind(this);
+    this.deleteProjectHandler = this.deleteProjectHandler.bind(this);
+    this.studentApprove = this.studentApprove.bind(this);
 
+    //this.onChange = editorState => this.setState({editorState});
+    //console.log("hiya");
+  }
+  handleMouseEnter = (target) => {
+    if (this.state.canEdit) {
+      return; //replace control with rich text editor
+    }
+  };
 
-		
-		//this.onChange = editorState => this.setState({editorState});
-		//console.log("hiya");
+  handleClick = (e) => {
+    const { showiframe } = this.state;
+    if (e.target.parentNode.className === "main") {
+      this.setState({ showiframe: false });
+    }
+  };
 
-	}
-	handleMouseEnter = (target) => {
+  componentDidMount() {
+    //console.log(this.authUser);
+    document.body.addEventListener("click", this.handleClick);
 
-		if(this.state.canEdit){
-			return; //replace control with rich text editor
-		}
-	}
+    const { key } = this.props.match.params;
 
+    this.props.firebase.untutorial(key).on("value", (snapshot) => {
+      const untutorial = snapshot.val();
+      this.props.firebase
+        .profile(untutorial.Author)
+        .once("value")
+        .then((snapshot2) => {
+          const author = snapshot2.val();
+          untutorial.Author = author;
+          this.setState(
+            {
+              untutorial: untutorial,
+              loading: false,
+            },
+            () =>
+              this.props.location.search.includes("loadProgress")
+                ? this.loadProgress()
+                : null
+          );
+        });
+    });
+  }
+  loadProgress() {
+    const { authUser } = this.props;
+    const { untutorial, showiframe } = this.state;
+    const { key } = this.props.match.params;
+    if (!!authUser) {
+      this.props.firebase
+        .progress(authUser.uid, untutorial.key)
+        .on("value", (snapshot) => {
+          if (snapshot.exists()) {
+            let progress = snapshot.val();
+            if (!progress.steps) progress.steps = [];
+            this.setState({ progress: progress });
+          } else {
+            let progress = {
+              Status: "DRAFT",
+              steps: [],
+              LastModified: Date.now(),
+              profile: authUser.uid,
+              untut: key,
+            };
+            untutorial.steps.forEach((step, i) => {
+              progress.steps.push({ Status: "DRAFT", Comments: "" });
+            });
+            snapshot.ref.set({ ...progress }).then(() => {
+              this.setState({ progress: progress });
+            });
+          }
+        });
+    }
+    if (showiframe) this.setState({ showiframe: false });
+  }
+  componentWillUnmount() {
+    //this.props.firebase.proj().off();
+    this.props.firebase.untutorial().off();
+  }
+  handleThumbnailUpload(event) {
+    var file = event.target.files[0];
+    var ext = file.name.substring(file.name.lastIndexOf(".") + 1);
+    var oCopy = this.state.untutorial;
+    const { authUser } = this.props;
+    if (authUser && !!authUser.roles["STUDENT"]) oCopy.Status = "DRAFT";
+    oCopy.ThumbnailFilename = uuidv4() + "." + ext;
 
-	handleClick = (e) => {
-      const {showiframe} = this.state;
-		if (e.target.parentNode.className ==="main") {
-         this.setState({showiframe: false})
-		}
-	}
+    var storageRef = this.props.firebase.storage.ref(
+      "/public/" + oCopy.Author.key + "/" + oCopy.ThumbnailFilename
+    );
+    var task = storageRef.put(file);
 
-	componentDidMount(){
-		//console.log(this.authUser);
-		document.body.addEventListener('click', this.handleClick);
+    task.on(
+      "state_changed",
+      (snapshot) => {
+        //update
+        var percentage =
+          (100 * snapshot.bytesTransferred) / snapshot.totalBytes;
+        this.setState({ uploadPercent: percentage, uploading: true });
+      },
+      (error) => {
+        //error
+        console.log(error);
+        this.setState({ uploadPercent: 0, uploading: false });
+      },
+      () => {
+        //complete
+        this.setState(
+          {
+            uploadPercent: 0,
+            uploading: false,
+            untutorial: oCopy,
+            dirty: true,
+          },
+          this.saveChangesHandler
+        );
+      }
+    );
+  }
+  handleStepThumbnailUpload(event, step) {
+    var file = event.target.files[0];
+    var ext = file.name.substring(file.name.lastIndexOf(".") + 1);
+    var oCopy = this.state.untutorial;
+    const { authUser } = this.props;
+    if (authUser && !!authUser.roles["STUDENT"]) oCopy.Status = "DRAFT";
+    oCopy.steps[step].ThumbnailFilename = uuidv4() + "." + ext;
 
-		const {key} = this.props.match.params;
+    var storageRef = this.props.firebase.storage.ref(
+      "/public/" + oCopy.Author.key + "/" + oCopy.steps[step].ThumbnailFilename
+    );
+    var task = storageRef.put(file);
 
-		this.props.firebase.untutorial(key).on('value', snapshot => {
-			const untutorial = snapshot.val();
-			this.props.firebase.profile(untutorial.Author).once('value')
-				.then(snapshot2 => {
-					const author = snapshot2.val();
-					untutorial.Author = author;
-					this.setState({
-						untutorial: untutorial,
-						loading:false
-					},()=>this.props.location.search.includes("loadProgress") ? this.loadProgress() : null)
-				})
-			
-			
+    task.on(
+      "state_changed",
+      (snapshot) => {
+        //update
+        var percentage =
+          (100 * snapshot.bytesTransferred) / snapshot.totalBytes;
+        this.setState({ uploadPercent: percentage, uploading: true });
+      },
+      (error) => {
+        //error
+        console.log(error);
+        this.setState({ uploadPercent: 0, uploading: false });
+      },
+      () => {
+        //complete
+        this.setState(
+          {
+            uploadPercent: 0,
+            uploading: false,
+            untutorial: oCopy,
+            dirty: true,
+          },
+          this.saveChangesHandler
+        );
+      }
+    );
+  }
+  handleTitleOnChange(value) {
+    var oCopy = this.state.untutorial;
+    if (value !== oCopy.Title) {
+      oCopy.Title = value;
+      const { authUser } = this.props;
+      if (authUser && !!authUser.roles["STUDENT"]) oCopy.Status = "DRAFT";
+      this.setState({ untutorial: oCopy, dirty: true });
+      this.validateTitle();
+    }
+  }
+  handleTitleOnSave(value) {
+    this.saveChangesHandler();
+  }
+  validateTitle() {
+    const { untutorial, errors } = this.state;
+    const { Title } = untutorial;
+    const text = Title.replace(/<(.|\n)*?>/g, "").trim();
+    if (text.length === 0) {
+      errors["Title"] = 'TITLE.<span class="red">ISREQUIRED</span>';
+    }
+    if (text.length < 5) {
+      errors["Title"] = 'TITLE.<span class="red">ISTOOSHORT</span>';
+    } else {
+      delete errors["Title"];
+    }
+    this.setState({ errors: errors });
+  }
+  handleDescriptionOnChange(value) {
+    var oCopy = this.state.untutorial;
+    if (value !== oCopy.Description) {
+      oCopy.Description = value;
+      const { authUser } = this.props;
+      if (authUser && !!authUser.roles["STUDENT"]) oCopy.Status = "DRAFT";
+      this.setState({ untutorial: oCopy, dirty: true });
+      this.validateDescription();
+    }
+  }
+  handleDescriptionOnSave(value) {
+    this.saveChangesHandler();
+  }
+  validateDescription() {
+    const { untutorial, errors } = this.state;
+    const { Description } = untutorial;
+    const text = Description.replace(/<(.|\n)*?>/g, "").trim();
+    if (text === "") {
+      errors["Description"] = 'DESCRIPTION.<span class="red">ISREQUIRED</span>';
+    } else {
+      delete errors["Description"];
+    }
+    this.setState({ errors: errors });
+  }
+  handleStatusOnChange(value) {
+    var oCopy = this.state.untutorial;
+    console.log(oCopy.Status);
+    if (value !== oCopy.Status) {
+      oCopy.Status = value;
+      this.setState({ untutorial: oCopy, dirty: true });
+      this.validateStatus();
+    }
+  }
+  handleStatusOnSave(event) {
+    this.saveChangesHandler();
+  }
+  validateStatus() {
+    const { untutorial, errors } = this.state;
+    const { Status } = untutorial;
+    if (!["DRAFT", "APPROVED"].includes(Status)) {
+      errors["Status"] = 'STATUS.<span class="red">ISINVALID</span>';
+    } else {
+      delete errors["Status"];
+    }
+    this.setState({ errors: errors });
+  }
+  handlePCategoryOnChange(event) {
+    const { untutorial } = this.state;
+    if (event.target.value != "-1") {
+      untutorial.Categories[event.target.value] = event.target.value;
+      this.setState({ untutorial: untutorial }, this.handleCategoryValidate);
+      console.log(event.target.value);
+      console.log(this.state.untutorial);
+    }
+  }
+  handleCategoryOnClick(text) {
+    console.log(text);
+    const { untutorial } = this.state;
+    delete untutorial.Categories[text];
+    this.setState({ untutorial: untutorial }, this.handleCategoryValidate);
+  }
+  handleCategoryValidate() {
+    const { untutorial, errors } = this.state;
+    if (Object.keys(untutorial.Categories).length < 1) {
+      errors["Categories"] =
+        'CATS.<span class="red">At least 1 category</span>';
+    } else delete errors["Categories"];
+    this.setState({ errors: errors });
+  }
+  handleLevelOnChange(value) {
+    var oCopy = this.state.untutorial;
+    if (value !== oCopy.Level) {
+      oCopy.Level = value;
+      const { authUser } = this.props;
+      if (authUser && !!authUser.roles["STUDENT"]) oCopy.Status = "DRAFT";
 
-			
+      this.setState({ untutorial: oCopy, dirty: true }, this.validateLevel);
+    }
+  }
+  handleLevelOnSave(event) {
+    this.saveChangesHandler();
+  }
+  validateLevel() {
+    const { untutorial, errors } = this.state;
+    const { Level } = untutorial;
+    if (isNaN(Level)) {
+      errors["Level"] = 'LEVEL.<span class="red">ISINVALID</span>';
+    }
+    if (![1, 2, 3, 4, 5, 6].includes(parseInt(Level))) {
+      errors["Level"] = 'LEVEL.<span class="red">ISOUTSIDERANGE</span>';
+    } else {
+      delete errors["Level"];
+    }
+    this.setState({ errors: errors });
+  }
+  handlePriorityOnChange(value) {
+    var oCopy = this.state.untutorial;
+    if (value !== oCopy.Priority) {
+      oCopy.Priority = value;
+      const { authUser } = this.props;
+      if (authUser && !!authUser.roles["STUDENT"]) oCopy.Status = "DRAFT";
 
-			
-		})
+      this.setState({ untutorial: oCopy, dirty: true }, this.validatePriority);
+    }
+  }
+  handlePriorityOnSave(event) {
+    this.saveChangesHandler();
+  }
+  validatePriority() {
+    const { untutorial, errors } = this.state;
+    const { Priority } = untutorial;
+    if (isNaN(Priority)) {
+      errors["Priority"] = 'PRIORITY.<span class="red">ISINVALID</span>';
+    }
+    if (![1, 2, 3, 4, 5, 6].includes(parseInt(Priority))) {
+      console.log(typeof Priority);
+      errors["Priority"] = 'PRIORITY.<span class="red">ISOUTSIDERANGE</span>';
+    } else {
+      delete errors["Priority"];
+    }
+    this.setState({ errors: errors });
+  }
+  handleStepTitleOnChange(value, step) {
+    var oCopy = this.state.untutorial;
+    if (value !== oCopy.steps[step].Title) {
+      oCopy.steps[step].Title = value;
+      const { authUser } = this.props;
+      if (authUser && !!authUser.roles["STUDENT"]) oCopy.Status = "DRAFT";
+      this.setState({ untutorial: oCopy, dirty: true });
+      //this.validateStep(step);
+    }
+  }
+  handleStepTitleOnSave(value, step) {
+    this.saveChangesHandler();
+  }
+  handleStepOnChange(value, step) {
+    var oCopy = this.state.untutorial;
+    if (value !== oCopy.steps[step].Description) {
+      oCopy.steps[step].Description = value;
+      const { authUser } = this.props;
+      if (authUser && !!authUser.roles["STUDENT"]) oCopy.Status = "DRAFT";
+      this.setState({ untutorial: oCopy, dirty: true });
+      this.validateStep(step);
+    }
+  }
 
+  handleStepOnSave(value, step) {
+    this.saveChangesHandler();
+  }
+  validateStep(index) {
+    const { untutorial, errors } = this.state;
+    const Step = untutorial.steps[index];
+    const text = Step.Description.replace(/<(.|\n)*?>/g, "").trim();
+    if (text === "") {
+      errors["STEP" + index] =
+        'STEP.<span class="orange">' +
+        index +
+        '</span>.<span class="red">ISREQUIRED</span>';
+    }
+    if (text.length < 20) {
+      errors["STEP" + index] =
+        'STEP.<span class="orange">' +
+        index +
+        '</span>.<span class="red">ISTOOSHORT</span>';
+    } else {
+      delete errors["STEP" + index];
+    }
+    this.setState({ errors: errors });
+  }
+  validateProjectURL() {
+    const { untutorial, errors, project } = this.state;
+    const { authUser } = this.props;
 
-	}
-	loadProgress(){
-		const {authUser} = this.props;
-		const {untutorial,showiframe} = this.state;
-		const {key} = this.props.match.params;
-		if(!!authUser){
-			this.props.firebase.progress(authUser.uid,untutorial.key).on('value', snapshot => {
-				if(snapshot.exists()){
-					let progress = snapshot.val();
-					if(!progress.steps)
-						progress.steps = [];
-					this.setState({progress:progress});
-				} else {
-					let progress = {
-						Status:"DRAFT",
-						steps:[],
-						LastModified:Date.now(),
-						profile:authUser.uid,
-						untut:key
-					}
-					untutorial.steps.forEach((step,i)=>{
-						progress.steps.push({Status:'DRAFT',Comments:''});
-					})
-					snapshot.ref.set({...progress})
-					.then(()=>{
-						this.setState({progress:progress});
-					})
-					
+    if (project.URL === "") {
+      errors["PROJECT_URL"] = 'PROJECT_URL.<span class="red">ISREQUIRED</span>';
+    } else if (
+      !project.URL.match(
+        /\b((?:[a-z][\w-]+:(?:\/{1,3}|[a-z0-9%])|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}\/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'".,<>?«»“”‘’]))/i
+      )
+    ) {
+      errors["PROJECT_URL"] = 'PROJECT_URL.<span class="red">ISINVALID</span>';
+    } else {
+      delete errors["PROJECT_URL"];
+    }
+    this.setState({ errors: errors });
+  }
+  deleteStepHandler(event, key) {
+    var oCopy = this.state.untutorial;
+    const { authUser } = this.props;
+    if (authUser && !!authUser.roles["STUDENT"]) oCopy.Status = "DRAFT";
+    delete oCopy.steps[key];
+    //shift steps up
+    var newSteps = [];
+    var steps = Object.values(oCopy.steps);
+    steps.forEach((step, i) => {
+      newSteps[i] = step;
+    });
+    oCopy.steps = newSteps;
 
-				}
-				
-			})
-			
-			
-				
-			
-			
-		}
-        if (showiframe) this.setState({showiframe: false})					
-	}
-	componentWillUnmount(){
-		//this.props.firebase.proj().off();
-		this.props.firebase.untutorial().off();
-	}
-	handleThumbnailUpload(event){
-		
-		var file = event.target.files[0];
-		var ext = file.name.substring(file.name.lastIndexOf('.') + 1);
-		var oCopy = this.state.untutorial;
-		const {authUser} = this.props;
-		if(authUser && !!authUser.roles['STUDENT'])
-			oCopy.Status = 'DRAFT';
-		oCopy.ThumbnailFilename = uuidv4() + '.' + ext;
+    this.setState({ untutorial: oCopy, dirty: true }, this.saveChangesHandler);
+    console.log("Delete Step");
+    console.log(key);
+  }
+  addStepHandler(event) {
+    var oCopy = this.state.untutorial;
+    const { authUser } = this.props;
+    if (authUser && !!authUser.roles["STUDENT"]) oCopy.Status = "DRAFT";
+    oCopy.steps[Math.max(...Object.keys(oCopy.steps)) + 1] = {
+      Description: "",
+    };
+    this.setState({ untutorial: oCopy, dirty: true }, this.saveChangesHandler);
+    console.log("Add Step");
+  }
+  deleteProjectHandler() {
+    const { key } = this.props.match.params;
+    this.props.firebase.untutorial(key).remove();
+    window.location = ROUTES.LANDING;
+  }
+  saveChangesHandler(event) {
+    const { untutorial, loading, author, errors } = this.state;
+    const { Title, Description, Level, steps } = untutorial;
+    const { authUser } = this.props;
+    const { key } = this.props.match.params;
+    const stepCount =
+      !!untutorial && !!untutorial.steps
+        ? Object.keys(untutorial.steps).length
+        : 0;
 
-		var storageRef = this.props.firebase.storage.ref('/public/' + oCopy.Author.key + '/' + oCopy.ThumbnailFilename);
-		var task = storageRef.put(file);
+    if (Object.values(errors).length === 0) {
+      untutorial.LastModified = Date.now();
+      untutorial.Author = untutorial.Author.key;
+      this.props.firebase
+        .untutorial(key)
+        .set({
+          ...untutorial,
+        })
+        .then(() => {
+          console.log("Successfully Saved");
+          this.setState({ dirty: false });
+          // /*this.props.setGlobalState({
+          // 	messages:[{
 
-		task.on('state_changed',
-			(snapshot)=>{
-				//update
-				var percentage = 100 * snapshot.bytesTransferred / snapshot.totalBytes;
-				this.setState({uploadPercent:percentage,uploading:true})
+          // 		html:`SAVE.<span class="green">GOOD</span>`,
+          // 		type:true},{
 
-			},(error)=>{
-				//error
-				console.log(error);
-				this.setState({uploadPercent:0,uploading:false})
-			},
-			()=>{
-				//complete
-				this.setState({uploadPercent:0,uploading:false,untutorial:oCopy,dirty:true},this.saveChangesHandler)
+          // 		html:`Press any key to continue...`,
+          // 		type:false,
 
-			})
+          // 		}],
+          // 	showMessage:true
+          // });*/
+        })
+        .catch((error) => console.log(error));
+    } else {
+      var badFields = Object.keys(errors);
+      var messages = [];
+      messages.push({
+        html: `<span class="green">Saving</span>...`,
+        type: true,
+      });
+      messages.push({
+        html: `<span class="red">ERROR!</span>`,
+        type: false,
+      });
+      for (var i = 0; i < badFields.length; i++) {
+        messages.push({
+          html: errors[badFields[i]],
+          type: true,
+        });
+      }
 
+      messages.push({
+        html: `Press any key to continue...`,
+        type: false,
+      });
 
-	}
-	handleStepThumbnailUpload(event,step){
-		
-		var file = event.target.files[0];
-		var ext = file.name.substring(file.name.lastIndexOf('.') + 1);
-		var oCopy = this.state.untutorial;
-		const {authUser} = this.props;
-		if(authUser && !!authUser.roles['STUDENT'])
-			oCopy.Status = 'DRAFT';
-		oCopy.steps[step].ThumbnailFilename = uuidv4() + '.' + ext;
+      this.props.setGlobalState({
+        messages: messages,
+        showMessage: true,
+      });
+    }
 
-		var storageRef = this.props.firebase.storage.ref('/public/' + oCopy.Author.key + '/' + oCopy.steps[step].ThumbnailFilename);
-		var task = storageRef.put(file);
+    console.log("Save Changes");
+  }
+  saveProgressHandler(event) {
+    const { untutorial, errors, progress } = this.state;
 
-		task.on('state_changed',
-			(snapshot)=>{
-				//update
-				var percentage = 100 * snapshot.bytesTransferred / snapshot.totalBytes;
-				this.setState({uploadPercent:percentage,uploading:true})
+    const { authUser } = this.props;
+    const { key } = this.props.match.params;
 
-			},(error)=>{
-				//error
-				console.log(error);
-				this.setState({uploadPercent:0,uploading:false})
-			},
-			()=>{
-				//complete
-				this.setState({uploadPercent:0,uploading:false,untutorial:oCopy,dirty:true}, this.saveChangesHandler)
+    if (Object.values(errors).length === 0) {
+      //progress.Level = untutorial.Level;
+      progress.LastModified = Date.now();
+      this.props.firebase
+        .progress(authUser.uid, untutorial.key)
+        .set({
+          ...progress,
+        })
+        .then(() => {
+          console.log("Successfully Saved Progress");
 
-			})
-
-
-	}
-	handleTitleOnChange(value){
-		var oCopy = this.state.untutorial;
-		if(value !== oCopy.Title){
-			oCopy.Title = value;
-			const {authUser} = this.props;
-			if(authUser && !!authUser.roles['STUDENT'])
-				oCopy.Status = 'DRAFT';
-			this.setState({untutorial:oCopy,dirty:true});
-			this.validateTitle();
-		}
-		
-		
-	}
-	handleTitleOnSave(value){
-		this.saveChangesHandler();
-	}
-	validateTitle(){
-		const {untutorial,errors} = this.state;
-		const {Title} = untutorial;
-		const text = Title.replace(/<(.|\n)*?>/g, '').trim();
-		if(text.length === 0){
-
-			errors['Title'] = 'TITLE.<span class="red">ISREQUIRED</span>';
-		}
-		if(text.length < 5){
-
-			errors['Title'] = 'TITLE.<span class="red">ISTOOSHORT</span>';
-		}
-		else{
-			delete errors['Title'];
-		}
-		this.setState({errors:errors});
-
-	}
-	handleDescriptionOnChange(value){
-		var oCopy = this.state.untutorial;
-		if(value !== oCopy.Description){
-			oCopy.Description = value;
-			const {authUser} = this.props;
-			if(authUser && !!authUser.roles['STUDENT'])
-				oCopy.Status = 'DRAFT';
-			this.setState({untutorial:oCopy,dirty:true});
-			this.validateDescription();
-		}
-		
-		
-	}
-	handleDescriptionOnSave(value){
-		this.saveChangesHandler();
-	}
-	validateDescription(){
-		const {untutorial,errors} = this.state;
-		const {Description} = untutorial;
-		const text = Description.replace(/<(.|\n)*?>/g, '').trim();
-		if(text===''){
-
-			errors['Description'] = 'DESCRIPTION.<span class="red">ISREQUIRED</span>';
-		}
-		else{
-			delete errors['Description'];
-		}
-		this.setState({errors:errors});
-
-	}
-	handleStatusOnChange(value){
-		var oCopy = this.state.untutorial;
-		console.log(oCopy.Status)
-		if(value !== oCopy.Status){
-			oCopy.Status = value;
-			this.setState({untutorial:oCopy,dirty:true});
-			this.validateStatus();
-		}
-		
-		
-	}
-	handleStatusOnSave(event){
-		this.saveChangesHandler();
-	}
-	validateStatus(){
-		const {untutorial,errors} = this.state;
-		const {Status} = untutorial;
-		if(!["DRAFT","APPROVED"].includes(Status)){
-			errors['Status'] = 'STATUS.<span class="red">ISINVALID</span>'; 		
-		}
-		else{
-			delete errors['Status'];
-		}
-		this.setState({errors:errors});
-	}
-	handlePCategoryOnChange(event){
-	 	const {untutorial} = this.state;
-	 	if(event.target.value != '-1'){
-	 		untutorial.Categories[event.target.value] = event.target.value;
-			 this.setState({untutorial:untutorial},this.handleCategoryValidate);	
-			 console.log(event.target.value)
-			 console.log(this.state.untutorial)
-	 	}
-	}
-	handleCategoryOnClick(text){
-		console.log(text)
-	 	const {untutorial} = this.state;
-	 	delete untutorial.Categories[text];
-	 	this.setState({untutorial:untutorial},this.handleCategoryValidate);
-
-	}
-	handleCategoryValidate(){
-	 	const {untutorial,errors} = this.state;
-	 	if(Object.keys(untutorial.Categories).length < 1){
-	 		errors["Categories"] = 'CATS.<span class="red">At least 1 category</span>';
-	 	}
-	 	else
-	 	delete errors["Categories"];
-	 	this.setState({errors:errors});
-	}
-	handleLevelOnChange(value){
-		var oCopy = this.state.untutorial;
-		if(value !== oCopy.Level){
-			oCopy.Level = value;
-			const {authUser} = this.props;
-			if(authUser && !!authUser.roles['STUDENT'])
-				oCopy.Status = 'DRAFT';
-			
-
-			this.setState({untutorial:oCopy,dirty:true},this.validateLevel);
-			
-		}
-		
-		
-	}
-	handleLevelOnSave(event){
-		this.saveChangesHandler();
-	}
-	validateLevel(){
-		const {untutorial,errors} = this.state;
-		const {Level} = untutorial;
-		if(isNaN(Level)){
-			errors['Level'] = 'LEVEL.<span class="red">ISINVALID</span>'; 		
-		}
-		if(![1,2,3,4,5,6].includes(parseInt(Level))){
-
-			errors['Level'] = 'LEVEL.<span class="red">ISOUTSIDERANGE</span>';
-		}
-		else{
-			delete errors['Level'];
-		}
-		this.setState({errors:errors});
-
-	}
-	handlePriorityOnChange(value){
-		var oCopy = this.state.untutorial;
-		if(value !== oCopy.Priority){
-			oCopy.Priority = value;
-			const {authUser} = this.props;
-			if(authUser && !!authUser.roles['STUDENT'])
-				oCopy.Status = 'DRAFT';
-			
-
-			this.setState({untutorial:oCopy,dirty:true},this.validatePriority);
-			
-		}
-		
-		
-	}
-	handlePriorityOnSave(event){
-		this.saveChangesHandler();
-	}
-	validatePriority(){
-		const {untutorial,errors} = this.state;
-		const {Priority} = untutorial;
-		if(isNaN(Priority)){
-			errors['Priority'] = 'PRIORITY.<span class="red">ISINVALID</span>'; 		
-		}
-		if(![1,2,3,4,5,6].includes(parseInt(Priority))){
-     console.log(typeof(Priority))
-			errors['Priority'] = 'PRIORITY.<span class="red">ISOUTSIDERANGE</span>';
-		}
-		else{
-			delete errors['Priority'];
-		}
-		this.setState({errors:errors});
-
-	}
-	handleStepTitleOnChange(value,step){
-		var oCopy = this.state.untutorial;
-		if(value !== oCopy.steps[step].Title){
-			oCopy.steps[step].Title = value;
-			const {authUser} = this.props;
-			if(authUser && !!authUser.roles['STUDENT'])
-				oCopy.Status = 'DRAFT';
-			this.setState({untutorial:oCopy,dirty:true});
-			//this.validateStep(step);
-		}
-	}
-	handleStepTitleOnSave(value,step){
-		this.saveChangesHandler();
-	}
-	handleStepOnChange(value,step){
-		var oCopy = this.state.untutorial;
-		if(value !== oCopy.steps[step].Description){
-			oCopy.steps[step].Description = value;
-			const {authUser} = this.props;
-			if(authUser && !!authUser.roles['STUDENT'])
-				oCopy.Status = 'DRAFT';
-			this.setState({untutorial:oCopy,dirty:true});
-			this.validateStep(step);
-		}
-
-		
-	}
-
-	handleStepOnSave(value,step){
-		this.saveChangesHandler();
-	}
-	validateStep(index){
-		const {untutorial,errors} = this.state;
-		const Step = untutorial.steps[index];
-		const text = Step.Description.replace(/<(.|\n)*?>/g, '').trim();
-		if(text===''){
-		errors['STEP'+index] = 'STEP.<span class="orange">'+index+'</span>.<span class="red">ISREQUIRED</span>'; 		
-		}
-		if(text.length < 20){
-
-			errors['STEP'+index] = 'STEP.<span class="orange">'+index+'</span>.<span class="red">ISTOOSHORT</span>';
-		}
-		else{
-			delete errors['STEP' + index];
-		}
-		this.setState({errors:errors});
-	}
-	validateProjectURL(){
-		const {untutorial,errors,project} = this.state;
-		const {authUser} = this.props;
-		
-		
-		if(project.URL===''){
-			errors['PROJECT_URL'] = 'PROJECT_URL.<span class="red">ISREQUIRED</span>'; 		
-		}
-		else if(!project.URL.match(/\b((?:[a-z][\w-]+:(?:\/{1,3}|[a-z0-9%])|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}\/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'".,<>?«»“”‘’]))/i)){
-			errors['PROJECT_URL'] = 'PROJECT_URL.<span class="red">ISINVALID</span>'; 
-		}
-		else{
-			delete errors['PROJECT_URL'];
-		}
-		this.setState({errors:errors});
-	}
-	deleteStepHandler(event,key){
-		var oCopy = this.state.untutorial;
-		const {authUser} = this.props;
-		if(authUser && !!authUser.roles['STUDENT'])
-			oCopy.Status = 'DRAFT';
-		delete oCopy.steps[key];
-		//shift steps up
-		var newSteps = [];
-		var steps  = Object.values(oCopy.steps);
-		steps.forEach((step,i)=>{
-			newSteps[i] = step;
-		})
-		oCopy.steps = newSteps;
-
-		this.setState({untutorial:oCopy,dirty:true},this.saveChangesHandler);
-		console.log("Delete Step");
-		console.log(key);
-	}
-	addStepHandler(event){
-		var oCopy = this.state.untutorial;
-		const {authUser} = this.props;
-		if(authUser && !!authUser.roles['STUDENT'])
-			oCopy.Status = 'DRAFT';
-		oCopy.steps[Math.max(...Object.keys(oCopy.steps)) + 1] = {Description:''};
-		this.setState({untutorial:oCopy,dirty:true},this.saveChangesHandler);
-		console.log("Add Step");
-	}
-	deleteProjectHandler(){
-		const {key} = this.props.match.params;
-		this.props.firebase.untutorial(key).remove();
-		window.location = ROUTES.LANDING;
-		
-	}
-	saveChangesHandler(event){
-
-		const {untutorial, loading, author, errors} = this.state;
-		const {Title,Description, Level, steps} = untutorial;
-		const {authUser} = this.props;
-		const {key} = this.props.match.params;
-		const stepCount = (!!untutorial&& !!untutorial.steps) ? Object.keys(untutorial.steps).length : 0;
-		
-		if(Object.values(errors).length === 0){
-			untutorial.LastModified = Date.now();
-			untutorial.Author = untutorial.Author.key;
-			this.props.firebase.untutorial(key).set({
-				...untutorial
-			})
-			.then(()=>{
-				console.log("Successfully Saved");
-				this.setState({dirty:false})
-				// /*this.props.setGlobalState({
-				// 	messages:[{
-
-				// 		html:`SAVE.<span class="green">GOOD</span>`,
-				// 		type:true},{
-
-				// 		html:`Press any key to continue...`,
-				// 		type:false,
-
-				// 		}],
-				// 	showMessage:true
-				// });*/
-			})
-			.catch(error=>console.log(error));
-		}
-		else{
-			var badFields = Object.keys(errors);
-			var messages = [];
-			messages.push({
-				html:`<span class="green">Saving</span>...`,
-				type:true
-			})
-			messages.push({
-				html:`<span class="red">ERROR!</span>`,
-				type:false
-			})
-			for(var i =0;i< badFields.length;i++){
-
-				messages.push({
-					html:errors[badFields[i]],
-					type:true
-				});
-			}
-
-			messages.push({
-				html:`Press any key to continue...`,
-				type:false
-			})
-
-				
-			
-			
-			this.props.setGlobalState({
-				messages:messages,
-				showMessage:true
-				
-			});
-		}
-
-		
-		console.log("Save Changes");
-	}
-	saveProgressHandler(event){
-
-		const {untutorial,errors, progress} = this.state;
-
-		const {authUser} = this.props;
-		const {key} = this.props.match.params;
-	
-		
-		if(Object.values(errors).length === 0){
-			//progress.Level = untutorial.Level;
-			progress.LastModified = Date.now();
-			this.props.firebase.progress(authUser.uid,untutorial.key).set({
-				...progress
-			})
-			.then(()=>{
-				console.log("Successfully Saved Progress");
-				
-				/*this.props.setGlobalState({
+          /*this.props.setGlobalState({
 					messages:[{
 
 						html:`SAVE.<span class="green">GOOD</span>`,
@@ -668,8 +633,15 @@ class UntutorialPageBase extends React.Component {
                   />
                   <button onClick={this.loadProgress}>Code This Project</button>
                 </div>
-                <a className="back" onClick={()=>this.props.history.goBack()}>Back</a>
-				<a className="close" onClick={() =>this.setState({ showiframe: false, progress: null })}>
+                <a className="back" onClick={() => this.props.history.goBack()}>
+                  Back
+                </a>
+                <a
+                  className="close"
+                  onClick={() =>
+                    this.setState({ showiframe: false, progress: null })
+                  }
+                >
                   <i className="fa fa-close"></i>
                 </a>
               </>
@@ -701,7 +673,7 @@ class UntutorialPageBase extends React.Component {
             !!untutorial.ThumbnailFilename.length != 0 &&
             !this.state.uploading && (
               <LazyImage
-                file={this.props.firebase.storage.ref(
+              file={this.props.firebase.storage.ref(
                   "/public/" +
                     untutorial.Author.key +
                     "/" +
@@ -712,9 +684,12 @@ class UntutorialPageBase extends React.Component {
         </div>
         <div className="workOnProject">
           {!!progress && progress.Status == "APPROVED" && (
-           <h3> 
-              GREAT JOB! You finished this project! <Link to={ROUTES.UNIVERSE + "/" + progress.untut}>Publish to the UNIVERSE!
-            </Link></h3>
+            <h3>
+              GREAT JOB! You finished this project!{" "}
+              <Link to={ROUTES.UNIVERSE + "/" + progress.untut}>
+                Publish to the UNIVERSE!
+              </Link>
+            </h3>
           )}
           {!!progress && progress.Status == "PENDING" && (
             <h3>Your teacher is reviewing your project!</h3>
@@ -726,7 +701,9 @@ class UntutorialPageBase extends React.Component {
 
         <div className={`main ${showiframe ? "blur" : ""}`}>
           <div className="main-content">
-		  <a className="back" onClick={()=>this.props.history.goBack()}><i class="fa fa-backward"></i></a>
+            <a className="back" onClick={() => this.props.history.goBack()}>
+              <i class="fa fa-backward"></i>
+            </a>
 
             {!!progress && (
               <TCSEditor
@@ -744,7 +721,6 @@ class UntutorialPageBase extends React.Component {
             <div className="steps">
               {!!untutorial &&
                 untutorial.steps.map((step, index) => (
-                  
                   <div
                     className={
                       "step " +
@@ -753,10 +729,9 @@ class UntutorialPageBase extends React.Component {
                         : "")
                     }
                   >
-                    
                     <div className="checkOff">
                       <div className={"step-title status"}>
-					  {/* {!!progress &&
+                        {/* {!!progress &&
                         !!progress.steps[index] &&
                         progress.steps[index].Status == "DRAFT" ? (
                           <div className="todo"></div>
@@ -767,8 +742,12 @@ class UntutorialPageBase extends React.Component {
                         ) : (
                           !!progress && <div className="approved"></div>
                         )} */}
-					   <p> Step {index + 1}{!!step.Title && !!step.Title.length && <>:</> }</p>
-				
+                        <p>
+                          {" "}
+                          Step {index + 1}
+                          {!!step.Title && !!step.Title.length && <>:</>}
+                        </p>
+
                         <TCSEditor
                           disabled={
                             !(
@@ -793,7 +772,6 @@ class UntutorialPageBase extends React.Component {
                               : ""
                           }
                         />
-                   
                       </div>
                     </div>
                     <div className={"step-content"}>
@@ -825,7 +803,7 @@ class UntutorialPageBase extends React.Component {
                             {progress.steps[index].Comments}
                           </div>
                         )}
-                      <div className="thumbnail">
+                      <div className={!!untutorial.steps[index].ThumbnailFilename ? "thumbnail crop" : "thumbnail"}>
                         {!!authUser &&
                           (!!authUser.roles["ADMIN"] ||
                             authUser.uid === untutorial.Author.key) && (
@@ -871,6 +849,7 @@ class UntutorialPageBase extends React.Component {
                           !this.state.uploading && (
                             <LazyImage
                               id={"step" + index + "-thumbnail"}
+                              className="crop"  
                               file={this.props.firebase.storage.ref(
                                 "/public/" +
                                   untutorial.Author.key +
@@ -884,28 +863,23 @@ class UntutorialPageBase extends React.Component {
                       {!!progress &&
                         (!progress.steps[index] ||
                           progress.steps[index].Status == "DRAFT") && (
-                            <button
-                              disabled={false}
-                              className={"done-button todo"}
-                              onClick={() => this.studentApprove(index)}
-                            >
-                           Mark   Done
-                            </button>
+                          <button
+                            disabled={false}
+                            className={"done-button todo"}
+                            onClick={() => this.studentApprove(index)}
+                          >
+                            Mark Done
+                          </button>
                         )}
                       {!!progress &&
                         (!progress.steps[index] ||
                           progress.steps[index].Status == "PENDING") && (
-                          
-							<div className="done-button pending">In Review</div>
-
+                          <div className="done-button pending">In Review</div>
                         )}
-						{!!progress &&
+                      {!!progress &&
                         (!progress.steps[index] ||
                           progress.steps[index].Status == "APPROVED") && (
-                          
-                            <div className="done-button approved">
-                             Approved
-                            </div>
+                          <div className="done-button approved">Approved</div>
                         )}
                     </div>
                     {stepCount > 1 &&
@@ -957,6 +931,19 @@ class UntutorialPageBase extends React.Component {
                     />
                   </a>
                 )}
+				{!!untutorial.Categories["WOOF"] && (
+                  <a
+                    className="scratch"
+                    href="https://woofjs.com"
+                    target="_Blank"
+                  >
+                    <LazyImage
+                      file={this.props.firebase.storage.ref(
+                        "/public/woof.png"
+                      )}
+                    />
+                  </a>
+                )}
               </>
             )}
             <div className="container">
@@ -976,84 +963,122 @@ class UntutorialPageBase extends React.Component {
 				<button className="checkout"
 				onClick={this.loadProgress}>Get Coding!</button>
 			)} */}
-			</div>
-			<div className="container">
-		      Level:
-		      <TCSEditor 
-			  disabled={!(authUser && (!!authUser.roles['ADMIN'] || authUser.uid===untutorial.Author.key))}
-			  type={'select'}
-			  className="level"
-			  selectOptions={["1","2","3","4","5","6"]}
-			  onEditorChange={this.handleLevelOnChange}
-			  onEditorSave={this.handleLevelOnSave}
-			  placeholder={'Level'} 
-			  text={untutorial.Level}/>
-		    </div>	
-		    {authUser && !!authUser.roles['ADMIN'] && (
-		    	<div className="container">
-			      Priority:
-			      <TCSEditor 
-				  disabled={false}
-				  type={'select'}
-				  className="priority"
-				  selectOptions={["1","2","3","4","5","6"]}
-				  onEditorChange={this.handlePriorityOnChange}
-				  onEditorSave={this.handlePriorityOnSave}
-				  placeholder={'Priority'} 
-				  text={untutorial.Priority}/>
-			    </div>
-		    )}	
-			<div className="container">
-			    <h3>by: <a href={'/profile/' + untutorial.Author.key} dangerouslySetInnerHTML={{__html:untutorial.Author.DisplayName}}/></h3>
-		    
-		    </div>	
+            </div>
+            <div className="container">
+              Level:
+              <TCSEditor
+                disabled={
+                  !(
+                    authUser &&
+                    (!!authUser.roles["ADMIN"] ||
+                      authUser.uid === untutorial.Author.key)
+                  )
+                }
+                type={"select"}
+                className="level"
+                selectOptions={["1", "2", "3", "4", "5", "6"]}
+                onEditorChange={this.handleLevelOnChange}
+                onEditorSave={this.handleLevelOnSave}
+                placeholder={"Level"}
+                text={untutorial.Level}
+              />
+            </div>
+            {authUser && !!authUser.roles["ADMIN"] && (
+              <div className="container">
+                Priority:
+                <TCSEditor
+                  disabled={false}
+                  type={"select"}
+                  className="priority"
+                  selectOptions={["1", "2", "3", "4", "5", "6"]}
+                  onEditorChange={this.handlePriorityOnChange}
+                  onEditorSave={this.handlePriorityOnSave}
+                  placeholder={"Priority"}
+                  text={untutorial.Priority}
+                />
+              </div>
+            )}
+            <div className="container">
+              <h3>
+                by:{" "}
+                <a
+                  href={"/profile/" + untutorial.Author.key}
+                  dangerouslySetInnerHTML={{
+                    __html: untutorial.Author.DisplayName,
+                  }}
+                />
+              </h3>
+            </div>
 
-			<div className="container">
-				<TCSEditor 
-				  disabled={!(authUser && (!!authUser.roles['ADMIN'] || authUser.uid===untutorial.Author.key))}
-				  type={'text'}
-				  onEditorChange={this.handleDescriptionOnChange}
-				  onEditorSave={this.handleDescriptionOnSave}
-				  placeholder={'Untutorial Description'} 
-				  name={'description'}
-				  text={untutorial.Description} />
-				</div>	
-				{!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===untutorial.Author.key) && (
-				<div className="container">
-			        <h4>Status</h4>	
-			        <TCSEditor 
-			          disabled={!(authUser && !!authUser.roles['ADMIN'])}
-			type={'select'}
-			selectOptions={['DRAFT','APPROVED']}
-			name={'status'}
-			className={untutorial.Status === 'APPROVED' ? 'approved' : 'draft'}
-			onEditorChange={this.handleStatusOnChange}
-			onEditorSave={this.handleStatusOnSave}
-			placeholder={'Status'} 
-			text={untutorial.Status} />
-		  </div>
-				)}
-				{!!authUser && (!!authUser.roles['ADMIN'] || authUser.uid===untutorial.Author.key) && (	
-				<div className="container">	
-			      <h4>Tags</h4>
-			       <div className="filter">
-			        {Object.keys(untutorial.Categories).length != Object.keys(FILTERS).length && (
-				      <select onChange={this.handlePCategoryOnChange}>
-					<option value='-1'>-------</option>
-					{Object.keys(FILTERS).filter(f=>!Object.keys(untutorial.Categories).includes(f)).map(catName=><option value={catName}>{FILTERS[catName]}</option>)}
-				</select>
-			        )}
-				    <div className="filter-categories">
-					{Object.keys(untutorial.Categories).map(f=>(
-					  <a onClick={()=>this.handleCategoryOnClick(f)}>{FILTERS[f]}</a>
-					))}
-				</div>
-			    
-			</div>
-			</div>
-				)}
-			  </div>
-		</div>	
+            <div className="container">
+              <TCSEditor
+                disabled={
+                  !(
+                    authUser &&
+                    (!!authUser.roles["ADMIN"] ||
+                      authUser.uid === untutorial.Author.key)
+                  )
+                }
+                type={"text"}
+                onEditorChange={this.handleDescriptionOnChange}
+                onEditorSave={this.handleDescriptionOnSave}
+                placeholder={"Untutorial Description"}
+                name={"description"}
+                text={untutorial.Description}
+              />
+            </div>
+            {!!authUser &&
+              (!!authUser.roles["ADMIN"] ||
+                authUser.uid === untutorial.Author.key) && (
+                <div className="container">
+                  <h4>Status</h4>
+                  <TCSEditor
+                    disabled={!(authUser && !!authUser.roles["ADMIN"])}
+                    type={"select"}
+                    selectOptions={["DRAFT", "APPROVED"]}
+                    name={"status"}
+                    className={
+                      untutorial.Status === "APPROVED" ? "approved" : "draft"
+                    }
+                    onEditorChange={this.handleStatusOnChange}
+                    onEditorSave={this.handleStatusOnSave}
+                    placeholder={"Status"}
+                    text={untutorial.Status}
+                  />
+                </div>
+              )}
+            {!!authUser &&
+              (!!authUser.roles["ADMIN"] ||
+                authUser.uid === untutorial.Author.key) && (
+                <div className="container">
+                  <h4>Tags</h4>
+                  <div className="filter">
+                    {Object.keys(untutorial.Categories).length !=
+                      Object.keys(FILTERS).length && (
+                      <select onChange={this.handlePCategoryOnChange}>
+                        <option value="-1">-------</option>
+                        {Object.keys(FILTERS)
+                          .filter(
+                            (f) =>
+                              !Object.keys(untutorial.Categories).includes(f)
+                          )
+                          .map((catName) => (
+                            <option value={catName}>{FILTERS[catName]}</option>
+                          ))}
+                      </select>
+                    )}
+                    <div className="filter-categories">
+                      {Object.keys(untutorial.Categories).map((f) => (
+                        <a onClick={() => this.handleCategoryOnClick(f)}>
+                          {FILTERS[f]}
+                        </a>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              )}
+          </div>
+        </div>
       </section>
     );
   }

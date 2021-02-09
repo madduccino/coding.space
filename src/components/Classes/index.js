@@ -1,6 +1,5 @@
 import React from "react";
 import LazyImage from "../LazyImage";
-import { AuthUserContext } from "../Session";
 import { withAuthentication } from "../Session";
 import { withFirebase } from "../Firebase";
 import TCSEditor from "../TCSEditor";

@@ -1,6 +1,5 @@
 import React from 'react';
 
-import LazyImage from '../LazyImage';
 
 import { withAuthentication } from '../Session';
 import { withFirebase } from '../Firebase';
