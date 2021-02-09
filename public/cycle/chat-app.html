@@ -1,0 +1,98 @@
+<head>
+    <title>Chat App</title>
+    <link rel="stylesheet" type="text/css" href="./styles.css">
+    <style>
+        img {
+            width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Chat App</h1>
+    <div class="container">
+        <div>(If any of the below previews are blank, right-click them and click "Reload Frame".)</div>
+        <div class="block">
+            <p>In this project, we're going to build a real-time chat app to talk with your friends.</p>
+            <iframe allowtransparency="true" width="485" height="402" src="//stevekrouse.github.io/cycle/?full=true#nyu-chat/10" frameborder="0" allowfullscreen></iframe>
+        </div>
+        <div class="block">
+            1) Create an account on <a href="https://firebase.google.com">firebase.google.com</a> and create a new project.
+        </div>
+        <div class="block">
+            2) Change the Rules on the database by clicking on "Database" then "RULES", then "LEARN MORE" in the Console.<br>
+            <br><br>
+            <img src="http://www.learncodecraft.com/images/Rules_learnmore.png">
+            <br><br>
+            <br> Then choose "PUBLIC" from the example rule sets.
+            <br><br>
+            <img src="http://www.learncodecraft.com/images/public_rules_fb.png">
+            <br><br> Replace the rules for your project with the PUBLIC rules. This will allow your game code to read and write freely to the database.
+        </div>
+        <div class="block">
+            3) Go to the Firebase console, choose "Add Firebase to your web app."
+            <br><br>
+    
+            <img src="http://www.learncodecraft.com/images/Add_FB_Button.png">
+    
+            <br><br> Firebase will generate the config code for your project.
+            <br><br>
+            <img src="http://www.learncodecraft.com/images/Firebase_config_Copy.png">
+            <p>From the Firebase menu, drag the blocks to set up Firebase into the page. Copy and paste the config values one by one from Firebase into your project.</p>
+        </div>
+        <div class="block">
+            <p>5) Put a heading on the screen to give your app a title.</p>
+            <iframe allowtransparency="true" width="485" height="402" src="//stevekrouse.github.io/cycle/?full=true#nyu-chat/1" frameborder="0" allowfullscreen></iframe>
+        </div>
+        <div class="block">
+            <p>6) From the Layout menu, drag "arrange sub-elements" into the page to center everything.</p>
+            <iframe allowtransparency="true" width="485" height="402" src="//stevekrouse.github.io/cycle/?full=true#nyu-chat/2" frameborder="0" allowfullscreen></iframe>
+        </div>
+        <div class="block">
+            <p>7) Put an input box on the screen.</p>
+            <iframe allowtransparency="true" width="485" height="402" src="//stevekrouse.github.io/cycle/?full=true#nyu-chat/3" frameborder="0" allowfullscreen></iframe>
+        </div>
+        <div class="block">
+            <p>8) Change the "arrange sub-elements" block so that the title is at the top of the page and the input box is at the bottom.</p>
+            <iframe allowtransparency="true" width="485" height="402" src="//stevekrouse.github.io/cycle/?full=true#nyu-chat/4" frameborder="0" allowfullscreen></iframe>
+        </div>
+        <div class="block">
+            <p>9) When the enter key is pressed in the input box, add the input1Text to a list "messages" in firebase. Look in your firebase database to see if the message is there.</p>
+            <iframe allowtransparency="true" width="485" height="402" src="//stevekrouse.github.io/cycle/?full=true#nyu-chat/5" frameborder="0" allowfullscreen></iframe>
+        </div>
+        <div class="block">
+            <p>10) When the enter key is pressed, set the input1Text to the an empty string.</p>
+            <iframe allowtransparency="true" width="485" height="402" src="//stevekrouse.github.io/cycle/?full=true#nyu-chat/6" frameborder="0" allowfullscreen></iframe>
+        </div>
+        <div class="block">
+            <p>11) Now we are going to retrieve the messages from the database to display. Create a variable "list" that will contain the messages. Set list to an empty list.</p>
+            <iframe allowtransparency="true" width="485" height="402" src="//stevekrouse.github.io/cycle/?full=true#nyu-chat/6" frameborder="0" allowfullscreen></iframe>
+        </div>
+        <div class="block">
+            <p>12) Below the block that sets up firebase, get the "messages" list. "Every time" "messages" changes,  print the firebaseValue. The "to json" block in Text will help. (Right click the white window and select "reload this frame" to see what it should look like.)</p>
+            <iframe allowtransparency="true" width="485" height="402" src="//stevekrouse.github.io/cycle/?full=true#nyu-chat/7" frameborder="0" allowfullscreen></iframe>
+        </div>
+        <div class="block">
+            <p>13) Set the list variable to the values (you can get the values of an object with a block from Objects) of the firebaseValue. (Right click the white window and select "reload this frame" to see what it should look like.)</p>
+            <iframe allowtransparency="true" width="485" height="402" src="//stevekrouse.github.io/cycle/?full=true#nyu-chat/8" frameborder="0" allowfullscreen></iframe>
+        </div>
+        <div class="block">
+            <p>14) Using a for each in list block (in Control), display all of the messages.</p>
+            <iframe allowtransparency="true" width="485" height="402" src="//stevekrouse.github.io/cycle/?full=true#nyu-chat/9" frameborder="0" allowfullscreen></iframe>
+        </div>
+        <div class="block">
+            <p>15) Style the messagese using font align center, border radius, and background color.</p>
+            <iframe allowtransparency="true" width="485" height="402" src="//stevekrouse.github.io/cycle/?full=true#nyu-chat/10" frameborder="0" allowfullscreen></iframe>
+        </div>
+    </div>
+    <script>
+	  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	
+	  ga('create', 'UA-86847686-1', 'auto');
+	  ga('send', 'pageview');
+	
+	</script>
+</body>

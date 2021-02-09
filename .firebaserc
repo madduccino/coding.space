@@ -1,5 +1,9 @@
 {
   "projects": {
+<<<<<<< HEAD
     "default": "tcslms-staging"
+=======
+    "default": "tcslms"
+>>>>>>> 371366321e7c79326f6753c5e2eaa81cae32ef26
   }
 }
