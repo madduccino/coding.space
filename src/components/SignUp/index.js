@@ -21,6 +21,10 @@ class NewUserFormBase extends Component {
     this.onChange = this.onChange.bind(this);
     this.onCheckboxChange = this.onCheckboxChange.bind(this);
   }
+  
+  componentDidMount(){
+   
+  }
 
   onSubmit = event => {
     const { name, username, passwordOne, isAdmin, isTeacher, errors } = this.state;
@@ -115,7 +119,7 @@ class NewUserFormBase extends Component {
       passwordOne === '' ||
       username === '' ||
       name === '';
-
+    const {authUser} = this.props;
     return (
     <section id="signup">
        <div className="main"> 
@@ -149,6 +153,8 @@ class NewUserFormBase extends Component {
 	          type="password"
 	          placeholder="Confirm Password"
 	        />
+
+         {!!authUser && !!authUser.roles["ADMIN"] && (
           <div className="labels">
           <label>
             <input
@@ -165,6 +171,7 @@ class NewUserFormBase extends Component {
               Teacher
           </label>
           </div>
+         )}
 	        <button disabled={isInvalid ? true : null} type="submit">Sign Up</button>
 	        {error && <p>{error.message}</p>}
       </form>

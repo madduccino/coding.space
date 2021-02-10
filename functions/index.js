@@ -1,5 +1,4 @@
 const functions = require('firebase-functions');
-<<<<<<< HEAD
 const serviceAccount = require('./credential.json');
 
 //const cors = require('cors')({origin:true});
@@ -92,26 +91,3 @@ exports.progressStatus = functions.database.ref('/db/Progress/{uid}/{unid}/steps
 			"DRAFT"
 		});
 	})
-=======
-const firebase = require('firebase-admin');
-const express = require('express');
-const app = express();
-const firebaseConfig = {
-  apiKey: "AIzaSyCK0DR_mgjxFTGvDyaYdVIwHyRTgoWvA6E",
-  authDomain: "tcslms-staging.firebaseapp.com",
-  databaseURL: "https://tcslms-staging.firebaseio.com",
-  projectId: "tcslms-staging",
-  storageBucket: "tcslms-staging.appspot.com",
-  messagingSenderId: "744989512924",
-  appId: "1:744989512924:web:2b17188a2f2fd3739c5019"
-};
-const firebaseApp = firebase.initializeApp(firebaseConfig);
-
-app.get('/now', (request, response) => {
-	console.log("starting timestamp")
-	response.send(`${Date.now()}`);
-	console.log("ending timestamp");
-})
-
-exports.app = functions.https.onRequest(app);
->>>>>>> 371366321e7c79326f6753c5e2eaa81cae32ef26

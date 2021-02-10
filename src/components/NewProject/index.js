@@ -22,10 +22,10 @@ class NewProjectPageBase extends React.Component {
  		untutorialRef:null,
  		errors:{
 			// "Thumbnail" : 'THUMBNAIL.<span class="red">ISREQUIRED</span>',
-			"Title" : 'TITLE.<span class="red">ISREQUIRED</span>',
-			"Step1" : 'STEP1.<span class="red">ISREQUIRED</span>',
-			"Stepcount" : 'STEPS.<span class="red">R_REQUIRED</span>',
-			"Description" : 'DESCRIPTION.<span class="red">ISREQUIRED</span>'
+			"Title" : 'Project title is required.',
+			"Step0" : 'A description for Step 1 is required.',
+			"Description" : 'Project description is required.',
+			"Categories" : 'At least 1 category is required.'
 
  		},
  		untutorial: {
@@ -45,8 +45,6 @@ class NewProjectPageBase extends React.Component {
 
  		},
  		valid:false,
-
-
 
  	}
  	//this.handleStatusOnChange = this.handleStatusOnChange.bind(this);
@@ -73,20 +71,26 @@ class NewProjectPageBase extends React.Component {
 	this.handleCategoryValidate = this.handleCategoryValidate.bind(this);
 	this.handleCategoryOnClick = this.handleCategoryOnClick.bind(this);
  	this.saveChangesHandler = this.saveChangesHandler.bind(this);
- 	
+
  	//this.onChange = editorState => this.setState({editorState});
  	//console.log("hiya");
 
  }
 
- handleMouseEnter = (target) => {
+ onUnload = e => { 
+	e.preventDefault();
+	e.returnValue = '';
+ }
 
+
+ handleMouseEnter = (target) => {
  	if(this.state.canEdit){
  		return; //replace control with rich text editor
  	}
  };
  componentDidMount(){
  	var pCopy = this.state.untutorial;
+	window.addEventListener("beforeunload", this.onUnload);
  	if(this.props.authUser){
 		pCopy.Author = this.props.authUser.key;
 
@@ -94,16 +98,11 @@ class NewProjectPageBase extends React.Component {
 	 		untutorialRef: this.props.firebase.untutorial(this.state.untutorial.key),
 	 		untutorial:pCopy,
 	 		loading:false,
-
-
-	 		
 	 	})
 
  	}
- 	
-
-
  }
+
  componentWillReceiveProps(props){
  	if(this.state.untutorial.Author !== props.authUser.key){
  		var pCopy = this.state.untutorial;
@@ -124,6 +123,8 @@ class NewProjectPageBase extends React.Component {
  };
  componentWillUnmount(){
  	this.props.firebase.untutorial().off();
+	 window.removeEventListener("beforeunload", this.onUnload);
+
  }
   handlePTitleOnChange(value){
  	var pCopy = this.state.untutorial;
@@ -136,7 +137,7 @@ class NewProjectPageBase extends React.Component {
  handlePTitleValidate(){
  	const {untutorial,errors} = this.state;
  	if(untutorial.Title.length === 0){
- 		errors["Title"] = 'TITLE.<span class="red">ISREQUIRED</span>'; 		
+ 		errors["Title"] = 'Title is requiredd.'; 	
  	}
 
  	else delete errors["Title"];
@@ -205,12 +206,12 @@ class NewProjectPageBase extends React.Component {
  handleThumbnailValidate(){
  	const {untutorial,errors} = this.state;
 	
- 	if(untutorial.ThumbnailFilename.length === 0){
- 		errors["Thumbnail"] = 'THUMBNAIL.<span class="red">ISREQUIRED</span>'; 		
- 	}
+ 	// if(untutorial.ThumbnailFilename.length === 0){
+ 	// 	errors["Thumbnail"] = 'THUMBNAIL.<span class="red">ISREQUIRED</span>'; 		
+ 	// }
  	
- 	else delete errors["Thumbnail"];
- 	this.setState({errors:errors});
+ 	// else delete errors["Thumbnail"];
+ 	// this.setState({errors:errors});
  }
  handlePDescriptionOnChange(value){
  	var pCopy = this.state.untutorial;
@@ -224,7 +225,7 @@ class NewProjectPageBase extends React.Component {
  	const {untutorial,errors} = this.state;
 	const text = untutorial.Description.replace(/<(.|\n)*?>/g, '').trim();
  	if(text.length === 0){
- 		errors["Description"] = 'DESCRIPTION.<span class="red">ISREQUIRED</span>'; 		
+ 		errors["Description"] = 'Description is requiredd'; 		
  	}
 
  	else delete errors["Description"];
@@ -262,12 +263,13 @@ class NewProjectPageBase extends React.Component {
  }
  handleStepValidate(step,index){
  	const {errors} = this.state;
+	console.log(step.Description.length)
  	if(step.Description.length === 0){
- 		errors["Step"+index] = 'STEP' +index+'.<span class="red">ISREQUIRED</span>'; 		
+ 		errors["Step"+index] = `A description for step ${index} is required.`; 		
  	}
- 	else if(step.Description.length < 20){
- 		errors["Step"+index] = 'STEP' +index+'.<span class="red">ISTOOSHORT</span>'; 		
- 	}
+ 	// else if(step.Description.length < 20){
+ 	// 	errors["Step"+index] = 'STEP' +index+'.<span class="red">ISTOOSHORT</span>'; 		
+ 	// }
  	else delete errors["Step"+index];
  	this.setState({errors:errors})
  }
@@ -286,7 +288,6 @@ class NewProjectPageBase extends React.Component {
 	pCopy.steps = newSteps;
  	this.setState({untutorial:pCopy},this.handleStepCountValidate);
  	console.log("Delete Step");
- 	console.log(key);
  }
  addStepHandler(event){
  	var pCopy = this.state.untutorial;
@@ -299,10 +300,10 @@ class NewProjectPageBase extends React.Component {
  handleStepCountValidate(){
  	const {errors,untutorial} = this.state;
  	if(untutorial.steps.length === 0){
-		errors["Stepcount"] = 'STEPS.<span class="red">R_REQUIRED</span>'; 		
+		errors["Stepcount"] = 'Steps are required.'; 		
  	}
  	else if(untutorial.steps.length < -3/*disabled*/){
-		errors["Stepcount"] = 'STEPS.<span class="red">R_2SHORT</span>'; 		
+		errors["Stepcount"] = 'Steps are too short.'; 		
  	}
  	else delete errors["Stepcount"];
  	this.setState({errors:errors});
@@ -324,11 +325,11 @@ class NewProjectPageBase extends React.Component {
  handleCategoryValidate(){
  	const {untutorial,errors} = this.state;
  	if(Object.keys(untutorial.Categories).length < 1){
- 		errors["Categories"] = 'CATS.<span class="red">At least 1 category required.</span>';
+ 		errors["Categories"] = 'At least 1 category required.';
  	}
  	else
  		delete errors["Categories"];
- 	this.setState({errors:errors});
+ 	   this.setState({errors:errors});
  }
  saveChangesHandler(event){
  	const {errors} = this.state;
@@ -344,37 +345,34 @@ class NewProjectPageBase extends React.Component {
  	}
  	else {
 		 var badFields = Object.keys(errors);
-		 console.log(badFields)
+		//  console.log(badFields)
 		var messages = [];
-		messages.push({
-			html:`<span class="green">Saving</span>...`,
-			type:true
-		})
-		messages.push({
-			html:`<span class="red">ERROR!</span>`,
-			type:false
-		})
+		// messages.push({
+		// 	html:`<span class="green">Saving</span>...`,
+		// 	type:true
+		// })
+		// messages.push({
+		// 	html:`<span class="red">ERROR!</span>`,
+		// 	type:false
+		// })
 		for(var i =0;i< badFields.length;i++){
-
-			messages.push({
-				html:errors[badFields[i]],
-				type:true
-			});
+			messages.push(badFields[i]);
 		}
+		alert(Object.values(errors).join("\n"))
 
-		messages.push({
-			html:`Press any key to continue...`,
-			type:false
-		})
+		// messages.push({
+		// 	html:`Press any key to continue...`,
+		// 	type:false
+		// })
 
 			
 		
 		
-		this.props.setGlobalState({
-			messages:messages,
-			showMessage:true
+		// this.props.setGlobalState({
+		// 	messages:messages,
+		// 	showMessage:true
 			
-		});
+		// });
  	}
  	
  	console.log("Save Changes");
@@ -398,6 +396,8 @@ class NewProjectPageBase extends React.Component {
 		  </div> 	
           <div className="main-content"> 
 		    <div className="steps"> 
+			At least one step description required
+
 		     {Object.keys(untutorial.steps).map(step => (
 			    <div className="step">
 				  <div className={'step-title status'}>
@@ -449,7 +449,7 @@ class NewProjectPageBase extends React.Component {
 		  </div>
 		  <div className="sidebar">
 		    <div className={'container'}>
-			  <h4>Title</h4>
+			  <h4>Title <span className="required">(Required)</span></h4>
 				<TCSEditor 
 				disabled={false}
 				type='plain'
@@ -460,7 +460,7 @@ class NewProjectPageBase extends React.Component {
 				text={untutorial.Title}/>
 			</div>
 		    <div className={'container'}>
-				<h4>Description</h4>
+				<h4>Description <span className="required">(Required)</span></h4>
 				<TCSEditor 
 					disabled={false}
 					type='text'
@@ -481,7 +481,7 @@ class NewProjectPageBase extends React.Component {
 			  text={untutorial.Level}/>	
             </div>
             <div className="container tags">
-              <h4>Tags</h4>
+              <h4>Categories <span className="required">(At least 1 Required)</span></h4>
               <div className="filter">
                 {Object.keys(untutorial.Categories).length !== Object.keys(FILTERS).length && (
 		          <select onChange={this.handlePCategoryOnChange}>
