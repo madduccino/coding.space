@@ -980,7 +980,7 @@ button {
       box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.8);
       border-radius: 4px;
       position: relative;
-      max-width: 600px;
+      width: 600px;
       p {
         margin-bottom: 10px;
       }
@@ -1680,7 +1680,6 @@ button {
       .field {
         position: relative;
         div {
-          margin: 20px 0;
         }
       }
 

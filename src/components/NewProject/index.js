@@ -219,8 +219,8 @@ class NewProjectPageBase extends React.Component {
  		pCopy.Description = value;
  		this.setState({untutorial:pCopy},this.handlePDescriptionValidate);
  	}
- 	
  }
+
  handlePDescriptionValidate(){
  	const {untutorial,errors} = this.state;
 	const text = untutorial.Description.replace(/<(.|\n)*?>/g, '').trim();
@@ -263,14 +263,18 @@ class NewProjectPageBase extends React.Component {
  }
  handleStepValidate(step,index){
  	const {errors} = this.state;
-	console.log(step.Description.length)
- 	if(step.Description.length === 0){
- 		errors["Step"+index] = `A description for step ${index} is required.`; 		
+	 
+ 	if(step.Description.length === 0 || step.Description==="<p><br></p>"){
+ 		errors["Step"+index] = `A description for step ${parseInt(index)+1} is required.`; 		
  	}
+
  	// else if(step.Description.length < 20){
  	// 	errors["Step"+index] = 'STEP' +index+'.<span class="red">ISTOOSHORT</span>'; 		
  	// }
  	else delete errors["Step"+index];
+	 console.log(step.Description)
+	 console.log(step.Description.length)
+
  	this.setState({errors:errors})
  }
  handleStepOnSave(){
@@ -278,8 +282,10 @@ class NewProjectPageBase extends React.Component {
  }
  deleteStepHandler(event,key){
  	var pCopy = this.state.untutorial;
+	const {errors} = this.state;
 	 delete pCopy.steps[key];
 	 //shift steps up
+	 delete errors["Step"+key]
 	 var newSteps = [];
 	 var steps = Object.values(pCopy.steps);
 	 steps.forEach((step, i) => {
@@ -287,6 +293,7 @@ class NewProjectPageBase extends React.Component {
 	 });
 	pCopy.steps = newSteps;
  	this.setState({untutorial:pCopy},this.handleStepCountValidate);
+	console.log(errors)
  	console.log("Delete Step");
  }
  addStepHandler(event){
@@ -299,6 +306,7 @@ class NewProjectPageBase extends React.Component {
  }
  handleStepCountValidate(){
  	const {errors,untutorial} = this.state;
+	
  	if(untutorial.steps.length === 0){
 		errors["Stepcount"] = 'Steps are required.'; 		
  	}

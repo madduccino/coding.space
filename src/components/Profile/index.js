@@ -2,6 +2,7 @@ import React from "react";
 import LazyImage from "../LazyImage";
 import EmailLoader from "../EmailLoader";
 import { Link } from "react-router-dom";
+import { AuthUserContext } from "../Session";
 import { withAuthentication } from "../Session";
 import { withFirebase } from "../Firebase";
 import TCSEditor from "../TCSEditor";
@@ -351,7 +352,7 @@ class ProfilePageBase extends React.Component {
               </h2>
             </div>
             {!!authUser &&
-              (!!authUser.roles["ADMIN"] || authUser.uid === profile.key) && (
+              (!!authUser.roles["ADMIN"] || !!authUser.roles["TEACHER"] || authUser.uid === profile.key) && (
                 <div className={this.state.tab === TAB.EMAIL ? "selected" : ""}>
                   <h2 onClick={() => this.setState({ tab: TAB.EMAIL })}>
                     Email
@@ -402,7 +403,7 @@ class ProfilePageBase extends React.Component {
                       )}
                   </div>
                   {!!authUser &&
-                    (!!authUser.roles["ADMIN"] ||
+                    (!!authUser.roles["ADMIN"] || !!authUser.roles["TEACHER"] || 
                       authUser.uid === profile.key) && (
                       <>
                         <div>
@@ -694,7 +695,7 @@ class ProfilePageBase extends React.Component {
                 </div>
               )}
               {!!authUser &&
-                (!!authUser.roles["ADMIN"] || authUser.uid === profile.key) &&
+                (!!authUser.roles["ADMIN"] || !!authUser.roles["TEACHER"] || authUser.uid === profile.key) &&
                 tab === TAB.EMAIL && (
                   <div className="tab email">
                     <div className="content tab-content">
