@@ -182,6 +182,10 @@
         "function": "createUser"
       },
       {
+        "source": "/api/autoCreateUser",
+        "function": "autoCreateUser"
+      },
+      {
         "source": "**",
         "destination": "/index.html"
       }

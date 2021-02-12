@@ -1,58 +1,58 @@
-{
-  "rules": {
-    "db":{
-      "Project":{
-        ".read":true,
-        ".write":true
-      },
-      "Progress":{
+  {
+    "rules": {
+      "db":{
+        "Project":{
           ".read":true,
           ".write":true
-      },
-      "Questions":{
-          ".read":true,
-          ".write":true
-      },
-      "Resources":{
-          ".read":true,
-          ".write":true
-      },
-      "Profiles" : {
-      ".read":"true",
-      "$uid": {
-        ".read":"true",
-        ".write" : "auth!= null && $uid === auth.uid || root.child('db/Profiles/' + auth.uid + '/roles/ADMIN').exists() || root.child('db/Profiles/' + auth.uid + '/roles/TEACHER').exists()",
-        "Username":{
-            ".read":"auth!= null && $uid === auth.uid || root.child('db/Profiles/' + auth.uid + '/roles/ADMIN').exists() || root.child('db/Profiles/' + auth.uid + '/roles/TEACHER').exists()"
-         }
-        
-        }
-      },
-      "Untutorials" : {
-        ".read":"true",
-        "$project" : {
-          ".read" : "true",
-          ".write" : "auth!= null && !data.exists() || (auth.uid === data.child('Author').val()) || root.child('profiles/' + auth.uid + '/roles/ADMIN').exists() || root.child('profiles/' + auth.uid + '/roles/TEACHER').exists()"  
-        }
-        
-      },
-      "Classes" : {
-        ".read" : "true",
-          "$class":{
-            ".read":"true",
-            ".write" : "auth.uid != null && root.child('db/Profiles/' + auth.uid + '/roles/ADMIN').exists()",
-            "$members":{
-              ".read":"auth!= null && root.child('db/Profiles/' + auth.uid + '/roles/ADMIN').exists() || (root.child('profiles/' + auth.uid + '/roles/TEACHER').exists() && data.child(auth.uid).exists())",
-              ".write":"auth!= null && root.child('db/Profiles/' + auth.uid + '/roles/ADMIN').exists()"
-            }
-          }
-        
-      },
-        "Projects" : {
-          ".read":true,
+        },
+        "Progress":{
+            ".read":true,
             ".write":true
-        }
-  }
+        },
+        "Questions":{
+            ".read":true,
+            ".write":true
+        },
+        "Resources":{
+            ".read":true,
+            ".write":true
+        },
+        "Profiles" : {
+        ".read":"true",
+        "$uid": {
+          ".read":"true",
+          ".write" : "auth!= null && $uid === auth.uid || root.child('db/Profiles/' + auth.uid + '/roles/ADMIN').exists() || root.child('db/Profiles/' + auth.uid + '/roles/TEACHER').exists()",
+          "Username":{
+              ".read":"auth!= null && $uid === auth.uid || root.child('db/Profiles/' + auth.uid + '/roles/ADMIN').exists() || root.child('db/Profiles/' + auth.uid + '/roles/TEACHER').exists()"
+          }
+          
+          }
+        },
+        "Untutorials" : {
+          ".read":"true",
+          "$project" : {
+            ".read" : "true",
+            ".write" : "auth!= null && !data.exists() || (auth.uid === data.child('Author').val()) || root.child('profiles/' + auth.uid + '/roles/ADMIN').exists() || root.child('profiles/' + auth.uid + '/roles/TEACHER').exists()"  
+          }
+          
+        },
+        "Classes" : {
+          ".read" : "auth.uid != null && (root.child('db/Profiles/' + auth.uid + '/roles/ADMIN').exists() || root.child('db/Profiles/' + auth.uid + '/roles/TEACHER').exists())",
+            "$class":{
+              ".read":"auth.uid != null && (root.child('db/Profiles/' + auth.uid + '/roles/ADMIN').exists() || root.child('db/Profiles/' + auth.uid + '/roles/TEACHER').exists())",
+              ".write" : "auth.uid != null && root.child('db/Profiles/' + auth.uid + '/roles/ADMIN').exists()",
+              "$members":{
+                ".read":"auth!= null && root.child('db/Profiles/' + auth.uid + '/roles/ADMIN').exists() || (root.child('profiles/' + auth.uid + '/roles/TEACHER').exists() && data.child(auth.uid).exists())",
+                ".write":"auth!= null && root.child('db/Profiles/' + auth.uid + '/roles/ADMIN').exists()"
+              }
+            }
+          
+        },
+          "Projects" : {
+            ".read":true,
+              ".write":true
+          }
     }
-    
-}
+      }
+      
+  }
