@@ -31,13 +31,12 @@ exports.createUser = functions.https.onRequest(async (req, res) => {
 
   if (req.method !== "POST") {
     res.status(400).send("Unsupported");
-    return 0;
+    // return 0;
   }
 
   const email = req.body.email;
   const pass = req.body.password;
   const name = req.body.name;
-
   admin
     .auth()
     .createUser({
@@ -49,21 +48,20 @@ exports.createUser = functions.https.onRequest(async (req, res) => {
     })
     .then((user) => {
       console.log("User created: " + email);
-
       res.json({
         uid: user.uid,
         email: user.email,
         displayName: user.displayName,
       });
-      return 1;
+      // return 1;
     })
     .catch((error) => {
       console.log("Error creating user: " + email);
       console.log(error);
       res.json({ error: error });
-      return 1;
+      //   return 1;
     });
-  return 0;
+  // return 0;
 });
 
 exports.autoCreateUser = functions.https.onRequest(async (req, res) => {
@@ -82,8 +80,7 @@ exports.autoCreateUser = functions.https.onRequest(async (req, res) => {
     const name = req.body.name;
     const username = name.trim().replace(/ /g, ".");
     const email = "students+" + username + "@thecodingspace.com";
-    // make me fancier
-    const pass = "password1";
+    const pass = "password1"; // make me fancier
     const age = req.body.age;
     const birthday = req.body.birthday;
 
