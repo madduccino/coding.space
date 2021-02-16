@@ -115,7 +115,6 @@ body,
 
 @mixin todo {
   background-color: rgb(216, 61, 61);
-
 }
 
 body {
@@ -719,7 +718,8 @@ button {
   }
 }
 
-#classes,#universe {
+#classes,
+#universe {
   h1 {
     margin-top: 20px;
   }
@@ -802,7 +802,7 @@ button {
           color: #fff;
           border-radius: 8px;
           position: relative;
-          background-color:$lightGreen;
+          background-color: $lightGreen;
           img {
             object-fit: contain;
             background-color: #f7f7f7;
@@ -865,13 +865,13 @@ button {
         .editor-button {
           background-color: $darkgreen;
           color: #fff;
-        } 
+        }
         .quill {
           button {
             background-color: transparent;
           }
         }
-        }
+      }
     }
   }
 }
@@ -1138,10 +1138,10 @@ button {
     }
     .main-content {
       .back {
-        cursor:pointer;
+        cursor: pointer;
         margin-bottom: 20px;
-        display:flex;
-        justify-content:center;
+        display: flex;
+        justify-content: center;
       }
       button {
         margin-bottom: 20px;
@@ -1208,9 +1208,8 @@ button {
             font-size: 2rem;
           }
           p {
-            margin-top:20px;
+            margin-top: 20px;
             // margin-right: 40px;
-
           }
           .no-button {
             font-size: 32px;
@@ -1227,16 +1226,17 @@ button {
             word-break: break-all;
             font-family: $bodyFont;
             p {
-              width:100%;
+              width: 100%;
             }
             div {
-              
               img {
                 width: 60px;
               }
             }
             .header {
-              div {margin-bottom:10px;}
+              div {
+                margin-bottom: 10px;
+              }
               .editor-button {
                 padding: 0 4px;
               }
@@ -1263,7 +1263,6 @@ button {
             }
           }
           .step-content {
- 
             margin-top: 20px;
             button {
               width: auto;
@@ -1275,17 +1274,24 @@ button {
               position: absolute;
               top: 10px;
               right: 10px;
-              border-radius:50%;
-              width:60px;
-              height:60px;
+              border-radius: 50%;
+              width: 60px;
+              height: 60px;
               font-size: 12px;
               @include flexvc;
               &.todo {
                 background-color: rgb(175, 23, 23);
-                background: radial-gradient(circle, rgb(236, 99, 99), rgb(247, 48, 48));
+                background: radial-gradient(
+                  circle,
+                  rgb(236, 99, 99),
+                  rgb(247, 48, 48)
+                );
                 &:hover {
-                  background: radial-gradient(circle, rgb(206, 73, 73), rgb(247, 48, 48));
-
+                  background: radial-gradient(
+                    circle,
+                    rgb(206, 73, 73),
+                    rgb(247, 48, 48)
+                  );
                 }
               }
               &.pending {
@@ -1297,7 +1303,6 @@ button {
                 background: radial-gradient(circle, #0bec3c, #11bd11);
               }
             }
-
           }
           .delete {
             position: absolute;
@@ -1351,8 +1356,7 @@ button {
     &.crop {
       height: 390px;
       overflow: hidden;
-      border:1px solid #ccc;
-
+      border: 1px solid #ccc;
     }
     &.hero {
       height: 272px;
@@ -1368,7 +1372,7 @@ button {
   .status {
     display: flex;
     align-items: center;
- 
+
     > div:not(.field) {
       margin: 5px;
       &.red {
@@ -1696,11 +1700,12 @@ button {
           .complete {
             img {
               width: 25px;
-              height:25px;
-              object-fit:contain;
+              height: 25px;
+              object-fit: contain;
             }
           }
-          > div {}
+          > div {
+          }
         }
         .fa {
           transition: 1s ease-in-out;
@@ -1720,9 +1725,24 @@ button {
             box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.25);
           }
         }
-
         img {
           width: 25px;
+        }
+        .categories {
+          grid-template-columns: repeat(6, 1fr);
+          margin: 40px 0;
+          div {
+            background-color: $darkergreen;
+            color: #fff;
+            cursor: pointer;
+            margin: 10px;
+            text-align: center;
+            padding: 2px 4px;
+            border-radius: 10px;
+            display: flex;
+            flex-flow: column wrap;
+            justify-content: center;
+          }
         }
       }
       .progress,
@@ -1872,29 +1892,28 @@ button {
   .white {
     color: rgb(255, 255, 255);
     text-shadow: 0 0 3px $orange, 0 0 5px #dfb704;
-  }  .status {
-     font-size: 1.2rem;
-  .approved {
-    // background-color: rgb(80, 221, 15);
-    // background: radial-gradient(circle, #0bec3c, #0f9c0f);
-    // width: 15px;
-    // height: 15px;
-    // border-radius: 50%;
-    // display: inline-block;
-    // margin-left: 5px;
   }
-  .todo {
-    width: 15px;
-    height: 15px;
-    border-radius: 50%;
-    background-color: rgb(247, 48, 48);
-    background: radial-gradient(circle, rgb(236, 99, 99), rgb(247, 48, 48));
-    display: inline-block;
-    margin-left: 5px;
+  .status {
+    font-size: 1.2rem;
+    .approved {
+      // background-color: rgb(80, 221, 15);
+      // background: radial-gradient(circle, #0bec3c, #0f9c0f);
+      // width: 15px;
+      // height: 15px;
+      // border-radius: 50%;
+      // display: inline-block;
+      // margin-left: 5px;
+    }
+    .todo {
+      width: 15px;
+      height: 15px;
+      border-radius: 50%;
+      background-color: rgb(247, 48, 48);
+      background: radial-gradient(circle, rgb(236, 99, 99), rgb(247, 48, 48));
+      display: inline-block;
+      margin-left: 5px;
+    }
   }
-  
-  
-}
   .progress {
     .pending,
     .approved {
@@ -1902,7 +1921,6 @@ button {
       text-shadow: 0 0 3px $orange, 0 0 5px #e9dd33;
     }
   }
- 
 }
 
 #profile {
@@ -1996,7 +2014,8 @@ button {
   }
 }
 
-#new-class,#universe-publish {
+#new-class,
+#universe-publish {
   padding: 40px 0;
   .main-area {
     max-width: 600px;
@@ -2011,11 +2030,11 @@ button {
       margin: 20px 0;
     }
     .field {
-      text-align:center;
+      text-align: center;
     }
     .thumbnail {
       width: 100%;
-      height:auto;
+      height: auto;
       font-weight: bold;
       img {
         width: 100%;
@@ -2120,22 +2139,22 @@ button {
     }
     textarea {
       width: 400px;
-     height: 100px;
+      height: 100px;
     }
     .project {
       border-bottom: 1px solid #ccc;
       padding: 10px 0;
       a {
         margin: 10px 0;
-        display:block;
+        display: block;
       }
     }
     .approved {
-      width:15px;
-      height:15px;
+      width: 15px;
+      height: 15px;
       background-color: rgb(80, 221, 15);
       background: radial-gradient(circle, #0bec3c, #11bd11);
-      border-radius:50%;
+      border-radius: 50%;
       display: inline-block;
       margin-left: 10px;
     }
@@ -2143,24 +2162,21 @@ button {
       @include approve;
       width: 200px;
       margin-bottom: 20px;
-    }    
+    }
     .disapprove {
       @include todo;
       width: 200px;
       margin-left: 10px;
       margin-bottom: 20px;
-
-
     }
     .pending {
-        background-color: $orange;
-        background: radial-gradient(circle, #e9dd33, $orange);
-        height: 15px;
-        width: 15px;
-        border-radius: 50%;
-        display: inline-block;
-        margin-left: 5px;
-      
+      background-color: $orange;
+      background: radial-gradient(circle, #e9dd33, $orange);
+      height: 15px;
+      width: 15px;
+      border-radius: 50%;
+      display: inline-block;
+      margin-left: 5px;
     }
     .status {
       margin: 10px 0;
@@ -2168,6 +2184,5 @@ button {
         margin: 10px 0;
       }
     }
- 
   }
 }

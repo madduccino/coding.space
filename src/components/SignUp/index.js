@@ -46,6 +46,7 @@ class NewUserFormBase extends Component {
       })
         .then((response)=>{
           var {uid} = response.json().then(data =>{
+            if(data.error) alert(data.error.message)
             return this.props.firebase
               .profile(data.uid)
               .set({
