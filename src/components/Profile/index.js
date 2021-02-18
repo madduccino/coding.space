@@ -624,89 +624,90 @@ class ProfilePageBase extends React.Component {
                         </div>
                       </div>
                     )}
-                    <div className="categories">
+                    {/* <div className="categories">
                       {Object.keys(FILTER).map((cat) => (
                         <div onClick={() => this.setState({ showCat: cat })}>
                           {FILTER[cat]}
                         </div>
                       ))}
-                    </div>
+                    </div> */}
                     {Object.keys(progressLevels).map((group) => (
                       <>
-                        <Accordion
+                        {/* <Accordion
                           group={group}
-                          text={progressLevels[group]
-                            .sort((progress) => progress.LastModified)
-                            .filter((f) =>
-                              Object.keys(f.Untutorial.Categories).includes(
-                                showCat
-                              )
-                            )
-                            .map((progress) => (
-                              <>
-                                {!!authUser &&
-                                  (!!authUser.roles["ADMIN"] ||
-                                    !!authUser.roles["TEACHER"] ||
-                                    authUser.uid === profile.key) && (
-                                    <Link
-                                      id={progress.LastModified}
-                                      to={
-                                        authUser.uid === profile.key
-                                          ? ROUTES.LAUNCHPAD +
-                                            "/" +
-                                            progress.Untutorial.key +
-                                            "?loadProgress=true"
-                                          : ROUTES.LAUNCHPAD +
-                                            "/" +
-                                            progress.Untutorial.key
-                                      }
-                                    >
-                                      <div
-                                        dangerouslySetInnerHTML={{
-                                          __html: progress.Untutorial.Title,
-                                        }}
-                                      />
-                                      <div className="status">
-                                        {Object.keys(
-                                          progress.Untutorial.steps
-                                        ).map((slot) => (
-                                          <>
-                                            {!!progress.steps[slot] &&
+                           text= */}
+                        {progressLevels[group]
+                          .sort((progress) => progress.LastModified)
+                          // .filter((f) =>
+                          //   Object.keys(f.Untutorial.Categories).includes(
+                          //     showCat
+                          //   )
+                          // )
+                          .map((progress) => (
+                            <>
+                              {!!authUser &&
+                                (!!authUser.roles["ADMIN"] ||
+                                  !!authUser.roles["TEACHER"] ||
+                                  authUser.uid === profile.key) && (
+                                  <Link
+                                    id={progress.LastModified}
+                                    to={
+                                      authUser.uid === profile.key
+                                        ? ROUTES.LAUNCHPAD +
+                                          "/" +
+                                          progress.Untutorial.key +
+                                          "?loadProgress=true"
+                                        : ROUTES.LAUNCHPAD +
+                                          "/" +
+                                          progress.Untutorial.key
+                                    }
+                                  >
+                                    <div
+                                      dangerouslySetInnerHTML={{
+                                        __html: progress.Untutorial.Title,
+                                      }}
+                                    />
+                                    <div className="status">
+                                      {Object.keys(
+                                        progress.Untutorial.steps
+                                      ).map((slot) => (
+                                        <>
+                                          {!!progress.steps[slot] &&
+                                          progress.steps[slot].Status ===
+                                            "DRAFT" ? (
+                                            <div class="fa fa-star white"></div>
+                                          ) : !!progress.steps[slot] &&
                                             progress.steps[slot].Status ===
-                                              "DRAFT" ? (
-                                              <div class="fa fa-star white"></div>
-                                            ) : !!progress.steps[slot] &&
-                                              progress.steps[slot].Status ===
-                                                "PENDING" ? (
-                                              <div class="fa fa-star pending fa-spin"></div>
-                                            ) : (
-                                              <div className="fa fa-star approved"></div>
-                                            )}
-                                          </>
-                                        ))}
+                                              "PENDING" ? (
+                                            <div class="fa fa-star pending fa-spin"></div>
+                                          ) : (
+                                            <div className="fa fa-star approved"></div>
+                                          )}
+                                        </>
+                                      ))}
+                                    </div>
+                                    {progress.Status === "APPROVED" ? (
+                                      <div className="complete">
+                                        <img src="/images/roket.png" />
                                       </div>
-                                      {progress.Status === "APPROVED" ? (
-                                        <div className="complete">
-                                          <img src="/images/roket.png" />
-                                        </div>
-                                      ) : progress.Status === "PENDING" ? (
-                                        "Waiting for Teacher Approval"
-                                      ) : !!progress.nextStep ? (
-                                        authUser.uid === profile.key ? (
-                                          "Work on Step " + progress.nextStep
-                                        ) : (
-                                          `On Step ${progress.nextStep}`
-                                        )
-                                      ) : authUser.uid === profile.key ? (
-                                        "Work on Project"
+                                    ) : progress.Status === "PENDING" ? (
+                                      "Waiting for Teacher Approval"
+                                    ) : !!progress.nextStep ? (
+                                      authUser.uid === profile.key ? (
+                                        "Work on Step " + progress.nextStep
                                       ) : (
-                                        "Not Started"
-                                      )}
-                                    </Link>
-                                  )}
-                              </>
-                            ))}
-                        />
+                                        `On Step ${progress.nextStep}`
+                                      )
+                                    ) : authUser.uid === profile.key ? (
+                                      "Work on Project"
+                                    ) : (
+                                      "Not Started"
+                                    )}
+                                  </Link>
+                                )}
+                            </>
+                          ))}
+                        {/* /> */}
                       </>
                     ))}
                   </div>

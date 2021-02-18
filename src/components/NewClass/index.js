@@ -42,16 +42,30 @@ class NewClassPageBase extends React.Component {
     this.handleClassTitleOnChange = this.handleClassTitleOnChange.bind(this);
     this.handleClassTitleValidate = this.handleClassTitleValidate.bind(this);
     this.handleClassTitleOnSave = this.handleClassTitleOnSave.bind(this);
-    this.handleClassDescriptionOnChange = this.handleClassDescriptionOnChange.bind(this);
-    this.handleClassDescriptionValidate = this.handleClassDescriptionValidate.bind(this);
-    this.handleClassDescriptionOnSave = this.handleClassDescriptionOnSave.bind(this);
-    this.handleClassScheduleOnChange = this.handleClassScheduleOnChange.bind(this);
-    this.handleClassScheduleValidate = this.handleClassScheduleValidate.bind(this);
+    this.handleClassDescriptionOnChange = this.handleClassDescriptionOnChange.bind(
+      this
+    );
+    this.handleClassDescriptionValidate = this.handleClassDescriptionValidate.bind(
+      this
+    );
+    this.handleClassDescriptionOnSave = this.handleClassDescriptionOnSave.bind(
+      this
+    );
+    this.handleClassScheduleOnChange = this.handleClassScheduleOnChange.bind(
+      this
+    );
+    this.handleClassScheduleValidate = this.handleClassScheduleValidate.bind(
+      this
+    );
     this.handleClassScheduleOnSave = this.handleClassScheduleOnSave.bind(this);
-    this.handleClassLocationOnChange = this.handleClassLocationOnChange.bind(this);
-    this.handleClassLocationValidate = this.handleClassLocationValidate.bind(this);
-	this.handleClassLocationOnSave = this.handleClassLocationOnSave.bind(this);
-	this.saveChangesHandler = this.saveChangesHandler.bind(this);
+    this.handleClassLocationOnChange = this.handleClassLocationOnChange.bind(
+      this
+    );
+    this.handleClassLocationValidate = this.handleClassLocationValidate.bind(
+      this
+    );
+    this.handleClassLocationOnSave = this.handleClassLocationOnSave.bind(this);
+    this.saveChangesHandler = this.saveChangesHandler.bind(this);
     //this.onChange = editorState => this.setState({editorState});
     //console.log("hiya");
   }
@@ -218,8 +232,8 @@ class NewClassPageBase extends React.Component {
         })
         .catch((error) => console.log(error));
     } else {
-	  var badFields = Object.keys(errors);
-	  console.log(Object.keys(errors))
+      var badFields = Object.keys(errors);
+      console.log(Object.keys(errors));
       var messages = [];
       messages.push({
         html: `<span class="green">Saving</span>...`,
