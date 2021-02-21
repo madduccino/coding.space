@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Sometimes Red Sometimes Blue</title>
+  </head>
+
+  <body>
+    <h1>Sometimes red, sometimes blue, sometimes purple!</h1>
+    <script>
+      var num = Math.random();
+      if (num > 0.5 && num < 0.75) {
+        document.body.style.backgroundColor = "red";
+      } else if (num > 0.75) {
+        document.body.style.backgroundColor = "purple";
+      } else {
+        document.body.style.backgroundColor = "blue";
+      }
+    </script>
+  </body>
+</html>

@@ -31,7 +31,7 @@ exports.createUser = functions.https.onRequest(async (req, res) => {
 
   if (req.method !== "POST") {
     res.status(400).send("Unsupported");
-    // return 0;
+    return 0;
   }
 
   const email = req.body.email;
@@ -53,15 +53,15 @@ exports.createUser = functions.https.onRequest(async (req, res) => {
         email: user.email,
         displayName: user.displayName,
       });
-      // return 1;
+      return 1;
     })
     .catch((error) => {
       console.log("Error creating user: " + email);
       console.log(error);
       res.json({ error: error });
-      //   return 1;
+      return 1;
     });
-  // return 0;
+  return 0;
 });
 
 exports.autoCreateUser = functions.https.onRequest(async (req, res) => {
@@ -76,13 +76,13 @@ exports.autoCreateUser = functions.https.onRequest(async (req, res) => {
     return 0;
   }
   return await cors(req, res, async () => {
-    console.log(req.body);
     const name = req.body.name;
     const username = name.trim().replace(/ /g, ".");
     const email = "students+" + username + "@thecodingspace.com";
-    const pass = "password1"; // make me fancier
+    const pass = req.body.pass;
     const age = req.body.age;
     const birthday = req.body.birthday;
+    const db_student_id = req.body.db_student_id;
 
     admin
       .auth()
@@ -110,6 +110,8 @@ exports.autoCreateUser = functions.https.onRequest(async (req, res) => {
             Username: username,
             ThumbnailFilename: "",
             Status: "DRAFT",
+            Birthday: birthday,
+            DashboardID: db_student_id,
           });
       })
       .then(() => {
@@ -125,7 +127,7 @@ exports.autoCreateUser = functions.https.onRequest(async (req, res) => {
       .catch((error) => {
         console.log("Error creating user: " + email);
         console.log(error);
-        res.json({ error: error });
+        res.status(422).json({ error: error });
         return 1;
       });
     return 0;

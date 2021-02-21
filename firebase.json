@@ -121,6 +121,11 @@
         "type": 301
       },
       {
+        "source": "/gong",
+        "destination": "/v1/gong.html",
+        "type": 301
+      },
+      {
         "source": "/manual",
         "destination": "/manual.html",
         "type": 301
