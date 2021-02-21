@@ -68,7 +68,7 @@ class UntutorialPageBase extends React.Component {
 
   handleClick = (e) => {
     const { showiframe } = this.state;
-    if (e.target.parentNode.className === "main") {
+    if (e.target.className === "iframe-on") {
       this.setState({ showiframe: false });
     }
   };
@@ -673,7 +673,7 @@ class UntutorialPageBase extends React.Component {
             !!untutorial.ThumbnailFilename.length != 0 &&
             !this.state.uploading && (
               <LazyImage
-              file={this.props.firebase.storage.ref(
+                file={this.props.firebase.storage.ref(
                   "/public/" +
                     untutorial.Author.key +
                     "/" +
@@ -803,7 +803,13 @@ class UntutorialPageBase extends React.Component {
                             {progress.steps[index].Comments}
                           </div>
                         )}
-                      <div className={!!untutorial.steps[index].ThumbnailFilename ? "thumbnail crop" : "thumbnail"}>
+                      <div
+                        className={
+                          !!untutorial.steps[index].ThumbnailFilename
+                            ? "thumbnail crop"
+                            : "thumbnail"
+                        }
+                      >
                         {!!authUser &&
                           (!!authUser.roles["ADMIN"] ||
                             authUser.uid === untutorial.Author.key) && (
@@ -849,7 +855,7 @@ class UntutorialPageBase extends React.Component {
                           !this.state.uploading && (
                             <LazyImage
                               id={"step" + index + "-thumbnail"}
-                              className="crop"  
+                              className="crop"
                               file={this.props.firebase.storage.ref(
                                 "/public/" +
                                   untutorial.Author.key +
@@ -931,16 +937,14 @@ class UntutorialPageBase extends React.Component {
                     />
                   </a>
                 )}
-				{!!untutorial.Categories["WOOF"] && (
+                {!!untutorial.Categories["WOOF"] && (
                   <a
                     className="scratch"
                     href="https://woofjs.com"
                     target="_Blank"
                   >
                     <LazyImage
-                      file={this.props.firebase.storage.ref(
-                        "/public/woof.png"
-                      )}
+                      file={this.props.firebase.storage.ref("/public/woof.png")}
                     />
                   </a>
                 )}
