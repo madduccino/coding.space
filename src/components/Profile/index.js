@@ -11,8 +11,6 @@ import * as ROUTES from "../../constants/routes";
 import * as FILTER from "../../constants/filter";
 import { RGBA_ASTC_12x10_Format } from "three";
 
-console.log(Object.keys(FILTER));
-
 const TAB = {
   PROJECTS: 0,
   UNTUTORIALS: 1,
@@ -562,6 +560,7 @@ class ProfilePageBase extends React.Component {
                       <>
                         <Accordion
                           group={group}
+                          categories={progressLevels}
                           text={untutorialLevels[group].map((untutorial) => (
                             <>
                               {(untutorial.Status === "APPROVED") |
@@ -600,7 +599,6 @@ class ProfilePageBase extends React.Component {
               {tab === TAB.PROGRESS && (
                 <div className="tab progress">
                   <div className="content tab-content">
-                    {console.log("untutorial", progresses)}
                     {progresses.length < 1 ? (
                       <p>{"No Progress Yet :("}</p>
                     ) : (
@@ -624,18 +622,21 @@ class ProfilePageBase extends React.Component {
                         </div>
                       </div>
                     )}
-                    {/* <div className="categories">
-                      {Object.keys(FILTER).map((cat) => (
-                        <div onClick={() => this.setState({ showCat: cat })}>
-                          {FILTER[cat]}
-                        </div>
-                      ))}
-                    </div> */}
+                    {
+                      // <div className="categories">
+                      //   {Object.keys(FILTER).map((cat) => (
+                      //     <div onClick={() => this.setState({ showCat: cat })}>
+                      //       {FILTER[cat]}
+                      //     </div>
+                      //   ))}
+                      // </div>
+                    }
                     {Object.keys(progressLevels).map((group) => (
                       <>
                         {/* <Accordion
                           group={group}
-                           text= */}
+                          untuts={progressLevels}
+                          text= */}
                         {progressLevels[group]
                           .sort((progress) => progress.LastModified)
                           // .filter((f) =>
@@ -741,6 +742,7 @@ class Accordion extends React.Component {
   }
   render() {
     const { collapsed } = this.state;
+
     return (
       <>
         <h3

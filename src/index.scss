@@ -636,7 +636,8 @@ button {
     color: #fff;
     display: grid;
     display: grid;
-    grid-template-columns: 1fr 5fr;
+    grid-template-columns: 295px 5fr;
+    height: 100%;
     .main-content {
       background-color: $darkgreen;
       color: #fff;
@@ -1394,7 +1395,7 @@ button {
 #new-project {
   .main {
     @include flexhc;
-    justify-content: center;
+    align-content: flex-start;
     margin: 0;
     padding: 0;
     border-top: 0;

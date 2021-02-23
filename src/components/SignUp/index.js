@@ -66,7 +66,7 @@ class NewUserFormBase extends Component {
       });
 
       this.setState((prev) => ({
-        success: `Account created! <a target="_blank" href="/profiles/${data.uid}">Visit New Profile</a>`,
+        success: `Account created! <a target="_blank" href="/profile/${data.uid}">Visit New Profile</a>`,
       }));
     } catch (error) {
       console.error(error);
