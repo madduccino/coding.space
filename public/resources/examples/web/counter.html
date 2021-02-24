@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Counter</title>
+    <style stype="text/css">
+      html,
+      body {
+        height: 100%;
+      }
+      body {
+        display: flex;
+        flex-flow: column wrap;
+        justify-content: center;
+        align-content: center;
+        align-items: center;
+        color: #fff;
+        font-weight: bold;
+        font-family: impact, sans-serif;
+        font-size: 72px;
+        background: repeating-linear-gradient(
+          45deg,
+          #606dbc,
+          #606dbc 10px,
+          #465298 10px,
+          #465298 20px
+        );
+      }
+      input,
+      button {
+        box-shadow: 2px 2px 2px #ccc;
+        border: 1px solid #ccc;
+        outline: 0;
+      }
+      input {
+        width: 300px;
+        height: 50px;
+        font-size: Arial;
+        font-size: 24px;
+      }
+      button {
+        width: 75px;
+        height: 60px;
+        align-self: flex-start;
+        font-size: 48px;
+        font-weight: bold;
+        color: #606dbc;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="screen">0</div>
+    <input id="text" />
+    <div>
+      <button onclick="add()">+</button>
+      <button onclick="subtract()">-</button>
+    </div>
+    <script>
+      // Function called when user clicks the add button
+      // Adds the value in the input field to the current number inside the HTML element with id "screen"
+      function add() {
+        // Stores the HTML inside of element with id "screen" in the variable "screen"
+        let screen = document.querySelector("#screen");
+        // Sets the HTML inside of the element with id "Screen" to whatever it was before plus the value in the input field.
+        screen.innerHTML =
+          parseInt(screen.innerHTML) +
+          parseInt(document.querySelector("#text").value); // value of what user types in input field with id "text"
+      }
+      // Operates the same way as the above function but with subtraction!
+      function subtract() {
+        const text = document.querySelector("#text").value;
+        let screen = document.querySelector("#screen");
+        screen.innerHTML =
+          parseInt(screen.innerHTML) -
+          parseInt(document.querySelector("#text").value);
+      }
+    </script>
+  </body>
+</html>

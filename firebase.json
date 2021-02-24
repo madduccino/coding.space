@@ -117,11 +117,6 @@
       },
       {
         "source": "/gong",
-        "destination": "/gong.html",
-        "type": 301
-      },
-      {
-        "source": "/gong",
         "destination": "/v1/gong.html",
         "type": 301
       },
