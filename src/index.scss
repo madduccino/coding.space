@@ -1688,9 +1688,8 @@ button {
     .tabs {
       .field {
         position: relative;
-        div {
-        }
       }
+
 
       .tab-content {
         .title {
@@ -1708,8 +1707,6 @@ button {
               height: 25px;
               object-fit: contain;
             }
-          }
-          > div {
           }
         }
         .fa {
@@ -1729,6 +1726,12 @@ button {
           &:hover {
             box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.25);
           }
+          > div {
+            .modified {
+              font-size: 12px; 
+              color: #ccc;
+            }
+          }
         }
         img {
           width: 25px;
@@ -1737,7 +1740,7 @@ button {
           grid-template-columns: repeat(6, 1fr);
           margin: 40px 0;
           div {
-            background-color: $darkergreen;
+            background-color: $darkgreen;
             color: #fff;
             cursor: pointer;
             margin: 10px;
@@ -1747,7 +1750,17 @@ button {
             display: flex;
             flex-flow: column wrap;
             justify-content: center;
+            &.active {
+              background-color: $lightGreen;
+              color: $darkgreen;
+            }
           }
+        }
+        .level {
+          margin: 40px 0 10px;
+        }
+        .title {
+          margin: 0 20px 0 0;
         }
       }
       .progress,

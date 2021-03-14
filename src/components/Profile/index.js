@@ -73,37 +73,41 @@ class ProfilePageBase extends React.Component {
     }
   };
   componentDidMount() {
-    //console.log(this.authUser);
     const { key } = this.props.match.params;
     var untuts = [];
     var projects = [];
     var progresses = [];
+    // find firebase path definitions in firebase.js
     this.props.firebase.profile(key).on("value", (snapshot) => {
+      // get user profile
       var rawProf = snapshot.val();
       if (!rawProf.Notes) rawProf.Notes = "";
-
       this.props.firebase.untutorials().once("value", (snapshot2) => {
+        // get all the untutorials
         const { key } = this.props.match.params;
         const untutObj = snapshot2.val();
-        const untutArr = Object.values(untutObj);
-
+        const untutArr = Object.values(untutObj); // make all the untutorials an array
         untuts = untuts.concat(
+          // Filter out the user's untutorials
           untutArr.filter((untutorial) => untutorial.Author === key)
         );
-
         this.props.firebase.projects().once("value", (snapshot3) => {
+          // Get all the projects
           var projArr = Object.values(snapshot3.val());
           projects = projects.concat(
+            // Filter out the user's projects
             projArr.filter((project) => project.Author === key)
           );
           this.props.firebase.progresses(key).once("value", (snapshot) => {
-            var progObj = snapshot.val();
+            var progObj = snapshot.val(); // Get all the progress
             progresses = [];
             if (!!progObj) {
-              progresses = Object.values(snapshot.val());
+              progresses = Object.values(snapshot.val()); // make all the progress an array
               progresses.forEach((p, i) => {
+                // Add untutorial nodes to the progresses array
                 progresses[i].Untutorial = untutObj[p.untut];
                 progresses[i].Level = progresses[i].Untutorial.Level;
+                progresses[i].Categories = progresses[i].Untutorial.Categories;
               });
             }
 
@@ -174,9 +178,9 @@ class ProfilePageBase extends React.Component {
     const { errors, profile } = this.state;
     const text = profile.About.replace(/<(.|\n)*?>/g, "").trim();
     if (text.length === 0) {
-      errors["About"] = 'ABOUT.<span class="red">ISREQUIRED</span>';
+      errors["About"] = 'ABOUT.<span className="red">ISREQUIRED</span>';
     } else if (text.length < 20) {
-      errors["About"] = 'ABOUT.<span class="red">IS2SHORT</span>';
+      errors["About"] = 'ABOUT.<span className="red">IS2SHORT</span>';
     } else delete errors["About"];
     this.setState({ errors: errors });
   }
@@ -196,7 +200,7 @@ class ProfilePageBase extends React.Component {
   handleAgeValidate() {
     const { errors } = this.state;
     if (this.state.profile.Age.length === 0 /* && isNaN(profile.Age)*/) {
-      errors["Age"] = 'AGE.<span class="red">ISREQUIRED</span>';
+      errors["Age"] = 'AGE.<span className="red">ISREQUIRED</span>';
     } else delete errors["Age"];
     this.setState({ errors: errors });
   }
@@ -219,9 +223,9 @@ class ProfilePageBase extends React.Component {
   handleDisplayNameValidate() {
     const { errors, profile } = this.state;
     if (profile.DisplayName.length === 0) {
-      errors["Name"] = 'NAME.<span class="red">ISREQUIRED</span>';
+      errors["Name"] = 'NAME.<span className="red">ISREQUIRED</span>';
     } else if (profile.DisplayName.length < 4) {
-      errors["Name"] = 'NAME.<span class="red">IS2SHORT</span>';
+      errors["Name"] = 'NAME.<span className="red">IS2SHORT</span>';
     } else delete errors["Name"];
     this.setState({ errors: errors });
   }
@@ -269,11 +273,11 @@ class ProfilePageBase extends React.Component {
       var badFields = Object.keys(errors);
       var messages = [];
       messages.push({
-        html: `<span class="green">Saving</span>...`,
+        html: `<span className="green">Saving</span>...`,
         type: true,
       });
       messages.push({
-        html: `<span class="red">ERROR!</span>`,
+        html: `<span className="red">ERROR!</span>`,
         type: false,
       });
       for (var i = 0; i < badFields.length; i++) {
@@ -299,10 +303,6 @@ class ProfilePageBase extends React.Component {
   copyText(e) {
     this.textArea.select();
     document.execCommand("copy");
-    // copyText.select();
-    // copyText.setSelectionRange(0, 99999)
-    // document.execCommand("copy");
-    // alert("Copied the text: " + copyText.value);
   }
   render() {
     const {
@@ -320,7 +320,7 @@ class ProfilePageBase extends React.Component {
     var untutorialLevels = groupBy(untutorials, "Level");
     var progressLevels = groupBy(progresses, "Level");
 
-    //console.log(Object.keys(project));
+    var progressCategories = groupBy(progresses, "Categories");
     if (loading) return <div className="loading">Loading ...</div>;
 
     //can edit
@@ -388,7 +388,7 @@ class ProfilePageBase extends React.Component {
                     ) : (
                       <LazyImage
                         file={this.props.firebase.storage.ref(
-                          "/public/astronaut.png"
+                          "/public/rocket.png"
                         )}
                       />
                     )}
@@ -604,15 +604,15 @@ class ProfilePageBase extends React.Component {
                     ) : (
                       <div className="instructions">
                         <div>
-                          <span class="fa fa-star white"></span>
+                          <span className="fa fa-star white"></span>
                           <p>to do</p>
                         </div>
                         <div>
-                          <span class="fa fa-star pending fa-spin"></span>
+                          <span className="fa fa-star pending fa-spin"></span>
                           <p>waiting for teacher to approve</p>
                         </div>
                         <div>
-                          <span class="fa fa-star approved"></span>
+                          <span className="fa fa-star approved"></span>
                           <p>approved by teacher</p>
                         </div>
 
@@ -623,29 +623,48 @@ class ProfilePageBase extends React.Component {
                       </div>
                     )}
                     {
-                      // <div className="categories">
-                      //   {Object.keys(FILTER).map((cat) => (
-                      //     <div onClick={() => this.setState({ showCat: cat })}>
-                      //       {FILTER[cat]}
-                      //     </div>
-                      //   ))}
-                      // </div>
+                      <div className="categories">
+                        {Object.keys(FILTER).map((
+                          // FILTER contains all the categories, sets state showCat to whatever category clicked
+                          cat
+                        ) => (
+                          <div
+                            className={showCat === cat ? "active" : ""}
+                            onClick={() => this.setState({ showCat: cat })}
+                          >
+                            {FILTER[cat]}
+                          </div>
+                        ))}
+                      </div>
                     }
-                    {Object.keys(progressLevels).map((group) => (
+
+                    {Object.keys(progressLevels).map((
+                      group // groups progress objects into level-based arrays
+                    ) => (
                       <>
+                        {progressLevels[group].some(
+                          // show Level number if it exists in category
+                          (progress) =>
+                            Object.keys(progress.Categories).includes(
+                              showCat
+                            ) && progress.Level == group
+                        ) && <h2 className="level">Level {group}</h2>}
                         {/* <Accordion
                           group={group}
                           untuts={progressLevels}
                           text= */}
+
                         {progressLevels[group]
-                          .sort((progress) => progress.LastModified)
-                          // .filter((f) =>
-                          //   Object.keys(f.Untutorial.Categories).includes(
-                          //     showCat
-                          //   )
-                          // )
+                          .sort((progress) => progress.LastModified) // sort according to most recent progress
+                          .filter((f) =>
+                            Object.keys(f.Categories).includes(
+                              // show only showCat state
+                              showCat
+                            )
+                          )
                           .map((progress) => (
                             <>
+                              {console.log(progress)}
                               {!!authUser &&
                                 (!!authUser.roles["ADMIN"] ||
                                   !!authUser.roles["TEACHER"] ||
@@ -663,11 +682,18 @@ class ProfilePageBase extends React.Component {
                                           progress.Untutorial.key
                                     }
                                   >
-                                    <div
+                                    {/* <div
                                       dangerouslySetInnerHTML={{
-                                        __html: progress.Untutorial.Title,
+                                        __html: `${progress.Untutorial.Title} 
+                                       <p class="modified">Last modified: ${new Date(
+                                         progress.Untutorial.LastModified
+                                       ).toLocaleDateString()}</p>`,
                                       }}
-                                    />
+                                    /> */}
+
+                                    {console.log(
+                                      typeof progress.Untutorial.LastModified
+                                    )}
                                     <div className="status">
                                       {Object.keys(
                                         progress.Untutorial.steps
@@ -676,17 +702,18 @@ class ProfilePageBase extends React.Component {
                                           {!!progress.steps[slot] &&
                                           progress.steps[slot].Status ===
                                             "DRAFT" ? (
-                                            <div class="fa fa-star white"></div>
+                                            <div className="fa fa-star white"></div>
                                           ) : !!progress.steps[slot] &&
                                             progress.steps[slot].Status ===
                                               "PENDING" ? (
-                                            <div class="fa fa-star pending fa-spin"></div>
+                                            <div className="fa fa-star pending fa-spin"></div>
                                           ) : (
                                             <div className="fa fa-star approved"></div>
                                           )}
                                         </>
                                       ))}
                                     </div>
+
                                     {progress.Status === "APPROVED" ? (
                                       <div className="complete">
                                         <img src="/images/roket.png" />

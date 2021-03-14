@@ -16,6 +16,7 @@ class UntutorialPageBase extends React.Component {
       loading: true,
       untutorial: {},
       errors: {},
+      error: null,
       progress: null,
       dirty: false,
       uploading: false,
@@ -233,10 +234,10 @@ class UntutorialPageBase extends React.Component {
     const { Title } = untutorial;
     const text = Title.replace(/<(.|\n)*?>/g, "").trim();
     if (text.length === 0) {
-      errors["Title"] = 'TITLE.<span class="red">ISREQUIRED</span>';
+      errors["Title"] = 'TITLE.<span className="red">ISREQUIRED</span>';
     }
     if (text.length < 5) {
-      errors["Title"] = 'TITLE.<span class="red">ISTOOSHORT</span>';
+      errors["Title"] = 'TITLE.<span className="red">ISTOOSHORT</span>';
     } else {
       delete errors["Title"];
     }
@@ -260,7 +261,8 @@ class UntutorialPageBase extends React.Component {
     const { Description } = untutorial;
     const text = Description.replace(/<(.|\n)*?>/g, "").trim();
     if (text === "") {
-      errors["Description"] = 'DESCRIPTION.<span class="red">ISREQUIRED</span>';
+      errors["Description"] =
+        'DESCRIPTION.<span className="red">ISREQUIRED</span>';
     } else {
       delete errors["Description"];
     }
@@ -282,19 +284,18 @@ class UntutorialPageBase extends React.Component {
     const { untutorial, errors } = this.state;
     const { Status } = untutorial;
     if (!["DRAFT", "APPROVED"].includes(Status)) {
-      errors["Status"] = 'STATUS.<span class="red">ISINVALID</span>';
+      errors["Status"] = 'STATUS.<span className="red">ISINVALID</span>';
     } else {
       delete errors["Status"];
     }
     this.setState({ errors: errors });
   }
   handlePCategoryOnChange(event) {
-    const { untutorial } = this.state;
+    const { untutorial, error } = this.state;
+
     if (event.target.value != "-1") {
       untutorial.Categories[event.target.value] = event.target.value;
       this.setState({ untutorial: untutorial }, this.handleCategoryValidate);
-      console.log(event.target.value);
-      console.log(this.state.untutorial);
     }
   }
   handleCategoryOnClick(text) {
@@ -304,12 +305,17 @@ class UntutorialPageBase extends React.Component {
     this.setState({ untutorial: untutorial }, this.handleCategoryValidate);
   }
   handleCategoryValidate() {
-    const { untutorial, errors } = this.state;
-    if (Object.keys(untutorial.Categories).length < 1) {
-      errors["Categories"] =
-        'CATS.<span class="red">At least 1 category</span>';
-    } else delete errors["Categories"];
-    this.setState({ errors: errors });
+    const { untutorial, error } = this.state;
+    try {
+      if (Object.keys(untutorial.Categories).length < 1) {
+        throw "At least one category required";
+      } else {
+        this.saveChangesHandler();
+        this.setState({ error: "" });
+      }
+    } catch (error) {
+      this.setState({ error: error });
+    }
   }
   handleLevelOnChange(value) {
     var oCopy = this.state.untutorial;
@@ -328,10 +334,10 @@ class UntutorialPageBase extends React.Component {
     const { untutorial, errors } = this.state;
     const { Level } = untutorial;
     if (isNaN(Level)) {
-      errors["Level"] = 'LEVEL.<span class="red">ISINVALID</span>';
+      errors["Level"] = 'LEVEL.<span className="red">ISINVALID</span>';
     }
     if (![1, 2, 3, 4, 5, 6].includes(parseInt(Level))) {
-      errors["Level"] = 'LEVEL.<span class="red">ISOUTSIDERANGE</span>';
+      errors["Level"] = 'LEVEL.<span className="red">ISOUTSIDERANGE</span>';
     } else {
       delete errors["Level"];
     }
@@ -354,11 +360,12 @@ class UntutorialPageBase extends React.Component {
     const { untutorial, errors } = this.state;
     const { Priority } = untutorial;
     if (isNaN(Priority)) {
-      errors["Priority"] = 'PRIORITY.<span class="red">ISINVALID</span>';
+      errors["Priority"] = 'PRIORITY.<span className="red">ISINVALID</span>';
     }
     if (![1, 2, 3, 4, 5, 6].includes(parseInt(Priority))) {
       console.log(typeof Priority);
-      errors["Priority"] = 'PRIORITY.<span class="red">ISOUTSIDERANGE</span>';
+      errors["Priority"] =
+        'PRIORITY.<span className="red">ISOUTSIDERANGE</span>';
     } else {
       delete errors["Priority"];
     }
@@ -397,15 +404,15 @@ class UntutorialPageBase extends React.Component {
     const text = Step.Description.replace(/<(.|\n)*?>/g, "").trim();
     if (text === "") {
       errors["STEP" + index] =
-        'STEP.<span class="orange">' +
+        'STEP.<span className="orange">' +
         index +
-        '</span>.<span class="red">ISREQUIRED</span>';
+        '</span>.<span className="red">ISREQUIRED</span>';
     }
     if (text.length < 20) {
       errors["STEP" + index] =
-        'STEP.<span class="orange">' +
+        'STEP.<span className="orange">' +
         index +
-        '</span>.<span class="red">ISTOOSHORT</span>';
+        '</span>.<span className="red">ISTOOSHORT</span>';
     } else {
       delete errors["STEP" + index];
     }
@@ -416,13 +423,15 @@ class UntutorialPageBase extends React.Component {
     const { authUser } = this.props;
 
     if (project.URL === "") {
-      errors["PROJECT_URL"] = 'PROJECT_URL.<span class="red">ISREQUIRED</span>';
+      errors["PROJECT_URL"] =
+        'PROJECT_URL.<span className="red">ISREQUIRED</span>';
     } else if (
       !project.URL.match(
         /\b((?:[a-z][\w-]+:(?:\/{1,3}|[a-z0-9%])|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}\/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'".,<>?«»“”‘’]))/i
       )
     ) {
-      errors["PROJECT_URL"] = 'PROJECT_URL.<span class="red">ISINVALID</span>';
+      errors["PROJECT_URL"] =
+        'PROJECT_URL.<span className="red">ISINVALID</span>';
     } else {
       delete errors["PROJECT_URL"];
     }
@@ -461,7 +470,7 @@ class UntutorialPageBase extends React.Component {
     window.location = ROUTES.LANDING;
   }
   saveChangesHandler(event) {
-    const { untutorial, loading, author, errors } = this.state;
+    const { untutorial, loading, author, errors, error } = this.state;
     const { Title, Description, Level, steps } = untutorial;
     const { authUser } = this.props;
     const { key } = this.props.match.params;
@@ -481,47 +490,8 @@ class UntutorialPageBase extends React.Component {
         .then(() => {
           console.log("Successfully Saved");
           this.setState({ dirty: false });
-          // /*this.props.setGlobalState({
-          // 	messages:[{
-
-          // 		html:`SAVE.<span class="green">GOOD</span>`,
-          // 		type:true},{
-
-          // 		html:`Press any key to continue...`,
-          // 		type:false,
-
-          // 		}],
-          // 	showMessage:true
-          // });*/
         })
-        .catch((error) => console.log(error));
-    } else {
-      var badFields = Object.keys(errors);
-      var messages = [];
-      messages.push({
-        html: `<span class="green">Saving</span>...`,
-        type: true,
-      });
-      messages.push({
-        html: `<span class="red">ERROR!</span>`,
-        type: false,
-      });
-      for (var i = 0; i < badFields.length; i++) {
-        messages.push({
-          html: errors[badFields[i]],
-          type: true,
-        });
-      }
-
-      messages.push({
-        html: `Press any key to continue...`,
-        type: false,
-      });
-
-      this.props.setGlobalState({
-        messages: messages,
-        showMessage: true,
-      });
+        .catch((error) => this.setState({ error: error.message }));
     }
 
     console.log("Save Changes");
@@ -601,7 +571,14 @@ class UntutorialPageBase extends React.Component {
     this.setState({ progress: progress }, this.saveProgressHandler);
   }
   render() {
-    const { untutorial, loading, author, progress, showiframe } = this.state;
+    const {
+      untutorial,
+      loading,
+      author,
+      progress,
+      showiframe,
+      error,
+    } = this.state;
     const { Title, Description, Level, steps } = untutorial;
     const { authUser } = this.props;
     const { key } = this.props.match.params;
@@ -658,7 +635,7 @@ class UntutorialPageBase extends React.Component {
           {!!authUser &&
             (!!authUser.roles["ADMIN"] ||
               authUser.uid === untutorial.Author.key) && (
-              <label for="files" className="upload">
+              <label htmlFor="files" className="upload">
                 <input
                   id="files"
                   type="file"
@@ -697,12 +674,12 @@ class UntutorialPageBase extends React.Component {
           {!!progress && progress.Status == "DRAFT" && nextStep > 0 && (
             <h3>Keep it Up! You're on Step {nextStep}!</h3>
           )}
+          {error && <h3>{error}</h3>}
         </div>
-
         <div className={`main ${showiframe ? "blur" : ""}`}>
           <div className="main-content">
             <a className="back" onClick={() => this.props.history.goBack()}>
-              <i class="fa fa-backward"></i>
+              <i className="fa fa-backward"></i>
             </a>
 
             {!!progress && (
@@ -826,7 +803,7 @@ class UntutorialPageBase extends React.Component {
                                   : "+ Add Screenshot"}
                               </p>
                               <label
-                                for={"step" + index + "-thumbnail-upload"}
+                                htmlFor={"step" + index + "-thumbnail-upload"}
                                 className={
                                   !!untutorial.steps[index].ThumbnailFilename
                                     ? "upload replace"
@@ -907,7 +884,7 @@ class UntutorialPageBase extends React.Component {
               {!!authUser &&
                 (!!authUser.roles["ADMIN"] ||
                   authUser.uid === untutorial.Author.key) && (
-                  <div class="addDelete">
+                  <div className="addDelete">
                     <button
                       onClick={(event) => this.addStepHandler(event)}
                       text="Add Step"
@@ -953,7 +930,13 @@ class UntutorialPageBase extends React.Component {
             <div className="container">
               <div className={"titleStatus"}>
                 <TCSEditor
-                  disabled={!(authUser && !!authUser.roles["ADMIN"])}
+                  disabled={
+                    !(
+                      !!authUser &&
+                      (!!authUser.roles["ADMIN"] ||
+                        authUser.uid === untutorial.Author.key)
+                    )
+                  }
                   type={"text"}
                   className={"title"}
                   name={"title"}
@@ -963,10 +946,6 @@ class UntutorialPageBase extends React.Component {
                   text={untutorial.Title}
                 />
               </div>
-              {/* {!!authUser && !progress && (
-				<button className="checkout"
-				onClick={this.loadProgress}>Get Coding!</button>
-			)} */}
             </div>
             <div className="container">
               Level:
@@ -1056,6 +1035,7 @@ class UntutorialPageBase extends React.Component {
                 authUser.uid === untutorial.Author.key) && (
                 <div className="container">
                   <h4>Tags</h4>
+
                   <div className="filter">
                     {Object.keys(untutorial.Categories).length !=
                       Object.keys(FILTERS).length && (
@@ -1071,6 +1051,7 @@ class UntutorialPageBase extends React.Component {
                           ))}
                       </select>
                     )}
+
                     <div className="filter-categories">
                       {Object.keys(untutorial.Categories).map((f) => (
                         <a onClick={() => this.handleCategoryOnClick(f)}>
