@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!--Google Fonts-->
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lobster&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Log In Screen</title>
+    <style stype="text/css">
+      #signout {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>This site is for members only, ok?</h1>
+
+    <form id="form">
+      <label for="email">Email</label>:<br />
+      <input id="email" placeholder="Email" /><br />
+      <label for="password">Password</label>:<br />
+      <input id="password" placeholder="Password" /><br /><br />
+      <button type="submit">Sign Up</button>
+      <button type="submit" onclick="signIn()">Sign In</button>
+    </form>
+    <button id="signout" onclick="signOut()" type="submit">Sign Out</button>
+
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/8.2.10/firebase-app.js"></script>
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+    <script src="https://www.gstatic.com/firebasejs/8.2.10/firebase-auth.js"></script>
+
+    <script>
+      // Your web app's Firebase configuration
+      var firebaseConfig = {
+        apiKey: "AIzaSyB5yuok5fTL6P1xVeTTthASsgLTgf4RSy8",
+        authDomain: "my-login-screen-59b2a.firebaseapp.com",
+        projectId: "my-login-screen-59b2a",
+        storageBucket: "my-login-screen-59b2a.appspot.com",
+        messagingSenderId: "116474550889",
+        appId: "1:116474550889:web:eeaea210033247ea8e20f8",
+      };
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+
+      const addUser = (e) => {
+        const email = document.querySelector("#email").value;
+        const password = document.querySelector("#password").value;
+        const form = document.querySelector("#form");
+        e.preventDefault();
+        firebase
+          .auth()
+          .createUserWithEmailAndPassword(email, password)
+          .then((userCredential) => {
+            // Signed in
+            var user = userCredential.user;
+            // ...
+          })
+          .catch((error) => {
+            var errorCode = error.code;
+            var errorMessage = error.message;
+            // ..
+          });
+      };
+
+      const signOut = (e) => {
+        firebase
+          .auth()
+          .signOut()
+          .then(() => {
+            document.querySelector("#signout").style.display = "none";
+            document.querySelector("form").style.display = "block";
+            document.querySelector("h1").innerHTML =
+              "This site is for members only, ok?";
+            // Sign-out successful.
+          })
+          .catch((error) => {
+            // An error happened.
+          });
+      };
+
+      const signOut = (e) => {
+        firebase
+          .auth()
+          .signOut()
+          .then(() => {
+            document.querySelector("#signout").style.display = "none";
+            document.querySelector("form").style.display = "block";
+            document.querySelector("h1").innerHTML =
+              "This site is for members only, ok?";
+            // Sign-out successful.
+          })
+          .catch((error) => {
+            // An error happened.
+          });
+      };
+
+      const signIn = (e) => {
+        firebase
+          .auth()
+          .signInWithEmailAndPassword(email, password)
+          .then((userCredential) => {
+            // Signed in
+            var user = userCredential.user;
+            // ...
+          })
+          .catch((error) => {
+            var errorCode = error.code;
+            var errorMessage = error.message;
+          });
+      };
+
+      firebase.auth().onAuthStateChanged((user) => {
+        if (user) {
+          // User is signed in, see docs for a list of available properties
+          // https://firebase.google.com/docs/reference/js/firebase.User
+          const uid = user.uid;
+          document.querySelector("form").style.display = "none";
+          document.querySelector("h1").innerHTML =
+            "You're in! I knew you could do it.";
+
+          document.querySelector("#signout").style.display = "block";
+
+          // ...
+        } else {
+          // User is signed out
+          // ...
+        }
+      });
+
+      $("#form").submit(addUser);
+    </script>
+  </body>
+</html>

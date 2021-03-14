@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!--Google Fonts-->
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lobster&display=swap"
+      rel="stylesheet"
+    />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>To Do List</title>
+    <style stype="text/css">
+      body {
+        margin: 0 auto;
+        text-align: center;
+        font-family: "arial";
+        background-image: url("https://www.publicdomainpictures.net/pictures/30000/velka/cork-board.jpg");
+        background-size: cover;
+      }
+      h1 {
+        color: red;
+        font-size: 48px;
+        text-shadow: 1px 1px 1px #fff;
+      }
+      ul {
+        background-color: #ffff99;
+        height: 400px;
+        width: 400px;
+        box-shadow: 2px 2px 2px #fff;
+        margin: 60px auto 20px;
+        text-align: left;
+        padding: 20px;
+      }
+      li:first-child {
+        margin-top: 40px;
+      }
+      li {
+        list-style: none;
+        margin-bottom: 10px;
+      }
+      input {
+        box-shadow: 2px 2px 2px #ccc;
+        border: 0;
+        outline: 0;
+        border: 1px solid hsl(0, 0%, 80%);
+        padding: 10px 20px;
+      }
+      button {
+        padding: 8px;
+        background-color: lightSalmon;
+        color: red;
+        border: 0;
+        outline: 0;
+        font-weight: bold;
+        font-size: 14px;
+        box-shadow: 2px 2px 2px coral;
+      }
+      img {
+        width: 15px;
+      }
+      span {
+        width: 350px;
+        display: inline-block;
+        word-wrap: break-word;
+      }
+      .check {
+        padding: 10px;
+        box-shadow: none;
+        width: 15px;
+        height: 15px;
+      }
+      .crossoff {
+        text-decoration: line-through;
+      }
+      .pin {
+        width: 50px;
+        height: 50px;
+        position: absolute;
+        top: 0;
+      }
+      .container {
+        position: relative;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>My To Do List</h1>
+    <input id="todo" placeholder="To Do..." />
+    <button id="add">Add Item</button>
+
+    <div class="container">
+      <img
+        class="pin"
+        src="http://assets.stickpng.com/images/588891e5bc2fc2ef3a1860a3.png"
+      />
+      <ul id="item"></ul>
+    </div>
+    <script>
+      const addItem = () => {
+        const list = document.querySelector("#item");
+        const item = document.createElement("li");
+        const input = document.querySelector("#todo");
+        const content = document.createElement("span");
+        content.textContent = input.value;
+        input.value = "";
+        const trash = document.createElement("img");
+        trash.src =
+          "https://cdns.iconmonstr.com/wp-content/assets/preview/2013/240/iconmonstr-trash-can-1.png";
+        item.appendChild(content);
+        const check = document.createElement("input");
+        check.className = "check";
+        check.type = "checkbox";
+        item.prepend(check);
+        item.appendChild(trash);
+        list.appendChild(item);
+        for (child of list.children) {
+          console.log(child);
+        }
+      };
+      const trash = (e) => {
+        if (e.target.nodeName === "IMG") e.target.parentNode.remove();
+      };
+      const check = (e) => {
+        if (e.target.checked) {
+          e.target.nextSibling.className = "crossoff";
+        } else {
+          e.target.nextSibling.className = "";
+        }
+      };
+      // Call addItem when you click the add button or when you press enter inside the input field
+      document.querySelector("#add").addEventListener("click", addItem);
+      document.querySelector("#todo").addEventListener("keydown", (e) => {
+        if (e.key === "Enter") addItem();
+      });
+      document.addEventListener("click", trash);
+      document.addEventListener("click", check);
+    </script>
+  </body>
+</html>
