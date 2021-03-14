@@ -664,7 +664,6 @@ class ProfilePageBase extends React.Component {
                           )
                           .map((progress) => (
                             <>
-                              {console.log(progress)}
                               {!!authUser &&
                                 (!!authUser.roles["ADMIN"] ||
                                   !!authUser.roles["TEACHER"] ||
@@ -690,10 +689,15 @@ class ProfilePageBase extends React.Component {
                                        ).toLocaleDateString()}</p>`,
                                       }}
                                     /> */}
-
                                     {console.log(
-                                      typeof progress.Untutorial.LastModified
+                                      typeof progress.Untutorial.Title
                                     )}
+                                    <div
+                                      dangerouslySetInnerHTML={{
+                                        __html: progress.Untutorial.Title,
+                                      }}
+                                    />
+
                                     <div className="status">
                                       {Object.keys(
                                         progress.Untutorial.steps
@@ -713,7 +717,6 @@ class ProfilePageBase extends React.Component {
                                         </>
                                       ))}
                                     </div>
-
                                     {progress.Status === "APPROVED" ? (
                                       <div className="complete">
                                         <img src="/images/roket.png" />
