@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Secret Challenge 1.4</title>
+    <link
+      href="https://fonts.googleapis.com/css?family=Quicksand"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="https://coding.space/about.css" />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+      integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+      crossorigin="anonymous"
+    />
+    <link rel="icon" type="image/x-icon" href="./../images/favicon.ico" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <div id="titleContainer">
+      <h1 id="title">Good Luck!</h1>
+    </div>
+    <p id="counter" style="text-align: center; font-size: 10em; color: white;">2:00</p>
+    <script>
+      var stop = false;
+      var seconds = 0;
+      var mins = 0;
+      var current_minutes = 0;
+      var foo = 23;
+      
+      var tick = () => {
+        if(stop) { return; }
+        var counter = document.getElementById("counter");
+        current_minutes = mins-1
+        seconds--;
+        counter.innerHTML = current_minutes.toString() + ":" + (seconds < 10 ? "0" : "") + String(seconds);
+        if( seconds > 0 ) {
+            setTimeout(tick, 1000);
+        } else {
+            if(mins > 1){
+                countdown(mins-1);           
+            } else {
+              alert("try again!");
+              location.reload();
+            }
+        }
+      }
+      
+    function countdown(minutes) {
+      seconds = 60;
+      mins = minutes;
+      setTimeout(tick, 1000);
+    }
+    countdown(2)
+      
+      var f = ['🕐','🕑','🕒','🕓','🕔','🕕','🕖','🕗','🕘','🕙','🕚','🕛'];
+      var bar = 1
+
+      function loop() {
+          location.hash = f[Math.floor((Date.now()/100)%f.length)];
+
+          setTimeout(loop, 50);
+      }
+
+      loop();
+
+      document.body.onkeyup = function(e){
+        if(e.keyCode == 32) {
+          if(seconds == foo && current_minutes == bar){
+            stop = true;
+            alert("you did it!");
+            window.location.href = ["\x77\x69\x6E\x72\x61\x72\x69\x73\x79\x6F\x75\x2E\x68\x74\x6D\x6C"];
+          } else {
+            alert("try again!");
+            location.reload();
+          }
+        }
+      }
+    </script>
+  </body>
+</html>
