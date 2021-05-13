@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html>
+  <!-- 
+  
+    Welcome to the source code for The Coding Space Weekly Challenges Page!
+    You can peek at future challenges here if you want. :)
+    If you are here looking for the SECRET CHALLENGE then you should go to coding.space/challenge/shh.html
+
+  -->
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Challenge</title>
+    <link
+      href="https://fonts.googleapis.com/css?family=Quicksand"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="https://coding.space/about.css" />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+      integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+      crossorigin="anonymous"
+    />
+    <link rel="icon" type="image/x-icon" href="./../images/favicon.ico" />
+    <style>
+      .button {
+        width: 250px;
+        height: 70px;
+      }
+      #imageContainer {
+        color: white;
+      }
+      .past {
+        text-align: center;
+      }
+    </style>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <div id="titleContainer">
+      <h1 id="title" class="two"></h1>
+    </div>
+    <div id="imageContainer">
+      <img
+        id="scratchImage"
+        onclick="overlayOn('scratchChallenge')"
+        src="https://coding.space/images/2018scratch.png"
+      />
+      <img
+        id="woofJSImage"
+        onclick="overlayOn('woofChallenge')"
+        src="https://coding.space/images/2018woof.png"
+      />
+      <img
+        id="webImage"
+        onclick="overlayOn('webChallenge')"
+        src="https://coding.space/images/2018web.png"
+      />
+    </div>
+    <div
+      class="challenge"
+      onclick="overlayOff('scratchChallenge')"
+      id="scratchChallenge"
+    ></div>
+    <div
+      class="challenge"
+      id="woofChallenge"
+      onclick="overlayOff('woofChallenge')"
+    ></div>
+    <div
+      class="challenge"
+      id="webChallenge"
+      onclick="overlayOff('webChallenge')"
+    ></div>
+
+    <div id="footer">
+      <div class="button">
+        <a href="past.html" class="past">Past Challenges</a>
+      </div>
+      <div class="button" style="display: none">
+        <a href="fun.html" class="past">Click Here!</a>
+      </div>
+    </div>
+
+    <script>
+      //arrays contain challenge information
+      let scratchChallenges = [
+        "Learn the name of everyone in your class, both teachers and students.</p><p>Use 4 different methods for moving sprites in one project.</p><p>Complete at least 3 steps in a new Scratch project.",
+        "Use the <strong>when this sprite clicked</strong> block in a project.</p><p>Make a project that uses at least 5 different backdrops.</p><p>Make a sprite which follows the mouse around the screen.",
+        "Add sound effects and background music to one of your projects.</p><p>Use 3 different graphic effects in one project.</p><p>Create a Scratch clock project which displays the current time in a unique way.",
+        "Learn the definition of a <strong>boolean</strong> and which shaped blocks in Scratch are booleans.</p><p>Use the <strong>Text To Speech Extension</strong> to make a sprite talk.</p><p>Use broadcasts to make multiple sprites react when you click on one of them.",
+        "Use the <strong>wait until</strong> block in a project.</p><p>Use the <strong>Music Extension</strong> to code an original song.</p><p>Code a sprite to follow the mouse only on one axis, X or Y.",
+        "Make a sprite animate by switching between multiple costumes.</p><p>Change the <strong>costume center</strong> of one of your Sprites.</p><p>Make a sprite with movement controls and boundaries on where it can move.",
+        "Use a variable to track how many times the player pushes a button.</p><p>Make a project that switches between at least 5 backdrops using code.</p><p>Use the <strong>ask</strong> block to get the player's name, then have a sprite say it backwards!",
+        "Code a Sprite to grow and shrink when buttons are pressed.</p><p>Code a sprite to jump to the location of the mouse when you click.</p><p>Make an interesting Scratch project with no Sprites at all!",
+        "Pull an image from Google Images to use as a sprite costume or backdrop in your project.</p><p>Start a Scratch project at a higher level than one you've done before.</p><p>Use clones to create a sky full of stars.",
+        "Use a variable that stays hidden in a project.</p><p>Use comments in your project to label your code so that someone else can understand it.</p><p>Code a sprite to draw wherever the player moves their mouse using the <strong>Pen Extension</strong>.",
+        "Use the <strong>distance to</strong> block and a variable to record a measurement.</p><p>Make a sprite jitter or wobble using <strong>random</strong> numbers and a <strong>movement</strong> block.</p><p>Use every <strong>Operators</strong> block once in a project.",
+        "Add a script to your <strong>backpack</strong> and move it to a different project.</p><p>Use clones to make a particle effect.</p><p>Create a project which randomly generates visual art.",
+        "Use the <strong>or</strong> operator to combine two diamond-shaped blocks.</p><p>Change the rotation style of a sprite using code.</p><p>Make a sprite with gravity that can bounce on the bottom of the screen.",
+        "Use a list in a project.</p><p>Make and use a health bar in a project.</p><p>Create your own un-tutorial to plan out a custom project!",
+        "Use 3 different broadcasts in one project.</p><p>Use the <strong>contains</strong> block in a project.</p><p>Using the <strong>Pen Extension</strong>, draw a circle and use it to calculate the value of Pi.",
+        "Figure out what the <strong>mod</strong> block does and use it in a project.</p><p>Use the <strong>Make a Block</strong> feature to reuse a portion of your code.</p><p>Generate funny jokes by picking random words from a list.",
+        "Help another student fix a bug in their project.</p><p>Remix a project made by another student in the class (with their permission).</p><p>Make a project that teaches players about something you think is cool.",
+        "Try out WoofJS!</p><p>Polish a finished project by adding visual effects.</p><p>Finish one of your projects and have someone test it.",
+      ];
+      let woofChallenges = [
+        "Learn the name of everyone in your class, both teachers and students.</p><p>Make a project with at least one of each of the types of sprites.</p><p>Complete 3 steps in a new WoofJS project.",
+        "Make a sprite which follows the mouse.</p><p>Make your own <strong>array</strong> and use it in a project.</p><p>Use the WoofJS <strong>pen</strong> to draw a starry sky on a solid color background.",
+        "Use the <strong>every</strong> function and the <strong>after</strong> function in a project.</p><p>Code a sprite to bounce off the edges of the window.</p><p></p>Use the <strong>Pen</strong> and random numbers to generate art.",
+        "Make an image outside of WoofJS (pixilart.com is great for pixel art) and import it into WoofJS to use as a sprite.</p><p>Write code to change the background of your project when you press different keys.</p><p>Create a digital aquarium with randomized fish which swim around.",
+        "Make a project that displays the size of it's window using <strong>Text</strong> objects.</p><p>Research good techniques for organizing code, and organize the code of your current or a past project.</p><p>Make a game based on your favorite sport.",
+        "Code an object that plays a sound when it is clicked on.</p><p>Learn about the browser <strong>Inspector</strong> and use it to find the Google Analytics script in WoofJS's source code.</p><p>Make a WoofJS project with a fixed size using <strong>fullScreen = false</strong> and <strong>setBackdropSize(x, y)</strong>",
+        "Code a circle that slowly moves towards the player's mouse pointer.</p><p>Make a project with a sprite that switches between multiple images.</p><p>Code a virtual pet that you can give a name, feed, and play with.",
+        "Make a sprite that jumps to random locations on the screen.</p><p>Code 4 lines which connect the mouse pointer to the 4 corners of the window.</p><p>Build a <strong>team project</strong> with at least one collaborator.",
+        "Make a project which tells the user the day of the week.</p><p>Code a project which dynamically adjusts to the size of the user's screen.</p><p>Make a project that uses both mouse controls and keyboard controls.",
+        "Code a custom <strong>function</strong> in your project.</p><p>Make a project with at least 5 sound effects and looping background music.</p><p>Code the pen to draw a fractal pattern.",
+        "Use a loop to create many copies of one sprite with randomized properties.</p><p>Make a project with multiple kinds of clones all stored in one array.</p><p>Code a sprite with gravity which bounces on the bottom of the screen.",
+        "Make a sprite with jitter or wobble by setting its position or angle with <strong>random</strong>.</p><p>Code an entire project using only one forever loop.</p><p>Code a game using only shape sprites, no images.",
+        "Make a sprite animate between multiple images.</p><p>Use the mouse's speed instead of its position to control your project.</p><p>Code an animation that demonstrates a skill you know.",
+        "Use the <strong>Local Storage</strong> Integration to save a variable in a project.</p><p>Code a sound to speed up and slow down based on the user's input.</p><p>Create a project where the player can move between different worlds.",
+        "Use a repeating background image for your project.</p><p>Use the <strong>Sine</strong> function and a variable to make a Sprite move.</p><p>Can you fix the code in this <a href='https://woofjs.com/create.html#debugging-challenge'>debugging challenge?</a>",
+        "Use a randomized color in your project.</p><p>Choose one of your old, finished projects and make the code more organized.</p><p>Make a project which randomly generates a poem.",
+        "Swap projects with another coder and see if you can understand all of their code.</p><p>Use a <strong>Custom Integration in a project.</p><p>Write your own collision code without using the <strong>touching</strong> function.",
+        "Make a project with only one image.</p><p>Playtest another student's project and give them helpful feedback.</p><p>Code a project about your friends in coding class.",
+      ];
+      let webChallenges = [
+        "Learn the name of everyone in your class, both teachers and students.</p><p>Use at least 5 different HTML tags in a project.</p><p>Complete 3 steps in a new web project.",
+        "Learn what <strong>deprecated</strong> means and learn about 5 deprecated HTML tags.</p><p>Use at least 3 <strong>button</strong> tags in your project with connected Javascript.</p><p>Create a website with all of your favorite YouTube videos embedded on it.",
+        "Learn how to display symbols which you cannot type in HTML using the symbol's <strong>entity number</strong>.</p><p>Style an element with 10 different CSS styles.</p><p>Made a website all about your favorite historical figure.",
+        "Choose a color palette for your next project using a helpful tool like <strong>colorhunt.co</strong> or <strong>paletton.com</p><p>Use a CSS 2D and 3D Transform on an element in your project.</p><p>Make a site filled with as many animated GIFs as you can.",
+        "Use CSS and HTML to create a tooltip which appears when the user hovers over an element with their mouse.</p><p>Research the difference between <strong>var</strong>, <strong>let</strong>, and <strong>const</strong> and revise a project to use the appropriate keywords.</p><p>Make a project which uses <strong>CSS Media Queries</strong> to change based on the size of the browser window.",
+        "Learn the difference between absolute and relative file paths.</p><p>Use an <strong>iframe</strong> to display another website inside your project.</p><p>Use <strong>HTML SVG</strong> to create a cute animal drawing.",
+        "Use CSS text decoration to cross out some text on your site.</p><p>Use both an ordered and unordered HTML list in a project.</p><p>Write Javascript which allows the user to move an HTML element around a page using the arrow keys.",
+        "Write Javascript which asks the user for their name and displays it on a page.</p><p>Use a <strong>Google Fonts</strong> font in one of your projects.</p><p>Use CSS animation to create a chaotic page full of animating elements.",
+        "Use <strong>window.open</strong> to have your site open a pop-up.</p><p>Use the canvas to make a simple painting program.</p><p>Use the inspector on this page to find and complete the <strong>secret challenge!</strong>",
+        "Learn about <strong>CSS Pseudo-classes</strong> and use them in a project.</p><p>Use CSS to add a <strong>Font Awesome</strong> icon to a project.</p><p>Make a project which changes based on the current date.",
+        "Use a <strong>while</strong> loop in your Javascript code.</p><p>Learn about CSS <strong>flexbox layouts</strong> and set one up in a project.</p><p>Make a page which measures how long you have been looking at it.",
+        "Use an HTML <strong>table</strong> in your project.</p><p>Use just <strong>HTML SVG</strong> to make animated text.</p><p>Research what <strong>UTF-8</strong> means and find the hex code for this emoji - &#128512;",
+        "Learn all of the CSS <strong>Combinators</strong> and use each in a project.</p><p>Use <strong>HTML Geolocation</strong> in a project.</p><p>Code a project which generates random art on an HTML canvas.",
+        "Use a <strong>switch case</strong> in your Javascript code.</p><p>Use HTML Audio to embed a sound in a project.</p><p>Create a project using <strong>Bootstrap</strong>.",
+        "Use the <strong>code</strong> HTML tag to show some code on a site.</p><p>Make a pretty navigation bar using CSS.</p><p>Add an <strong>API</strong> of your choice to a project.",
+        "Learn about <strong>HTML Language Codes</strong> and make a site in a different language!</p><p>Set a custom favicon for a project.</p><p>Use multiple scrolling backgrounds to make a parallax effect.",
+        "Learn about the CSS <strong>!important</strong> rule and use it in a project.</p><p>Code a project which uses a Javascript <strong>cookie</strong>.</p><p>Create a portfolio site with links to all of your projects.",
+        "Use CSS to make one of your old projects look nicer.</p><p>Exchange projects with another student and give each other helpful feedback.</p><p>Go to <a href url='secret2.html'>this link</a> for the second <strong>secret challenge!</strong>"
+      ];
+      //currentWeek index will be used to find the right challenges
+      var currentWeek = 0;
+      //uses today's date to find current week index
+      function findCurrentWeek() {
+        let firstWeek = new Date(2021, 1, 7);
+        let secondWeek = new Date(2021, 1, 14);
+        let thirdWeek = new Date(2021, 1, 21);
+        let fourthWeek = new Date(2021, 1, 28);
+
+        let fifthWeek = new Date(2021, 2, 7);
+        let sixthWeek = new Date(2021, 2, 14);
+        let seventhWeek = new Date(2021, 2, 21);
+        let eigthWeek = new Date(2021, 2, 28);
+
+        let ninthWeek = new Date(2021, 3, 4);
+        let tenthWeek = new Date(2021, 3, 11);
+        let eleventhWeek = new Date(2021, 3, 18);
+        let twelfthWeek = new Date(2021, 3, 25);
+
+        let thirteenthWeek = new Date(2021, 4, 3);
+        let fourteenthWeek = new Date(2021, 4, 10);
+        let fifteenthWeek = new Date(2021, 4, 17);
+        let sixteenthWeek = new Date(2021, 4, 24);
+
+        let seventeenthWeek = new Date(2021, 5, 6);
+        let eighteenthWeek = new Date(2021, 5, 13);
+
+        let dateToday = new Date(/*add date here to test other dates*/);
+
+        if (dateToday <= firstWeek) currentWeek = 0;
+        if (dateToday <= secondWeek && dateToday > firstWeek) currentWeek = 1;
+        if (dateToday <= thirdWeek && dateToday > secondWeek) currentWeek = 2;
+        if (dateToday <= fourthWeek && dateToday > thirdWeek) currentWeek = 3;
+        if (dateToday <= fifthWeek && dateToday > fourthWeek) currentWeek = 4;
+        if (dateToday <= sixthWeek && dateToday > fifthWeek) currentWeek = 5;
+        if (dateToday <= seventhWeek && dateToday > sixthWeek) currentWeek = 6;
+        if (dateToday <= eigthWeek && dateToday > seventhWeek) currentWeek = 7;
+        if (dateToday <= ninthWeek && dateToday > eigthWeek) currentWeek = 8;
+        if (dateToday <= tenthWeek && dateToday > ninthWeek) currentWeek = 9;
+        if (dateToday <= eleventhWeek && dateToday > tenthWeek)
+          currentWeek = 10;
+        if (dateToday <= twelfthWeek && dateToday > eleventhWeek)
+          currentWeek = 11;
+        if (dateToday <= thirteenthWeek && dateToday > twelfthWeek)
+          currentWeek = 12;
+        if (dateToday <= fourteenthWeek && dateToday > thirteenthWeek)
+          currentWeek = 13;
+        if (dateToday <= fifteenthWeek && dateToday > fourteenthWeek)
+          currentWeek = 14;
+        if (dateToday <= sixteenthWeek && dateToday > fifteenthWeek)
+          currentWeek = 15;
+        if (dateToday <= seventeenthWeek && dateToday > sixteenthWeek)
+          currentWeek = 16;
+        if (dateToday <= eighteenthWeek && dateToday > seventeenthWeek)
+          currentWeek = 17;
+        if (dateToday >= eighteenthWeek) currentWeek = 18;
+
+        // TEST INDIVIDUAL WEEKS HERE
+        //currentWeek =11;
+      }
+      function overlayOn(elementToTurnOn) {
+        document.getElementById(elementToTurnOn).style.display = "block";
+      }
+
+      function overlayOff(elementToTurnOff) {
+        document.getElementById(elementToTurnOff).style.display = "none";
+      }
+
+      //script commands
+      findCurrentWeek();
+      if (currentWeek < 18) {
+        document.getElementById("title").innerHTML =
+          "Coding Space Weekly Challenges Week " + (currentWeek + 1);
+        document.getElementById("scratchChallenge").innerHTML =
+          "<h1>Scratch Challenges</h1> <p>" +
+          scratchChallenges[currentWeek] +
+          "</p>";
+        document.getElementById("woofChallenge").innerHTML =
+          "<h1>WoofJS Challenges</h1> <p>" +
+          woofChallenges[currentWeek] +
+          "</p>";
+        document.getElementById("webChallenge").innerHTML =
+          "<h1>Web Challenges</h1> <p>" + webChallenges[currentWeek] + "</p>";
+      } else {
+        document.getElementById("title").innerHTML =
+          "Coding Space Weekly Challenges";
+        document.getElementById("imageContainer").innerHTML =
+          "<h1>The Coding Space Spring semester is over! But you can see all of the challenges by clicking the button below.</h1>";
+        document.getElementById("scratchImage").style.display = "none";
+        document.getElementById("woofJSImage").style.display = "none";
+        document.getElementById("webImage").style.display = "none";
+      }
+    </script>
+  </body>
+</html>

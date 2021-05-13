@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Secret Challenge 1.3</title>
+    <link rel="icon" type="image/x-icon" href="./../images/favicon.ico" />
+    <style>
+      body {
+        background-color: black;
+      }
+    </style>
+    <script type="text/javascript" src="woof.js"></script>
+  </head>
+
+  <body style="margin: 0px; padding: 0px; width: 100%; height: 100%;">
+    <div id="project">
+      <canvas id="sprites" style="z-index: 3; position: absolute;"></canvas>
+      <canvas id="pen" style="z-index: 2; position: absolute;"></canvas>
+      <div id="backdrop" style="z-index: 1; position: absolute; width: 1344px; height: 975px; background:  0% 0% / 100% 100% no-repeat black;"></div>
+    </div>
+
+    <script type="text/javascript">"use strict";
+      
+setBackdropColor("black");
+      
+var player = new Image({
+  url: "unicorn.png",
+  width: 120,
+  height: 80,
+  x: minX/2,
+  y: 0
+});
+player.ay = 0;
+
+player.update = function () {
+  player.x = minX/2 + random(-2, 2);
+  player.y = player.ay + random(-2, 2);
+
+  if (keysDown.includes('UP')) {
+    player.ay += 5;
+    if(player.ay > maxY - player.height/2) {
+      player.ay = maxY - player.height/2
+    }
+  }
+  if (keysDown.includes('DOWN')) {
+    player.ay -= 5;
+    if(player.ay < minY + player.height/2) {
+      player.ay = minY + player.height/2
+    }
+  }
+  
+  var r = new Rectangle({
+    width: random(5, 10),
+    height: random(5, 10),
+    color: randomColor(),
+    x: player.x,
+    y: player.y + random(-10, 10)
+  });
+  r.dy = random(-20, 20) / 10;
+  r.update = function () {
+    r.y += r.dy;
+    r.x -= 6;
+  };
+  stuff.push(r);
+
+  player.sendToFront();
+};
+
+var stuff = [];
+
+// This code spawns in the pusheens
+every(1 / 2, 'second', function () {
+  var p = new Image({
+    url: "pusheen.png",
+    width: 6,
+    height: 4,
+    x: maxX,
+    y: randomY()
+  });
+  var s = random(5, 20);
+  p.width *= s;
+  p.height *= s;
+  p.x += p.width / 2;
+  p.dx = -random(20, 60) / 10;
+  p.update = function () {
+    p.x += p.dx;
+  };
+  
+  // one in a thousand! instead of waiting for it, can you go directly to the image?
+  if(floor(random(0, 1000)) === 0) {
+    p.setImageURL("p2.png")
+  }
+  
+  stuff.push(p);
+});
+
+forever(function () {
+  player.update();
+
+  stuff.forEach(function (thing) {
+    thing.update();
+    if (thing.x < minX - thing.width) {
+      stuff.remove(thing);
+      thing.delete();
+    }
+  });
+});
+    </script>
+  </body>
+</html>
