@@ -25,18 +25,8 @@
         "type": 301
       },
       {
-        "source": "/camp",
-        "destination": "/camp.html",
-        "type": 301
-      },
-      {
         "source": "/camp2020",
         "destination": "/camp2020.html",
-        "type": 301
-      },
-      {
-        "source": "/camp2021",
-        "destination": "/camp.html",
         "type": 301
       },
       {
