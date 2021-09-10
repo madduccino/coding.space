@@ -71,7 +71,7 @@
       },
       {
         "source": "/activity",
-        "destination": "/activity/spring2021.html",
+        "destination": "/activity/fall2021.html",
         "type": 301
       },
       {
