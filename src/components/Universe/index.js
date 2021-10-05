@@ -6,6 +6,7 @@ import { withAuthentication } from "../Session";
 import { withFirebase } from "../Firebase";
 import * as ROUTES from "../../constants/routes";
 import * as CATEGORIES from "../../constants/categories";
+import "./universe.scss";
 
 class Universe extends React.Component {
   constructor(props) {
@@ -67,16 +68,18 @@ class Universe extends React.Component {
   onClassFilterChange() {
     const { classFilter, classMembers } = this.state;
     const { authUser } = this.props;
-    if (classFilter) this.setState({ classFilter: false });
-    else {
+    if (classFilter) {
+      this.setState({ classFilter: false });
+    } else {
       if (!classMembers) {
         this.props.firebase.classes().once("value", (snapshot) => {
           let classMembers = [];
           let classes = snapshot.val();
-
+          // Classes I'm in
           let classesWithYou = Object.keys(classes).filter((clazz) =>
             Object.keys(classes[clazz].Members).includes(authUser.uid)
           );
+          // Me and my classmates
           if (Object.keys(classesWithYou).length > 0) {
             classesWithYou.forEach((clazz) => {
               classMembers = classMembers.concat(
@@ -90,14 +93,8 @@ class Universe extends React.Component {
     }
   }
   render() {
-    const {
-      projects,
-      loading,
-      filter,
-      textFilter,
-      classFilter,
-      classMembers,
-    } = this.state;
+    const { projects, loading, filter, textFilter, classFilter, classMembers } =
+      this.state;
     var filteredProjects = projects.filter(
       (project) =>
         project.Status === "APPROVED" &&
@@ -120,77 +117,86 @@ class Universe extends React.Component {
 
     return (
       <section id="universe">
-        {/* <a target="_blank" href="http://scratch.mit.edu/create">
-				<button id="go-to-scratch" class="btn btn-success">Go to Scratch
-				</button>
-			</a> */}
-        <div className="filter">
-          <div>
+        <div className="main">
+          <div className="sidebar">
+            <div className="filter">
+              <input
+                type="checkbox"
+                checked={classFilter}
+                onClick={this.onClassFilterChange}
+              />
+              <label>Your Class Only</label>
+              <div>
+                {selectedFilters.length != Object.keys(CATEGORIES).length && (
+                  <select onChange={this.categoryFilterOnChange}>
+                    <option value="-1">Filter...</option>
+                    {Object.keys(CATEGORIES)
+                      .filter((f) => !selectedFilters.includes(f))
+                      .map((filterName) => (
+                        <option value={filterName}>{filterName}</option>
+                      ))}
+                  </select>
+                )}
+              </div>
+
+              {selectedFilters.length > 0 && (
+                <div className="filter-categories">
+                  {selectedFilters.map((f) => (
+                    <a onClick={() => this.filterOnClick(f)}>{f}</a>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+
+          <div className="main-content">
             <input
+              className="search"
               type="text"
               onChange={this.textFilterOnChange}
               placeholder="Search..."
             />
-          </div>
-          <div>
-            <input
-              type="checkbox"
-              checked={classFilter}
-              onClick={this.onClassFilterChange}
-            />
-            <label>Your Class Only</label>
-          </div>
-          <div>
-            {" "}
-            {selectedFilters.length != Object.keys(CATEGORIES).length && (
-              <select onChange={this.categoryFilterOnChange}>
-                <option value="-1">Filter...</option>
-                {Object.keys(CATEGORIES)
-                  .filter((f) => !selectedFilters.includes(f))
-                  .map((filterName) => (
-                    <option value={filterName}>{filterName}</option>
-                  ))}
-              </select>
-            )}
-          </div>
-
-          {selectedFilters.length > 0 && (
-            <div className="filter-categories">
-              {selectedFilters.map((f) => (
-                <a onClick={() => this.filterOnClick(f)}>{f}</a>
-              ))}
-            </div>
-          )}
-        </div>
-
-        <div className="main">
-          {filteredProjects.map((project) => (
-            <a
-              target="_blank"
-              id={project.key}
-              href={project.URL}
-              path={
-                "/public/" +
-                project.Author.key +
-                "/" +
-                project.ThumbnailFilename
-              }
-            >
-              <LazyImage
-                key={project.key}
-                file={this.props.firebase.storage.ref(
-                  "/public/" +
+            <div className="items">
+              {filteredProjects.map((project) => (
+                <a
+                  className="card"
+                  target="_blank"
+                  id={project.key}
+                  href={project.URL}
+                  path={
+                    "/public/" +
                     project.Author.key +
                     "/" +
                     project.ThumbnailFilename
-                )}
-              />
+                  }
+                >
+                  <LazyImage
+                    key={project.key}
+                    file={this.props.firebase.storage.ref(
+                      "/public/" +
+                        project.Author.key +
+                        "/" +
+                        project.ThumbnailFilename
+                    )}
+                  />
+                  <div className="info">
+                    <h2 dangerouslySetInnerHTML={{ __html: project.Title }} />
+                    <div
+                      dangerouslySetInnerHTML={{ __html: project.Description }}
+                    />
+                  </div>
+                  <a
+                    className="profile"
+                    href={`/profile/${project.Author.key}`}
+                  >
+                    Coder Profile
+                  </a>
 
-              <h2 dangerouslySetInnerHTML={{ __html: project.Title }} />
-              <div dangerouslySetInnerHTML={{ __html: project.Description }} />
-              <button>View Project</button>
-            </a>
-          ))}
+                  <button>View Project</button>
+                </a>
+              ))}
+            </div>
+          </div>
         </div>
       </section>
     );

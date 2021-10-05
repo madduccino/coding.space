@@ -49,12 +49,10 @@ class NewProjectPageBase extends React.Component {
     this.handlePTitleOnChange = this.handlePTitleOnChange.bind(this);
     this.handlePTitleValidate = this.handlePTitleValidate.bind(this);
     this.handlePTitleOnSave = this.handlePTitleOnSave.bind(this);
-    this.handlePDescriptionOnChange = this.handlePDescriptionOnChange.bind(
-      this
-    );
-    this.handlePDescriptionValidate = this.handlePDescriptionValidate.bind(
-      this
-    );
+    this.handlePDescriptionOnChange =
+      this.handlePDescriptionOnChange.bind(this);
+    this.handlePDescriptionValidate =
+      this.handlePDescriptionValidate.bind(this);
     this.handlePDescriptionOnSave = this.handlePDescriptionOnSave.bind(this);
     this.handleLevelOnChange = this.handleLevelOnChange.bind(this);
     this.handleLevelOnSave = this.handleLevelOnSave.bind(this);
@@ -128,7 +126,7 @@ class NewProjectPageBase extends React.Component {
   handlePTitleValidate() {
     const { untutorial, errors } = this.state;
     if (untutorial.Title.length === 0) {
-      errors["Title"] = "Title is requiredd.";
+      errors["Title"] = "Title is required.";
     } else delete errors["Title"];
     this.setState({ errors: errors });
   }

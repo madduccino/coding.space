@@ -8,6 +8,7 @@ import "react-listbox/dist/react-listbox.css";
 import * as ROLES from "../../constants/roles";
 import * as ROUTES from "../../constants/routes";
 import { v4 as uuidv4 } from "uuid";
+import "./class.scss";
 
 class ClassPageBase extends React.Component {
   constructor(props) {
@@ -28,28 +29,21 @@ class ClassPageBase extends React.Component {
     this.handleClassTitleOnChange = this.handleClassTitleOnChange.bind(this);
     this.handleClassTitleValidate = this.handleClassTitleValidate.bind(this);
     this.handleClassTitleOnSave = this.handleClassTitleOnSave.bind(this);
-    this.handleClassDescriptionOnChange = this.handleClassDescriptionOnChange.bind(
-      this
-    );
-    this.handleClassDescriptionValidate = this.handleClassDescriptionValidate.bind(
-      this
-    );
-    this.handleClassDescriptionOnSave = this.handleClassDescriptionOnSave.bind(
-      this
-    );
-    this.handleClassScheduleOnChange = this.handleClassScheduleOnChange.bind(
-      this
-    );
-    this.handleClassScheduleValidate = this.handleClassScheduleValidate.bind(
-      this
-    );
+    this.handleClassDescriptionOnChange =
+      this.handleClassDescriptionOnChange.bind(this);
+    this.handleClassDescriptionValidate =
+      this.handleClassDescriptionValidate.bind(this);
+    this.handleClassDescriptionOnSave =
+      this.handleClassDescriptionOnSave.bind(this);
+    this.handleClassScheduleOnChange =
+      this.handleClassScheduleOnChange.bind(this);
+    this.handleClassScheduleValidate =
+      this.handleClassScheduleValidate.bind(this);
     this.handleClassScheduleOnSave = this.handleClassScheduleOnSave.bind(this);
-    this.handleClassLocationOnChange = this.handleClassLocationOnChange.bind(
-      this
-    );
-    this.handleClassLocationValidate = this.handleClassLocationValidate.bind(
-      this
-    );
+    this.handleClassLocationOnChange =
+      this.handleClassLocationOnChange.bind(this);
+    this.handleClassLocationValidate =
+      this.handleClassLocationValidate.bind(this);
     this.handleClassLocationOnSave = this.handleClassLocationOnSave.bind(this);
     this.handleStatusOnChange = this.handleStatusOnChange.bind(this);
     this.handleStatusValidate = this.handleStatusValidate.bind(this);
@@ -332,14 +326,8 @@ class ClassPageBase extends React.Component {
   }
 
   render() {
-    const {
-      clazz,
-      loading,
-      uploading,
-      uploadPercent,
-      profiles,
-      editClass,
-    } = this.state;
+    const { clazz, loading, uploading, uploadPercent, profiles, editClass } =
+      this.state;
     const { authUser } = this.props;
 
     if (loading) return <div className="loading">Loading ...</div>;
@@ -394,11 +382,16 @@ class ClassPageBase extends React.Component {
               text={clazz.Title}
             />
             <div className="avatar">
-              {!!clazz.ThumbnailFilename && !uploading && (
+              {!!clazz.ThumbnailFilename && !uploading ? (
                 <LazyImage
                   file={this.props.firebase.storage.ref(
                     "/classes/" + clazz.ThumbnailFilename
                   )}
+                />
+              ) : (
+                <LazyImage
+                  className="defaultImage"
+                  file={this.props.firebase.storage.ref("/public/rocket.png")}
                 />
               )}
               <label for="files" className="upload">
@@ -458,7 +451,7 @@ class ClassPageBase extends React.Component {
                 listBoxSelected.map((profile) => (
                   <>
                     {profiles[profile].roles["STUDENT"] && (
-                      <a href={`../profile/${profile}`}>
+                      <a className="card" href={`../profile/${profile}`}>
                         <LazyImage
                           id={"profile-thumbnail"}
                           file={
@@ -483,25 +476,31 @@ class ClassPageBase extends React.Component {
                   </>
                 ))}
             </div>
-            {!!authUser && !!authUser.roles["ADMIN"] && !!profiles && (
-              <div className="console">
-                <button
-                  onClick={() => this.setState({ editClass: !editClass })}
-                >
-                  {editClass ? "Done" : "Edit Class"}
-                </button>
-                <div className={editClass ? "showConsole" : "hideConsole"}>
-                  <ListBox
-                    options={listBoxOptions}
-                    onChange={this.handleMembersOnChange}
-                    selected={listBoxSelected}
-                  />
-                  <button onClick={this.deleteClassHandler}>
-                    Delete Class
-                  </button>
+            {!!authUser &&
+              (!!authUser.roles["ADMIN"] || !!authUser.roles["TEACHER"]) &&
+              !!profiles && (
+                <div className="console">
+                  <div className={editClass ? "showConsole" : "hideConsole"}>
+                    <ListBox
+                      options={listBoxOptions}
+                      onChange={this.handleMembersOnChange}
+                      selected={listBoxSelected}
+                    />
+                  </div>
+                  <div class="buttons">
+                    <button
+                      onClick={() => this.setState({ editClass: !editClass })}
+                    >
+                      {editClass ? "Save" : "Edit Class"}
+                    </button>
+                    {!!authUser.roles["ADMIN"] && (
+                      <button onClick={this.deleteClassHandler}>
+                        Delete Class
+                      </button>
+                    )}
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
           </div>
         </div>
       </section>

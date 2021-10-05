@@ -137,7 +137,6 @@ class LaunchPad extends React.Component {
               <div>
                 <h2>Category</h2>
 
-                {/* {" "} */}
                 {Object.keys(FILTER).map((f) => (
                   <button
                     onClick={this.toggleCFilter}
@@ -178,6 +177,7 @@ class LaunchPad extends React.Component {
                     .sort((a, b) => a.Priority - b.Priority)
                     .map((untutorial) => (
                       <a
+                        className="card"
                         id={untutorial.key}
                         href={ROUTES.LAUNCHPAD + "/" + untutorial.key}
                         path={

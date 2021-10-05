@@ -27,6 +27,9 @@
         display: none;
         margin-bottom: 10px;
       }
+      #forgotpassword {
+        display: none;
+      }
     </style>
   </head>
   <body>
@@ -46,6 +49,10 @@
     </form>
     <button id="signout" onclick="signOut()" type="submit">Sign Out</button>
     <p id="error"></p>
+    <p id="forgotpassword">Forgot password? Click here to reset</p>
+    <p id="didyoumean"></p>
+    <p id="forgotpassword"></p>
+
     <a id="close" onclick="closeForm()">Close</a>
 
     <!-- The core Firebase JS SDK is always required and must be listed first -->
@@ -69,6 +76,10 @@
 
       let clickedYet = false;
 
+      const assignVariable = (els, varName) => {
+
+      };
+
       const signout = document.querySelector("#signout");
       const signin = document.querySelector("#signin");
       const signup = document.querySelector("#signup");
@@ -78,7 +89,10 @@
       const loggedOutMessage = "This site is for members only, ok?";
       const loggedInMessage = "You're in! I knew you could do it.";
       const closeButton = document.querySelector("#close");
-      const closeButton = document.querySelector("#close");
+      const didYouMean = document.querySelector("#didyoumean");
+      const notSignedUp = "Not signed up yet? Sign up here.";
+      const notSignedIn = "Already have an account? Sign in here.";
+      const forgotPassword = document.querySelector("#forgotpassword");
 
       // handle user sign up
       const signUp = (e) => {
@@ -101,10 +115,9 @@
               // ..
             });
         } else {
-          emailField.style.display = "block";
-          passwordField.style.display = "block";
-          signin.style.display = "none";
-          closeButton.style.display = "block";
+          hide(signin);
+          show(emailField, passwordField, closeButton, didYouMean);
+          didYouMean.innerHTML = notSignedIn;
           clickedYet = true;
         }
       };
@@ -115,6 +128,7 @@
           .auth()
           .signOut()
           .then(() => {
+            hide(signout,)
             signout.style.display = "none";
             emailField.style.display = "none";
             passwordField.style.display = "none";
@@ -159,6 +173,8 @@
           signup.style.display = "none";
           closeButton.style.display = "block";
           clickedYet = true;
+          didYouMean.style.display = "block";
+          forgotPassword.style.display = "block";
         }
       };
 
@@ -179,6 +195,7 @@
           signout.style.display = "block";
           header.innerHTML = loggedInMessage;
           closeButton.style.display = "none";
+          didYouMean.style.display = "none";
           // ...
         } else {
           // User is signed out
@@ -192,10 +209,58 @@
         signup.style.display = "inline";
         emailField.style.display = "none";
         passwordField.style.display = "none";
+        didYouMean.style.display = "none";
         clickedYet = false;
       };
 
+      const clickHere = (e) => {
+        if (signup.style.display != "none") {
+          signin.style.display = "block";
+          signup.style.display = "none";
+          didYouMean.innerHTML = notSignedUp;
+        } else {
+          signin.style.display = "none";
+          signup.style.display = "block";
+          didYouMean.innerHTML = notSignedIn;
+        }
+      };
+
+      const getPassword = (e) => {
+        var auth = firebase.auth();
+        const email = document.querySelector("#email").value;
+        auth
+          .sendPasswordResetEmail(email)
+          .then(function () {
+            // Email sent.
+          })
+          .catch(function (error) {
+            // An error happened.
+          });
+      };
+
+      document
+        .querySelector("#didyoumean")
+        .addEventListener("click", clickHere);
+      document
+        .querySelector("#forgotpassword")
+        .addEventListener("click", clickHere);
+
+      const hide = (els) => {
+        els.forEach((el) => {
+          el.styledisplay = "none";
+        });
+      };
+
+      const show = (els) => {
+        els.forEach((el) => {
+          el.style.display = "block";
+        });
+      };
+
       $("#form").submit(signUp);
+      $(document).ready(function () {
+        // hide([signin, signup]);
+      });
     </script>
   </body>
 </html>

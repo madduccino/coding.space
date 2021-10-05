@@ -6,6 +6,7 @@ import TCSEditor from "../TCSEditor";
 import { v4 as uuidv4 } from "uuid";
 import * as ROUTES from "../../constants/routes";
 import * as FILTERS from "../../constants/filter";
+import * as SKILLS from "../../constants/skills";
 import { Link } from "react-router-dom";
 
 class UntutorialPageBase extends React.Component {
@@ -49,6 +50,9 @@ class UntutorialPageBase extends React.Component {
     this.handlePCategoryOnChange = this.handlePCategoryOnChange.bind(this);
     this.handleCategoryValidate = this.handleCategoryValidate.bind(this);
     this.handleCategoryOnClick = this.handleCategoryOnClick.bind(this);
+    this.handleSkillsOnChange = this.handleSkillsOnChange.bind(this);
+    this.handleSkillsValidate = this.handleSkillsValidate.bind(this);
+    this.handleSkillsOnClick = this.handleSkillsOnClick.bind(this);
     this.handleProgressURLOnChange = this.handleProgressURLOnChange.bind(this);
     this.handleProgressURLOnSave = this.handleProgressURLOnSave.bind(this);
     this.validatePriority = this.validatePriority.bind(this);
@@ -290,6 +294,35 @@ class UntutorialPageBase extends React.Component {
     }
     this.setState({ errors: errors });
   }
+
+  handleSkillsOnChange(event) {
+    const { untutorial, error } = this.state;
+
+    if (event.target.value != "-1") {
+      untutorial.Skills[event.target.value] = event.target.value;
+      this.setState({ untutorial: untutorial }, this.handleSkillsValidate);
+    }
+  }
+  handleSkillsOnClick(text) {
+    console.log(text);
+    const { untutorial } = this.state;
+    delete untutorial.Skills[text];
+    this.setState({ untutorial: untutorial }, this.handleSkillsValidate);
+  }
+  handleSkillsValidate() {
+    const { untutorial, error } = this.state;
+    try {
+      if (Object.keys(untutorial.Skills).length < 1) {
+        throw "At least one skill required";
+      } else {
+        this.saveChangesHandler();
+        this.setState({ error: "" });
+      }
+    } catch (error) {
+      this.setState({ error: error });
+    }
+  }
+
   handlePCategoryOnChange(event) {
     const { untutorial, error } = this.state;
 
@@ -571,14 +604,8 @@ class UntutorialPageBase extends React.Component {
     this.setState({ progress: progress }, this.saveProgressHandler);
   }
   render() {
-    const {
-      untutorial,
-      loading,
-      author,
-      progress,
-      showiframe,
-      error,
-    } = this.state;
+    const { untutorial, loading, author, progress, showiframe, error } =
+      this.state;
     const { Title, Description, Level, steps } = untutorial;
     const { authUser } = this.props;
     const { key } = this.props.match.params;
@@ -1059,6 +1086,40 @@ class UntutorialPageBase extends React.Component {
                         </a>
                       ))}
                     </div>
+                  </div>
+                </div>
+              )}
+
+            {!!authUser &&
+              (!!authUser.roles["ADMIN"] ||
+                authUser.uid === untutorial.Author.key) && (
+                <div className="container">
+                  <h4>Skills</h4>
+
+                  <div className="filter">
+                    {untutorial.Skills &&
+                      Object.keys(untutorial.Skills).length !=
+                        Object.keys(SKILLS).length && (
+                        <select onChange={this.handleSkillsOnChange}>
+                          <option value="-1">-------</option>
+                          {Object.keys(SKILLS)
+                            .filter(
+                              (f) => !Object.keys(untutorial.Skills).includes(f)
+                            )
+                            .map((catName) => (
+                              <option value={catName}>{SKILLS[catName]}</option>
+                            ))}
+                        </select>
+                      )}
+                    {untutorial.Skills && (
+                      <div className="filter-categories">
+                        {Object.keys(untutorial.Skills).map((f) => (
+                          <a onClick={() => this.handleSkillsOnClick(f)}>
+                            {SKILLS[f]}
+                          </a>
+                        ))}
+                      </div>
+                    )}
                   </div>
                 </div>
               )}

@@ -5,6 +5,7 @@ import { withFirebase } from "../Firebase";
 import TCSEditor from "../TCSEditor";
 import * as ROLES from "../../constants/roles";
 import * as ROUTES from "../../constants/routes";
+import "./classes.scss";
 
 class ClassesPageBase extends React.Component {
   constructor(props) {
@@ -15,14 +16,14 @@ class ClassesPageBase extends React.Component {
       classFilter: false,
       classes: {},
     };
-    this.handlePDescriptionOnChange = this.handlePDescriptionOnChange.bind(
-      this
-    );
+    this.handlePDescriptionOnChange =
+      this.handlePDescriptionOnChange.bind(this);
     this.handleStepOnChange = this.handleStepOnChange.bind(this);
     this.addStepHandler = this.addStepHandler.bind(this);
     this.deleteStepHandler = this.deleteStepHandler.bind(this);
     this.saveChangesHandler = this.saveChangesHandler.bind(this);
     this.onClassFilterChange = this.onClassFilterChange.bind(this);
+    this.onLocationFilterChange = this.onLocationFilterChange.bind(this);
 
     //this.onChange = editorState => this.setState({editorState});
     //console.log("hiya");
@@ -44,6 +45,7 @@ class ClassesPageBase extends React.Component {
       this.setState({
         classes: classes,
         classFilter: !!authUser ? true : false,
+        locationFilter: "",
         loading: false,
       });
     });
@@ -56,6 +58,12 @@ class ClassesPageBase extends React.Component {
     const { classFilter } = this.state;
     this.setState({ classFilter: !classFilter });
   }
+  onLocationFilterChange(e) {
+    const { classFilter } = this.state;
+    console.log(e.target.value);
+    this.setState({ locationFilter: e.target.checked ? e.target.value : "" });
+  }
+
   handlePDescriptionOnChange(value) {}
   handleStepOnChange(value, step) {}
   deleteStepHandler(event, key) {}
@@ -63,7 +71,7 @@ class ClassesPageBase extends React.Component {
   saveChangesHandler(event) {}
 
   render() {
-    const { classes, classFilter, loading } = this.state;
+    const { classes, classFilter, loading, locationFilter } = this.state;
     const { authUser } = this.props;
     //const {key} = this.props.match.params;
 
@@ -78,13 +86,64 @@ class ClassesPageBase extends React.Component {
           </a>
         )}
         <div className="filter">
-          <input
-            type="checkbox"
-            checked={classFilter}
-            onClick={this.onClassFilterChange}
-          />
-          <label>Your Class Only</label>
+          <div>
+            <input
+              type="checkbox"
+              checked={classFilter}
+              onClick={this.onClassFilterChange}
+            />
+            <label>Your Class Only</label>
+          </div>
+          <div>
+            <input
+              type="checkbox"
+              value="Upper East Side"
+              onClick={this.onLocationFilterChange}
+            />
+            <label>Upper East Side</label>
+          </div>
+          <div>
+            <input
+              type="checkbox"
+              value="Park Slope"
+              onClick={this.onLocationFilterChange}
+            />
+            <label>Park Slope</label>
+          </div>
+          <div>
+            <input
+              type="checkbox"
+              value="Westchester"
+              onClick={this.onLocationFilterChange}
+            />
+            <label>Westchester</label>
+          </div>
+          <div>
+            <input
+              type="checkbox"
+              value="Online"
+              onClick={this.onLocationFilterChange}
+            />
+            <label>Online</label>
+          </div>
+          <div>
+            <input
+              type="checkbox"
+              value="Long Island"
+              onClick={this.onLocationFilterChange}
+            />
+            <label>Long Island</label>
+          </div>
+          <div>
+            <input
+              type="checkbox"
+              value="RD"
+              onClick={this.onLocationFilterChange}
+            />
+            <label>RD</label>
+          </div>
         </div>
+
         <div className="main">
           {Object.values(classes)
             .filter(
@@ -95,27 +154,39 @@ class ClassesPageBase extends React.Component {
                   : clazz.Status === "APPROVED") ||
                 (!!authUser && !!authUser.roles["ADMIN"])
             )
+            .filter((clazz) => clazz.Location.includes(locationFilter))
             .map((clazz) => (
               <>
+                {console.log(clazz)}
                 <a
+                  className="card"
                   id={clazz.key}
                   href={"/classes/" + clazz.key}
                   path={"/classes/" + clazz.ThumbnailFilename}
                 >
-                  <LazyImage
-                    file={this.props.firebase.storage.ref(
-                      "/classes/" + clazz.ThumbnailFilename
-                    )}
-                  />
-                <div>
-                  <h4
-                    className={"container"}
-                    dangerouslySetInnerHTML={{ __html: clazz.Title }}
-                  />
-                  {!!authUser &&
-                    !!authUser.roles["ADMIN"] &&
-                    clazz.Status != "APPROVED" && <h5>{clazz.Status}</h5>}
-					</div>
+                  {clazz.ThumbnailFilename ? (
+                    <LazyImage
+                      file={this.props.firebase.storage.ref(
+                        "/classes/" + clazz.ThumbnailFilename
+                      )}
+                    />
+                  ) : (
+                    <LazyImage
+                      className="defaultImage"
+                      file={this.props.firebase.storage.ref(
+                        "/public/rocket.png"
+                      )}
+                    />
+                  )}
+                  <div>
+                    <h4
+                      className={"container"}
+                      dangerouslySetInnerHTML={{ __html: clazz.Title }}
+                    />
+                    {!!authUser &&
+                      !!authUser.roles["ADMIN"] &&
+                      clazz.Status != "APPROVED" && <h5>{clazz.Status}</h5>}
+                  </div>
                   <button>Go to Class</button>
                 </a>
               </>

@@ -1,0 +1,22 @@
+#universe {
+  .sidebar {
+    color: black;
+  }
+  .card {
+    .profile {
+      position: absolute;
+      bottom: 70px;
+      margin: 0 auto;
+      left: 0;
+      right: 0;
+      display: block;
+      text-align: center;
+    }
+    button {
+      left: 0;
+      right: 0;
+      position: absolute;
+      bottom: 5px;
+    }
+  }
+}

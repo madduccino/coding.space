@@ -3,7 +3,7 @@
 /* Proxima Nova - Light */
 @font-face {
   font-display: swap;
-  font-family: "Proxima Nova";
+  font-family: "Proxima Nova Light";
   src: url(./fonts/proxima-nova-reg.woff2) format("woff2"),
     url(./fonts/proxima-nova-reg.woff) format("woff"),
     url(./fonts/proxima-nova-reg.otf) format("opentype");
@@ -25,7 +25,7 @@
 /* Proxima Nova - Bold */
 @font-face {
   font-display: swap;
-  font-family: "Proxima Nova";
+  font-family: "Proxima Nova Bold";
   src: url(./fonts/proxima-nova-bold.woff2) format("woff2"),
     url(./fonts/proxima-nova-bold.woff) format("woff"),
     url(./fonts/proxima-nova-bold.otf) format("opentype");
@@ -55,6 +55,7 @@
   font-weight: 600;
 }
 
+// Colors
 $darkgreen: #274548;
 $lightGreen: #9fe2dd;
 $darkergreen: rgb(18, 33, 34);
@@ -63,9 +64,12 @@ $beige: #fbf6ee;
 $orange: #edc034;
 $darkerOrange: #d8a200;
 $darkOrangeTransparent: rgba(216, 162, 0, 0.7);
+$lightgrey: rgb(219, 219, 219);
+
 $fontSize: 18px;
 $headerFont: "Futura", sans-serif;
 $bodyFont: "Proxima Nova", sans-serif;
+$bodyFontLight: "Proxima Nova Light", sans-serif;
 // $headerFont: 'roboto mono','futura-pt-bold',sans-serif;
 // $bodyFont: 'VT323',monospace;
 $breakpoint-tablet: 768px;
@@ -225,7 +229,7 @@ img.pixel {
 #header {
   background-color: #fff;
   width: 100%;
-  border-bottom: 5px solid $lightGreen;
+  border-bottom: 1px solid $lightgrey;
   display: flex;
   .logo {
     @include flexvc;
@@ -356,6 +360,14 @@ button {
 }
 
 .main {
+  .required {
+    color: red;
+    font-weight: bold;
+    font-size: 18px;
+  }
+  .error {
+    text-align: center;
+  }
   a {
     font-weight: bold;
     color: $orange;
@@ -441,7 +453,6 @@ button {
   color: #fff;
 }
 
-#profile,
 #clazz,
 #untutorial,
 #new-project,
@@ -642,7 +653,7 @@ button {
     color: #fff;
     display: grid;
     display: grid;
-    grid-template-columns: 295px 5fr;
+    grid-template-columns: 250px 5fr;
     height: 100%;
     .main-content {
       background-color: $darkgreen;
@@ -662,7 +673,7 @@ button {
         h1 {
           margin: 20px 0;
         }
-        > a {
+        .card {
           background-color: #fff;
           border-radius: 8px;
           color: $darkgreen;
@@ -724,8 +735,7 @@ button {
   }
 }
 
-#classes,
-#universe {
+#classes {
   h1 {
     margin-top: 20px;
   }
@@ -740,7 +750,7 @@ button {
   }
   .main {
     @include flexhc;
-    a {
+    .card {
       color: $darkgreen;
       width: 200px;
       background-color: white;
@@ -770,7 +780,7 @@ button {
         margin: 0 auto;
         left: 0;
         right: 0;
-        width: auto;
+        width: 50%;
       }
       img {
         width: 100%;
@@ -795,7 +805,7 @@ button {
         margin-bottom: 10px;
         display: grid;
         grid-template-columns: repeat(3, 1fr);
-        > a {
+        .card {
           transition: 2s;
           margin: 20px auto;
           width: 200px;
@@ -1599,284 +1609,6 @@ button {
   }
 }
 
-#profile {
-  a {
-    color: $darkgreen;
-  }
-  .status {
-    > div {
-      margin: 5px;
-    }
-  }
-  .sidebar {
-    > div {
-      margin-bottom: 20px;
-      cursor: pointer;
-    }
-    .selected {
-      h2 {
-        border-bottom: 5px solid $lightGreen;
-        display: inline-block;
-      }
-    }
-  }
-  .main {
-    .tab-labels {
-      text-align: center;
-      list-style: none;
-      padding: 0;
-      line-height: 35px;
-      height: 37px;
-      overflow: hidden;
-      font-size: 12px;
-      position: relative;
-      div {
-        border: 1px solid #aaa;
-        background: #d1d1d1;
-        background: linear-gradient(top, #ececec 50%, #d1d1d1 100%);
-        display: inline-block;
-        position: relative;
-        z-index: 0;
-        border-bottom-left-radius: 6px;
-        border-bottom-right-radius: 6px;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4), inset 0 1px 0 #fff;
-        text-shadow: 0 1px #fff;
-        margin: 0 -5px;
-        padding: 0 30px;
-        &.selected {
-          background: #fff;
-          color: #333;
-          z-index: 2;
-          border-top-color: #fff;
-          &:before {
-            box-shadow: 2px 0px 0 #fff;
-          }
-          &:after {
-            box-shadow: -2px 0px 0 #fff;
-          }
-        }
-        &:before,
-        &:after {
-          border: 1px solid #aaa;
-          position: absolute;
-          top: -1px;
-          width: 6px;
-          height: 6px;
-          content: "";
-        }
-        &:before {
-          left: -7px;
-          border-top-right-radius: 6px;
-          border-width: 1px 1px 0px 0px;
-          box-shadow: 2px 0px 0 #ececec;
-        }
-        &:after {
-          right: -7px;
-          border-top-left-radius: 6px;
-          border-width: 1px 0px 0px 1px;
-          box-shadow: -2px 0px 0 #ececec;
-        }
-      }
-      h3 {
-        cursor: pointer;
-      }
-      &:before {
-        position: absolute;
-        content: "";
-        width: 100%;
-        top: 0;
-        left: 0;
-        border-top: 1px solid #aaa;
-        z-index: 1;
-      }
-    }
-    .tabs {
-      .field {
-        position: relative;
-      }
-
-      .tab-content {
-        .title {
-          background-color: $lightGreen;
-          text-align: center;
-          border: 3px solid #7ae2da;
-        }
-        .instructions {
-          grid-template-columns: repeat(4, 1fr);
-          text-align: center;
-          font-size: 0.8rem;
-          .complete {
-            img {
-              width: 25px;
-              height: 25px;
-              object-fit: contain;
-            }
-          }
-        }
-        .fa {
-          transition: 1s ease-in-out;
-          &:hover {
-            animation: spin 1s infinite;
-          }
-        }
-        > a {
-          padding: 10px;
-          padding-top: 20px;
-          grid-template-columns: 1fr 2fr 1fr;
-          box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.15);
-          display: grid;
-          margin-bottom: 10px;
-          transition: 1s;
-          &:hover {
-            box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.25);
-          }
-          > div {
-            .modified {
-              font-size: 12px;
-              color: #ccc;
-            }
-          }
-        }
-        img {
-          width: 25px;
-        }
-        .categories {
-          grid-template-columns: repeat(6, 1fr);
-          margin: 40px 0;
-          div {
-            background-color: $darkgreen;
-            color: #fff;
-            cursor: pointer;
-            margin: 10px;
-            text-align: center;
-            padding: 2px 4px;
-            border-radius: 10px;
-            display: flex;
-            flex-flow: column wrap;
-            justify-content: center;
-            &.active {
-              background-color: $lightGreen;
-              color: $darkgreen;
-            }
-          }
-        }
-        .level {
-          margin: 40px 0 10px;
-        }
-        .title {
-          margin: 0 20px 0 0;
-        }
-      }
-      .progress,
-      .projects,
-      .untutorials {
-        h3 {
-          background-color: $lightGreen;
-          padding: 0 5px;
-          margin-top: 20px;
-          grid-column: span 3;
-          cursor: pointer;
-          position: relative;
-          &:after {
-            content: "^";
-            position: absolute;
-            right: 10px;
-            top: 5px;
-          }
-          &.down {
-            &:after {
-              transform: rotate(180deg);
-              top: 0;
-            }
-          }
-        }
-      }
-      .profile {
-        .copy {
-          display: flex;
-          margin-bottom: 4px;
-          i {
-            margin-left: 10px;
-            cursor: pointer;
-          }
-        }
-        textarea {
-          border: none;
-          overflow: auto;
-          outline: none;
-          box-shadow: none;
-          resize: none;
-          width: 100%;
-          font-family: $bodyFont;
-          font-size: $fontSize;
-        }
-        button {
-          margin: 5px 0;
-          width: auto;
-          font-size: 1rem;
-          padding: 2px 4px;
-        }
-        h2 {
-          text-align: center;
-          margin-bottom: 40px;
-          font-size: 2rem;
-        }
-        .avatar {
-          margin-bottom: 40px;
-        }
-        > div {
-          margin-bottom: 20px;
-          word-wrap: break-word;
-        }
-      }
-      .email {
-        max-width: 960px;
-        background-color: #fff;
-        h1,
-        h2,
-        h3,
-        h4,
-        h5,
-        h6,
-        button,
-        ul,
-        li {
-          color: initial;
-          font-size: initial;
-          text-shadow: initial;
-        }
-        #emailloader {
-          display: block;
-          > ul {
-            list-style: none;
-            margin: 0;
-            word-wrap: break-word;
-            li {
-              display: grid;
-              grid-template-columns: 1fr 1fr;
-              grid-template-rows: 100px 1fr;
-              margin-bottom: 40px;
-              border-bottom: 2px solid #ccc;
-              padding-bottom: 20px;
-              padding: 40px 10px;
-              margin: 0;
-              .email-date {
-                text-align: right;
-              }
-              .email-body {
-                grid-column: span 2;
-                img {
-                  max-width: 100%;
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-}
-
 .status {
   margin: 0 auto;
 }
@@ -1966,7 +1698,6 @@ button {
 .avatar {
   position: relative;
   text-align: center;
-  margin: 0 auto 40px;
   img {
     left: 0;
     right: 0;
@@ -1995,17 +1726,16 @@ button {
     // }
   }
 }
-
 .avatar {
-  width: 300px;
-  height: 300px;
-  border: 1px solid #ccc;
+  width: 200px;
+  height: 200px;
+  overflow: hidden;
   padding: 20px;
-  border-radius: 4px;
+  border-radius: 50%;
   img {
-    width: 300px;
-    height: 300px;
-    position: absolute;
+    // width: 300px;
+    // height: 300px;
+    // position: absolute;
   }
   .upload {
     width: 300px;
@@ -2039,6 +1769,7 @@ button {
 #new-class,
 #universe-publish {
   padding: 40px 0;
+
   .main-area {
     max-width: 600px;
     margin: 20px auto;
@@ -2047,12 +1778,14 @@ button {
     padding: 20px;
     @include flexvc;
     border-radius: 8px;
+
     h4 {
+      margin: 0;
       text-align: center;
-      margin: 20px 0;
     }
     .field {
       text-align: center;
+      margin-bottom: 20px;
     }
     .thumbnail {
       width: 100%;
@@ -2071,9 +1804,15 @@ button {
   button {
     width: auto;
     display: flex;
+    margin-top: 5px;
   }
   .quill {
     border: 1px solid #ccc;
+    display: block;
+    margin: 5px;
+  }
+  .errors {
+    text-align: center;
   }
 }
 
