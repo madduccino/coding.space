@@ -18,11 +18,10 @@ class NewProjectPageBase extends React.Component {
       uploadPercent: 0,
       untutorialRef: null,
       errors: {
-        // "Thumbnail" : 'THUMBNAIL.<span class="red">ISREQUIRED</span>',
-        Title: "Project title is required.",
-        Step0: "A description for Step 1 is required.",
-        Description: "Project description is required.",
-        Categories: "At least 1 category is required.",
+        Title: "",
+        Step0: "Step 1 is Required",
+        Description: "",
+        Categories: "",
       },
       untutorial: {
         key: uuidv4(),
@@ -220,7 +219,7 @@ class NewProjectPageBase extends React.Component {
     const { untutorial, errors } = this.state;
     const text = untutorial.Description.replace(/<(.|\n)*?>/g, "").trim();
     if (text.length === 0) {
-      errors["Description"] = "Description is requiredd";
+      errors["Description"] = "Description is required";
     } else delete errors["Description"];
     this.setState({ errors: errors });
   }
@@ -253,19 +252,9 @@ class NewProjectPageBase extends React.Component {
   }
   handleStepValidate(step, index) {
     const { errors } = this.state;
-
     if (step.Description.length === 0 || step.Description === "<p><br></p>") {
-      errors["Step" + index] = `A description for step ${
-        parseInt(index) + 1
-      } is required.`;
-    }
-
-    // else if(step.Description.length < 20){
-    // 	errors["Step"+index] = 'STEP' +index+'.<span class="red">ISTOOSHORT</span>';
-    // }
-    else delete errors["Step" + index];
-    console.log(step.Description);
-    console.log(step.Description.length);
+      errors["Step" + index] = `Step ${parseInt(index) + 1} is Required`;
+    } else delete errors["Step" + index];
 
     this.setState({ errors: errors });
   }
@@ -273,33 +262,34 @@ class NewProjectPageBase extends React.Component {
   deleteStepHandler(event, key) {
     var pCopy = this.state.untutorial;
     const { errors } = this.state;
+
     delete pCopy.steps[key];
     //shift steps up
-    delete errors["Step" + key];
     var newSteps = [];
     var steps = Object.values(pCopy.steps);
     steps.forEach((step, i) => {
       newSteps[i] = step;
     });
     pCopy.steps = newSteps;
+    delete errors["Step" + pCopy.steps.length];
+
     this.setState({ untutorial: pCopy }, this.handleStepCountValidate);
-    console.log(errors);
     console.log("Delete Step");
   }
   addStepHandler(event) {
     var pCopy = this.state.untutorial;
     var step = { Description: "", Title: "" };
     var index = pCopy.steps.length;
+    console.log(index);
     pCopy.steps.push(step);
     this.setState({ untutorial: pCopy }, () => {
       this.handleStepCountValidate();
       this.handleStepValidate(step, index);
     });
-    console.log("Add Step");
   }
   handleStepCountValidate() {
     const { errors, untutorial } = this.state;
-
+    console.log(untutorial.steps.length);
     if (untutorial.steps.length === 0) {
       errors["Stepcount"] = "Steps are required.";
     } else if (untutorial.steps.length < -3 /*disabled*/) {
@@ -328,57 +318,38 @@ class NewProjectPageBase extends React.Component {
   }
   saveChangesHandler(event) {
     const { errors } = this.state;
-    if (Object.keys(errors).length === 0) {
-      this.state.untutorialRef
-        .set({
-          ...this.state.untutorial,
-        })
-        .then(() => {
-          console.log("Successfully Saved");
-          this.props.history.push(
-            ROUTES.LAUNCHPAD + "/" + this.state.untutorial.key
-          );
-        })
-        .catch((error) => console.log(error));
-    } else {
-      var badFields = Object.keys(errors);
-      //  console.log(badFields)
-      var messages = [];
-      // messages.push({
-      // 	html:`<span class="green">Saving</span>...`,
-      // 	type:true
-      // })
-      // messages.push({
-      // 	html:`<span class="red">ERROR!</span>`,
-      // 	type:false
-      // })
-      for (var i = 0; i < badFields.length; i++) {
-        messages.push(badFields[i]);
+    try {
+      if (Object.keys(errors).length === 0) {
+        this.state.untutorialRef
+          .set({
+            ...this.state.untutorial,
+          })
+          .then(() => {
+            console.log("Successfully Saved");
+            this.props.history.push(
+              ROUTES.LAUNCHPAD + "/" + this.state.untutorial.key
+            );
+          })
+          .catch((error) => console.log(error));
+      } else {
+        throw new Error("Missing fields");
       }
-      alert(Object.values(errors).join("\n"));
-
-      // messages.push({
-      // 	html:`Press any key to continue...`,
-      // 	type:false
-      // })
-
-      // this.props.setGlobalState({
-      // 	messages:messages,
-      // 	showMessage:true
-
-      // });
+    } catch (err) {
+      if (errors["Title"] == "") errors["Title"] = "Missing Title";
+      if (errors["Description"] == "")
+        errors["Description"] = "Missing Description";
+      if (errors["Step0"] == "") errors["Step0"] = "Step 1 is Required.";
+      if (errors["Categories"] == "") errors["Categories"] = "Missing Category";
+      console.log(errors);
+    } finally {
+      this.setState({ errors: errors });
     }
-
-    console.log("Save Changes");
   }
 
   render() {
-    const { untutorial, loading } = this.state;
+    const { untutorial, loading, errors } = this.state;
     const stepCount = Object.keys(untutorial.steps).length;
-
-    //console.log(Object.keys(project));
     if (loading) return <div className="loading">Loading ...</div>;
-
     return (
       <section id="new-project">
         <div className="main">
@@ -387,8 +358,10 @@ class NewProjectPageBase extends React.Component {
             <button onClick={this.saveChangesHandler}>Save</button>
           </div>
           <div className="main-content">
+            {Object.keys(errors).map((error) => (
+              <p class="errors">{errors[error]}</p>
+            ))}
             <div className="steps">
-              At least one step description required
               {Object.keys(untutorial.steps).map((step) => (
                 <div className="step">
                   <div className={"step-title status"}>
@@ -438,7 +411,6 @@ class NewProjectPageBase extends React.Component {
                       Delete
                     </button>
                   )}
-
                   <div className="thumbnail">
                     {this.state.uploading && (
                       <progress value={this.state.uploadPercent} max="100" />
