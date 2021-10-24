@@ -8,6 +8,7 @@ import * as ROUTES from "../../constants/routes";
 import * as FILTERS from "../../constants/filter";
 import * as SKILLS from "../../constants/skills";
 import { Link } from "react-router-dom";
+import "./new-project.scss";
 
 class UntutorialPageBase extends React.Component {
   constructor(props) {
@@ -23,6 +24,7 @@ class UntutorialPageBase extends React.Component {
       uploading: false,
       uploadPercent: 0,
       showiframe: true,
+      lang:"en"
     };
     this.handleStatusOnChange = this.handleStatusOnChange.bind(this);
     this.handleStatusOnSave = this.handleStatusOnSave.bind(this);
@@ -181,16 +183,24 @@ class UntutorialPageBase extends React.Component {
     );
   }
   handleStepThumbnailUpload(event, step) {
+    const {lang} = this.state;
     var file = event.target.files[0];
+    console.log(file)
     var ext = file.name.substring(file.name.lastIndexOf(".") + 1);
     var oCopy = this.state.untutorial;
     const { authUser } = this.props;
     if (authUser && !!authUser.roles["STUDENT"]) oCopy.Status = "DRAFT";
-    oCopy.steps[step].ThumbnailFilename = uuidv4() + "." + ext;
-
-    var storageRef = this.props.firebase.storage.ref(
+    if (lang==="sp") {
+      oCopy.steps[step].ThumbnailFilenameSp = uuidv4() + "." + ext
+      var storageRef = this.props.firebase.storage.ref(
+      "/public/" + oCopy.Author.key + "/" + oCopy.steps[step].ThumbnailFilenameSp
+    );
+    } else {
+      oCopy.steps[step].ThumbnailFilename = uuidv4() + "." + ext
+      var storageRef = this.props.firebase.storage.ref(
       "/public/" + oCopy.Author.key + "/" + oCopy.steps[step].ThumbnailFilename
     );
+    }
     var task = storageRef.put(file);
 
     task.on(
@@ -222,8 +232,9 @@ class UntutorialPageBase extends React.Component {
   }
   handleTitleOnChange(value) {
     var oCopy = this.state.untutorial;
+    const {lang} = this.state;
     if (value !== oCopy.Title) {
-      oCopy.Title = value;
+      lang==="sp" ?  oCopy.TitleSp = value : oCopy.Title = value;
       const { authUser } = this.props;
       if (authUser && !!authUser.roles["STUDENT"]) oCopy.Status = "DRAFT";
       this.setState({ untutorial: oCopy, dirty: true });
@@ -249,8 +260,14 @@ class UntutorialPageBase extends React.Component {
   }
   handleDescriptionOnChange(value) {
     var oCopy = this.state.untutorial;
+    const {lang} = this.state;
     if (value !== oCopy.Description) {
+      if (lang==="sp") {
+        oCopy.DescriptionSp=value;
+    } else if (lang==="en") {
       oCopy.Description = value;
+
+    }
       const { authUser } = this.props;
       if (authUser && !!authUser.roles["STUDENT"]) oCopy.Status = "DRAFT";
       this.setState({ untutorial: oCopy, dirty: true });
@@ -419,8 +436,13 @@ class UntutorialPageBase extends React.Component {
   }
   handleStepOnChange(value, step) {
     var oCopy = this.state.untutorial;
+    const {lang} = this.state;
     if (value !== oCopy.steps[step].Description) {
-      oCopy.steps[step].Description = value;
+      if (lang==="sp") {
+      oCopy.steps[step].DescriptionSp = value;
+      } else {
+        oCopy.steps[step].Description = value;
+      }
       const { authUser } = this.props;
       if (authUser && !!authUser.roles["STUDENT"]) oCopy.Status = "DRAFT";
       this.setState({ untutorial: oCopy, dirty: true });
@@ -604,7 +626,7 @@ class UntutorialPageBase extends React.Component {
     this.setState({ progress: progress }, this.saveProgressHandler);
   }
   render() {
-    const { untutorial, loading, author, progress, showiframe, error } =
+    const { untutorial, loading, author, progress, showiframe, error, lang } =
       this.state;
     const { Title, Description, Level, steps } = untutorial;
     const { authUser } = this.props;
@@ -722,6 +744,10 @@ class UntutorialPageBase extends React.Component {
                 text={progress.URL}
               />
             )}
+            <div className="toggleLang">
+            <a onClick={()=>this.setState({lang:"en"})}>English</a>
+            <a onClick={()=>this.setState({lang: "sp"})}>Spanish</a>
+            </div>
             <div className="steps">
               {!!untutorial &&
                 untutorial.steps.map((step, index) => (
@@ -770,10 +796,9 @@ class UntutorialPageBase extends React.Component {
                           }
                           placeholder={"Step Title"}
                           buttonText={!!progress ? "" : "Edit Title"}
-                          text={
-                            !!untutorial.steps[index].Title
-                              ? untutorial.steps[index].Title
-                              : ""
+                          text={lang==="sp"
+                              ? untutorial.steps[index].TitleSp
+                              : untutorial.steps[index].Title
                           }
                         />
                       </div>
@@ -797,7 +822,8 @@ class UntutorialPageBase extends React.Component {
                         }
                         placeholder={"Step Description"}
                         buttonText={!!progress ? "" : "Edit Description"}
-                        text={untutorial.steps[index].Description}
+                        text={lang==="sp" ? untutorial.steps[index].DescriptionSp :
+                      untutorial.steps[index].Description}
                       />
                       {!!progress &&
                         !!progress.steps[index] &&
@@ -816,7 +842,8 @@ class UntutorialPageBase extends React.Component {
                       >
                         {!!authUser &&
                           (!!authUser.roles["ADMIN"] ||
-                            authUser.uid === untutorial.Author.key) && (
+                            authUser.uid === untutorial.Author.key) && lang===
+                            "en" && (
                             <>
                               <p
                                 className={
@@ -847,16 +874,19 @@ class UntutorialPageBase extends React.Component {
                               </label>
                             </>
                           )}
+                        
                         {this.state.uploading && (
                           <progress
                             value={this.state.uploadPercent}
                             max="100"
                           />
                         )}
+
+                        
                         {!!untutorial.steps[index].ThumbnailFilename &&
                           !!untutorial.steps[index].ThumbnailFilename.length !=
                             0 &&
-                          !this.state.uploading && (
+                          !this.state.uploading && lang==="en" && (
                             <LazyImage
                               id={"step" + index + "-thumbnail"}
                               className="crop"
@@ -868,6 +898,63 @@ class UntutorialPageBase extends React.Component {
                               )}
                             />
                           )}
+                            
+
+
+
+
+                            {!!authUser &&
+                          (!!authUser.roles["ADMIN"] ||
+                            authUser.uid === untutorial.Author.key) && lang===
+                            "sp" && (
+                            <>
+                              <p
+                                className={
+                                  !!untutorial.steps[index].ThumbnailFilename
+                                    ? "change"
+                                    : "add"
+                                }
+                              >
+                                {!!untutorial.steps[index].ThumbnailFilename
+                                  ? "Update Screenshot"
+                                  : "+ Add Screenshot"}
+                              </p>
+                              <label
+                                htmlFor={"step" + index + "-thumbnail-upload"}
+                                className={
+                                  !!untutorial.steps[index].ThumbnailFilename
+                                    ? "upload replace"
+                                    : "upload"
+                                }
+                              >
+                                <input
+                                  id={"step" + index + "-thumbnail-upload"}
+                                  type="file"
+                                  onChange={(event) =>
+                                    this.handleStepThumbnailUpload(event, index)
+                                  }
+                                />
+                              </label>
+                            </>
+                          )}
+
+{!!untutorial.steps[index].ThumbnailFilenameSp &&
+                          !!untutorial.steps[index].ThumbnailFilenameSp.length !=
+                            0 &&
+                          !this.state.uploading && lang==="sp" && (
+                            <LazyImage
+                              id={"step" + index + "-thumbnail"}
+                              className="crop"
+                              file={this.props.firebase.storage.ref(
+                                "/public/" +
+                                  untutorial.Author.key +
+                                  "/" +
+                                  untutorial.steps[index].ThumbnailFilenameSp
+                              )}
+                            />
+                          )}
+                            
+
                       </div>
 
                       {!!progress &&
