@@ -780,10 +780,13 @@ class UntutorialPageBase extends React.Component {
                 text={progress.URL}
               />
             )}
-            <div className="toggleLang">
-              <a onClick={() => this.setState({ lang: "en" })}>English</a>
-              <a onClick={() => this.setState({ lang: "es" })}>Spanish</a>
-            </div>
+            {console.log("categories", untutorial.Categories)}
+            {untutorial.Categories["SCRATCHJR"] && (
+              <div className="toggleLang">
+                <a onClick={() => this.setState({ lang: "en" })}>English</a>
+                <a onClick={() => this.setState({ lang: "es" })}>Español</a>
+              </div>
+            )}
             <div className="steps">
               {!!untutorial &&
                 untutorial.steps.map((step, index) => (
