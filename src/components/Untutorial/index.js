@@ -671,10 +671,28 @@ class UntutorialPageBase extends React.Component {
             {showiframe && (
               <>
                 <div>
-                  <h3 dangerouslySetInnerHTML={{ __html: untutorial.Title }} />
-                  <div
-                    dangerouslySetInnerHTML={{ __html: untutorial.Description }}
-                  />
+                  {lang === "es" ? (
+                    <h3
+                      dangerouslySetInnerHTML={{ __html: untutorial.TitleEs }}
+                    />
+                  ) : (
+                    <h3
+                      dangerouslySetInnerHTML={{ __html: untutorial.Title }}
+                    />
+                  )}
+                  {lang === "es" ? (
+                    <div
+                      dangerouslySetInnerHTML={{
+                        __html: untutorial.DescriptionEs,
+                      }}
+                    />
+                  ) : (
+                    <div
+                      dangerouslySetInnerHTML={{
+                        __html: untutorial.Description,
+                      }}
+                    />
+                  )}
                   <button onClick={this.loadProgress}>Code This Project</button>
                 </div>
                 <a className="back" onClick={() => this.props.history.goBack()}>
