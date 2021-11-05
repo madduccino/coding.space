@@ -8,7 +8,6 @@ import * as ROUTES from "../../constants/routes";
 import * as FILTERS from "../../constants/filter";
 import * as SKILLS from "../../constants/skills";
 import { Link } from "react-router-dom";
-import "./new-project.scss";
 
 class UntutorialPageBase extends React.Component {
   constructor(props) {
@@ -24,7 +23,7 @@ class UntutorialPageBase extends React.Component {
       uploading: false,
       uploadPercent: 0,
       showiframe: true,
-      lang:"en"
+      lang: "en",
     };
     this.handleStatusOnChange = this.handleStatusOnChange.bind(this);
     this.handleStatusOnSave = this.handleStatusOnSave.bind(this);
@@ -183,23 +182,29 @@ class UntutorialPageBase extends React.Component {
     );
   }
   handleStepThumbnailUpload(event, step) {
-    const {lang} = this.state;
+    const { lang } = this.state;
     var file = event.target.files[0];
-    console.log(file)
+    console.log(file);
     var ext = file.name.substring(file.name.lastIndexOf(".") + 1);
     var oCopy = this.state.untutorial;
     const { authUser } = this.props;
     if (authUser && !!authUser.roles["STUDENT"]) oCopy.Status = "DRAFT";
-    if (lang==="sp") {
-      oCopy.steps[step].ThumbnailFilenameSp = uuidv4() + "." + ext
+    if (lang === "es") {
+      oCopy.steps[step].ThumbnailFilenameSp = uuidv4() + "." + ext;
       var storageRef = this.props.firebase.storage.ref(
-      "/public/" + oCopy.Author.key + "/" + oCopy.steps[step].ThumbnailFilenameSp
-    );
+        "/public/" +
+          oCopy.Author.key +
+          "/" +
+          oCopy.steps[step].ThumbnailFilenameSp
+      );
     } else {
-      oCopy.steps[step].ThumbnailFilename = uuidv4() + "." + ext
+      oCopy.steps[step].ThumbnailFilename = uuidv4() + "." + ext;
       var storageRef = this.props.firebase.storage.ref(
-      "/public/" + oCopy.Author.key + "/" + oCopy.steps[step].ThumbnailFilename
-    );
+        "/public/" +
+          oCopy.Author.key +
+          "/" +
+          oCopy.steps[step].ThumbnailFilename
+      );
     }
     var task = storageRef.put(file);
 
@@ -232,9 +237,9 @@ class UntutorialPageBase extends React.Component {
   }
   handleTitleOnChange(value) {
     var oCopy = this.state.untutorial;
-    const {lang} = this.state;
+    const { lang } = this.state;
     if (value !== oCopy.Title) {
-      lang==="sp" ?  oCopy.TitleSp = value : oCopy.Title = value;
+      lang === "es" ? (oCopy.TitleEs = value) : (oCopy.Title = value);
       const { authUser } = this.props;
       if (authUser && !!authUser.roles["STUDENT"]) oCopy.Status = "DRAFT";
       this.setState({ untutorial: oCopy, dirty: true });
@@ -247,27 +252,31 @@ class UntutorialPageBase extends React.Component {
   validateTitle() {
     const { untutorial, errors } = this.state;
     const { Title } = untutorial;
+    const { TitleEs } = untutorial;
+
     const text = Title.replace(/<(.|\n)*?>/g, "").trim();
+    const textEs = Title.replace(/<(.|\n)*?>/g, "").trim();
+
     if (text.length === 0) {
       errors["Title"] = 'TITLE.<span className="red">ISREQUIRED</span>';
-    }
-    if (text.length < 5) {
-      errors["Title"] = 'TITLE.<span className="red">ISTOOSHORT</span>';
     } else {
       delete errors["Title"];
+    }
+    if (textEs.length === 0) {
+      errors["TitleEs"] = 'TITLE.<span className="red">ISREQUIRED</span>';
+    } else {
+      delete errors["TitleEs"];
     }
     this.setState({ errors: errors });
   }
   handleDescriptionOnChange(value) {
     var oCopy = this.state.untutorial;
-    const {lang} = this.state;
+    const { lang } = this.state;
     if (value !== oCopy.Description) {
-      if (lang==="sp") {
-        oCopy.DescriptionSp=value;
-    } else if (lang==="en") {
-      oCopy.Description = value;
+      lang === "es"
+        ? (oCopy.DescriptionEs = value)
+        : (oCopy.Description = value);
 
-    }
       const { authUser } = this.props;
       if (authUser && !!authUser.roles["STUDENT"]) oCopy.Status = "DRAFT";
       this.setState({ untutorial: oCopy, dirty: true });
@@ -279,11 +288,17 @@ class UntutorialPageBase extends React.Component {
   }
   validateDescription() {
     const { untutorial, errors } = this.state;
-    const { Description } = untutorial;
+    const { Description, DescriptionEs } = untutorial;
     const text = Description.replace(/<(.|\n)*?>/g, "").trim();
+    const textEs = DescriptionEs.replace(/<(.|\n)*?>/g, "").trim();
+
     if (text === "") {
-      errors["Description"] =
-        'DESCRIPTION.<span className="red">ISREQUIRED</span>';
+      errors["Description"] = "Description is required.";
+    } else {
+      delete errors["Description"];
+    }
+    if (textEs === "") {
+      errors["DescriptionEs"] = "Description is required.";
     } else {
       delete errors["Description"];
     }
@@ -423,8 +438,11 @@ class UntutorialPageBase extends React.Component {
   }
   handleStepTitleOnChange(value, step) {
     var oCopy = this.state.untutorial;
+    const { lang } = this.state;
     if (value !== oCopy.steps[step].Title) {
-      oCopy.steps[step].Title = value;
+      lang === "es"
+        ? (oCopy.steps[step].TitleEs = value)
+        : (oCopy.steps[step].Title = value);
       const { authUser } = this.props;
       if (authUser && !!authUser.roles["STUDENT"]) oCopy.Status = "DRAFT";
       this.setState({ untutorial: oCopy, dirty: true });
@@ -436,10 +454,10 @@ class UntutorialPageBase extends React.Component {
   }
   handleStepOnChange(value, step) {
     var oCopy = this.state.untutorial;
-    const {lang} = this.state;
+    const { lang } = this.state;
     if (value !== oCopy.steps[step].Description) {
-      if (lang==="sp") {
-      oCopy.steps[step].DescriptionSp = value;
+      if (lang === "es") {
+        oCopy.steps[step].DescriptionEs = value;
       } else {
         oCopy.steps[step].Description = value;
       }
@@ -745,8 +763,8 @@ class UntutorialPageBase extends React.Component {
               />
             )}
             <div className="toggleLang">
-            <a onClick={()=>this.setState({lang:"en"})}>English</a>
-            <a onClick={()=>this.setState({lang: "sp"})}>Spanish</a>
+              <a onClick={() => this.setState({ lang: "en" })}>English</a>
+              <a onClick={() => this.setState({ lang: "es" })}>Spanish</a>
             </div>
             <div className="steps">
               {!!untutorial &&
@@ -773,8 +791,9 @@ class UntutorialPageBase extends React.Component {
                           !!progress && <div className="approved"></div>
                         )} */}
                         <p>
-                          {" "}
-                          Step {index + 1}
+                          {lang === "es"
+                            ? `Paso ${index + 1}`
+                            : `Step ${index + 1}`}
                           {!!step.Title && !!step.Title.length && <>:</>}
                         </p>
 
@@ -796,8 +815,9 @@ class UntutorialPageBase extends React.Component {
                           }
                           placeholder={"Step Title"}
                           buttonText={!!progress ? "" : "Edit Title"}
-                          text={lang==="sp"
-                              ? untutorial.steps[index].TitleSp
+                          text={
+                            lang === "es"
+                              ? untutorial.steps[index].TitleEs
                               : untutorial.steps[index].Title
                           }
                         />
@@ -822,8 +842,11 @@ class UntutorialPageBase extends React.Component {
                         }
                         placeholder={"Step Description"}
                         buttonText={!!progress ? "" : "Edit Description"}
-                        text={lang==="sp" ? untutorial.steps[index].DescriptionSp :
-                      untutorial.steps[index].Description}
+                        text={
+                          lang === "es"
+                            ? untutorial.steps[index].DescriptionEs
+                            : untutorial.steps[index].Description
+                        }
                       />
                       {!!progress &&
                         !!progress.steps[index] &&
@@ -842,8 +865,8 @@ class UntutorialPageBase extends React.Component {
                       >
                         {!!authUser &&
                           (!!authUser.roles["ADMIN"] ||
-                            authUser.uid === untutorial.Author.key) && lang===
-                            "en" && (
+                            authUser.uid === untutorial.Author.key) &&
+                          lang === "en" && (
                             <>
                               <p
                                 className={
@@ -874,7 +897,7 @@ class UntutorialPageBase extends React.Component {
                               </label>
                             </>
                           )}
-                        
+
                         {this.state.uploading && (
                           <progress
                             value={this.state.uploadPercent}
@@ -882,11 +905,11 @@ class UntutorialPageBase extends React.Component {
                           />
                         )}
 
-                        
                         {!!untutorial.steps[index].ThumbnailFilename &&
                           !!untutorial.steps[index].ThumbnailFilename.length !=
                             0 &&
-                          !this.state.uploading && lang==="en" && (
+                          !this.state.uploading &&
+                          lang === "en" && (
                             <LazyImage
                               id={"step" + index + "-thumbnail"}
                               className="crop"
@@ -898,15 +921,11 @@ class UntutorialPageBase extends React.Component {
                               )}
                             />
                           )}
-                            
 
-
-
-
-                            {!!authUser &&
+                        {!!authUser &&
                           (!!authUser.roles["ADMIN"] ||
-                            authUser.uid === untutorial.Author.key) && lang===
-                            "sp" && (
+                            authUser.uid === untutorial.Author.key) &&
+                          lang === "es" && (
                             <>
                               <p
                                 className={
@@ -938,10 +957,11 @@ class UntutorialPageBase extends React.Component {
                             </>
                           )}
 
-{!!untutorial.steps[index].ThumbnailFilenameSp &&
-                          !!untutorial.steps[index].ThumbnailFilenameSp.length !=
-                            0 &&
-                          !this.state.uploading && lang==="sp" && (
+                        {!!untutorial.steps[index].ThumbnailFilenameSp &&
+                          !!untutorial.steps[index].ThumbnailFilenameSp
+                            .length != 0 &&
+                          !this.state.uploading &&
+                          lang === "es" && (
                             <LazyImage
                               id={"step" + index + "-thumbnail"}
                               className="crop"
@@ -953,8 +973,6 @@ class UntutorialPageBase extends React.Component {
                               )}
                             />
                           )}
-                            
-
                       </div>
 
                       {!!progress &&
@@ -1057,7 +1075,7 @@ class UntutorialPageBase extends React.Component {
                   onEditorChange={this.handleTitleOnChange}
                   onEditorSave={this.handleTitleOnSave}
                   placeholder={"Step Description"}
-                  text={untutorial.Title}
+                  text={lang === "es" ? untutorial.TitleEs : untutorial.Title}
                 />
               </div>
             </div>
@@ -1121,7 +1139,11 @@ class UntutorialPageBase extends React.Component {
                 onEditorSave={this.handleDescriptionOnSave}
                 placeholder={"Untutorial Description"}
                 name={"description"}
-                text={untutorial.Description}
+                text={
+                  lang === "es"
+                    ? untutorial.DescriptionEs
+                    : untutorial.Description
+                }
               />
             </div>
             {!!authUser &&

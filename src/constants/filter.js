@@ -4,3 +4,4 @@ export const SCRATCH = "Scratch";
 export const WOOF = "Woof";
 export const WEB = "Web";
 export const STUDENT = "Student";
+export const SCRATCHJR = "Scratch Jr.";

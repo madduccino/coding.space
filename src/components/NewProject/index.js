@@ -6,6 +6,7 @@ import TCSEditor from "../TCSEditor";
 import { v4 as uuidv4 } from "uuid";
 import * as ROUTES from "../../constants/routes";
 import * as FILTERS from "../../constants/filter";
+import "./new-project.scss";
 
 class NewProjectPageBase extends React.Component {
   constructor(props) {
@@ -17,6 +18,7 @@ class NewProjectPageBase extends React.Component {
       uploading: false,
       uploadPercent: 0,
       untutorialRef: null,
+      lang: "en",
       errors: {
         Title: "",
         Step0: "Step 1 is Required",
@@ -36,6 +38,7 @@ class NewProjectPageBase extends React.Component {
           {
             Description: "",
             Title: "",
+            DescriptionSp: "",
           },
         ],
       },
@@ -58,6 +61,8 @@ class NewProjectPageBase extends React.Component {
     this.handleStepTitleOnChange = this.handleStepTitleOnChange.bind(this);
 
     this.handleStepOnChange = this.handleStepOnChange.bind(this);
+    this.handleStepOnChangeSp = this.handleStepOnChangeSp.bind(this);
+
     this.handleStepValidate = this.handleStepValidate.bind(this);
     this.handleStepOnSave = this.handleStepOnSave.bind(this);
     this.addStepHandler = this.addStepHandler.bind(this);
@@ -76,7 +81,6 @@ class NewProjectPageBase extends React.Component {
     e.preventDefault();
     e.returnValue = "Data will be lost if you leave the page, are you sure?";
   };
-
   handleMouseEnter = (target) => {
     if (this.state.canEdit) {
       return; //replace control with rich text editor
@@ -84,6 +88,7 @@ class NewProjectPageBase extends React.Component {
   };
   componentDidMount() {
     var pCopy = this.state.untutorial;
+    console.log(pCopy);
     window.addEventListener("beforeunload", this.onUnload);
     if (this.props.authUser) {
       pCopy.Author = this.props.authUser.key;
@@ -97,7 +102,6 @@ class NewProjectPageBase extends React.Component {
       });
     }
   }
-
   componentWillReceiveProps(props) {
     if (this.state.untutorial.Author !== props.authUser.key) {
       var pCopy = this.state.untutorial;
@@ -214,7 +218,6 @@ class NewProjectPageBase extends React.Component {
       this.setState({ untutorial: pCopy }, this.handlePDescriptionValidate);
     }
   }
-
   handlePDescriptionValidate() {
     const { untutorial, errors } = this.state;
     const text = untutorial.Description.replace(/<(.|\n)*?>/g, "").trim();
@@ -243,8 +246,25 @@ class NewProjectPageBase extends React.Component {
   }
   handleStepOnChange(value, step) {
     var pCopy = this.state.untutorial;
-    if (value !== pCopy.steps[step].Description) {
-      pCopy.steps[step].Description = value;
+    const { lang } = this.state;
+    console.log(pCopy);
+    if (lang === "en") {
+      if (value !== pCopy.steps[step].Description) {
+        pCopy.steps[step].Description = value;
+      }
+    } else {
+      if (value !== pCopy.steps[step].DescriptionSp) {
+        pCopy.steps[step].DescriptionSp = value;
+      }
+    }
+    this.setState({ untutorial: pCopy }, () =>
+      this.handleStepValidate(pCopy.steps[step], step)
+    );
+  }
+  handleStepOnChangeSp(value, step) {
+    var pCopy = this.state.untutorial;
+    if (value !== pCopy.steps[step].DescriptionSp) {
+      pCopy.steps[step].DescriptionSp = value;
       this.setState({ untutorial: pCopy }, () =>
         this.handleStepValidate(pCopy.steps[step], step)
       );
@@ -347,7 +367,7 @@ class NewProjectPageBase extends React.Component {
   }
 
   render() {
-    const { untutorial, loading, errors } = this.state;
+    const { untutorial, loading, errors, lang } = this.state;
     const stepCount = Object.keys(untutorial.steps).length;
     if (loading) return <div className="loading">Loading ...</div>;
     return (
@@ -387,6 +407,20 @@ class NewProjectPageBase extends React.Component {
                       }
                     />
                   </div>
+                  {Object.keys(untutorial.Categories).includes("ScratchJr") && (
+                    <div className="toggleLang">
+                      {
+                        <a onClick={() => this.setState({ lang: "en" })}>
+                          English
+                        </a>
+                      }
+                      {
+                        <a onClick={() => this.setState({ lang: "sp" })}>
+                          Spanish
+                        </a>
+                      }
+                    </div>
+                  )}
                   <div className="step-content">
                     <TCSEditor
                       disabled={false}
@@ -400,9 +434,29 @@ class NewProjectPageBase extends React.Component {
                           ? "Edit Description"
                           : "Add Description"
                       }
-                      text={untutorial.steps[step].Description}
+                      text={
+                        lang === "sp"
+                          ? untutorial.steps[step].DescriptionSp
+                          : untutorial.steps[step].Description
+                      }
                     />
                   </div>
+                  {/* <div className="step-content">
+                    <TCSEditor
+                      disabled={false}
+                      onEditorChange={(value) =>
+                        this.handleStepOnChangeSp(value, step)
+                      }
+                      onEditorSave={this.handleStepOnSave}
+                      placeholder={"Step Description"}
+                      buttonText={
+                        untutorial.steps[step].Description.length > 0
+                          ? "Edit Description"
+                          : "Add Description"
+                      }
+                      text={untutorial.steps[step].DescriptionSp}
+                    />
+                  </div> */}
                   {stepCount > 1 && (
                     <button
                       className="delete"

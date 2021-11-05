@@ -143,7 +143,7 @@ class TCSEditor extends React.Component {
           modules={TCSEditor.modules}
           theme={"snow"}
           placeholder={this.props.placeholder}
-          value={this.state.text}
+          value={this.state.text || ""}
           onChange={this.handleChange}
         />
 
