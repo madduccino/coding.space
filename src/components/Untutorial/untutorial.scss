@@ -1,0 +1,25 @@
+.thumbnail.hero {
+  padding: 0;
+  &:hover {
+    &:after {
+      display: block;
+      content: "Change Image";
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 150px;
+      margin: 0 auto;
+      color: #fff;
+      font-weight: bold;
+      background-color: black;
+      border-radius: 4px;
+      transform: translate(-50%, -50%);
+    }
+  }
+}
+.toggleLang {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  z-index: 1;
+}
