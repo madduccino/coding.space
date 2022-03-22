@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!--Google Fonts-->
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lobster&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Log In Screen</title>
+    <style stype="text/css">
+      #signout {
+        display: none;
+      }
+      #close {
+        display: none;
+      }
+      label {
+        display: block;
+      }
+      #email-container,
+      #password-container {
+        display: none;
+        margin-bottom: 10px;
+      }
+      #forgotpassword {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>This site is for members only, ok?</h1>
+
+    <form id="form">
+      <div id="email-container">
+        <label for="email">Email:</label>
+        <input id="email" placeholder="Email" />
+      </div>
+      <div id="password-container">
+        <label for="password">Password:</label>
+        <input id="password" placeholder="Password" />
+      </div>
+      <button id="signup" type="submit">Sign Up</button>
+      <button id="signin" type="submit" onclick="signIn()">Sign In</button>
+    </form>
+    <button id="signout" onclick="signOut()" type="submit">Sign Out</button>
+    <p id="error"></p>
+    <p id="forgotpassword">Forgot password? Click here to reset</p>
+    <p id="didyoumean"></p>
+    <p id="forgotpassword"></p>
+
+    <a id="close" onclick="closeForm()">Close</a>
+
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/8.2.10/firebase-app.js"></script>
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+    <script src="https://www.gstatic.com/firebasejs/8.2.10/firebase-auth.js"></script>
+
+    <script>
+      // Your web app's Firebase configuration
+      var firebaseConfig = {
+        apiKey: "AIzaSyB5yuok5fTL6P1xVeTTthASsgLTgf4RSy8",
+        authDomain: "my-login-screen-59b2a.firebaseapp.com",
+        projectId: "my-login-screen-59b2a",
+        storageBucket: "my-login-screen-59b2a.appspot.com",
+        messagingSenderId: "116474550889",
+        appId: "1:116474550889:web:eeaea210033247ea8e20f8",
+      };
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+
+      let clickedYet = false;
+
+      const assignVariable = (els, varName) => {
+
+      };
+
+      const signout = document.querySelector("#signout");
+      const signin = document.querySelector("#signin");
+      const signup = document.querySelector("#signup");
+      const emailField = document.querySelector("#email-container");
+      const passwordField = document.querySelector("#password-container");
+      const header = document.querySelector("h1");
+      const loggedOutMessage = "This site is for members only, ok?";
+      const loggedInMessage = "You're in! I knew you could do it.";
+      const closeButton = document.querySelector("#close");
+      const didYouMean = document.querySelector("#didyoumean");
+      const notSignedUp = "Not signed up yet? Sign up here.";
+      const notSignedIn = "Already have an account? Sign in here.";
+      const forgotPassword = document.querySelector("#forgotpassword");
+
+      // handle user sign up
+      const signUp = (e) => {
+        e.preventDefault();
+        if (clickedYet) {
+          const email = document.querySelector("#email").value;
+          const password = document.querySelector("#password").value;
+          e.preventDefault();
+          firebase
+            .auth()
+            .createUserWithEmailAndPassword(email, password)
+            .then((userCredential) => {
+              // Signed in
+              var user = userCredential.user;
+              // ...
+            })
+            .catch((error) => {
+              var errorCode = error.code;
+              var errorMessage = error.message;
+              // ..
+            });
+        } else {
+          hide(signin);
+          show(emailField, passwordField, closeButton, didYouMean);
+          didYouMean.innerHTML = notSignedIn;
+          clickedYet = true;
+        }
+      };
+
+      // Handle user sign out
+      const signOut = (e) => {
+        firebase
+          .auth()
+          .signOut()
+          .then(() => {
+            hide(signout,)
+            signout.style.display = "none";
+            emailField.style.display = "none";
+            passwordField.style.display = "none";
+            header.innerHTML = loggedOutMessage;
+            signout.style.display = "none";
+            signin.style.display = "inline";
+            signup.style.display = "inline";
+            clickedYet = false;
+            // Sign-out successful.
+          })
+          .catch((error) => {
+            // An error happened.
+          });
+      };
+
+      // Handle user sign in
+      const signIn = (e) => {
+        if (clickedYet) {
+          const email = document.querySelector("#email").value;
+          const password = document.querySelector("#password").value;
+          firebase
+            .auth()
+            .signInWithEmailAndPassword(email, password)
+            .then((userCredential) => {
+              // Signed in
+              var user = userCredential.user;
+              emailField.style.display = "none";
+              passwordField.style.display = "none";
+              signout.style.display = "block";
+              signin.style.display = "none";
+              header.innerHTML = loggedInMessage;
+              // ...
+            })
+            .catch((error) => {
+              var errorCode = error.code;
+              var errorMessage = error.message;
+              document.querySelector("#error").innerHTML = errorMessage;
+            });
+        } else {
+          emailField.style.display = "block";
+          passwordField.style.display = "block";
+          signup.style.display = "none";
+          closeButton.style.display = "block";
+          clickedYet = true;
+          didYouMean.style.display = "block";
+          forgotPassword.style.display = "block";
+        }
+      };
+
+      // Handle signed in state
+      firebase.auth().onAuthStateChanged((user) => {
+        if (user) {
+          // User is signed in, see docs for a list of available properties
+          // https://firebase.google.com/docs/reference/js/firebase.User
+          const uid = user.uid;
+          // document.querySelector("form").style.display = "none";
+          // document.querySelector("h1").innerHTML =
+          //   "You're in! I knew you could do it.";
+          // document.querySelector("#signout").style.display = "block";
+          emailField.style.display = "none";
+          passwordField.style.display = "none";
+          signup.style.display = "none";
+          signin.style.display = "none";
+          signout.style.display = "block";
+          header.innerHTML = loggedInMessage;
+          closeButton.style.display = "none";
+          didYouMean.style.display = "none";
+          // ...
+        } else {
+          // User is signed out
+          // ...
+        }
+      });
+
+      const closeForm = (e) => {
+        closeButton.style.display = "none";
+        signin.style.display = "inline";
+        signup.style.display = "inline";
+        emailField.style.display = "none";
+        passwordField.style.display = "none";
+        didYouMean.style.display = "none";
+        clickedYet = false;
+      };
+
+      const clickHere = (e) => {
+        if (signup.style.display != "none") {
+          signin.style.display = "block";
+          signup.style.display = "none";
+          didYouMean.innerHTML = notSignedUp;
+        } else {
+          signin.style.display = "none";
+          signup.style.display = "block";
+          didYouMean.innerHTML = notSignedIn;
+        }
+      };
+
+      const getPassword = (e) => {
+        var auth = firebase.auth();
+        const email = document.querySelector("#email").value;
+        auth
+          .sendPasswordResetEmail(email)
+          .then(function () {
+            // Email sent.
+          })
+          .catch(function (error) {
+            // An error happened.
+          });
+      };
+
+      document
+        .querySelector("#didyoumean")
+        .addEventListener("click", clickHere);
+      document
+        .querySelector("#forgotpassword")
+        .addEventListener("click", clickHere);
+
+      const hide = (els) => {
+        els.forEach((el) => {
+          el.styledisplay = "none";
+        });
+      };
+
+      const show = (els) => {
+        els.forEach((el) => {
+          el.style.display = "block";
+        });
+      };
+
+      $("#form").submit(signUp);
+      $(document).ready(function () {
+        // hide([signin, signup]);
+      });
+    </script>
+  </body>
+</html>

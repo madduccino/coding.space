@@ -1,0 +1,389 @@
+@import "../../index.scss";
+
+#profile {
+  margin: 0 auto;
+  background-color: rgb(250, 250, 250);
+  width: 100%;
+
+  .main {
+    margin: 0 auto;
+    max-width: 778px;
+    button {
+      background-color: transparent;
+      border: 1px solid $lightgrey;
+    }
+    .tab-labels {
+      text-align: center;
+      list-style: none;
+      padding: 0;
+      line-height: 35px;
+      height: 37px;
+      overflow: hidden;
+      font-size: 12px;
+      position: relative;
+      div {
+        border: 1px solid #aaa;
+        background: #d1d1d1;
+        background: linear-gradient(top, #ececec 50%, #d1d1d1 100%);
+        display: inline-block;
+        position: relative;
+        z-index: 0;
+        border-bottom-left-radius: 6px;
+        border-bottom-right-radius: 6px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4), inset 0 1px 0 #fff;
+        text-shadow: 0 1px #fff;
+        margin: 0 -5px;
+        padding: 0 30px;
+        &.selected {
+          background: #fff;
+          color: #333;
+          z-index: 2;
+          border-top-color: #fff;
+          &:before {
+            box-shadow: 2px 0px 0 #fff;
+          }
+          &:after {
+            box-shadow: -2px 0px 0 #fff;
+          }
+        }
+        &:before,
+        &:after {
+          border: 1px solid #aaa;
+          position: absolute;
+          top: -1px;
+          width: 6px;
+          height: 6px;
+          content: "";
+        }
+        &:before {
+          left: -7px;
+          border-top-right-radius: 6px;
+          border-width: 1px 1px 0px 0px;
+          box-shadow: 2px 0px 0 #ececec;
+        }
+        &:after {
+          right: -7px;
+          border-top-left-radius: 6px;
+          border-width: 1px 0px 0px 1px;
+          box-shadow: -2px 0px 0 #ececec;
+        }
+      }
+      h3 {
+        cursor: pointer;
+      }
+      &:before {
+        position: absolute;
+        content: "";
+        width: 100%;
+        top: 0;
+        left: 0;
+        border-top: 1px solid #aaa;
+        z-index: 1;
+      }
+    }
+    .tabs {
+      .field {
+        position: relative;
+      }
+      .projectList {
+        display: grid;
+        grid-template-columns: 1fr 4fr;
+        grid-gap: 10%;
+        border: 1px solid $lightgrey;
+        a {
+          display: grid;
+          grid-template-columns: 1fr 2fr 1fr;
+          margin-bottom: 20px;
+          border-bottom: 1px solid $lightgrey;
+          padding-bottom: 10px;
+        }
+      }
+      .tab-content {
+        .title {
+          background-color: $lightGreen;
+          text-align: center;
+          border: 3px solid #7ae2da;
+        }
+
+        .instructions {
+          grid-template-columns: repeat(4, 1fr);
+          text-align: center;
+          font-size: 0.8rem;
+          display: grid;
+          background-color: #9fe2dd;
+          padding: 10px;
+          .complete {
+            img {
+              width: 25px;
+              height: 25px;
+              object-fit: contain;
+            }
+          }
+        }
+        .fa {
+          transition: 1s ease-in-out;
+          &:hover {
+            animation: spin 1s infinite;
+          }
+        }
+        > a {
+          padding-top: 20px;
+          display: grid;
+          grid-template-columns: 1fr 2fr 1fr;
+          margin-bottom: 10px;
+          transition: 1s;
+          border-bottom: 1px solid $lightgrey;
+          padding-bottom: 10px;
+          &:hover {
+          }
+          > div {
+            .modified {
+              font-size: 12px;
+              color: #ccc;
+            }
+          }
+        }
+        img {
+          width: 25px;
+        }
+        .categories {
+          margin: 40px 0;
+          div {
+            cursor: pointer;
+            margin: 0 10px 30px;
+
+            &.active {
+              color: $darkgreen;
+              border-bottom: 1px solid $lightgrey;
+            }
+          }
+        }
+        .level {
+          margin: 40px 0 10px;
+        }
+        .title {
+          margin: 0 20px 0 0;
+        }
+      }
+      .progress,
+      .projects,
+      .untutorials {
+        h3 {
+          background-color: $lightGreen;
+          padding: 0 5px;
+          margin-top: 20px;
+          grid-column: span 3;
+          cursor: pointer;
+          position: relative;
+          &:after {
+            content: "^";
+            position: absolute;
+            right: 10px;
+            top: 5px;
+          }
+          &.down {
+            &:after {
+              transform: rotate(180deg);
+              top: 0;
+            }
+          }
+        }
+      }
+      .profile {
+        .copy {
+          display: flex;
+          margin-bottom: 4px;
+          i {
+            margin-left: 10px;
+            cursor: pointer;
+          }
+        }
+        textarea {
+          border: none;
+          overflow: auto;
+          outline: none;
+          box-shadow: none;
+          resize: none;
+          width: 100%;
+          font-family: $bodyFont;
+          font-size: $fontSize;
+        }
+        button {
+          margin: 5px 0;
+          width: auto;
+          font-size: 1rem;
+          padding: 2px 4px;
+        }
+        h2 {
+          text-align: center;
+          margin-bottom: 40px;
+          font-size: 2rem;
+        }
+        .avatar {
+          margin-bottom: 40px;
+        }
+        > div {
+          margin-bottom: 20px;
+          word-wrap: break-word;
+        }
+      }
+      .email {
+        max-width: 960px;
+        background-color: #fff;
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6,
+        button,
+        ul,
+        li {
+          color: initial;
+          font-size: initial;
+          text-shadow: initial;
+        }
+        #emailloader {
+          display: block;
+          > ul {
+            list-style: none;
+            margin: 0;
+            word-wrap: break-word;
+            li {
+              display: grid;
+              grid-template-columns: 1fr 1fr;
+              grid-template-rows: 100px 1fr;
+              margin-bottom: 40px;
+              border-bottom: 2px solid #ccc;
+              padding-bottom: 20px;
+              padding: 40px 10px;
+              margin: 0;
+              .email-date {
+                text-align: right;
+              }
+              .email-body {
+                grid-column: span 2;
+                img {
+                  max-width: 100%;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    .highlights {
+      display: flex;
+      flex-flow: row wrap;
+      align-items: center;
+      margin-top: 30px;
+      .avatar {
+        padding: 0;
+        &:hover {
+          &:after {
+            display: block;
+            content: "Change Profile Photo";
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            width: 150px;
+            margin: 0 auto;
+            color: #fff;
+            font-weight: bold;
+            background-color: black;
+            border-radius: 4px;
+            transform: translate(-50%, -50%);
+          }
+        }
+        img {
+          border-radius: 50%;
+          box-shadow: 0 0 8px 8px #d1d1d1 inset;
+          width: 200px;
+          height: 200px;
+          object-fit: cover;
+        }
+      }
+      .container {
+        margin-left: 30px;
+        .display-name {
+          font-size: 3rem;
+          font-family: $bodyFontLight;
+          display: flex;
+          align-items: center;
+          text-transform: lowercase;
+          > div,
+          > input {
+            margin-right: 10px;
+          }
+          button {
+            background-color: transparent;
+            border: 1px solid rgb(219, 219, 219);
+          }
+        }
+        .stats {
+          margin-top: 30px;
+        }
+      }
+    }
+    .menu {
+      cursor: pointer;
+      display: flex;
+      border-top: 1px solid $lightgrey;
+      margin: 50px 0;
+      font-family: $headerFont;
+      > div {
+        margin: 0 10px;
+        padding-top: 20px;
+        svg {
+          margin-right: 10px;
+          color: $orange;
+        }
+        &.selected {
+          border-top: 1px solid rgb(38, 38, 38);
+          margin-top: -1px;
+        }
+      }
+    }
+    .extended {
+      background-color: $darkgreen;
+      color: #fff;
+      padding: 40px;
+      .quill {
+        .ql-toolbar {
+          button,
+          .ql-picker {
+            background-color: #fff;
+            color: #000;
+            margin: 5px 2px;
+          }
+        }
+      }
+      > div {
+        margin-bottom: 20px;
+        input,
+        button,
+        textarea {
+          color: #fff;
+        }
+        textarea {
+          background-color: transparent;
+        }
+      }
+    }
+    a {
+      color: $darkgreen;
+    }
+  }
+  .sidebar {
+    > div {
+      margin-bottom: 20px;
+      cursor: pointer;
+    }
+    .selected {
+      h2 {
+        border-bottom: 5px solid $lightGreen;
+        display: inline-block;
+      }
+    }
+  }
+}

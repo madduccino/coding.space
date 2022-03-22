@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!--Google Fonts-->
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lobster&display=swap"
+      rel="stylesheet"
+    />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Counter</title>
+    <style stype="text/css">
+      html,
+      body {
+        height: 100%;
+        margin: 0 auto;
+        text-align: center;
+        padding-top: 40px;
+      }
+      h2 {
+        font-family: "Lobster", sans-serif;
+        font-size: 48px;
+        color: #fff;
+        font-weight: bold;
+        text-shadow: 2px 2px 2px #000;
+      }
+      button {
+        border: 0;
+        padding: 20px 25px;
+        margin: 10px;
+        border: 2px solid #000;
+        font-size: 18px;
+        font-weight: bold;
+      }
+      .red {
+        background-color: rgb(199, 50, 50);
+      }
+      .green {
+        background-color: rgb(4, 187, 4);
+      }
+      .blue {
+        background-color: rgb(54, 54, 240);
+      }
+    </style>
+  </head>
+  <body>
+    <h2>Click for Color</h2>
+    <button class="red" onclick="addRed()">+</button>
+    <button class="red" onclick="subtractRed()">-</button><br />
+    <button class="green" onclick="addGreen()">+</button>
+    <button class="green" onclick="subtractGreen()">-</button><br />
+    <button class="blue" onclick="addBlue()">+</button>
+    <button class="blue" onclick="subtractBlue()">-</button>
+    <script>
+      // Store a random number between 0 and 255 in three different variables
+      // Math.random() returns a number between 0 (inclusive) and 1 (exclusive). Math.floor() returns the largest integer less than or equal to a given number.
+      let green = Math.floor(Math.random() * 256),
+        red = Math.floor(Math.random() * 256),
+        blue = Math.floor(Math.random() * 256);
+
+      const setBackground = () => {
+        document.body.style.backgroundColor = `rgb(${red}, ${green}, ${blue})`; // set background color page
+        console.log(document.body.style.backgroundColor); // TIP: You can log the body backgrund color to the console to see the numbers changing!
+      };
+
+      const addRed = () => {
+        red += 10;
+        setBackground();
+      };
+      const subtractRed = () => {
+        red -= 10;
+        setBackground();
+      };
+      const addBlue = () => {
+        blue += 10;
+        setBackground();
+      };
+      const subtractBlue = () => {
+        blue -= 10;
+        setBackground();
+      };
+      const addGreen = () => {
+        green += 10;
+        setBackground();
+      };
+      const subtractGreen = () => {
+        green -= 10;
+        setBackground();
+      };
+      setBackground();
+    </script>
+  </body>
+</html>

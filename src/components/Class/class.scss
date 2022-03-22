@@ -1,0 +1,49 @@
+@import "../../index.scss";
+
+#clazz {
+  .defaultImage {
+    object-fit: contain !important;
+    background-color: $lightGreen;
+  }
+  .ms-container {
+    display: grid;
+    grid-template-columns: 4fr 1fr 4fr 0;
+    width: 100%;
+    margin-bottom: 20px;
+    .ms-selectable,
+    .ms-selection {
+      li {
+        &:hover {
+          background-color: $orange;
+        }
+        &.selected {
+          background-color: $darkerOrange !important;
+          border-bottom: 1px solid $darkgreen;
+        }
+      }
+    }
+    .ms-selectionpanel {
+      background-color: transparent;
+    }
+    .ms-selectionpanel2 {
+      grid-column-start: -1;
+      grid-row-start: -1;
+      background-color: transparent;
+      color: #fff;
+    }
+    > div {
+      float: none;
+      width: auto !important;
+    }
+  }
+  .buttons {
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    flex-flow: row wrap;
+    button {
+      width: 200px;
+      margin: 10px;
+    }
+  }
+}
