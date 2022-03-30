@@ -9,6 +9,7 @@ import * as FILTERS from "../../constants/filter";
 import * as SKILLS from "../../constants/skills";
 import { Link } from "react-router-dom";
 import "./untutorial.scss";
+import { Helmet } from "react-helmet";
 
 class UntutorialPageBase extends React.Component {
   constructor(props) {
@@ -24,8 +25,9 @@ class UntutorialPageBase extends React.Component {
       uploading: false,
       uploadPercent: 0,
       showiframe: true,
-      lang: "en",
+      lang: this.props.authUser ? this.props.authUser.lang : "English",
       languageSelect: true,
+      init: false,
     };
     this.handleStatusOnChange = this.handleStatusOnChange.bind(this);
     this.handleStatusOnSave = this.handleStatusOnSave.bind(this);
@@ -66,6 +68,8 @@ class UntutorialPageBase extends React.Component {
     this.studentApprove = this.studentApprove.bind(this);
     this.chooseLang = this.chooseLang.bind(this);
     this.toggleVisibility = this.toggleVisibility.bind(this);
+    this.updateLang = this.updateLang.bind(this);
+
     //this.onChange = editorState => this.setState({editorState});
     //console.log("hiya");
   }
@@ -87,7 +91,6 @@ class UntutorialPageBase extends React.Component {
     document.body.addEventListener("click", this.handleClick);
 
     const { key } = this.props.match.params;
-
     this.props.firebase.untutorial(key).on("value", (snapshot) => {
       const untutorial = snapshot.val();
       this.props.firebase
@@ -109,6 +112,14 @@ class UntutorialPageBase extends React.Component {
         });
     });
   }
+
+  componentDidUpdate() {
+    const { lang, init } = this.state;
+    if (this.props.authUser && !init && lang != this.props.authUser.lang) {
+      this.setState({ init: true, lang: this.props.authUser.lang });
+    }
+  }
+
   loadProgress() {
     const { authUser } = this.props;
     const { untutorial, showiframe } = this.state;
@@ -190,7 +201,7 @@ class UntutorialPageBase extends React.Component {
     var oCopy = this.state.untutorial;
     const { authUser } = this.props;
     if (authUser && !!authUser.roles["STUDENT"]) oCopy.Status = "DRAFT";
-    if (lang === "es") {
+    if (lang === "Español") {
       oCopy.steps[step].ThumbnailFilenameSp = uuidv4() + "." + ext;
       var storageRef = this.props.firebase.storage.ref(
         "/public/" +
@@ -239,7 +250,7 @@ class UntutorialPageBase extends React.Component {
   handleTitleOnChange(value) {
     var oCopy = this.state.untutorial;
     const { lang } = this.state;
-    if (lang === "es") {
+    if (lang === "Español") {
       if (value !== oCopy.TitleEs) {
         oCopy.TitleEs = value;
       }
@@ -264,14 +275,14 @@ class UntutorialPageBase extends React.Component {
     const text = Title ? Title.replace(/<(.|\n)*?>/g, "").trim() : "";
     const textEs = TitleEs ? TitleEs.replace(/<(.|\n)*?>/g, "").trim() : "";
 
-    if (lang === "en") {
+    if (lang === "English") {
       if (text.length === 0) {
         errors["Title"] = 'TITLE.<span className="red">ISREQUIRED</span>';
       } else {
         delete errors["Title"];
       }
     }
-    if (lang === "es") {
+    if (lang === "Español") {
       if (textEs.length === 0) {
         errors["TitleEs"] = 'TITLE.<span className="red">ISREQUIRED</span>';
       } else {
@@ -284,7 +295,7 @@ class UntutorialPageBase extends React.Component {
   handleDescriptionOnChange(value) {
     var oCopy = this.state.untutorial;
     const { lang } = this.state;
-    if (lang === "es") {
+    if (lang === "English") {
       if (value !== oCopy.DescriptionEs) {
         oCopy.DescriptionEs = value;
       }
@@ -308,14 +319,14 @@ class UntutorialPageBase extends React.Component {
     const text = Description;
     const textEs = DescriptionEs;
 
-    if (lang === "en") {
+    if (lang === "English") {
       if (text === "") {
         errors["Description"] = "Description is required.";
       } else {
         delete errors["Description"];
       }
     }
-    if (lang === "es") {
+    if (lang === "Español") {
       if (textEs === "") {
         errors["DescriptionEs"] = "Description is required.";
       } else {
@@ -456,7 +467,7 @@ class UntutorialPageBase extends React.Component {
     var oCopy = this.state.untutorial;
     const { lang } = this.state;
     if (value !== oCopy.steps[step].Title) {
-      lang === "es"
+      lang === "Español"
         ? (oCopy.steps[step].TitleEs = value)
         : (oCopy.steps[step].Title = value);
       const { authUser } = this.props;
@@ -472,13 +483,12 @@ class UntutorialPageBase extends React.Component {
     var oCopy = this.state.untutorial;
     const { lang } = this.state;
     if (value !== oCopy.steps[step].DescriptionEs) {
-      if (lang === "es") {
+      if (lang === "Español") {
         oCopy.steps[step].DescriptionEs = value;
       }
     }
     if (value !== oCopy.steps[step].Description) {
       oCopy.steps[step].Description = value;
-      console.log(lang);
     }
     const { authUser } = this.props;
     if (authUser && !!authUser.roles["STUDENT"]) oCopy.Status = "DRAFT";
@@ -661,9 +671,24 @@ class UntutorialPageBase extends React.Component {
 
     this.setState({ progress: progress }, this.saveProgressHandler);
   }
-  chooseLang(event) {
+  chooseLang = (event) => {
+    const { lang, authUser } = this.state;
+    console.log(event.target.value);
     this.setState({ lang: event.target.value });
+    console.log("AUTHUSER", !!authUser);
+    if (this.props.authUser) {
+      this.props.firebase
+        .profile(this.props.authUser.uid + "/lang")
+        .set(event.target.value);
+    }
+  };
+
+  updateLang() {
+    const { lang, authUser } = this.state;
+
+    console.log("state", lang);
   }
+
   toggleVisibility() {
     const { languageSelect } = this.state;
     this.setState({ languageSelect: !languageSelect });
@@ -690,38 +715,46 @@ class UntutorialPageBase extends React.Component {
 
     return (
       <section id="untutorial">
-        {untutorial.Categories["SCRATCHJR"] && (
-          <div className="toggleLang">
-            {console.log(this.state.languageSelect)}
-            <a onClick={this.toggleVisibility}>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
-                fill="currentColor"
-                class="bi bi-globe"
-                viewBox="0 0 16 16"
-              >
-                <path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm7.5-6.923c-.67.204-1.335.82-1.887 1.855A7.97 7.97 0 0 0 5.145 4H7.5V1.077zM4.09 4a9.267 9.267 0 0 1 .64-1.539 6.7 6.7 0 0 1 .597-.933A7.025 7.025 0 0 0 2.255 4H4.09zm-.582 3.5c.03-.877.138-1.718.312-2.5H1.674a6.958 6.958 0 0 0-.656 2.5h2.49zM4.847 5a12.5 12.5 0 0 0-.338 2.5H7.5V5H4.847zM8.5 5v2.5h2.99a12.495 12.495 0 0 0-.337-2.5H8.5zM4.51 8.5a12.5 12.5 0 0 0 .337 2.5H7.5V8.5H4.51zm3.99 0V11h2.653c.187-.765.306-1.608.338-2.5H8.5zM5.145 12c.138.386.295.744.468 1.068.552 1.035 1.218 1.65 1.887 1.855V12H5.145zm.182 2.472a6.696 6.696 0 0 1-.597-.933A9.268 9.268 0 0 1 4.09 12H2.255a7.024 7.024 0 0 0 3.072 2.472zM3.82 11a13.652 13.652 0 0 1-.312-2.5h-2.49c.062.89.291 1.733.656 2.5H3.82zm6.853 3.472A7.024 7.024 0 0 0 13.745 12H11.91a9.27 9.27 0 0 1-.64 1.539 6.688 6.688 0 0 1-.597.933zM8.5 12v2.923c.67-.204 1.335-.82 1.887-1.855.173-.324.33-.682.468-1.068H8.5zm3.68-1h2.146c.365-.767.594-1.61.656-2.5h-2.49a13.65 13.65 0 0 1-.312 2.5zm2.802-3.5a6.959 6.959 0 0 0-.656-2.5H12.18c.174.782.282 1.623.312 2.5h2.49zM11.27 2.461c.247.464.462.98.64 1.539h1.835a7.024 7.024 0 0 0-3.072-2.472c.218.284.418.598.597.933zM10.855 4a7.966 7.966 0 0 0-.468-1.068C9.835 1.897 9.17 1.282 8.5 1.077V4h2.355z" />
-              </svg>
-            </a>
-
-            <select value={lang.value} onChange={this.chooseLang}>
-              <option value="en">Language</option>
-
-              <option value="en">English</option>
-              <option value="es">Español</option>
-            </select>
-            {/* <a onClick={() => this.setState({ lang: "en" })}>English</a>
+        {console.log("whatttt", lang)}
+        <Helmet>
+          <title>{`${
+            !!authUser
+              ? `${authUser.Username.replace(/\./g, " ").replace(
+                  /\w\S*/g,
+                  (w) => w.replace(/^\w/, (c) => c.toUpperCase())
+                )} - ${untutorial.Title.replace(/<(.|\n)*?>/g, "").trim()}`
+              : untutorial.Title.replace(/<(.|\n)*?>/g, "").trim()
+          }`}</title>
+        </Helmet>
+        <div className="toggleLang">
+          <a onClick={this.toggleVisibility}>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              fill="currentColor"
+              className="bi bi-globe"
+              viewBox="0 0 16 16"
+            >
+              <path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm7.5-6.923c-.67.204-1.335.82-1.887 1.855A7.97 7.97 0 0 0 5.145 4H7.5V1.077zM4.09 4a9.267 9.267 0 0 1 .64-1.539 6.7 6.7 0 0 1 .597-.933A7.025 7.025 0 0 0 2.255 4H4.09zm-.582 3.5c.03-.877.138-1.718.312-2.5H1.674a6.958 6.958 0 0 0-.656 2.5h2.49zM4.847 5a12.5 12.5 0 0 0-.338 2.5H7.5V5H4.847zM8.5 5v2.5h2.99a12.495 12.495 0 0 0-.337-2.5H8.5zM4.51 8.5a12.5 12.5 0 0 0 .337 2.5H7.5V8.5H4.51zm3.99 0V11h2.653c.187-.765.306-1.608.338-2.5H8.5zM5.145 12c.138.386.295.744.468 1.068.552 1.035 1.218 1.65 1.887 1.855V12H5.145zm.182 2.472a6.696 6.696 0 0 1-.597-.933A9.268 9.268 0 0 1 4.09 12H2.255a7.024 7.024 0 0 0 3.072 2.472zM3.82 11a13.652 13.652 0 0 1-.312-2.5h-2.49c.062.89.291 1.733.656 2.5H3.82zm6.853 3.472A7.024 7.024 0 0 0 13.745 12H11.91a9.27 9.27 0 0 1-.64 1.539 6.688 6.688 0 0 1-.597.933zM8.5 12v2.923c.67-.204 1.335-.82 1.887-1.855.173-.324.33-.682.468-1.068H8.5zm3.68-1h2.146c.365-.767.594-1.61.656-2.5h-2.49a13.65 13.65 0 0 1-.312 2.5zm2.802-3.5a6.959 6.959 0 0 0-.656-2.5H12.18c.174.782.282 1.623.312 2.5h2.49zM11.27 2.461c.247.464.462.98.64 1.539h1.835a7.024 7.024 0 0 0-3.072-2.472c.218.284.418.598.597.933zM10.855 4a7.966 7.966 0 0 0-.468-1.068C9.835 1.897 9.17 1.282 8.5 1.077V4h2.355z" />
+            </svg>
+          </a>
+          <select value={lang} onChange={this.chooseLang}>
+            <option value={lang}>{lang}</option>
+            <option value={lang === "English" ? "Español" : "English"}>
+              {lang === "English" ? "Español" : "English"}
+            </option>
+          </select>
+          {/* <a onClick={() => this.setState({ lang: "en" })}>English</a>
             <a onClick={() => this.setState({ lang: "es" })}>Español</a> */}
-          </div>
-        )}
+        </div>
+
         <div className={showiframe ? "iframe-on" : "iframe-off"}>
           <div className="popup">
             {showiframe && (
               <>
                 <div>
-                  {lang === "es" ? (
+                  {lang === "Español" && untutorial.TitleEs ? (
                     <h3
                       dangerouslySetInnerHTML={{ __html: untutorial.TitleEs }}
                     />
@@ -730,7 +763,7 @@ class UntutorialPageBase extends React.Component {
                       dangerouslySetInnerHTML={{ __html: untutorial.Title }}
                     />
                   )}
-                  {lang === "es" ? (
+                  {lang === "Español" && untutorial.DescriptionEs ? (
                     <div
                       dangerouslySetInnerHTML={{
                         __html: untutorial.DescriptionEs,
@@ -856,7 +889,7 @@ class UntutorialPageBase extends React.Component {
                           !!progress && <div className="approved"></div>
                         )} */}
                         <p>
-                          {lang === "es"
+                          {lang === "Español"
                             ? `Paso ${index + 1}`
                             : `Step ${index + 1}`}
                           {!!step.Title && !!step.Title.length && <>:</>}
@@ -881,7 +914,8 @@ class UntutorialPageBase extends React.Component {
                           placeholder={"Step Title"}
                           buttonText={!!progress ? "" : "Edit Title"}
                           text={
-                            lang === "es"
+                            lang === "Español" &&
+                            untutorial.steps[index].TitleEs
                               ? untutorial.steps[index].TitleEs
                               : untutorial.steps[index].Title
                           }
@@ -908,7 +942,8 @@ class UntutorialPageBase extends React.Component {
                         placeholder={"Step Description"}
                         buttonText={!!progress ? "" : "Edit Description"}
                         text={
-                          lang === "es"
+                          lang === "Español" &&
+                          untutorial.steps[index].DescriptionEs
                             ? untutorial.steps[index].DescriptionEs
                             : untutorial.steps[index].Description
                         }
@@ -930,8 +965,7 @@ class UntutorialPageBase extends React.Component {
                       >
                         {!!authUser &&
                           (!!authUser.roles["ADMIN"] ||
-                            authUser.uid === untutorial.Author.key) &&
-                          lang === "en" && (
+                            authUser.uid === untutorial.Author.key) && (
                             <>
                               <p
                                 className={
@@ -974,7 +1008,8 @@ class UntutorialPageBase extends React.Component {
                           !!untutorial.steps[index].ThumbnailFilename.length !=
                             0 &&
                           !this.state.uploading &&
-                          lang === "en" && (
+                          (lang === "English" ||
+                            !!!untutorial.steps[index].ThumbnailFilenameSp) && (
                             <LazyImage
                               id={"step" + index + "-thumbnail"}
                               className="crop"
@@ -990,7 +1025,7 @@ class UntutorialPageBase extends React.Component {
                         {!!authUser &&
                           (!!authUser.roles["ADMIN"] ||
                             authUser.uid === untutorial.Author.key) &&
-                          lang === "es" && (
+                          lang === "Español" && (
                             <>
                               <p
                                 className={
@@ -1026,7 +1061,7 @@ class UntutorialPageBase extends React.Component {
                           !!untutorial.steps[index].ThumbnailFilenameSp
                             .length != 0 &&
                           !this.state.uploading &&
-                          lang === "es" && (
+                          lang === "Español" && (
                             <LazyImage
                               id={"step" + index + "-thumbnail"}
                               className="crop"
@@ -1096,34 +1131,33 @@ class UntutorialPageBase extends React.Component {
             </div>
           </div>
           <div className="sidebar">
-            {!!progress && (
-              <>
-                {!!untutorial.Categories["SCRATCH"] && (
-                  <a
-                    className="scratch"
-                    href="https://scratch.mit.edu"
-                    target="_Blank"
-                  >
-                    <LazyImage
-                      file={this.props.firebase.storage.ref(
-                        "/public/scratch.png"
-                      )}
-                    />
-                  </a>
-                )}
-                {!!untutorial.Categories["WOOF"] && (
-                  <a
-                    className="scratch"
-                    href="https://woofjs.com"
-                    target="_Blank"
-                  >
-                    <LazyImage
-                      file={this.props.firebase.storage.ref("/public/woof.png")}
-                    />
-                  </a>
-                )}
-              </>
-            )}
+            <>
+              {!!untutorial.Categories["SCRATCH"] && (
+                <a
+                  className="scratch"
+                  href="https://scratch.mit.edu"
+                  target="_Blank"
+                >
+                  <LazyImage
+                    file={this.props.firebase.storage.ref(
+                      "/public/scratch.png"
+                    )}
+                  />
+                </a>
+              )}
+              {!!untutorial.Categories["WOOF"] && (
+                <a
+                  className="scratch"
+                  href="https://woofjs.com"
+                  target="_Blank"
+                >
+                  <LazyImage
+                    file={this.props.firebase.storage.ref("/public/woof.png")}
+                  />
+                </a>
+              )}
+            </>
+
             <div className="container">
               <div className={"titleStatus"}>
                 <TCSEditor
@@ -1140,7 +1174,11 @@ class UntutorialPageBase extends React.Component {
                   onEditorChange={this.handleTitleOnChange}
                   onEditorSave={this.handleTitleOnSave}
                   placeholder={"Step Description"}
-                  text={lang === "es" ? untutorial.TitleEs : untutorial.Title}
+                  text={
+                    lang === "Español" && untutorial.TitleEs
+                      ? untutorial.TitleEs
+                      : untutorial.Title
+                  }
                 />
               </div>
             </div>
@@ -1205,7 +1243,7 @@ class UntutorialPageBase extends React.Component {
                 placeholder={"Untutorial Description"}
                 name={"description"}
                 text={
-                  lang === "es"
+                  lang === "Español" && untutorial.DescriptionEs
                     ? untutorial.DescriptionEs
                     : untutorial.Description
                 }
