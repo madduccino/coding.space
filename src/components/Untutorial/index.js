@@ -770,7 +770,7 @@ class UntutorialPageBase extends React.Component {
                           : untutorial.Description,
                     }}
                   />
-                  )
+
                   <button onClick={this.loadProgress}>Code This Project</button>
                 </div>
                 <a className="back" onClick={() => this.props.history.goBack()}>

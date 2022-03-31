@@ -11,6 +11,7 @@ import * as ROUTES from "../../constants/routes";
 import * as FILTER from "../../constants/filter";
 import { RGBA_ASTC_12x10_Format } from "three";
 import "./profile.scss";
+import { Helmet } from "react-helmet";
 
 const TAB = {
   PROJECTS: 0,
@@ -59,6 +60,9 @@ class ProfilePageBase extends React.Component {
       this.handlePDescriptionOnChange.bind(this);
     this.handlePDescriptionValidate =
       this.handlePDescriptionValidate.bind(this);
+    this.handlePLangOnChange = this.handlePLangOnChange.bind(this);
+    this.handlePLangOnSave = this.handlePLangOnSave.bind(this);
+
     this.handlePDescriptionOnSave = this.handlePDescriptionOnSave.bind(this);
     this.saveChangesHandler = this.saveChangesHandler.bind(this);
     this.copyText = this.copyText.bind(this);
@@ -186,6 +190,22 @@ class ProfilePageBase extends React.Component {
   handlePDescriptionOnSave() {
     this.saveChangesHandler();
   }
+  handlePLangOnChange(value) {
+    var pCopy = this.state.profile;
+    if (value !== pCopy.lang) {
+      pCopy.lang = value;
+      const { authUser } = this.props;
+      if (!!authUser && !!authUser.roles["STUDENT"] && !!!pCopy.roles["ADMIN"])
+        pCopy.Status = "DRAFT";
+      this.setState(
+        { project: pCopy, dirty: true }
+        // this.handlePDescriptionValidate
+      );
+    }
+  }
+  handlePLangOnSave() {
+    this.saveChangesHandler();
+  }
   handleAgeOnChange(value) {
     var pCopy = this.state.profile;
     if (value !== pCopy.Age) {
@@ -257,47 +277,30 @@ class ProfilePageBase extends React.Component {
   saveChangesHandler(event) {
     const { errors } = this.state;
     const { key } = this.props.match.params;
-    if (Object.keys(errors).length === 0) {
-      this.props.firebase
-        .profile(key)
-        .set({
-          ...this.state.profile,
-        })
-        .then(() => {
-          console.log("Successfully Saved");
-          this.setState({ dirty: false });
-        })
-        .catch((error) => console.log(error));
-    } else {
-      var badFields = Object.keys(errors);
-      var messages = [];
-      messages.push({
-        html: `<span className="green">Saving</span>...`,
-        type: true,
-      });
-      messages.push({
-        html: `<span className="red">ERROR!</span>`,
-        type: false,
-      });
-      for (var i = 0; i < badFields.length; i++) {
-        messages.push({
-          html: errors[badFields[i]],
-          type: true,
-        });
+    try {
+      if (Object.keys(errors).length === 0) {
+        this.props.firebase
+          .profile(key)
+          .set({
+            ...this.state.profile,
+          })
+          .then(() => {
+            console.log("Successfully Saved");
+            this.setState({ dirty: false });
+          })
+          .catch((error) => console.log(error));
+      } else {
+        throw new Error("Missing fields");
       }
-
-      messages.push({
-        html: `Press any key to continue...`,
-        type: false,
-      });
-
-      this.props.setGlobalState({
-        messages: messages,
-        showMessage: true,
-      });
+    } catch (err) {
+      // if (errors["About"] == "") errors["About"] = "Missing About";
+      // if (errors["Age"] == "") errors["Description"] = "Missing Age";
+      // if (errors["Step0"] == "") errors["Step0"] = "Step 1 is Required.";
+      // if (errors["Categories"] == "") errors["Categories"] = "Missing Category";
+      console.log(errors);
+    } finally {
+      this.setState({ errors: errors });
     }
-
-    console.log("Save Changes");
   }
   copyText(e) {
     this.textArea.select();
@@ -326,6 +329,15 @@ class ProfilePageBase extends React.Component {
 
     return (
       <section id="profile">
+        <Helmet>
+          <title>
+            {!!authUser &&
+              authUser.Username.replace(/\./g, " ").replace(/\w\S*/g, (w) =>
+                w.replace(/^\w/, (c) => c.toUpperCase())
+              )}{" "}
+            - Profile
+          </title>
+        </Helmet>
         <div className="main">
           <div className="highlights">
             <div className="avatar">
@@ -518,7 +530,26 @@ class ProfilePageBase extends React.Component {
                         </div>
                       </>
                     )}
-
+                  <div>
+                    <h4>Language</h4>
+                    <TCSEditor
+                      disabled={
+                        !(
+                          !!authUser &&
+                          (!!authUser.roles["ADMIN"] ||
+                            authUser.uid === profile.key ||
+                            authUser.roles["TEACHER"])
+                        )
+                      }
+                      className={"block"}
+                      type="select"
+                      selectOptions={["English", "Español"]}
+                      onEditorChange={this.handlePLangOnChange}
+                      onEditorSave={this.handlePLangOnSave}
+                      placeholder={"Language"}
+                      text={profile.lang}
+                    />
+                  </div>
                   <div>
                     <h4>My Age</h4>
                     <TCSEditor
