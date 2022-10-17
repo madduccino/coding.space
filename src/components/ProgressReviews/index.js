@@ -1,6 +1,5 @@
 import React from "react";
 
-
 import { withAuthorization } from "../Session";
 import { withFirebase } from "../Firebase";
 import * as ROLES from "../../constants/roles";
@@ -17,8 +16,8 @@ class ProgressReviews extends React.Component {
       pendingFilter: true,
       classFilter: false,
       classMembers: null,
-	  textFilter: "",
-	  allApproved: true
+      textFilter: "",
+      allApproved: true,
     };
     this.onProfileActivate = this.onProfileActivate.bind(this);
     this.approveStep = this.approveStep.bind(this);
@@ -158,7 +157,7 @@ class ProgressReviews extends React.Component {
       textFilter,
     } = this.state;
     const { authUser } = this.props;
-     
+
     //console.log("hiya")
     return (
       <section id="progress-reviews">
@@ -238,35 +237,39 @@ class ProgressReviews extends React.Component {
                     activeProgress.progresses
                       .filter((progress) => true)
                       .map((progress, pIndex) => (
-                        <div id={profile.key + progress.untutorial.key} className="project">
-                          <div className="aside">
+                        <div
+                          id={profile.key + progress.untutorial.key}
+                          className="project"
+                        >
+                          {/* <div className="aside">
                             <h3
                               dangerouslySetInnerHTML={{
                                 __html: progress.untutorial.Title,
                               }}
                             />
-							{console.log(progress.untutorial.Status)}
+                            {console.log(progress.untutorial.Status)}
 
                             {progress.steps.length <= 0 && <h4>No Progress</h4>}
-                            
-							{!!progress.URL && progress.URL != "" && (
+
+                            {!!progress.URL && progress.URL != "" && (
                               <a href={progress.URL} target={"_blank"}>
                                 View Project
                               </a>
                             )}
-                          </div>
+                          </div> */}
 
                           {progress.steps.length > 0 &&
                             progress.steps.map((step, i) => (
                               <>
-						
-						
                                 {(!pendingFilter ||
                                   (pendingFilter &&
                                     step.Status === "PENDING")) && (
-                                  <div id={progress.untutorial.key + "" + i} >
+                                  <div id={progress.untutorial.key + "" + i}>
                                     <div className="status">
-                                      Step {i + 1}: {progress.untutorial.steps[i].Title}
+                                      Step {i + 1}:{" "}
+                                      {progress.untutorial.steps[i].Title
+                                        ? progress.untutorial.steps[i].Title
+                                        : ""}
                                       <span
                                         className={
                                           step.Status === "PENDING"
@@ -300,7 +303,8 @@ class ProgressReviews extends React.Component {
                                           }
                                         />
                                         <div>
-                                          <button className="approve"
+                                          <button
+                                            className="approve"
                                             id={
                                               "approve-" +
                                               progress.untutorial.key +
@@ -316,9 +320,10 @@ class ProgressReviews extends React.Component {
                                               )
                                             }
                                           >
-                                            Approve 
+                                            Approve
                                           </button>
-                                          <button className="disapprove"
+                                          <button
+                                            className="disapprove"
                                             id={
                                               "disapprove-" +
                                               progress.untutorial.key +
@@ -334,7 +339,7 @@ class ProgressReviews extends React.Component {
                                               )
                                             }
                                           >
-                                           Send Back
+                                            Send Back
                                           </button>
                                         </div>
                                       </div>

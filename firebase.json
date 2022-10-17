@@ -20,6 +20,11 @@
         "type": 301
       },
       {
+        "source": "/aboutme",
+        "destination": "./aboutme.html",
+        "type": 301
+      },
+      {
         "source": "/bug",
         "destination": "/bugs",
         "type": 301

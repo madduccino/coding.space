@@ -7,6 +7,7 @@ import { withFirebase } from "../Firebase";
 import * as ROUTES from "../../constants/routes";
 import * as FILTER from "../../constants/filter";
 import * as LEVELS from "../../constants/levels";
+import { Helmet } from "react-helmet";
 
 const groupBy = function (xs, key) {
   return xs.reduce(function (rv, x) {
@@ -123,6 +124,7 @@ class LaunchPad extends React.Component {
         .set(event.target.value);
     }
   };
+
   render() {
     const { untutorials, loading, cfilter, lfilter, textFilter, lang } =
       this.state;
@@ -143,6 +145,9 @@ class LaunchPad extends React.Component {
 
     return (
       <section id="launchpad">
+        <Helmet>
+          <title>Launch Pad</title>
+        </Helmet>
         <div className="toggleLang">
           <a onClick={this.toggleVisibility}>
             <svg
