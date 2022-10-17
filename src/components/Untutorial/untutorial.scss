@@ -1,5 +1,6 @@
 .thumbnail.hero {
   padding: 0;
+  .upload {
   &:hover {
     &:after {
       display: block;
@@ -15,6 +16,7 @@
       border-radius: 4px;
       transform: translate(-50%, -50%);
     }
+  }
   }
 }
 .toggleLang {

@@ -97,10 +97,10 @@ class ClassesPageBase extends React.Component {
           <div>
             <input
               type="checkbox"
-              value="Upper East Side"
+              value="UES"
               onClick={this.onLocationFilterChange}
             />
-            <label>Upper East Side</label>
+            <label>UES</label>
           </div>
           <div>
             <input
@@ -110,14 +110,7 @@ class ClassesPageBase extends React.Component {
             />
             <label>Park Slope</label>
           </div>
-          <div>
-            <input
-              type="checkbox"
-              value="Westchester"
-              onClick={this.onLocationFilterChange}
-            />
-            <label>Westchester</label>
-          </div>
+
           <div>
             <input
               type="checkbox"
@@ -126,14 +119,7 @@ class ClassesPageBase extends React.Component {
             />
             <label>Online</label>
           </div>
-          <div>
-            <input
-              type="checkbox"
-              value="Long Island"
-              onClick={this.onLocationFilterChange}
-            />
-            <label>Long Island</label>
-          </div>
+
           <div>
             <input
               type="checkbox"
@@ -154,7 +140,11 @@ class ClassesPageBase extends React.Component {
                   : clazz.Status === "APPROVED") ||
                 (!!authUser && !!authUser.roles["ADMIN"])
             )
-            .filter((clazz) => clazz.Location.includes(locationFilter))
+            .filter(
+              (clazz) =>
+                clazz.Location.includes(locationFilter) ||
+                clazz.Title.includes(locationFilter)
+            )
             .map((clazz) => (
               <>
                 {console.log(clazz)}
@@ -170,12 +160,30 @@ class ClassesPageBase extends React.Component {
                         "/classes/" + clazz.ThumbnailFilename
                       )}
                     />
-                  ) : (
+                  ) : clazz.Location.includes("UES") ||
+                    clazz.Title.includes("UES") ? (
+                    <LazyImage
+                      className="defaultImage"
+                      file={this.props.firebase.storage.ref("/public/UES.jpg")}
+                    />
+                  ) : clazz.Location.includes("Online") ||
+                    clazz.Title.includes("Online") ? (
+                    <LazyImage
+                      className="defaultImage"
+                      file={this.props.firebase.storage.ref("/public/zoom.png")}
+                    />
+                  ) : clazz.Location.includes("Park Slope") ||
+                    clazz.Title.includes("Park Slope") ? (
                     <LazyImage
                       className="defaultImage"
                       file={this.props.firebase.storage.ref(
-                        "/public/rocket.png"
+                        "/public/parkslope.jpg"
                       )}
+                    />
+                  ) : (
+                    <LazyImage
+                      className="defaultImage"
+                      file={this.props.firebase.storage.ref("/public/logo.png")}
                     />
                   )}
                   <div>

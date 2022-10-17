@@ -267,8 +267,8 @@ class ProgressReviews extends React.Component {
                                   <div id={progress.untutorial.key + "" + i}>
                                     <div className="status">
                                       Step {i + 1}:{" "}
-                                      {progress.untutorial.steps[i].Title
-                                        ? progress.untutorial.steps[i].Title
+                                      {progress.steps[i].Title
+                                        ? progress.steps[i].Title
                                         : ""}
                                       <span
                                         className={

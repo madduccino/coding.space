@@ -57,7 +57,8 @@ class Navigation extends React.Component {
               !!authUser.roles[ROLES.TEACHER]) && (
               <Link to={ROUTES.NEW_USER}>New User</Link>
             )}
-            {!!authUser.roles[ROLES.TEACHER] && (
+            {(!!authUser.roles[ROLES.ADMIN] ||
+              !!authUser.roles[ROLES.TEACHER]) && (
               <Link to={ROUTES.PROGRESSREVIEWS}>Student Progress</Link>
             )}
             {!!authUser && (
