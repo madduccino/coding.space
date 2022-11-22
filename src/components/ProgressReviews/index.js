@@ -247,7 +247,6 @@ class ProgressReviews extends React.Component {
                                 __html: progress.untutorial.Title,
                               }}
                             />
-                            {console.log(progress.untutorial.Status)}
 
                             <p style={{ fontSize: "14px" }}>Started</p>
 
