@@ -249,7 +249,7 @@ class ProgressReviews extends React.Component {
                             />
                             {console.log(progress.untutorial.Status)}
 
-                            {progress.steps.length <= 0 && <h4>No Progress</h4>}
+                            <p style={{ fontSize: "14px" }}>Started</p>
 
                             {!!progress.URL && progress.URL != "" && (
                               <a href={progress.URL} target={"_blank"}>
@@ -266,9 +266,9 @@ class ProgressReviews extends React.Component {
                                     step.Status === "PENDING")) && (
                                   <div id={progress.untutorial.key + "" + i}>
                                     <div className="status">
-                                      Step {i + 1}:{" "}
-                                      {progress.steps[i].Title
-                                        ? progress.steps[i].Title
+                                      Step {i + 1}
+                                      {progress.untutorial.steps[i].Title
+                                        ? `: ${progress.untutorial.steps[i].Title}`
                                         : ""}
                                       <span
                                         className={
