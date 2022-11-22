@@ -139,6 +139,7 @@ class UntutorialPageBase extends React.Component {
               LastModified: Date.now(),
               profile: authUser.uid,
               untut: key,
+              url: "",
             };
             untutorial.steps.forEach((step, i) => {
               progress.steps.push({ Status: "DRAFT", Comments: "" });

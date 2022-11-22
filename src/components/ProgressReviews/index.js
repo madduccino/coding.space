@@ -241,7 +241,7 @@ class ProgressReviews extends React.Component {
                           id={profile.key + progress.untutorial.key}
                           className="project"
                         >
-                          {/* <div className="aside">
+                          <div className="aside">
                             <h3
                               dangerouslySetInnerHTML={{
                                 __html: progress.untutorial.Title,
@@ -256,7 +256,7 @@ class ProgressReviews extends React.Component {
                                 View Project
                               </a>
                             )}
-                          </div> */}
+                          </div>
 
                           {progress.steps.length > 0 &&
                             progress.steps.map((step, i) => (
