@@ -1153,6 +1153,20 @@ class UntutorialPageBase extends React.Component {
                   />
                 </a>
               )}
+              {!!untutorial.Categories["WEB"] && (
+                <button
+                  style={{ padding: "10px", marginBottom: "30px" }}
+                  onClick={() =>
+                    window.open(
+                      "/v1/web/reference-guide.html",
+                      "_blank",
+                      "noopener,noreferrer"
+                    )
+                  }
+                >
+                  Web Reference Guide
+                </button>
+              )}
             </>
 
             <div className="container">
