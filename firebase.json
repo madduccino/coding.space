@@ -69,16 +69,7 @@
         "destination": "https://docs.google.com/spreadsheets/d/1UV9Sh9DNVUwXDopiDdXm-0CquDtV0m6NpEu8dRJCUA0/edit?usp=sharing",
         "type": 301
       },
-      {
-        "source": "/challenge",
-        "destination": "https://coding.space/challenge/fall2021/",
-        "type": 301
-      },
-      {
-        "source": "/challenges",
-        "destination": "/challenge",
-        "type": 301
-      },
+
       {
         "source": "/activity",
         "destination": "https://coding.space/resources/6ef58d73-a8f4-4db9-99e0-8a39e9fbca71",
