@@ -96,6 +96,10 @@ body,
   height: 100%;
 }
 
+ul {
+  margin: 30px;
+}
+
 @mixin flexh {
   display: flex;
   flex-flow: row wrap;
@@ -1243,7 +1247,7 @@ button {
             font-weight: 700;
             font-size: 2rem;
             padding-top: 10px;
-            word-break: break-all;
+            // word-break: break-all;
             font-family: $bodyFont;
             p {
               width: 100%;
