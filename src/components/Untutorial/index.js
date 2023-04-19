@@ -1284,7 +1284,7 @@ class UntutorialPageBase extends React.Component {
               (!!authUser.roles["ADMIN"] ||
                 authUser.uid === untutorial.Author.key) && (
                 <div className="container">
-                  <h4>Tags</h4>
+                  <h4>Category</h4>
 
                   <div className="filter">
                     {Object.keys(untutorial.Categories).length !=
@@ -1313,7 +1313,7 @@ class UntutorialPageBase extends React.Component {
                 </div>
               )}
 
-            {!!authUser &&
+            {/* {!!authUser &&
               (!!authUser.roles["ADMIN"] ||
                 authUser.uid === untutorial.Author.key) && (
                 <div className="container">
@@ -1345,7 +1345,7 @@ class UntutorialPageBase extends React.Component {
                     )}
                   </div>
                 </div>
-              )}
+              )} */}
           </div>
         </div>
       </section>
