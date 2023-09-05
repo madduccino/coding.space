@@ -79,12 +79,12 @@ var app = new Vue({
 			},
 			{
 				text: "2) Make a sprite that starts at a random spot on the left edge of the screen. You'll probably use code like this: ",
-				code: "var ghost = new Circle({\n  color: \"white\",\n  radius: 20,\n  x: minX,\n  y: randomY()\n})",
+				code: 'var ghost = new Circle()\nghost.color = "white"\nghost.radius = 20\nghost.x = minX\nghost.y = randomY()',
 				url: "./snippets/cloning-tutorial-step2.html"
 			},
 			{
 				text: "3) But we don't just want one of these sprites. Let's make a new one every 0.3 seconds by putting that code inside an <code>every()</code> function instead.",
-				code: "<span class='highlight'>every(0.3, \"second\", () => {</span>\n  var ghost = new Circle({\n    color: \"white\",\n    radius: 20,\n    x: minX,\n    y: randomY()\n  })\n<span class='highlight'>})</span>",
+				code: "<span class='highlight'>every(0.3, \"second\", () => {</span>\n  var ghost = new Circle()\n  ghost.color = \"white\"\n  ghost.radius = 20\n  ghost.x = minX\n  ghost.y = randomY()\n<span class='highlight'>})</span>",
 				url: "./snippets/cloning-tutorial-step3.html"
 			},
 			{
@@ -94,12 +94,12 @@ var app = new Vue({
 			},
 			{
 				text: "5) If we use the code in step 4, we get an error. That's because the variable \"ghost\" only exists inside the <code>every()</code> function. We can't tell the ghost what to do outside of that function, because the computer doesn't know which ghost we want to talk to.<br><br>To let us give instructions to our ghosts, we have to make an empty list before the <code>every()</code> function:",
-				code: "<span class='highlight'>var ghosts = []</span>\nevery(0.3, \"second\", () => {\n  var ghost = new Circle({\n    color: \"white\",\n    radius: 20,\n    x: minX,\n    y: randomY()\n  })\n})",
+				code: "<span class='highlight'>var ghosts = []</span>\nevery(0.3, \"second\", () => {\n  var ghost = new Circle()\n  ghost.color = \"white\"\n  ghost.radius = 20\n  ghost.x = minX\n  ghost.y = randomY()\n})",
 				url: "./snippets/cloning-tutorial-step5.html"
 			},
 			{
 				text: "6) And we need to put our ghosts in the list. We can do this inside the <code>every()</code> loop, right after we make the new ghost:",
-				code: "var ghosts = []\nevery(0.3, \"second\", () => {\n  var ghost = new Circle({\n    color: \"white\",\n    radius: 20,\n    x: minX,\n    y: randomY()\n  })\n<span class='highlight'>  ghosts.push(ghost)</span>\n})",
+				code: "var ghosts = []\nevery(0.3, \"second\", () => {\n  var ghost = new Circle()\n  ghost.color = \"white\"\n  ghost.radius = 20\n  ghost.x = minX\n  ghost.y = randomY()\n\n<span class='highlight'>  ghosts.push(ghost)</span>\n})",
 				url: "./snippets/cloning-tutorial-step6.html"
 			},
 			{
