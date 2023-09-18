@@ -239,7 +239,7 @@ class ClassPageBase extends React.Component {
     const { key } = this.props.match.params;
 
     this.props.firebase.class(key).remove();
-    window.location = ROUTES.LANDING;
+    window.location = ROUTES.CLASSES;
   }
   handleThumbnailUpload(event) {
     var file = event.target.files[0];

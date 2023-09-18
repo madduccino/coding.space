@@ -1,43 +1,93 @@
 @media screen and (max-width: 600px) {
   #header {
     .nav {
-        overflow: hidden;
-        background-color: #333;
-        position: relative; 
-        display:block !important;
+      overflow: hidden;
+      background-color: #333;
+      position: relative;
+      display: block !important;
       #myLinks {
       }
       .hiding {
-        display:none;
+        display: none;
       }
-        a {
+      a {
         padding: 14px 16px;
         text-decoration: none;
         font-size: 17px;
-        display: block; 
-      &.icon {
-        background: black;
         display: block;
-        position: absolute;
-        right: 0;
-        top: 0;
-        z-index: 1;
-        
+        &.icon {
+          background: black;
+          display: block;
+          position: absolute;
+          right: 0;
+          top: 0;
+          z-index: 1;
+        }
+        .showing {
+          display: block;
+        }
+
+        /* Position and sizing of burger button */
+        .bm-burger-button {
+          position: fixed;
+          width: 36px;
+          height: 30px;
+          left: 36px;
+          top: 36px;
+        }
+
+        /* Color/shape of burger icon bars */
+        .bm-burger-bars {
+          background: #373a47;
+        }
+
+        /* Position and sizing of clickable cross button */
+        .bm-cross-button {
+          height: 24px;
+          width: 24px;
+        }
+
+        /* Color/shape of close button cross */
+        .bm-cross {
+          background: #bdc3c7;
+        }
+
+        /* General sidebar styles */
+        .bm-menu {
+          background: #373a47;
+          padding: 2.5em 1.5em 0;
+          font-size: 1.15em;
+        }
+
+        /* Morph shape necessary with bubble or elastic */
+        .bm-morph-shape {
+          fill: #373a47;
+        }
+
+        /* Wrapper for item list */
+        .bm-item-list {
+          a {
+            a {
+              color: #b8b7ad;
+            }
+          }
+        }
+
+        /* Styling of overlay */
+        .bm-overlay {
+          background: rgba(0, 0, 0, 0.3);
+        }
+
+        //  a:hover {
+        //   background-color: #ddd;
+        //   color: black;
+        // }
+
+        // .active {
+        //   background-color: #04AA6D;
+        //   color: white;
+        // }
       }
-      .showing {
-        display:block;
-      }
-     
-    
-      //  a:hover {
-      //   background-color: #ddd;
-      //   color: black;
-      // }
-    
-      // .active {
-      //   background-color: #04AA6D;
-      //   color: white;
-      // }
-      }}
     }
   }
+}
