@@ -485,7 +485,7 @@ class ProfilePageBase extends React.Component {
                   Email
                 </div>
               )}
-            <div
+            {/* <div
               className={this.state.tab === TAB.NOTES ? "selected" : ""}
               onClick={() => this.setState({ tab: TAB.NOTES })}
             >
@@ -501,7 +501,7 @@ class ProfilePageBase extends React.Component {
                 <path d="M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1z" />
               </svg>{" "}
               Notes
-            </div>
+            </div> */}
           </div>
 
           <div className="tabs">
@@ -514,11 +514,11 @@ class ProfilePageBase extends React.Component {
                       authUser.uid === profile.key) && (
                       <>
                         <div>
-                          <h4>Login</h4>
+                          <h4>My TCS Login</h4>
                           {profile.Username}
                         </div>
                         <div>
-                          <h4>Email</h4>
+                          <h4>My TCS Email</h4>
                           <textarea
                             rows="1"
                             ref={(textarea) => {
@@ -530,6 +530,22 @@ class ProfilePageBase extends React.Component {
                         </div>
                       </>
                     )}
+                  <h4>Usernames</h4>
+                  <TCSEditor
+                    disabled={
+                      !(
+                        !!authUser &&
+                        (!!authUser.roles["ADMIN"] ||
+                          !!authUser.roles["TEACHER"] ||
+                          authUser.uid === profile.key)
+                      )
+                    }
+                    type="text"
+                    onEditorChange={this.handleNotesOnChange}
+                    onEditorSave={this.handleNotesOnSave}
+                    placeholder={"Notes"}
+                    text={profile.Notes}
+                  />
                   <div>
                     <h4>Language</h4>
                     <TCSEditor
@@ -550,7 +566,7 @@ class ProfilePageBase extends React.Component {
                       text={profile.lang}
                     />
                   </div>
-                  <div>
+                  {/* <div>
                     <h4>My Age</h4>
                     <TCSEditor
                       disabled={
@@ -566,8 +582,10 @@ class ProfilePageBase extends React.Component {
                       placeholder={"I'm ___ years old!"}
                       text={profile.Age}
                     />
-                  </div>
-                  <div>
+                  </div> */}
+                  <div></div>
+
+                  {/* <div>
                     <h4>About Me</h4>
                     <TCSEditor
                       disabled={
@@ -584,11 +602,11 @@ class ProfilePageBase extends React.Component {
                       placeholder={"About Me"}
                       text={profile.About}
                     />
-                  </div>
+                  </div> */}
                 </div>
               </div>
             )}
-            {tab === TAB.NOTES && (
+            {/* {tab === TAB.NOTES && (
               <div className="tab notes">
                 {!!authUser &&
                   (!!authUser.roles["ADMIN"] ||
@@ -614,7 +632,7 @@ class ProfilePageBase extends React.Component {
                     </>
                   )}
               </div>
-            )}
+            )} */}
             {tab === TAB.PROJECTS && (
               <div className="tab projects">
                 <div className="content tab-content">

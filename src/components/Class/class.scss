@@ -1,6 +1,54 @@
 @import "../../index.scss";
 
 #clazz {
+  background-color: #fff;
+  .grid-container {
+    display: grid;
+    grid-template-columns: 1fr; /* Two columns with equal width */
+    gap: 10px; /* Gap between grid items */
+    align-items: center; /* Center vertically within the grid container */
+    .header {
+      background-color: #333;
+      color: #fff;
+      padding: 10px;
+      text-align: center;
+    }
+
+    .content {
+      background-color: #f0f0f0;
+      padding: 20px;
+      border: 1px solid #ccc;
+      text-align: center;
+    }
+  }
+  .field {
+    font-size: 1.2em;
+    margin-bottom: 20px;
+  }
+  .approve {
+    font-size: 12px;
+    button {
+      width: auto;
+    }
+  }
+  .hideConsole {
+    display: none;
+  }
+  .main-content {
+    text-align: center;
+    display: block;
+    max-width: 1020px;
+    margin: 2em auto;
+    h1 {
+      margin: 20px 0;
+    }
+    .items {
+      a {
+        display: block;
+        margin-bottom: 5px;
+      }
+    }
+  }
   .defaultImage {
     object-fit: contain !important;
     background-color: $lightGreen;

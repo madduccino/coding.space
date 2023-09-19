@@ -359,29 +359,9 @@ class ClassPageBase extends React.Component {
 
     return (
       <section id="clazz">
-        <div className="main">
-          <div className="sidebar">
-            <div className="approve">
-              <TCSEditor
-                disabled={!(!!authUser && !!authUser.roles["ADMIN"])}
-                type="select"
-                selectOptions={["DRAFT", "APPROVED"]}
-                onEditorChange={this.handleStatusOnChange}
-                onEditorSave={this.handleStatusOnSave}
-                placeholder={"Class Status"}
-                text={clazz.Status}
-              />
-            </div>
-            <h4>Class Title</h4>
-            <TCSEditor
-              disabled={!(!!authUser && !!authUser.roles["ADMIN"])}
-              type="plain"
-              onEditorChange={this.handleClassTitleOnChange}
-              onEditorSave={this.handleClassTitleOnSave}
-              placeholder={"Class Title"}
-              text={clazz.Title}
-            />
-            <div className="avatar">
+        {/* <div className="sidebar"> */}
+
+        {/* <div className="avatar">
               {!!clazz.ThumbnailFilename && !uploading ? (
                 <LazyImage
                   file={this.props.firebase.storage.ref(
@@ -442,66 +422,89 @@ class ClassPageBase extends React.Component {
                 placeholder={"Location Description"}
                 text={clazz.Location}
               />
-            </div>
+            </div> */}
+        {/* </div> */}
+        <div className="main-content">
+          <div className="approve">
+            <TCSEditor
+              disabled={!(!!authUser && !!authUser.roles["ADMIN"])}
+              type="select"
+              selectOptions={["DRAFT", "APPROVED"]}
+              onEditorChange={this.handleStatusOnChange}
+              onEditorSave={this.handleStatusOnSave}
+              placeholder={"Class Status"}
+              text={clazz.Status}
+            />
           </div>
-          <div className="main-content">
-            <h1>Class Members</h1>
-            <div className="items">
-              {!!profiles &&
-                listBoxSelected.map((profile) => (
-                  <>
-                    {profiles[profile].roles["STUDENT"] && (
-                      <a className="card" href={`../profile/${profile}`}>
-                        <LazyImage
-                          id={"profile-thumbnail"}
-                          file={
-                            profiles[profile].ThumbnailFilename &&
-                            profiles[profile].ThumbnailFilename !== ""
-                              ? this.props.firebase.storage.ref(
-                                  "/public/" +
-                                    profile +
-                                    "/" +
-                                    profiles[profile].ThumbnailFilename
-                                )
-                              : this.props.firebase.storage.ref(
-                                  "/public/logo.png"
-                                )
-                          }
-                        />
-                        <span>
-                          {profiles[profile].Username.replace(".", " ")}
-                        </span>
-                      </a>
-                    )}
-                  </>
-                ))}
-            </div>
-            {!!authUser &&
-              (!!authUser.roles["ADMIN"] || !!authUser.roles["TEACHER"]) &&
-              !!profiles && (
-                <div className="console">
-                  <div className={editClass ? "showConsole" : "hideConsole"}>
-                    <ListBox
-                      options={listBoxOptions}
-                      onChange={this.handleMembersOnChange}
-                      selected={listBoxSelected}
-                    />
+          <TCSEditor
+            disabled={!(!!authUser && !!authUser.roles["ADMIN"])}
+            type="plain"
+            onEditorChange={this.handleClassTitleOnChange}
+            onEditorSave={this.handleClassTitleOnSave}
+            placeholder={"Class Title"}
+            text={clazz.Title}
+          />
+          <h1>Class Members</h1>
+          <div className="grid-container">
+            <div className="header">Names</div>
+          </div>
+
+          {!!profiles &&
+            listBoxSelected.map((profile) => (
+              <div className="grid-container">
+                {profiles[profile].roles["STUDENT"] && (
+                  <div className="content">
+                    <a href={`../profile/${profile}`}>
+                      {/* <LazyImage
+                        id={"profile-thumbnail"}
+                        file={
+                          profiles[profile].ThumbnailFilename &&
+                          profiles[profile].ThumbnailFilename !== ""
+                            ? this.props.firebase.storage.ref(
+                                "/public/" +
+                                  profile +
+                                  "/" +
+                                  profiles[profile].ThumbnailFilename
+                              )
+                            : this.props.firebase.storage.ref(
+                                "/public/logo.png"
+                              )
+                        }
+                      /> */}
+                      <span>
+                        {profiles[profile].Username.replace(/\./g, " ")}
+                      </span>
+                    </a>
                   </div>
-                  <div class="buttons">
-                    <button
-                      onClick={() => this.setState({ editClass: !editClass })}
-                    >
-                      {editClass ? "Save" : "Edit Class"}
-                    </button>
-                    {!!authUser.roles["ADMIN"] && (
-                      <button onClick={this.deleteClassHandler}>
-                        Delete Class
-                      </button>
-                    )}
-                  </div>
+                )}
+              </div>
+            ))}
+
+          {!!authUser &&
+            (!!authUser.roles["ADMIN"] || !!authUser.roles["TEACHER"]) &&
+            !!profiles && (
+              <div className="console">
+                <div className={editClass ? "showConsole" : "hideConsole"}>
+                  <ListBox
+                    options={listBoxOptions}
+                    onChange={this.handleMembersOnChange}
+                    selected={listBoxSelected}
+                  />
                 </div>
-              )}
-          </div>
+                <div class="buttons">
+                  <button
+                    onClick={() => this.setState({ editClass: !editClass })}
+                  >
+                    {editClass ? "Save" : "Edit Class"}
+                  </button>
+                  {!!authUser.roles["ADMIN"] && (
+                    <button onClick={this.deleteClassHandler}>
+                      Delete Class
+                    </button>
+                  )}
+                </div>
+              </div>
+            )}
         </div>
       </section>
     );
