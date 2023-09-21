@@ -93,10 +93,12 @@ const TransferScritchStudent = () => {
   return (
     <div className="main-content">
       <div className="form-container">
+        <h2>Transfer Scritch Account</h2>
         <label htmlFor="name">Name:</label>
         <input
           type="text"
           id="name"
+          placeholder="First name and last name initial"
           value={name}
           onChange={(e) => setName(e.target.value)}
         />
@@ -105,6 +107,7 @@ const TransferScritchStudent = () => {
         <input
           type="text"
           id="fromClass"
+          placeholder="Current Scritch class code"
           value={fromClass}
           onChange={(e) => setFromClass(e.target.value)}
         />
@@ -114,6 +117,7 @@ const TransferScritchStudent = () => {
           type="text"
           id="toClass"
           value={toClass}
+          placeholder="New Scritch class code"
           onChange={(e) => setToClass(e.target.value)}
         />
 
