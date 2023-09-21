@@ -24,6 +24,7 @@ import MessageOverlay from "../MessageOverlay";
 import * as ROUTES from "../../constants/routes";
 import AuthUserContext from "../Session/context";
 import { withFirebase } from "../Firebase";
+import Scritch from "../Scritch";
 import "../../index.scss";
 
 class App extends Component {
@@ -227,6 +228,12 @@ class App extends Component {
               path={ROUTES.NEW_CLASS}
               render={(props) => (
                 <NewClassPage {...props} setGlobalState={this.setGlobalState} />
+              )}
+            />
+            <Route
+              path={ROUTES.SCRITCH}
+              render={(props) => (
+                <Scritch {...props} setGlobalState={this.setGlobalState} />
               )}
             />
             {this.state.showFooter && (
