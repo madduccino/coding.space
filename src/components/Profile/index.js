@@ -514,11 +514,11 @@ class ProfilePageBase extends React.Component {
                       authUser.uid === profile.key) && (
                       <>
                         <div>
-                          <h4>My TCS Login</h4>
+                          <h4>My Coding Space Username</h4>
                           {profile.Username}
                         </div>
                         <div>
-                          <h4>My TCS Email</h4>
+                          <h4>My Coding Space Email</h4>
                           <textarea
                             rows="1"
                             ref={(textarea) => {
@@ -530,7 +530,7 @@ class ProfilePageBase extends React.Component {
                         </div>
                       </>
                     )}
-                  <h4>Usernames</h4>
+                  <h4>External Logins</h4>
                   <TCSEditor
                     disabled={
                       !(
