@@ -147,6 +147,11 @@
         "type": 301
       },
       {
+        "source": "/unplugged",
+        "destination": "/unplugged.html",
+        "type": 301
+      },
+      {
         "source": "/socratic",
         "destination": "/socratic.html",
         "type": 301

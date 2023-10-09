@@ -1,15 +1,44 @@
 .main-content {
   margin-top: 80px;
+  display: flex;
+  justify-content: space-between; /* Adjust as needed */
   .form-container {
-    max-width: 400px;
-    margin: 0 auto;
+    width: 48%; /* Adjust as needed, this leaves a small gap between the containers */
     padding: 20px;
+    box-sizing: border-box;
     border: 1px solid #ccc;
     border-radius: 5px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     h2 {
       margin-bottom: 20px;
     }
+    .code-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 20px;
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .code-display {
+      font-size: 24px;
+    }
+
+    .icon-buttons {
+      display: flex;
+      gap: 10px;
+    }
+
+    .toggle-button,
+    .copy-button {
+      border: none;
+      cursor: pointer;
+      font-size: 20px;
+    }
+
+    /* Add any additional styles or customizations as needed */
   }
 
   label {

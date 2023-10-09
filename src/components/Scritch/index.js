@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import "./scritch.scss";
+import clipboardCopy from "clipboard-copy";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const TransferScritchStudent = () => {
   const [name, setName] = useState("");
@@ -7,6 +9,12 @@ const TransferScritchStudent = () => {
   const [toClass, setToClass] = useState("");
   const [action, setAction] = useState("");
   const [message, setMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const [copyMessage, setCopyMessage] = useState("");
+  const [showCodeDisplay, setShowCodeDisplay] = useState(false); // Add a state variable to control code display
+
+  const DATABASE_URL = "https://scritch-11f5a-default-rtdb.firebaseio.com/";
 
   const handleSubmission = async () => {
     try {
@@ -21,8 +29,6 @@ const TransferScritchStudent = () => {
       const FROM_CLASS = fromClass.toLowerCase();
       const TO_CLASS = toClass.toLowerCase();
       const ACTION = action.toLowerCase();
-
-      const DATABASE_URL = "https://scritch-11f5a-default-rtdb.firebaseio.com/";
 
       // Fetch class data for FROM_CLASS
       const classDataResponse = await fetch(
@@ -90,8 +96,148 @@ const TransferScritchStudent = () => {
 
   const unquote = (str) => str.replace(/^"(.*)"$/, "$1");
 
+  const generateRandomCode = () => {
+    const characters = "abcdefghjkmnpqrstuvwxyz23456789";
+    let code = "";
+    for (let i = 0; i < 6; i++) {
+      const randomIndex = Math.floor(Math.random() * characters.length);
+      code += characters[randomIndex];
+    }
+    return code;
+  };
+
+  const [classCode, setClassCode] = useState(generateRandomCode());
+  const [isUpperCase, setIsUpperCase] = useState(false);
+  const [classTitle, setClassTitle] = useState(""); // New state for class title
+
+  console.log(classCode);
+
+  const handleClassTitleChange = (e) => {
+    setClassTitle(e.target.value);
+  };
+
+  const createClass = async () => {
+    try {
+      if (!classTitle) {
+        setErrorMessage("Please enter a class title.");
+        return;
+      }
+
+      const CODE = classCode;
+      const TITLE = classTitle;
+
+      const checkResponse = await fetch(`${DATABASE_URL}/classes/${CODE}.json`);
+
+      if (checkResponse.ok) {
+        const responseData = await checkResponse.json();
+        if (responseData != null) {
+          // Code already exists, generate a new one
+          const newCode = generateRandomCode();
+          setErrorMessage(
+            `Code ${CODE} already exists in the database. A new code (${newCode}) has been generated.`
+          );
+          setClassCode(newCode); // Set the new code in the component state
+          return;
+        }
+      }
+
+      // Define the data to add in the database
+      const addClass = {
+        title: classTitle,
+      };
+
+      // Create the request configuration
+      const requestOptions = {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(addClass),
+      };
+
+      // Send the PUT request to create new data in the database
+      const response = await fetch(
+        `${DATABASE_URL}/classes/${CODE}.json`,
+        requestOptions
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to create class.");
+      }
+      setSuccessMessage(
+        <p>
+          Class created successfully with code: {CODE} and title: {TITLE}. You
+          can access it{" "}
+          <a
+            href={`https://scritch.dev/#${classCode}`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            here
+          </a>
+          .
+        </p>
+      );
+
+      setShowCodeDisplay(true);
+    } catch (error) {
+      console.error("Error:", error);
+      setErrorMessage(`Error: ${error.message}`);
+    }
+  };
+
+  const toggleCase = () => {
+    setClassCode(
+      isUpperCase ? classCode.toLowerCase() : classCode.toUpperCase()
+    );
+    setIsUpperCase(!isUpperCase);
+  };
+
+  const copyToClipboard = () => {
+    clipboardCopy(classCode);
+    setCopyMessage("Copied");
+  };
+
   return (
     <div className="main-content">
+      <div className="form-container">
+        <h2>Create Scritch Class</h2>
+        <input
+          type="text"
+          placeholder="Class Title (e.g., Tuesday UES Fall 2023)"
+          value={classTitle}
+          onChange={handleClassTitleChange}
+        />
+        <button onClick={createClass}>Create Class</button>
+        {errorMessage && <div className="error-message">{errorMessage}</div>}
+        {successMessage && (
+          <div className="success-message">{successMessage}</div>
+        )}
+        {showCodeDisplay && (
+          <div className="code-container">
+            <div className="code-display">
+              <span>
+                {isUpperCase
+                  ? classCode.toUpperCase()
+                  : classCode.toLowerCase()}
+              </span>
+            </div>
+            <div className="icon-buttons">
+              <button className="toggle-button" onClick={toggleCase}>
+                <i className="fas fa-exchange-alt"></i>{" "}
+                {/* Font Awesome icon for toggle */}
+              </button>
+              <button className="copy-button" onClick={copyToClipboard}>
+                <i className="fas fa-clipboard"></i>{" "}
+                {/* Font Awesome icon for copy */}
+              </button>
+            </div>
+            {copyMessage && (
+              <div className="success-message">{copyMessage}</div>
+            )}
+          </div>
+        )}
+      </div>
       <div className="form-container">
         <h2>Transfer Scritch Account</h2>
         <label htmlFor="name">Name:</label>
