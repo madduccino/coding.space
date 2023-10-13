@@ -110,8 +110,6 @@ const TransferScritchStudent = () => {
   const [isUpperCase, setIsUpperCase] = useState(false);
   const [classTitle, setClassTitle] = useState(""); // New state for class title
 
-  console.log(classCode);
-
   const handleClassTitleChange = (e) => {
     setClassTitle(e.target.value);
   };
