@@ -152,6 +152,11 @@
         "type": 301
       },
       {
+      "source": "/yb",
+      "destination": "/yb.html",
+      "type": 301
+    },
+      {
         "source": "/socratic",
         "destination": "/socratic.html",
         "type": 301

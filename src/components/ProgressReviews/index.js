@@ -5,6 +5,7 @@ import { withFirebase } from "../Firebase";
 import * as ROLES from "../../constants/roles";
 import TCSEditor from "../TCSEditor";
 import { v4 as uuidv4 } from "uuid";
+import "./progress.scss";
 
 class ProgressReviews extends React.Component {
   constructor(props) {
@@ -216,141 +217,142 @@ class ProgressReviews extends React.Component {
           </div>
           <div className="main-content">
             <h1>Student Progress</h1>
+            <div className="grid-container">
+              {profiles
+                .sort((profile) => profile.DisplayName)
+                .filter(
+                  (profile) =>
+                    (classFilter ? classMembers.includes(profile.key) : true) &&
+                    (textFilter.length == 0 ||
+                      profile.Username.toLowerCase().includes(
+                        textFilter.toLowerCase()
+                      ) ||
+                      profile.DisplayName.toLowerCase().includes(
+                        textFilter.toLowerCase()
+                      ))
+                )
+                .map((profile) => (
+                  <>
+                    {!!activeProgress.uid &&
+                      activeProgress.uid === profile.key &&
+                      activeProgress.progresses
+                        .filter((progress) => true)
+                        .map((progress, pIndex) => (
+                          <div
+                            id={profile.key + progress.untutorial.key}
+                            className="project"
+                          >
+                            <div className="aside">
+                              <h3
+                                dangerouslySetInnerHTML={{
+                                  __html: progress.untutorial.Title,
+                                }}
+                              />
 
-            {profiles
-              .sort((profile) => profile.DisplayName)
-              .filter(
-                (profile) =>
-                  (classFilter ? classMembers.includes(profile.key) : true) &&
-                  (textFilter.length == 0 ||
-                    profile.Username.toLowerCase().includes(
-                      textFilter.toLowerCase()
-                    ) ||
-                    profile.DisplayName.toLowerCase().includes(
-                      textFilter.toLowerCase()
-                    ))
-              )
-              .map((profile) => (
-                <>
-                  {!!activeProgress.uid &&
-                    activeProgress.uid === profile.key &&
-                    activeProgress.progresses
-                      .filter((progress) => true)
-                      .map((progress, pIndex) => (
-                        <div
-                          id={profile.key + progress.untutorial.key}
-                          className="project"
-                        >
-                          <div className="aside">
-                            <h3
-                              dangerouslySetInnerHTML={{
-                                __html: progress.untutorial.Title,
-                              }}
-                            />
+                              <p style={{ fontSize: "14px" }}>Started</p>
 
-                            <p style={{ fontSize: "14px" }}>Started</p>
+                              {!!progress.URL && progress.URL != "" && (
+                                <a href={progress.URL} target={"_blank"}>
+                                  View Project
+                                </a>
+                              )}
+                            </div>
 
-                            {!!progress.URL && progress.URL != "" && (
-                              <a href={progress.URL} target={"_blank"}>
-                                View Project
-                              </a>
-                            )}
-                          </div>
-
-                          {progress.steps.length > 0 &&
-                            progress.steps.map((step, i) => (
-                              <>
-                                {(!pendingFilter ||
-                                  (pendingFilter &&
-                                    step.Status === "PENDING")) && (
-                                  <div id={progress.untutorial.key + "" + i}>
-                                    <div className="status">
-                                      Step {i + 1}
-                                      {progress.untutorial.steps[i].Title
-                                        ? `: ${progress.untutorial.steps[i].Title}`
-                                        : ""}
-                                      <span
-                                        className={
-                                          step.Status === "PENDING"
-                                            ? "pending"
-                                            : step.Status === "APPROVED"
-                                            ? "approved"
-                                            : "todo"
-                                        }
-                                      ></span>
-                                    </div>
-                                    {step.Status == "PENDING" && (
-                                      <div className="giveFeedback">
-                                        <textarea
-                                          id={
-                                            "feedback-" +
-                                            progress.untutorial.key +
-                                            "" +
-                                            i
+                            {progress.steps.length > 0 &&
+                              progress.steps.map((step, i) => (
+                                <>
+                                  {(!pendingFilter ||
+                                    (pendingFilter &&
+                                      step.Status === "PENDING")) && (
+                                    <div id={progress.untutorial.key + "" + i}>
+                                      <div className="status">
+                                        Step {i + 1}
+                                        {progress.untutorial.steps[i].Title
+                                          ? `: ${progress.untutorial.steps[i].Title}`
+                                          : ""}
+                                        <span
+                                          className={
+                                            step.Status === "PENDING"
+                                              ? "pending"
+                                              : step.Status === "APPROVED"
+                                              ? "approved"
+                                              : "todo"
                                           }
-                                          type="text"
-                                          value={step.Comments}
-                                          placeholder="Feedback..."
-                                          onChange={(event) =>
-                                            this.onFeedbackUpdate(
-                                              profile.key,
-                                              progress.untutorial.key,
-                                              pIndex,
-                                              i,
-                                              event.target.value
-                                            )
-                                          }
-                                        />
-                                        <div>
-                                          <button
-                                            className="approve"
-                                            id={
-                                              "approve-" +
-                                              progress.untutorial.key +
-                                              "" +
-                                              i
-                                            }
-                                            onClick={() =>
-                                              this.approveStep(
-                                                activeProgress.uid,
-                                                progress.untutorial.key,
-                                                pIndex,
-                                                i
-                                              )
-                                            }
-                                          >
-                                            Approve
-                                          </button>
-                                          <button
-                                            className="disapprove"
-                                            id={
-                                              "disapprove-" +
-                                              progress.untutorial.key +
-                                              "" +
-                                              i
-                                            }
-                                            onClick={() =>
-                                              this.disapproveStep(
-                                                activeProgress.uid,
-                                                progress.untutorial.key,
-                                                pIndex,
-                                                i
-                                              )
-                                            }
-                                          >
-                                            Send Back
-                                          </button>
-                                        </div>
+                                        ></span>
                                       </div>
-                                    )}
-                                  </div>
-                                )}
-                              </>
-                            ))}
-                        </div>
-                      ))}
-                </>
-              ))}
+                                      {step.Status == "PENDING" && (
+                                        <div className="giveFeedback">
+                                          <textarea
+                                            id={
+                                              "feedback-" +
+                                              progress.untutorial.key +
+                                              "" +
+                                              i
+                                            }
+                                            type="text"
+                                            value={step.Comments}
+                                            placeholder="Feedback..."
+                                            onChange={(event) =>
+                                              this.onFeedbackUpdate(
+                                                profile.key,
+                                                progress.untutorial.key,
+                                                pIndex,
+                                                i,
+                                                event.target.value
+                                              )
+                                            }
+                                          />
+                                          <div>
+                                            <button
+                                              className="approve"
+                                              id={
+                                                "approve-" +
+                                                progress.untutorial.key +
+                                                "" +
+                                                i
+                                              }
+                                              onClick={() =>
+                                                this.approveStep(
+                                                  activeProgress.uid,
+                                                  progress.untutorial.key,
+                                                  pIndex,
+                                                  i
+                                                )
+                                              }
+                                            >
+                                              Approve
+                                            </button>
+                                            <button
+                                              className="disapprove"
+                                              id={
+                                                "disapprove-" +
+                                                progress.untutorial.key +
+                                                "" +
+                                                i
+                                              }
+                                              onClick={() =>
+                                                this.disapproveStep(
+                                                  activeProgress.uid,
+                                                  progress.untutorial.key,
+                                                  pIndex,
+                                                  i
+                                                )
+                                              }
+                                            >
+                                              Send Back
+                                            </button>
+                                          </div>
+                                        </div>
+                                      )}
+                                    </div>
+                                  )}
+                                </>
+                              ))}
+                          </div>
+                        ))}
+                  </>
+                ))}
+            </div>
           </div>
         </div>
       </section>

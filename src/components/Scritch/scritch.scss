@@ -1,8 +1,13 @@
 .main-content {
-  margin-top: 80px;
+  margin: 80px auto 0 auto;
   max-width: 1200px;
   display: flex;
-  justify-content: space-between; /* Adjust as needed */
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  .notes {
+    width: 100%;
+  }
   .form-container {
     width: 48%; /* Adjust as needed, this leaves a small gap between the containers */
     padding: 20px;
@@ -13,8 +18,13 @@
     h2 {
       margin-bottom: 20px;
     }
+    p {
+      margin-top: 20px;
+    }
+
     .code-container {
       display: flex;
+      
       align-items: center;
       justify-content: center;
       flex-direction: column;
@@ -49,7 +59,7 @@
 
   input,
   select {
-    width: calc(100% - 20px);
+    width: calc(100% + 10px);
     padding: 10px;
     margin-bottom: 10px;
     border: 1px solid #ccc;

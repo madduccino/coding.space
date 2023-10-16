@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import "./scritch.scss";
 import clipboardCopy from "clipboard-copy";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-const TransferScritchStudent = () => {
+const EditScritch = () => {
   const [name, setName] = useState("");
   const [fromClass, setFromClass] = useState("");
   const [toClass, setToClass] = useState("");
@@ -193,28 +193,40 @@ const TransferScritchStudent = () => {
 
   const copyToClipboard = () => {
     clipboardCopy(classCode);
-    setCopyMessage("Copied");
+    setCopyMessage("Copied!");
+    // Reset the copyMessage after 2 seconds (2000 milliseconds)
+    setTimeout(() => {
+      setCopyMessage("");
+    }, 1000);
   };
 
   return (
     <div className="main-content">
       <div className="form-container">
         <h2>Create Scritch Class</h2>
-        <input
-          type="text"
-          placeholder="Class Title (e.g., Tuesday UES Fall 2023)"
-          value={classTitle}
-          onChange={handleClassTitleChange}
-        />
-        <button onClick={createClass}>Create Class</button>
-        {errorMessage && <div className="error-message">{errorMessage}</div>}
-        {successMessage && (
-          <div className="success-message">{successMessage}</div>
-        )}
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            createClass();
+          }}
+        >
+          <input
+            type="text"
+            placeholder="Class Title (e.g., Tuesday UES Fall 2023)"
+            value={classTitle}
+            onChange={handleClassTitleChange}
+          />
+          <button onClick={createClass}>Create Class</button>
+          {errorMessage && <div className="error-message">{errorMessage}</div>}
+          {successMessage && (
+            <div className="success-message">{successMessage}</div>
+          )}
+        </form>
         {showCodeDisplay && (
           <div className="code-container">
             <div className="code-display">
               <span>
+                Class Code:{" "}
                 {isUpperCase
                   ? classCode.toUpperCase()
                   : classCode.toLowerCase()}
@@ -238,60 +250,70 @@ const TransferScritchStudent = () => {
       </div>
       <div className="form-container">
         <h2>Transfer Scritch Account</h2>
-        <label htmlFor="name">Name:</label>
-        <input
-          type="text"
-          id="name"
-          placeholder="First name and last name initial"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-        />
-
-        <label htmlFor="fromClass">From Class:</label>
-        <input
-          type="text"
-          id="fromClass"
-          placeholder="Current Scritch class code"
-          value={fromClass}
-          onChange={(e) => setFromClass(e.target.value)}
-        />
-
-        <label htmlFor="toClass">To Class:</label>
-        <input
-          type="text"
-          id="toClass"
-          value={toClass}
-          placeholder="New Scritch class code"
-          onChange={(e) => setToClass(e.target.value)}
-        />
-
-        <label htmlFor="action">Action:</label>
-        <select
-          id="action"
-          value={action}
-          onChange={(e) => setAction(e.target.value)}
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            handleSubmission();
+          }}
         >
-          <option value="">Select an action</option>
-          <option value="copy">Copy</option>
-          <option value="move">Move</option>
-        </select>
+          <label htmlFor="name">Name:</label>
+          <input
+            type="text"
+            id="name"
+            placeholder="First name and last name initial"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
 
-        <button id="submitBtn" onClick={handleSubmission}>
-          Submit
-        </button>
+          <label htmlFor="fromClass">From Class:</label>
+          <input
+            type="text"
+            id="fromClass"
+            placeholder="Current Scritch class code"
+            value={fromClass}
+            onChange={(e) => setFromClass(e.target.value)}
+          />
 
-        {message && (
-          <div
-            className={
-              message.includes("Error") ? "error-message" : "success-message"
-            }
+          <label htmlFor="toClass">To Class:</label>
+          <input
+            type="text"
+            id="toClass"
+            value={toClass}
+            placeholder="New Scritch class code"
+            onChange={(e) => setToClass(e.target.value)}
+          />
+
+          <label htmlFor="action">Action:</label>
+          <select
+            id="action"
+            value={action}
+            onChange={(e) => setAction(e.target.value)}
           >
-            {message}
-          </div>
-        )}
+            <option value="">Select an action</option>
+            <option value="copy">Copy</option>
+            <option value="move">Move</option>
+          </select>
+
+          <button id="submitBtn" onClick={handleSubmission}>
+            Submit
+          </button>
+
+          {message && (
+            <div
+              className={
+                message.includes("Error") ? "error-message" : "success-message"
+              }
+            >
+              {message}
+            </div>
+          )}
+        </form>
+      </div>
+      <div className="notes">
+        <p>To delete a class, please email maddy@thecodingspace.com.</p>
       </div>
     </div>
   );
 };
 
-export default TransferScritchStudent;
+export default EditScritch;
