@@ -14,7 +14,7 @@ const EditScritch = () => {
   const [copyMessage, setCopyMessage] = useState("");
   const [showCodeDisplay, setShowCodeDisplay] = useState(false); // Add a state variable to control code display
 
-  const DATABASE_URL = "https://scritch-11f5a-default-rtdb.firebaseio.com/";
+  const DATABASE_URL = process.env.REACT_APP_SCRITCH_KEY;
 
   const handleSubmission = async () => {
     try {
@@ -173,6 +173,13 @@ const EditScritch = () => {
           >
             here
           </a>
+          . Make sure to add the class code to{" "}
+          <a
+            target="_blank"
+            href="https://docs.google.com/spreadsheets/d/1MokVINe__dLjwJIlXUzc081pkRgDYMqLRAP8NohFMDY/edit?usp=sharing"
+          >
+            Scritch Class Codes
+          </a>
           .
         </p>
       );
@@ -222,21 +229,13 @@ const EditScritch = () => {
             <div className="success-message">{successMessage}</div>
           )}
         </form>
+
         {showCodeDisplay && (
           <div className="code-container">
             <div className="code-display">
-              <span>
-                Class Code:{" "}
-                {isUpperCase
-                  ? classCode.toUpperCase()
-                  : classCode.toLowerCase()}
-              </span>
+              <span>Class Code: {classCode.toUpperCase()}</span>
             </div>
             <div className="icon-buttons">
-              <button className="toggle-button" onClick={toggleCase}>
-                <i className="fas fa-exchange-alt"></i>{" "}
-                {/* Font Awesome icon for toggle */}
-              </button>
               <button className="copy-button" onClick={copyToClipboard}>
                 <i className="fas fa-clipboard"></i>{" "}
                 {/* Font Awesome icon for copy */}
@@ -310,7 +309,11 @@ const EditScritch = () => {
         </form>
       </div>
       <div className="notes">
-        <p>To delete a class, please email maddy@thecodingspace.com.</p>
+        <p>
+          To delete a class, please email{" "}
+          <a href="mailto:maddy@thecodingspace.com">maddy@thecodingspace.com</a>
+          .
+        </p>
       </div>
     </div>
   );

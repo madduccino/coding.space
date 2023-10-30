@@ -7,6 +7,9 @@
   flex-wrap: wrap;
   .notes {
     width: 100%;
+    a {
+      text-decoration: underline;
+    }
   }
   .form-container {
     width: 48%; /* Adjust as needed, this leaves a small gap between the containers */
@@ -19,12 +22,15 @@
       margin-bottom: 20px;
     }
     p {
-      margin-top: 20px;
-    }
+      margin: 20px 0;
 
+      a {
+        text-decoration: underline;
+      }
+    }
     .code-container {
       display: flex;
-      
+
       align-items: center;
       justify-content: center;
       flex-direction: column;
