@@ -1,22 +1,29 @@
+.top {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
 .thumbnail.hero {
   padding: 0;
   .upload {
-  &:hover {
-    &:after {
-      display: block;
-      content: "Change Image";
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      width: 150px;
-      margin: 0 auto;
-      color: #fff;
-      font-weight: bold;
-      background-color: black;
-      border-radius: 4px;
-      transform: translate(-50%, -50%);
+    &:hover {
+      &:after {
+        display: block;
+        content: "Change Image";
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        width: 150px;
+        margin: 0 auto;
+        color: #fff;
+        font-weight: bold;
+        background-color: black;
+        border-radius: 4px;
+        transform: translate(-50%, -50%);
+      }
     }
-  }
   }
 }
 .toggleLang {
@@ -30,7 +37,7 @@
   .thumbnail.crop {
     width: 480px !important;
     height: 360px;
-    img {   
+    img {
       width: 480px;
       height: 360px;
     }

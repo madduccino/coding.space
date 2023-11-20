@@ -843,24 +843,25 @@ class UntutorialPageBase extends React.Component {
         </div>
         <div className={`main ${showiframe ? "blur" : ""}`}>
           <div className="main-content">
-            <a className="back" onClick={() => this.props.history.goBack()}>
-              <i className="fa fa-backward"></i>
-            </a>
+            <div className="top">
+              <a className="back" onClick={() => this.props.history.goBack()}>
+                <i className="fa fa-backward"></i>
+              </a>
 
-            {!!progress && (
-              <TCSEditor
-                disabled={false}
-                type={"plain"}
-                className="url"
-                onEditorChange={this.handleProgressURLOnChange}
-                onEditorSave={this.handleProgressURLOnSave}
-                placeholder={"http://"}
-                url={true}
-                buttonText={progress.URL ? "Edit Link" : "Add Link"}
-                text={progress.URL}
-              />
-            )}
-
+              {!!progress && (
+                <TCSEditor
+                  disabled={false}
+                  type={"plain"}
+                  className="url"
+                  onEditorChange={this.handleProgressURLOnChange}
+                  onEditorSave={this.handleProgressURLOnSave}
+                  placeholder={"http://"}
+                  url={true}
+                  buttonText={progress.URL ? "Edit Link" : "Add Link"}
+                  text={progress.URL}
+                />
+              )}
+            </div>
             <div className="steps">
               {!!untutorial &&
                 untutorial.steps.map((step, index) => (
