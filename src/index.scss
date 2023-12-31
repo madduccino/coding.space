@@ -282,8 +282,17 @@ img.pixel {
 #header {
   background-color: #fff;
   width: 100%;
-  border-bottom: 1px solid $lightgrey;
   display: flex;
+  .menu {
+    width: 100%;
+    background-color: #fff;
+    position: fixed;
+    padding-bottom: 70px;
+    border-bottom: 1px solid $lightgrey;
+
+    z-index: 99;
+  }
+
   .logo {
     @include flexvc;
     margin: 0 40px;

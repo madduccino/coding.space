@@ -5,6 +5,7 @@ import * as ROUTES from "../../constants/routes";
 import * as FILTER from "../../constants/filter";
 import * as LEVELS from "../../constants/levels";
 import { Helmet } from "react-helmet";
+import "./launchpad.scss";
 
 const groupBy = function (xs, key) {
   return xs.reduce(function (rv, x) {
@@ -49,8 +50,7 @@ const LaunchPad = ({ authUser, firebase }) => {
 
   const textFilterOnChange = (event) => {
     setTextFilter(event.target.value);
-    this.forceUpdate();
-    console.log("hello");
+    // forceUpdate();
   };
 
   const toggleCFilter = (e) => {

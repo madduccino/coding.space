@@ -45,7 +45,7 @@ class Navigation extends React.Component {
     const { profileUrl } = this.state;
 
     return (
-      <>
+      <div className="menu">
         <Menu>
           <Link className="logo" to={ROUTES.LANDING}>
             <img src={logo} />
@@ -80,7 +80,7 @@ class Navigation extends React.Component {
             )
           )}
         </Menu>
-      </>
+      </div>
     );
 
     //   if (authUser)

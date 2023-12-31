@@ -1,0 +1,41 @@
+// Colors
+$darkgreen: #274548;
+$lightGreen: #9fe2dd;
+$darkergreen: rgb(18, 33, 34);
+$lightblue: #9fe2dd;
+$beige: #fbf6ee;
+$orange: #edc034;
+$darkerOrange: #d8a200;
+$darkOrangeTransparent: rgba(216, 162, 0, 0.7);
+$lightgrey: rgb(219, 219, 219);
+
+#launchpad {
+  height: 100vh;
+  height: 100%;
+  .main {
+    background-color: $darkgreen;
+    height: 100vh;
+    height: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .main {
+    grid-template-columns: 155px 1fr !important;
+    .main-content {
+      .items {
+        // Assuming .items is a flex container; adjust as per your existing setup
+        flex-direction: column !important; // Stack children vertically
+        .card {
+          width: 100% !important; // Each card takes the full width of the container
+          margin: 10px 0; // Add some vertical margin between cards
+
+          // ... other styles ...
+        }
+      }
+    }
+    .sidebar {
+      width: 155px !important;
+    }
+  }
+}
