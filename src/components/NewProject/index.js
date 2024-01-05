@@ -1,146 +1,230 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import LazyImage from "../LazyImage";
 import { withAuthentication } from "../Session";
-import { withFirebase } from "../Firebase";
+import { withFirebase, storage } from "../Firebase";
 import TCSEditor from "../TCSEditor";
 import { v4 as uuidv4 } from "uuid";
 import * as ROUTES from "../../constants/routes";
 import * as FILTERS from "../../constants/filter";
 import "./new-project.scss";
 
-class NewProjectPageBase extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      authUser: null,
-      author: null,
-      loading: true,
-      uploading: false,
-      uploadPercent: 0,
-      untutorialRef: null,
-      lang: "en",
-      errors: {
-        Title: "",
-        Step0: "Step 1 is Required",
+const NewProjectPageBase = ({ authUser, firebase, history }) => {
+  const [untutorial, setUntutorial] = useState({
+    key: uuidv4(),
+    Author: null,
+    Description: "",
+    Categories: {},
+    Level: 1,
+    ThumbnailFilename: null,
+    Title: "",
+    Status: "DRAFT",
+    steps: [
+      {
         Description: "",
-        Categories: "",
-      },
-      untutorial: {
-        key: uuidv4(),
-        Author: null,
-        Description: "",
-        Categories: {},
-        Level: 1,
-        ThumbnailFilename: null,
         Title: "",
-        Status: "DRAFT",
-        steps: [
-          {
-            Description: "",
-            Title: "",
-            DescriptionSp: "",
-          },
-        ],
+        DescriptionSp: "",
       },
-      valid: false,
+    ],
+  });
+  const [author, setAuthor] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [uploading, setUploading] = useState(false);
+  const [uploadPercent, setUploadPercent] = useState(0);
+  const [untutorialRef, setUntutorialRef] = useState(null);
+  const [lang, setLang] = useState("en");
+
+  const [errors, setErrors] = useState({
+    Title: "",
+    Step0: "Step 1 is Required",
+    Description: "",
+    Categories: "",
+  });
+  const stepCount = Object.keys(untutorial.steps).length;
+
+  useEffect(() => {
+    const onUnload = (e) => {
+      e.preventDefault();
+      e.returnValue = "Data will be lost if you leave the page, are you sure?";
     };
-    //this.handleStatusOnChange = this.handleStatusOnChange.bind(this);
-    this.handleThumbnailUpload = this.handleThumbnailUpload.bind(this);
-    this.handleStepThumbnailUpload = this.handleStepThumbnailUpload.bind(this);
-    this.handleThumbnailValidate = this.handleThumbnailValidate.bind(this);
-    this.handlePTitleOnChange = this.handlePTitleOnChange.bind(this);
-    this.handlePTitleValidate = this.handlePTitleValidate.bind(this);
-    this.handlePTitleOnSave = this.handlePTitleOnSave.bind(this);
-    this.handlePDescriptionOnChange =
-      this.handlePDescriptionOnChange.bind(this);
-    this.handlePDescriptionValidate =
-      this.handlePDescriptionValidate.bind(this);
-    this.handlePDescriptionOnSave = this.handlePDescriptionOnSave.bind(this);
-    this.handleLevelOnChange = this.handleLevelOnChange.bind(this);
-    this.handleLevelOnSave = this.handleLevelOnSave.bind(this);
-    this.handleStepTitleOnChange = this.handleStepTitleOnChange.bind(this);
 
-    this.handleStepOnChange = this.handleStepOnChange.bind(this);
-    this.handleStepOnChangeSp = this.handleStepOnChangeSp.bind(this);
+    window.addEventListener("beforeunload", onUnload);
 
-    this.handleStepValidate = this.handleStepValidate.bind(this);
-    this.handleStepOnSave = this.handleStepOnSave.bind(this);
-    this.addStepHandler = this.addStepHandler.bind(this);
-    this.deleteStepHandler = this.deleteStepHandler.bind(this);
-    this.handleStepCountValidate = this.handleStepCountValidate.bind(this);
-    this.handlePCategoryOnChange = this.handlePCategoryOnChange.bind(this);
-    this.handleCategoryValidate = this.handleCategoryValidate.bind(this);
-    this.handleCategoryOnClick = this.handleCategoryOnClick.bind(this);
-    this.saveChangesHandler = this.saveChangesHandler.bind(this);
-
-    //this.onChange = editorState => this.setState({editorState});
-    //console.log("hiya");
-  }
-
-  onUnload = (e) => {
-    e.preventDefault();
-    e.returnValue = "Data will be lost if you leave the page, are you sure?";
-  };
-  handleMouseEnter = (target) => {
-    if (this.state.canEdit) {
-      return; //replace control with rich text editor
+    if (authUser) {
+      const pCopy = { ...untutorial, Author: authUser.key };
+      setUntutorial(pCopy);
+      setLoading(false);
     }
-  };
-  componentDidMount() {
-    var pCopy = this.state.untutorial;
-    console.log(pCopy);
-    window.addEventListener("beforeunload", this.onUnload);
-    if (this.props.authUser) {
-      pCopy.Author = this.props.authUser.key;
 
-      this.setState({
-        untutorialRef: this.props.firebase.untutorial(
-          this.state.untutorial.key
-        ),
-        untutorial: pCopy,
-        loading: false,
+    return () => {
+      firebase.untutorial().off();
+      window.removeEventListener("beforeunload", onUnload);
+    };
+  }, [authUser, firebase, untutorial.key]);
+
+  const handleStepTitleOnChange = (value, step) => {
+    var pCopy = { ...untutorial };
+    if (value !== pCopy.steps[step].Title) {
+      pCopy.steps[step].Title = value;
+    }
+    setUntutorial(pCopy, () => handleStepValidate(pCopy.steps[step], step));
+  };
+
+  const handleStepOnChange = (value, step) => {
+    var pCopy = { ...untutorial };
+    if (value !== pCopy.steps[step].Description) {
+      pCopy.steps[step].Description = value;
+    }
+    setUntutorial(pCopy, () => handleStepValidate(pCopy.steps[step], step));
+  };
+
+  const handleStepOnSave = () => {};
+
+  // Function to handle validation of step
+  const handleStepValidate = (step, index) => {
+    // Create a new copy of errors
+    let newErrors = { ...errors };
+
+    // Check if the step description is empty or just contains an empty paragraph
+    if (step.Description.length === 0 || step.Description === "<p><br></p>") {
+      newErrors["Step" + index] = `Step ${parseInt(index) + 1} is Required`;
+    } else {
+      // If the step is valid, remove any existing error for this step
+      delete newErrors["Step" + index];
+    }
+
+    // Update the state with the new errors object
+    setErrors(newErrors);
+  };
+
+  const handlePTitleOnChange = (value) => {
+    setUntutorial((prevUntutorial) => ({
+      ...prevUntutorial,
+      Title: value,
+    }));
+  };
+
+  const handleLevelOnChange = (value) => {
+    setUntutorial((prevUntutorial) => ({
+      ...prevUntutorial,
+      Level: value,
+    }));
+  };
+
+  const handleLevelOnSave = () => {};
+
+  const handlePDescriptionOnSave = () => {};
+
+  const handlePCategoryOnChange = (event) => {
+    if (event.target.value !== "-1") {
+      setUntutorial((prevUntutorial) => {
+        const updatedCategories = {
+          ...prevUntutorial.Categories,
+          [event.target.value]: event.target.value,
+        };
+        return { ...prevUntutorial, Categories: updatedCategories };
       });
+      handleCategoryValidate();
     }
-  }
-  componentWillReceiveProps(props) {
-    if (this.state.untutorial.Author !== props.authUser.key) {
-      var pCopy = this.state.untutorial;
-      pCopy.Author = props.authUser.key;
-      this.setState({
-        untutorial: pCopy,
-        loading: false,
-      });
-    }
-  }
-  onChange = (event) => {
-    this.setState({ [event.target.name]: event.target.value });
   };
-  componentWillUnmount() {
-    this.props.firebase.untutorial().off();
-    window.removeEventListener("beforeunload", this.onUnload);
-  }
-  handlePTitleOnChange(value) {
-    var pCopy = this.state.untutorial;
-    if (value !== pCopy.Title) {
-      pCopy.Title = value;
-      this.setState({ untutorial: pCopy }, this.handlePTitleValidate);
+
+  const handleCategoryOnClick = (text) => {
+    setUntutorial((prevUntutorial) => {
+      const updatedCategories = { ...prevUntutorial.Categories };
+      delete updatedCategories[text];
+      return { ...prevUntutorial, Categories: updatedCategories };
+    });
+    handleCategoryValidate();
+  };
+
+  const handleCategoryValidate = () => {
+    setErrors((prevErrors) => {
+      const newErrors = { ...prevErrors };
+      if (Object.keys(untutorial.Categories).length < 1) {
+        newErrors["Categories"] = "At least 1 category required.";
+      } else {
+        delete newErrors["Categories"];
+      }
+      return newErrors;
+    });
+  };
+  const handlePDescriptionOnChange = (value) => {
+    setUntutorial((prevUntutorial) => ({
+      ...prevUntutorial,
+      Description: value,
+    }));
+  };
+  const handlePTitleOnSave = () => {};
+
+  const addStepHandler = () => {
+    setUntutorial((prevUntutorial) => ({
+      ...prevUntutorial,
+      steps: [
+        ...prevUntutorial.steps,
+        { Description: "", Title: "", DescriptionSp: "" },
+      ],
+    }));
+  };
+
+  const deleteStepHandler = (event, step) => {
+    const pCopy = { ...untutorial };
+    const newErrors = { ...errors };
+
+    // Delete the step and the corresponding error
+    delete pCopy.steps[step];
+    delete newErrors["Step" + Object.keys(pCopy.steps).length];
+
+    // Shift steps up
+    var newSteps = [];
+    var steps = Object.values(pCopy.steps);
+    steps.forEach((step, i) => {
+      newSteps[i] = step;
+    });
+    pCopy.steps = newSteps;
+
+    // Update the state
+    setUntutorial(pCopy);
+    setErrors(newErrors);
+
+    // Call validation function
+    handleStepCountValidate();
+
+    console.log("Delete Step");
+  };
+  const handleStepCountValidate = () => {
+    let newErrors = { ...errors }; // Create a shallow copy of errors
+
+    console.log(untutorial.steps.length);
+    if (untutorial.steps.length === 0) {
+      newErrors["Stepcount"] = "Steps are required.";
+    } else if (untutorial.steps.length < -3 /*disabled*/) {
+      newErrors["Stepcount"] = "Steps are too short.";
+    } else {
+      delete newErrors["Stepcount"];
     }
-  }
-  handlePTitleValidate() {
-    const { untutorial, errors } = this.state;
-    if (untutorial.Title.length === 0) {
-      errors["Title"] = "Title is required.";
-    } else delete errors["Title"];
-    this.setState({ errors: errors });
-  }
-  handlePTitleOnSave() {}
-  handleThumbnailUpload(event) {
+
+    setErrors(newErrors); // Update the errors state
+  };
+
+  // Update the untutorial state with the new steps array
+  // setUntutorial(
+  //   (prev) => ({
+  //     ...prev,
+  //     steps: updatedSteps,
+  //   }),
+  //   () => {
+  //     // Call handleStepValidate here if it's refactored to use hooks as well
+  //     handleStepValidate(updatedSteps[stepIndex], stepIndex);
+  //   }
+  // );
+
+  // handleThumbnailUpload converted to use React hooks
+  const handleThumbnailUpload = (event) => {
     var file = event.target.files[0];
     var ext = file.name.substring(file.name.lastIndexOf(".") + 1);
-    var pCopy = this.state.untutorial;
+    var pCopy = { ...untutorial }; // copying the state
     pCopy.ThumbnailFilename = uuidv4() + "." + ext;
 
-    var storageRef = this.props.firebase.storage.ref(
+    var storageRef = firebase.storage.ref(
       "/public/" + pCopy.Author + "/" + pCopy.ThumbnailFilename
     );
     var task = storageRef.put(file);
@@ -148,32 +232,43 @@ class NewProjectPageBase extends React.Component {
     task.on(
       "state_changed",
       (snapshot) => {
-        //update
+        // update
         var percentage =
           (100 * snapshot.bytesTransferred) / snapshot.totalBytes;
-        this.setState({ uploadPercent: percentage, uploading: true });
+        setUploadPercent(percentage);
+        setUploading(true);
       },
       (error) => {
-        //error
+        // error
         console.log(error);
-        this.setState({ uploadPercent: 0, uploading: false });
+        setUploadPercent(0);
+        setUploading(false);
       },
       () => {
-        //complete
-        this.setState(
-          { uploadPercent: 0, uploading: false, untutorial: pCopy },
-          this.handleThumbnailValidate
-        );
+        // complete
+        setUntutorial(pCopy);
+        setUploadPercent(0);
+        setUploading(false);
+        handleThumbnailValidate(); // Make sure this function is defined or imported
       }
     );
-  }
-  handleStepThumbnailUpload(event, step) {
+  };
+
+  const handleThumbnailValidate = () => {
+    // const { untutorial, errors } = this.state;
+    // if(untutorial.ThumbnailFilename.length === 0){
+    // 	errors["Thumbnail"] = 'THUMBNAIL.<span class="red">ISREQUIRED</span>';
+    // }
+    // else delete errors["Thumbnail"];
+    // this.setState({errors:errors});
+  };
+  const handleStepThumbnailUpload = (event, step) => {
     var file = event.target.files[0];
     var ext = file.name.substring(file.name.lastIndexOf(".") + 1);
-    var pCopy = this.state.untutorial;
+    var pCopy = { ...untutorial }; // creating a copy of the state to modify
     pCopy.steps[step].ThumbnailFilename = uuidv4() + "." + ext;
 
-    var storageRef = this.props.firebase.storage.ref(
+    var storageRef = firebase.storage.ref(
       "/public/" + pCopy.Author + "/" + pCopy.steps[step].ThumbnailFilename
     );
     var task = storageRef.put(file);
@@ -181,447 +276,282 @@ class NewProjectPageBase extends React.Component {
     task.on(
       "state_changed",
       (snapshot) => {
-        //update
+        // update
         var percentage =
           (100 * snapshot.bytesTransferred) / snapshot.totalBytes;
-        this.setState({ uploadPercent: percentage, uploading: true });
+        setUploadPercent(percentage); // updating state using hooks
+        setUploading(true); // updating state using hooks
       },
       (error) => {
-        //error
+        // error
         console.log(error);
-        this.setState({ uploadPercent: 0, uploading: false });
+        setUploadPercent(0); // updating state using hooks
+        setUploading(false); // updating state using hooks
       },
       () => {
-        //complete
-        this.setState({
-          uploadPercent: 0,
-          uploading: false,
-          untutorial: pCopy,
-        });
+        // complete
+        setUploadPercent(0); // updating state using hooks
+        setUploading(false); // updating state using hooks
+        setUntutorial(pCopy); // updating state using hooks
       }
     );
-  }
-  handleThumbnailValidate() {
-    const { untutorial, errors } = this.state;
-
-    // if(untutorial.ThumbnailFilename.length === 0){
-    // 	errors["Thumbnail"] = 'THUMBNAIL.<span class="red">ISREQUIRED</span>';
-    // }
-
-    // else delete errors["Thumbnail"];
-    // this.setState({errors:errors});
-  }
-  handlePDescriptionOnChange(value) {
-    var pCopy = this.state.untutorial;
-    if (value !== pCopy.Description) {
-      pCopy.Description = value;
-      this.setState({ untutorial: pCopy }, this.handlePDescriptionValidate);
-    }
-  }
-  handlePDescriptionValidate() {
-    const { untutorial, errors } = this.state;
-    const text = untutorial.Description.replace(/<(.|\n)*?>/g, "").trim();
-    if (text.length === 0) {
-      errors["Description"] = "Description is required";
-    } else delete errors["Description"];
-    this.setState({ errors: errors });
-  }
-  handlePDescriptionOnSave() {}
-  handleLevelOnChange(value) {
-    var pCopy = this.state.untutorial;
-    if (value !== pCopy.Level) {
-      pCopy.Level = value;
-      this.setState({ untutorial: pCopy });
-    }
-  }
-  handleLevelOnSave() {}
-  handleStepTitleOnChange(value, step) {
-    var pCopy = this.state.untutorial;
-    if (value !== pCopy.steps[step].Title) {
-      pCopy.steps[step].Title = value;
-      this.setState({ untutorial: pCopy }, () =>
-        this.handleStepValidate(pCopy.steps[step], step)
-      );
-    }
-  }
-  handleStepOnChange(value, step) {
-    var pCopy = this.state.untutorial;
-    const { lang } = this.state;
-    console.log(pCopy);
-    if (lang === "en") {
-      if (value !== pCopy.steps[step].Description) {
-        pCopy.steps[step].Description = value;
-      }
-    } else {
-      if (value !== pCopy.steps[step].DescriptionSp) {
-        pCopy.steps[step].DescriptionSp = value;
-      }
-    }
-    this.setState({ untutorial: pCopy }, () =>
-      this.handleStepValidate(pCopy.steps[step], step)
-    );
-  }
-  handleStepOnChangeSp(value, step) {
-    var pCopy = this.state.untutorial;
-    if (value !== pCopy.steps[step].DescriptionSp) {
-      pCopy.steps[step].DescriptionSp = value;
-      this.setState({ untutorial: pCopy }, () =>
-        this.handleStepValidate(pCopy.steps[step], step)
-      );
-    }
-  }
-  handleStepValidate(step, index) {
-    const { errors } = this.state;
-    if (step.Description.length === 0 || step.Description === "<p><br></p>") {
-      errors["Step" + index] = `Step ${parseInt(index) + 1} is Required`;
-    } else delete errors["Step" + index];
-
-    this.setState({ errors: errors });
-  }
-  handleStepOnSave() {}
-  deleteStepHandler(event, key) {
-    var pCopy = this.state.untutorial;
-    const { errors } = this.state;
-
-    delete pCopy.steps[key];
-    //shift steps up
-    var newSteps = [];
-    var steps = Object.values(pCopy.steps);
-    steps.forEach((step, i) => {
-      newSteps[i] = step;
-    });
-    pCopy.steps = newSteps;
-    delete errors["Step" + pCopy.steps.length];
-
-    this.setState({ untutorial: pCopy }, this.handleStepCountValidate);
-    console.log("Delete Step");
-  }
-  addStepHandler(event) {
-    var pCopy = this.state.untutorial;
-    var step = { Description: "", Title: "" };
-    var index = pCopy.steps.length;
-    console.log(index);
-    pCopy.steps.push(step);
-    this.setState({ untutorial: pCopy }, () => {
-      this.handleStepCountValidate();
-      this.handleStepValidate(step, index);
-    });
-  }
-  handleStepCountValidate() {
-    const { errors, untutorial } = this.state;
-    console.log(untutorial.steps.length);
-    if (untutorial.steps.length === 0) {
-      errors["Stepcount"] = "Steps are required.";
-    } else if (untutorial.steps.length < -3 /*disabled*/) {
-      errors["Stepcount"] = "Steps are too short.";
-    } else delete errors["Stepcount"];
-    this.setState({ errors: errors });
-  }
-  handlePCategoryOnChange(event) {
-    const { untutorial } = this.state;
-    if (event.target.value !== "-1") {
-      untutorial.Categories[event.target.value] = event.target.value;
-      this.setState({ untutorial: untutorial }, this.handleCategoryValidate);
-    }
-  }
-  handleCategoryOnClick(text) {
-    const { untutorial } = this.state;
-    delete untutorial.Categories[text];
-    this.setState({ untutorial: untutorial }, this.handleCategoryValidate);
-  }
-  handleCategoryValidate() {
-    const { untutorial, errors } = this.state;
-    if (Object.keys(untutorial.Categories).length < 1) {
-      errors["Categories"] = "At least 1 category required.";
-    } else delete errors["Categories"];
-    this.setState({ errors: errors });
-  }
-  saveChangesHandler(event) {
-    const { errors } = this.state;
+  };
+  const saveChangesHandler = (event) => {
     try {
       if (Object.keys(errors).length === 0) {
-        this.state.untutorialRef
-          .set({
-            ...this.state.untutorial,
-          })
+        untutorialRef
+          .set({ ...untutorial })
           .then(() => {
             console.log("Successfully Saved");
-            this.props.history.push(
-              ROUTES.LAUNCHPAD + "/" + this.state.untutorial.key
-            );
+            history.push(ROUTES.LAUNCHPAD + "/" + untutorial.key); // Using history from useHistory hook
           })
           .catch((error) => console.log(error));
       } else {
         throw new Error("Missing fields");
       }
     } catch (err) {
-      if (errors["Title"] == "") errors["Title"] = "Missing Title";
-      if (errors["Description"] == "")
-        errors["Description"] = "Missing Description";
-      if (errors["Step0"] == "") errors["Step0"] = "Step 1 is Required.";
-      if (errors["Categories"] == "") errors["Categories"] = "Missing Category";
-      console.log(errors);
-    } finally {
-      this.setState({ errors: errors });
+      // Create a copy of errors and update it
+      const updatedErrors = { ...errors };
+      if (updatedErrors["Title"] === "")
+        updatedErrors["Title"] = "Missing Title";
+      if (updatedErrors["Description"] === "")
+        updatedErrors["Description"] = "Missing Description";
+      if (updatedErrors["Step0"] === "")
+        updatedErrors["Step0"] = "Step 1 is Required.";
+      if (updatedErrors["Categories"] === "")
+        updatedErrors["Categories"] = "Missing Category";
+      console.log(updatedErrors);
+      setErrors(updatedErrors); // Update state with new errors
     }
-  }
+  };
+  if (loading) return <div className="loading">Loading...</div>;
 
-  render() {
-    const { untutorial, loading, errors, lang } = this.state;
-    const stepCount = Object.keys(untutorial.steps).length;
-    if (loading) return <div className="loading">Loading ...</div>;
-    return (
-      <section id="new-project">
-        <div className="main">
-          <div className="toolbar">
-            <button onClick={this.addStepHandler}>Add Step</button>
-            <button onClick={this.saveChangesHandler}>Save</button>
-          </div>
-          <div className="main-content">
-            {Object.keys(errors).map((error) => (
-              <p class="errors">{errors[error]}</p>
-            ))}
-            <div className="steps">
-              {Object.keys(untutorial.steps).map((step) => (
-                <div className="step">
-                  <div className={"step-title status"}>
-                    Step {parseInt(step) + 1}
-                    {!!untutorial.steps[step] &&
-                      !!untutorial.steps[step].Title.length && <>:&nbsp;</>}
-                    <TCSEditor
-                      disabled={false}
-                      type={"plain"}
-                      className={"editor header"}
-                      onEditorChange={(value) =>
-                        this.handleStepTitleOnChange(value, step)
-                      }
-                      onEditorSave={this.handleStepOnSave}
-                      placeholder={"Step Title"}
-                      buttonText={
-                        untutorial.steps[step].Title.length > 0 ? "Edit" : "+"
-                      }
-                      text={
-                        !!untutorial.steps[step].Title
-                          ? untutorial.steps[step].Title
-                          : ""
-                      }
-                    />
-                  </div>
-                  {Object.keys(untutorial.Categories).includes("ScratchJr") && (
-                    <div className="toggleLang">
-                      {
-                        <a onClick={() => this.setState({ lang: "en" })}>
-                          English
-                        </a>
-                      }
-                      {
-                        <a onClick={() => this.setState({ lang: "sp" })}>
-                          Spanish
-                        </a>
-                      }
-                    </div>
-                  )}
-                  <div className="step-content">
-                    <TCSEditor
-                      disabled={false}
-                      onEditorChange={(value) =>
-                        this.handleStepOnChange(value, step)
-                      }
-                      onEditorSave={this.handleStepOnSave}
-                      placeholder={"Step Description"}
-                      buttonText={
-                        untutorial.steps[step].Description.length > 0
-                          ? "Edit Description"
-                          : "Add Description"
-                      }
-                      text={
-                        lang === "sp"
-                          ? untutorial.steps[step].DescriptionSp
-                          : untutorial.steps[step].Description
-                      }
-                    />
-                  </div>
-                  {/* <div className="step-content">
-                    <TCSEditor
-                      disabled={false}
-                      onEditorChange={(value) =>
-                        this.handleStepOnChangeSp(value, step)
-                      }
-                      onEditorSave={this.handleStepOnSave}
-                      placeholder={"Step Description"}
-                      buttonText={
-                        untutorial.steps[step].Description.length > 0
-                          ? "Edit Description"
-                          : "Add Description"
-                      }
-                      text={untutorial.steps[step].DescriptionSp}
-                    />
-                  </div> */}
-                  {stepCount > 1 && (
-                    <button
-                      className="delete"
-                      onClick={(event) => this.deleteStepHandler(event, step)}
-                    >
-                      Delete
-                    </button>
-                  )}
-                  <div className="thumbnail">
-                    {this.state.uploading && (
-                      <progress value={this.state.uploadPercent} max="100" />
-                    )}
-                    <p
-                      className={
-                        !!untutorial.steps[step].ThumbnailFilename
-                          ? "change"
-                          : "add"
-                      }
-                    >
-                      {!!untutorial.steps[step].ThumbnailFilename
-                        ? "Update Screenshot"
-                        : "+ Add Screenshot"}
-                    </p>
-
-                    {!!untutorial.steps[step].ThumbnailFilename &&
-                      untutorial.steps[step].ThumbnailFilename !== "" &&
-                      !this.state.uploading && (
-                        <LazyImage
-                          file={this.props.firebase.storage.ref(
-                            "/public/" +
-                              untutorial.Author +
-                              "/" +
-                              untutorial.steps[step].ThumbnailFilename
-                          )}
-                        />
-                      )}
-                    <label
-                      for={"step" + step + "-thumbnail-upload"}
-                      className={
-                        !!untutorial.steps[step].ThumbnailFilename
-                          ? "replace"
-                          : "upload replace"
-                      }
-                    >
-                      <input
-                        id={"step" + step + "-thumbnail-upload"}
-                        type="file"
-                        onChange={(event) => {
-                          this.handleStepThumbnailUpload(event, step);
-                        }}
-                      />
-                    </label>
-                  </div>
+  return (
+    <section id="new-project">
+      <div className="main">
+        <div className="toolbar">
+          <button onClick={addStepHandler}>Add Step</button>
+          <button onClick={saveChangesHandler}>Save</button>
+        </div>
+        <div className="main-content">
+          {Object.keys(errors).map((error) => (
+            <p class="errors">{errors[error]}</p>
+          ))}
+          <div className="steps">
+            {Object.keys(untutorial.steps).map((step) => (
+              <div className="step">
+                <div className={"step-title status"}>
+                  Step {parseInt(step) + 1}
+                  {!!untutorial.steps[step] &&
+                    !!untutorial.steps[step].Title.length && <>:&nbsp;</>}
+                  <TCSEditor
+                    disabled={false}
+                    type={"plain"}
+                    className={"editor header"}
+                    onEditorChange={(text) =>
+                      handleStepTitleOnChange(text, step)
+                    }
+                    onEditorSave={handleStepOnSave}
+                    placeholder={"Step Title"}
+                    buttonText={
+                      untutorial.steps[step].Title.length > 0 ? "Edit" : "+"
+                    }
+                    text={
+                      !!untutorial.steps[step].Title
+                        ? untutorial.steps[step].Title
+                        : ""
+                    }
+                  />
                 </div>
-              ))}
-            </div>
-          </div>
-          <div className="sidebar">
-            <div className={"container"}>
-              <h4>
-                Title <span className="required">(Required)</span>
-              </h4>
-              <TCSEditor
-                disabled={false}
-                type="plain"
-                onEditorChange={this.handlePTitleOnChange}
-                onEditorSave={this.handlePTitleOnSave}
-                placeholder={"Untutorial Title"}
-                buttonText={untutorial.Title.length > 0 ? "Edit" : "Add"}
-                text={untutorial.Title}
-              />
-            </div>
-            <div className={"container"}>
-              <h4>
-                Description <span className="required">(Required)</span>
-              </h4>
-              <TCSEditor
-                disabled={false}
-                type="text"
-                onEditorChange={this.handlePDescriptionOnChange}
-                onEditorSave={this.handlePDescriptionOnSave}
-                placeholder={"Project Description"}
-                buttonText={untutorial.Description.length > 0 ? "Edit" : "Add"}
-                text={untutorial.Description}
-              />
-            </div>
-            <div className="container">
-              <h4>Level</h4>
-              <TCSEditor
-                disabled={false}
-                type="select"
-                selectOptions={[1, 2, 3, 4, 5, 6]}
-                onEditorChange={this.handleLevelOnChange}
-                onEditorSave={this.handleLevelOnSave}
-                text={untutorial.Level}
-              />
-            </div>
-            <div className="container tags">
-              <h4>
-                Categories{" "}
-                <span className="required">(At least 1 Required)</span>
-              </h4>
-              <div className="filter">
-                {Object.keys(untutorial.Categories).length !==
-                  Object.keys(FILTERS).length && (
-                  <select onChange={this.handlePCategoryOnChange}>
-                    <option value="-1">-------</option>
-                    {Object.keys(FILTERS)
-                      .filter(
-                        (f) => !Object.keys(untutorial.Categories).includes(f)
-                      )
-                      .map((catName) => (
-                        <option value={catName}>{FILTERS[catName]}</option>
-                      ))}
-                  </select>
+                {Object.keys(untutorial.Categories).includes("ScratchJr") && (
+                  <div className="toggleLang">
+                    {
+                      <a onClick={() => this.setState({ lang: "en" })}>
+                        English
+                      </a>
+                    }
+                    {
+                      <a onClick={() => this.setState({ lang: "sp" })}>
+                        Spanish
+                      </a>
+                    }
+                  </div>
                 )}
-              </div>
-              {Object.keys(untutorial.Categories).length > 0 && (
-                <div className="filter-categories">
-                  {Object.keys(untutorial.Categories).map((f) => (
-                    <a onClick={() => this.handleCategoryOnClick(f)}>
-                      {FILTERS[f]}
-                    </a>
-                  ))}
+                <div className="step-content">
+                  <TCSEditor
+                    disabled={false}
+                    onEditorChange={(value) => handleStepOnChange(value, step)}
+                    onEditorSave={handleStepOnSave}
+                    placeholder={"Step Description"}
+                    buttonText={
+                      untutorial.steps[step].Description.length > 0
+                        ? "Edit Description"
+                        : "Add Description"
+                    }
+                    text={
+                      lang === "sp"
+                        ? untutorial.steps[step].DescriptionSp
+                        : untutorial.steps[step].Description
+                    }
+                  />
                 </div>
+                {stepCount > 1 && (
+                  <button
+                    className="delete"
+                    onClick={(event) => deleteStepHandler(event, step)}
+                  >
+                    Delete
+                  </button>
+                )}
+                <div className="thumbnail">
+                  {uploading && <progress value={uploadPercent} max="100" />}
+                  <p
+                    className={
+                      !!untutorial.steps[step].ThumbnailFilename
+                        ? "change"
+                        : "add"
+                    }
+                  >
+                    {!!untutorial.steps[step].ThumbnailFilename
+                      ? "Update Screenshot"
+                      : "+ Add Screenshot"}
+                  </p>
+
+                  {!!untutorial.steps[step].ThumbnailFilename &&
+                    untutorial.steps[step].ThumbnailFilename !== "" &&
+                    !uploading && (
+                      <LazyImage
+                        file={firebase.storage.ref(
+                          "/public/" +
+                            untutorial.Author +
+                            "/" +
+                            untutorial.steps[step].ThumbnailFilename
+                        )}
+                      />
+                    )}
+                  <label
+                    htmlFor={"step" + step + "-thumbnail-upload"}
+                    className={
+                      !!untutorial.steps[step].ThumbnailFilename
+                        ? "replace"
+                        : "upload replace"
+                    }
+                  >
+                    <input
+                      id={"step" + step + "-thumbnail-upload"}
+                      type="file"
+                      onChange={(event) => {
+                        handleStepThumbnailUpload(event, step);
+                      }}
+                    />
+                  </label>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="sidebar">
+          <div className="container">
+            <h4>
+              Title <span className="required">(Required)</span>
+            </h4>
+            <TCSEditor
+              disabled={false}
+              type="plain"
+              onEditorChange={handlePTitleOnChange}
+              onEditorSave={handlePTitleOnSave}
+              placeholder={"Untutorial Title"}
+              buttonText={untutorial.Title.length > 0 ? "Edit" : "Add"}
+              text={untutorial.Title}
+            />
+          </div>
+          <div className="container">
+            <h4>
+              Description <span className="required">(Required)</span>
+            </h4>
+            <TCSEditor
+              disabled={false}
+              type="text"
+              onEditorChange={handlePDescriptionOnChange}
+              onEditorSave={handlePDescriptionOnSave}
+              placeholder={"Project Description"}
+              buttonText={untutorial.Description.length > 0 ? "Edit" : "Add"}
+              text={untutorial.Description}
+            />
+          </div>
+          <div className="container">
+            <h4>Level</h4>
+            <TCSEditor
+              disabled={false}
+              type="select"
+              selectOptions={[1, 2, 3, 4, 5, 6]}
+              onEditorChange={handleLevelOnChange}
+              onEditorSave={handleLevelOnSave}
+              text={untutorial.Level}
+            />
+          </div>
+          <div className="container tags">
+            <h4>
+              Categories <span className="required">(At least 1 Required)</span>
+            </h4>
+            <div className="filter">
+              {Object.keys(untutorial.Categories).length !==
+                Object.keys(FILTERS).length && (
+                <select onChange={handlePCategoryOnChange}>
+                  <option value="-1">-------</option>
+                  {Object.keys(FILTERS)
+                    .filter(
+                      (f) => !Object.keys(untutorial.Categories).includes(f)
+                    )
+                    .map((catName) => (
+                      <option value={catName}>{FILTERS[catName]}</option>
+                    ))}
+                </select>
               )}
             </div>
-            <div className="container">
-              <div className="thumbnail">
-                <h4>
-                  {untutorial.ThumbnailFilename && !this.state.uploading
-                    ? "+Replace"
-                    : "+ Add"}{" "}
-                  Image
-                </h4>
-                {this.state.uploading && (
-                  <progress value={this.state.uploadPercent} max="100" />
-                )}
-                {!!untutorial.ThumbnailFilename &&
-                  untutorial.ThumbnailFilename !== "" &&
-                  !this.state.uploading && (
-                    <LazyImage
-                      file={this.props.firebase.storage.ref(
-                        "/public/" +
-                          untutorial.Author +
-                          "/" +
-                          untutorial.ThumbnailFilename
-                      )}
-                    />
-                  )}
-                <label for="files" className="upload">
-                  <input
-                    id="files"
-                    type="file"
-                    onChange={this.handleThumbnailUpload}
-                  />
-                </label>
+            {Object.keys(untutorial.Categories).length > 0 && (
+              <div className="filter-categories">
+                {Object.keys(untutorial.Categories).map((f) => (
+                  <a onClick={() => handleCategoryOnClick(f)}>{FILTERS[f]}</a>
+                ))}
               </div>
+            )}
+          </div>
+          <div className="container">
+            <div className="thumbnail">
+              <h4>
+                {untutorial.ThumbnailFilename && !uploading
+                  ? "+Replace"
+                  : "+ Add"}{" "}
+                Image
+              </h4>
+              {uploading && <progress value={uploadPercent} max="100" />}
+              {!!untutorial.ThumbnailFilename &&
+                untutorial.ThumbnailFilename !== "" &&
+                !uploading && (
+                  <LazyImage
+                    file={firebase.storage.ref(
+                      "/public/" +
+                        untutorial.Author +
+                        "/" +
+                        untutorial.ThumbnailFilename
+                    )}
+                  />
+                )}
+              <label for="files" className="upload">
+                <input
+                  id="files"
+                  type="file"
+                  onChange={handleThumbnailUpload}
+                />
+              </label>
             </div>
           </div>
         </div>
-      </section>
-    );
-  }
-}
+      </div>
+    </section>
+  );
+};
 
 const NewProjectPage = withFirebase(withAuthentication(NewProjectPageBase));
 

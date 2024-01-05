@@ -1,0 +1,73 @@
+{/*  {stepCount > 1 && (
+               
+
+                
+         
+      <div className="sidebar">
+           
+         
+            <div className="container tags">
+              <h4>
+                Categories{" "}
+                <span className="required">(At least 1 Required)</span>
+              </h4>
+              <div className="filter">
+                {Object.keys(untutorial.Categories).length !==
+                  Object.keys(FILTERS).length && (
+                  <select onChange={handlePCategoryOnChange}>
+                    <option value="-1">-------</option>
+                    {Object.keys(FILTERS)
+                      .filter(
+                        (f) => !Object.keys(untutorial.Categories).includes(f)
+                      )
+                      .map((catName) => (
+                        <option value={catName}>{FILTERS[catName]}</option>
+                      ))}
+                  </select>
+                )}
+              </div>
+              {Object.keys(untutorial.Categories).length > 0 && (
+                <div className="filter-categories">
+                  {Object.keys(untutorial.Categories).map((f) => (
+                    <a onClick={() => handleCategoryOnClick(f)}>{FILTERS[f]}</a>
+                  ))}
+                </div>
+              )}
+            </div>
+            <div className="container">
+              <div className="thumbnail">
+                <h4>
+                  {untutorial.ThumbnailFilename && !this.state.uploading
+                    ? "+Replace"
+                    : "+ Add"}{" "}
+                  Image
+                </h4>
+                {this.state.uploading && (
+                  <progress value={uploadPercent} max="100" />
+                )}
+                {!!untutorial.ThumbnailFilename &&
+                  untutorial.ThumbnailFilename !== "" &&
+                  !this.state.uploading && (
+                    <LazyImage
+                      file={firebase.storage.ref(
+                        "/public/" +
+                          untutorial.Author +
+                          "/" +
+                          untutorial.ThumbnailFilename
+                      )}
+                    />
+                  )}
+                <label for="files" className="upload">
+                  <input
+                    id="files"
+                    type="file"
+                    onChange={handleThumbnailUpload}
+                  />
+                </label>
+              </div> 
+            </div>
+          </div>
+      </div>
+    </section>
+  );
+};

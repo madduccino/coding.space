@@ -1,161 +1,163 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import ReactQuill from "react-quill";
 import "./quill.snow.scss";
 import { htmlEditButton } from "quill-html-edit-button";
+
 ReactQuill.Quill.register("modules/htmlEditButton", htmlEditButton);
 
-class TCSEditor extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      text: props.text,
-      type: props.type,
-      selectOptions: props.selectOptions,
-      disabled: props.disabled,
-      placeholder: props.placeholder,
-      name: props.name,
-      editing: false,
-      buttonText: !!props.buttonText ? props.buttonText : "Edit",
+const TCSEditor = (props) => {
+  const [state, setState] = useState({
+    text: props.text,
+    type: props.type,
+    selectOptions: props.selectOptions,
+    disabled: props.disabled,
+    placeholder: props.placeholder,
+    name: props.name,
+    editing: false,
+    buttonText: props.buttonText ? props.buttonText : "Edit",
+    save: true,
+  });
 
-      save: true,
-    };
-    this.handleChange = this.handleChange.bind(this);
-    this.handleEdit = this.handleEdit.bind(this);
-    this.handleSave = this.handleSave.bind(this);
-    this.handleSelectChange = this.handleSelectChange.bind(this);
-    this.handleTextChange = this.handleTextChange.bind(this);
-  }
+  useEffect(() => {
+    setState((prevState) => ({ ...prevState, ...props }));
+  }, [props]);
 
-  handleChange = (value) => {
-    this.setState({ text: value });
-    this.props.onEditorChange(value);
+  const handleChange = (value) => {
+    setState((prevState) => ({ ...prevState, text: value }));
+    props.onEditorChange(value);
   };
-  handleSelectChange = (event) => {
-    this.setState({ text: event.target.value });
-    this.props.onEditorChange(event.target.value);
+
+  const handleSelectChange = (event) => {
+    const newValue = event.target.value;
+
+    setState((prevState) => ({ ...prevState, text: newValue }));
+    props.onEditorChange(event.target.value);
   };
-  handleTextChange = (event) => {
-    this.setState({ text: event.target.value });
-    this.props.onEditorChange(event.target.value);
+
+  const handleTextChange = (event) => {
+    const newValue = event.target.value;
+    setState((prevState) => ({ ...prevState, text: newValue }));
+    props.onEditorChange(event.target.value);
   };
-  componentWillReceiveProps(props) {
-    //if(this.state.text != props.text)
-    this.setState({ ...this.props, ...props });
-  }
-  handleEdit() {
-    const { editing } = this.state;
-    this.setState({ editing: !editing });
-  }
-  handleSave() {
-    const { editing, text } = this.state;
-    this.setState({ editing: !editing });
-    this.props.onEditorSave(text);
-  }
 
-  render() {
-    const { className } = this.props;
+  const handleEdit = () => {
+    setState((prevState) => ({ ...prevState, editing: !prevState.editing }));
+  };
 
-    const {
-      text,
-      type,
-      selectOptions,
-      disabled,
-      placeholder,
-      name,
-      editing,
-      save,
-      buttonText,
-    } = this.state;
+  const handleSave = () => {
+    const { editing, text } = state;
+    console.log("TEXT", text);
+    setState((prevState) => ({ ...prevState, editing: !editing }));
+    props.onEditorSave(text);
+  };
 
-    if (!!disabled) {
+  const {
+    text,
+    type,
+    selectOptions,
+    disabled,
+    placeholder,
+    name,
+    editing,
+    save,
+    buttonText,
+  } = state;
+
+  const { className, url } = props; // Extract className and url from props
+
+  if (!!disabled) {
+    return (
+      <div className={"field " + className}>
+        <div name={name} dangerouslySetInnerHTML={{ __html: text }} />
+      </div>
+    );
+  } else if (!disabled && !editing) {
+    if (url) {
+      // Changed this.props.url to url
       return (
         <div className={"field " + className}>
-          <div name={name} dangerouslySetInnerHTML={{ __html: text }} />
+          {text ? (
+            <a target="_blank" href={text}>
+              Go to Project
+            </a>
+          ) : (
+            <>
+              <h2>Link to Project</h2>
+            </>
+          )}
+          <button onClick={handleEdit}>{buttonText}</button>{" "}
+          {/* Changed this.handleEdit to handleEdit */}
         </div>
       );
-    } else if (!disabled && !editing) {
-      if (this.props.url) {
-        return (
-          <div className={"field " + className}>
-            {text ? (
-              <a target="_blank" href={text}>
-                Go to Project
-              </a>
-            ) : (
-              <>
-                <h2>Link to Project</h2>
-              </>
-            )}
-            <button onClick={this.handleEdit}>{buttonText}</button>
-          </div>
-        );
-      } else if (this.props.name === "description") {
-        return (
-          <div className={"field " + className}>
-            <div dangerouslySetInnerHTML={{ __html: text }} />
-            <button className="editor-button" onClick={this.handleEdit}>
-              {buttonText}
-            </button>
-          </div>
-        );
-      }
+    } else if (name === "description") {
+      // Changed this.props.name to name
       return (
         <div className={"field " + className}>
-          <div name={name} dangerouslySetInnerHTML={{ __html: text }} />
-          <button className="editor-button" onClick={this.handleEdit}>
+          <div dangerouslySetInnerHTML={{ __html: text }} />
+          <button className="editor-button" onClick={handleEdit}>
             {buttonText}
           </button>
-        </div>
-      );
-    } else if (!disabled && editing && type === "select" && !!selectOptions) {
-      return (
-        <div className={"field " + className}>
-          <select
-            value={text}
-            onChange={this.handleSelectChange}
-            onBlur={this.handleSelectChange}
-          >
-            {selectOptions.map((option) => (
-              <option value={option}>{option}</option>
-            ))}
-          </select>
-
-          {save && <button onClick={this.handleSave}>Save</button>}
-        </div>
-      );
-    } else if (!disabled && editing && type === "plain") {
-      return (
-        <div className={"field " + className}>
-          <input
-            type="text"
-            placeholder={this.props.placeholder}
-            value={text}
-            onChange={this.handleTextChange}
-            onBlur={this.handleTextChange}
-          />
-          {save && <button onClick={this.handleSave}>Save</button>}
         </div>
       );
     }
     return (
       <div className={"field " + className}>
-        <ReactQuill
-          modules={TCSEditor.modules}
-          theme={"snow"}
-          placeholder={this.props.placeholder}
-          value={this.state.text || ""}
-          onChange={this.handleChange}
-        />
+        <div name={name} dangerouslySetInnerHTML={{ __html: text }} />
+        <button className="editor-button" onClick={handleEdit}>
+          {buttonText}
+        </button>
+      </div>
+    );
+  } else if (!disabled && editing && type === "select" && !!selectOptions) {
+    return (
+      <div className={"field " + className}>
+        <select
+          value={text}
+          onChange={handleSelectChange}
+          onBlur={handleSelectChange}
+        >
+          {selectOptions.map((option, index) => (
+            <option key={index} value={option}>
+              {option}
+            </option> // Added key to each option for better React performance
+          ))}
+        </select>
 
-        {save && (
-          <button className="done" onClick={this.handleSave}>
-            Done
-          </button>
-        )}
+        {save && <button onClick={handleSave}>Save</button>}
+      </div>
+    );
+  } else if (!disabled && editing && type === "plain") {
+    return (
+      <div className={"field " + className}>
+        <input
+          type="text"
+          placeholder={placeholder} // Changed this.props.placeholder to placeholder
+          value={text}
+          onChange={handleTextChange}
+          onBlur={handleTextChange}
+        />
+        {save && <button onClick={handleSave}>Save</button>}
       </div>
     );
   }
-}
+  return (
+    <div className={"field " + className}>
+      <ReactQuill
+        modules={TCSEditor.modules}
+        theme={"snow"}
+        placeholder={placeholder} // Changed this.props.placeholder to placeholder
+        value={text || ""} // Changed this.state.text to text
+        onChange={handleChange} // Changed this.handleChange to handleChange
+      />
+
+      {save && (
+        <button className="done" onClick={handleSave}>
+          Done
+        </button>
+      )}
+    </div>
+  );
+};
 
 TCSEditor.modules = {
   // ...
