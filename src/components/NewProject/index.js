@@ -41,25 +41,36 @@ const NewProjectPageBase = ({ authUser, firebase, history }) => {
   });
   const stepCount = Object.keys(untutorial.steps).length;
 
+  // Assuming you have declared your state and other necessary hooks earlier in the component.
   useEffect(() => {
+    let isMounted = true; // Flag to handle asynchronous tasks
+
+    // Equivalent to componentDidMount logic
+    let pCopy = { ...untutorial }; // Create a copy of untutorial
+    console.log(pCopy);
+
     const onUnload = (e) => {
       e.preventDefault();
-      e.returnValue = "Data will be lost if you leave the page, are you sure?";
+      e.returnValue = "";
     };
 
     window.addEventListener("beforeunload", onUnload);
 
-    if (authUser) {
-      const pCopy = { ...untutorial, Author: authUser.key };
+    if (authUser && isMounted) {
+      pCopy.Author = authUser.key;
+
+      // Update state with the new copy of untutorial and the reference
       setUntutorial(pCopy);
+      setUntutorialRef(firebase.untutorial(pCopy.key));
       setLoading(false);
     }
 
+    // Cleanup function equivalent to componentWillUnmount in class component
     return () => {
-      firebase.untutorial().off();
       window.removeEventListener("beforeunload", onUnload);
+      isMounted = false; // Set the flag to false when the component is unmounted
     };
-  }, [authUser, firebase, untutorial.key]);
+  }, [authUser, firebase]); // Only re-run the effect if authUser or firebase changes
 
   const handleStepTitleOnChange = (value, step) => {
     var pCopy = { ...untutorial };
@@ -123,9 +134,14 @@ const NewProjectPageBase = ({ authUser, firebase, history }) => {
         };
         return { ...prevUntutorial, Categories: updatedCategories };
       });
-      handleCategoryValidate();
     }
   };
+
+  // This useEffect hook will watch for changes in untutorial.Categories
+  // and run validation whenever it changes.
+  useEffect(() => {
+    handleCategoryValidate();
+  }, [untutorial.Categories]); // Only re-run the effect if untutorial.Categories changes
 
   const handleCategoryOnClick = (text) => {
     setUntutorial((prevUntutorial) => {
@@ -137,15 +153,20 @@ const NewProjectPageBase = ({ authUser, firebase, history }) => {
   };
 
   const handleCategoryValidate = () => {
-    setErrors((prevErrors) => {
-      const newErrors = { ...prevErrors };
-      if (Object.keys(untutorial.Categories).length < 1) {
-        newErrors["Categories"] = "At least 1 category required.";
-      } else {
+    // Now this function is always called after the state has been updated.
+    const categoryCount = Object.keys(untutorial.Categories).length;
+    if (categoryCount < 1) {
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        Categories: "At least 1 category required.",
+      }));
+    } else {
+      setErrors((prevErrors) => {
+        const newErrors = { ...prevErrors };
         delete newErrors["Categories"];
-      }
-      return newErrors;
-    });
+        return newErrors;
+      });
+    }
   };
   const handlePDescriptionOnChange = (value) => {
     setUntutorial((prevUntutorial) => ({
@@ -297,33 +318,72 @@ const NewProjectPageBase = ({ authUser, firebase, history }) => {
     );
   };
   const saveChangesHandler = (event) => {
-    try {
-      if (Object.keys(errors).length === 0) {
+    event.preventDefault(); // Prevent default form submission behavior
+
+    // Perform validation based on the current state.
+    // This function could be called directly or triggered by a useEffect when certain states change.
+    const validateBeforeSave = () => {
+      let newErrors = {};
+      let isValid = true;
+
+      // Validate Title
+      if (!untutorial.Title || untutorial.Title.trim() === "") {
+        newErrors["Title"] = "Missing Title";
+        isValid = false;
+      }
+
+      // Validate Description
+      if (
+        !untutorial.Description ||
+        untutorial.Description.trim() === "<p><br></p>"
+      ) {
+        newErrors["Description"] = "Missing Description";
+        isValid = false;
+      }
+
+      // Validate Step0
+      if (
+        !untutorial.steps[0] ||
+        !untutorial.steps[0].Description ||
+        untutorial.steps[0].Description.trim() === "<p><br></p>"
+      ) {
+        newErrors["Step0"] = "Step 1 is Required";
+        isValid = false;
+      }
+
+      // Validate Categories
+      if (
+        !untutorial.Categories ||
+        Object.keys(untutorial.Categories).length === 0
+      ) {
+        newErrors["Categories"] = "At least 1 category required";
+        isValid = false;
+      }
+
+      setErrors(newErrors);
+      return isValid;
+    };
+
+    // Call the validation function.
+    if (validateBeforeSave()) {
+      // If everything is valid, proceed with saving
+      try {
         untutorialRef
           .set({ ...untutorial })
           .then(() => {
             console.log("Successfully Saved");
-            history.push(ROUTES.LAUNCHPAD + "/" + untutorial.key); // Using history from useHistory hook
+            history.push(ROUTES.LAUNCHPAD + "/" + untutorial.key);
           })
           .catch((error) => console.log(error));
-      } else {
-        throw new Error("Missing fields");
+      } catch (err) {
+        console.error("Error saving changes: ", err);
       }
-    } catch (err) {
-      // Create a copy of errors and update it
-      const updatedErrors = { ...errors };
-      if (updatedErrors["Title"] === "")
-        updatedErrors["Title"] = "Missing Title";
-      if (updatedErrors["Description"] === "")
-        updatedErrors["Description"] = "Missing Description";
-      if (updatedErrors["Step0"] === "")
-        updatedErrors["Step0"] = "Step 1 is Required.";
-      if (updatedErrors["Categories"] === "")
-        updatedErrors["Categories"] = "Missing Category";
-      console.log(updatedErrors);
-      setErrors(updatedErrors); // Update state with new errors
+    } else {
+      // Handle the case where validation fails
+      console.log("Validation failed. Errors: ", errors);
     }
   };
+
   if (loading) return <div className="loading">Loading...</div>;
 
   return (
