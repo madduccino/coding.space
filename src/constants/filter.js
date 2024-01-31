@@ -8,3 +8,4 @@ export const CHALLENGES = "Challenges";
 export const STUDENT = "Student";
 export const SCRATCHJR = "Scratch Jr.";
 export const CODE4CHANGE = "Code 4 Change";
+export const UNTUTORIALS = "Untutorials";

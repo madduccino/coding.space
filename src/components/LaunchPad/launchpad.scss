@@ -16,12 +16,32 @@ $lightgrey: rgb(219, 219, 219);
     background-color: $darkgreen;
     height: 100vh;
     height: 100%;
+    .main-content {
+      .buttons {
+        width: 100%;
+        display: flex;
+        margin: 0;
+        flex-flow: row wrap;
+        align-items: flex-start; /* Align items to the top */
+        justify-content: center; /* Center items horizontally, you can change this as needed */
+        align-content: flex-start;
+        button {
+          width: 45%;
+        }
+      }
+      .selected-button {
+        background-color: $orange; /* Example: blue background */
+        color: white;
+        /* Add other styling as needed */
+      }
+    }
   }
 }
 
 @media (max-width: 768px) {
   .main {
     grid-template-columns: 155px 1fr !important;
+
     .main-content {
       .items {
         // Assuming .items is a flex container; adjust as per your existing setup

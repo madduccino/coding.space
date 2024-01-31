@@ -8,3 +8,4 @@ export const MULTIPLAYER = "MULTIPLAYER";
 export const INTRO2 = "INTRO TO SCRATCH";
 export const INTRO1 = "INTRO TO CODING";
 export const PYTHON = "PYTHON";
+export const CHALLENGES = "CHALLENGES";

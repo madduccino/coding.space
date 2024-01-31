@@ -704,11 +704,11 @@ button {
     }
     .f {
       background-color: #eeefef;
-      &:after {
-        content: "x";
-        position: absolute;
-        right: 10px;
-      }
+      // &:after {
+      //   content: "x";
+      //   position: absolute;
+      //   right: 10px;
+      // }
     }
   }
   .main {
@@ -1643,11 +1643,6 @@ button {
       margin: 10px;
       display: inline;
       border-radius: 5px;
-      &:after {
-        content: "x";
-        font-weight: bold;
-        margin-left: 5px;
-      }
     }
   }
   .container {
