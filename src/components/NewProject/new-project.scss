@@ -1,5 +1,11 @@
 @import "../../index.scss";
 
+.main {
+  .main-content {
+    display: block;
+  }
+}
+
 .toggleLang {
   a {
     display: inline-block;

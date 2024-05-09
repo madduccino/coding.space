@@ -430,7 +430,7 @@ class UntutorialPageBase extends React.Component {
     if (isNaN(Level)) {
       errors["Level"] = 'LEVEL.<span className="red">ISINVALID</span>';
     }
-    if (![1, 2, 3, 4, 5, 6].includes(parseInt(Level))) {
+    if (![1, 2, 3, 4, 5, 6, 7].includes(parseInt(Level))) {
       errors["Level"] = 'LEVEL.<span className="red">ISOUTSIDERANGE</span>';
     } else {
       delete errors["Level"];
@@ -456,7 +456,7 @@ class UntutorialPageBase extends React.Component {
     if (isNaN(Priority)) {
       errors["Priority"] = 'PRIORITY.<span className="red">ISINVALID</span>';
     }
-    if (![1, 2, 3, 4, 5, 6].includes(parseInt(Priority))) {
+    if (![1, 2, 3, 4, 5, 6, 7].includes(parseInt(Priority))) {
       errors["Priority"] =
         'PRIORITY.<span className="red">ISOUTSIDERANGE</span>';
     } else {
@@ -1206,7 +1206,7 @@ class UntutorialPageBase extends React.Component {
                 }
                 type={"select"}
                 className="level"
-                selectOptions={["1", "2", "3", "4", "5", "6"]}
+                selectOptions={["1", "2", "3", "4", "5", "6", "7"]}
                 onEditorChange={this.handleLevelOnChange}
                 onEditorSave={this.handleLevelOnSave}
                 placeholder={"Level"}
@@ -1220,7 +1220,7 @@ class UntutorialPageBase extends React.Component {
                   disabled={false}
                   type={"select"}
                   className="priority"
-                  selectOptions={["1", "2", "3", "4", "5", "6"]}
+                  selectOptions={["1", "2", "3", "4", "5", "6", "7"]}
                   onEditorChange={this.handlePriorityOnChange}
                   onEditorSave={this.handlePriorityOnSave}
                   placeholder={"Priority"}

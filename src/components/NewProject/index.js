@@ -544,7 +544,7 @@ const NewProjectPageBase = ({ authUser, firebase, history }) => {
             <TCSEditor
               disabled={false}
               type="select"
-              selectOptions={[1, 2, 3, 4, 5, 6]}
+              selectOptions={[1, 2, 3, 4, 5, 6, 7]}
               onEditorChange={handleLevelOnChange}
               onEditorSave={handleLevelOnSave}
               text={untutorial.Level}
