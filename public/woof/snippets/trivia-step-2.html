@@ -1,0 +1,12 @@
+<head>
+  <script src="https://cdn.jsdelivr.net/gh/stevekrouse/WoofJS@85709456a5b1d8abd8c032cd3b39c5be2381d399/woof.js"></script>
+    <script>
+      setBackdropURL("./docs/images/beach.jpg")
+
+      var url = "https://opentdb.com/api.php?amount=1&type=multiple"
+
+      getData(url, data => {
+	  console.log(data)
+      })
+    </script>
+</head>

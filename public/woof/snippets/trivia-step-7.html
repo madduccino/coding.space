@@ -1,0 +1,45 @@
+<head>
+  <script src="https://cdn.jsdelivr.net/gh/stevekrouse/WoofJS@85709456a5b1d8abd8c032cd3b39c5be2381d399/woof.js"></script>
+    <script>
+      setBackdropURL("./docs/images/beach.jpg")
+
+      var url = "https://opentdb.com/api.php?amount=1&type=multiple"
+
+      var q = new Text()
+      q.text = '...'
+      q.size = 20
+
+      var answers = []
+
+      var letters = ['a','b','c','d']
+
+      range(0,4).forEach(i => {
+	  var a = new Text()
+	  a.text = letters[i] + ') ...'
+	  a.size = 20
+	  a.y = (-i-1) * 24
+	  if (i === 0) {
+	      a.onMouseDown(() => {
+		  a.color = 'green'
+	      })
+	  } else {
+	      a.onMouseDown(() => {
+		  a.color = 'red'
+	      })
+	  }
+	  answers.push(a)
+      })
+
+      getData(url, data => {
+	  console.log(data)
+	  q.text = data.results[0].question
+	  correct = 0
+	  answers[correct].text = letters[correct] + ') ' + data.results[0].correct_answer
+	  var i = 1
+	  data.results[0].incorrect_answers.forEach(wrongAnswer => {
+	      answers[i].text = letters[i] + ") " + wrongAnswer
+	      i++
+	  })
+      })
+    </script>
+</head>

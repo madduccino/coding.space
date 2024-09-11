@@ -1,0 +1,82 @@
+<head>
+  <script src="https://cdn.jsdelivr.net/gh/stevekrouse/WoofJS@85709456a5b1d8abd8c032cd3b39c5be2381d399/woof.js"></script>
+    <script>
+      setBackdropURL("./docs/images/beach.jpg")
+      setBackdropStyle("cover")
+
+      var url = "https://opentdb.com/api.php?amount=5&type=multiple"
+      
+      var q = new Text()
+      q.text = '...'
+      q.size = 20
+      
+      var stored_data
+      var stored_data_index = 0
+      var answers = []
+      var correct_position = random(0, 3)
+      
+      var letters = ['a', 'b', 'c', 'd']
+
+      range(0, 4).forEach(i => {
+	  var a = new Text()
+	  a.text = letters[i] + ') ...'
+	  a.size = 20
+	  a.y = (-i - 1) * 24
+	  a.isCorrect = false
+	  a.onMouseDown(() => {
+              if (a.isCorrect) {
+		  a.color = 'green'
+		  after(1, 'second', () => {
+		      new_question(stored_data_index)
+		      stored_data_index++
+		      if (stored_data_index == stored_data.results.length) {
+			  getData(url, data => {
+			      console.log(data)
+			      stored_data = data
+			      stored_data_index = 0
+			  })
+		      }
+		  })
+              } else {
+		  a.color = 'red'
+              }
+	  })
+	  answers.push(a)
+      })
+
+      getData(url, data => {
+	  console.log(data)
+	  stored_data = data
+	  new_question(stored_data_index)
+	  stored_data_index++
+      })
+
+      function new_question(ind) {
+	  q.text = processAmps(stored_data.results[ind].question)
+	  correct = random(0, 3)
+	  answers[correct].text = letters[correct] + ') ' + processAmps(stored_data.results[ind].correct_answer)
+	  answers[correct].color = 'black'
+	  answers[correct].isCorrect = true
+	  var i = 0
+	  stored_data.results[ind].incorrect_answers.forEach(wrongAnswer => {
+              if (i === correct) {
+		  i++
+              }
+              answers[i].text = letters[i] + ") " + processAmps(wrongAnswer)
+              answers[i].color = 'black'
+              answers[i].isCorrect = false
+              i++
+	  })
+      }
+
+      function processAmps(str) {
+	  str = str.replaceAll("&#039;", "'")
+	  str = str.replaceAll("&quot;", '"')
+	  str = str.replaceAll("&lt;", "<")
+	  str = str.replaceAll("&tt;", ">")
+	  str = str.replaceAll("&#176;", "°")
+	  str = str.replaceAll("&Uuml;", "Ü")
+	  return str
+      }
+      </script>
+</head>
