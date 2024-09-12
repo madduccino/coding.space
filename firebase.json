@@ -147,15 +147,20 @@
         "type": 301
       },
       {
+        "source": "/info",
+        "destination": "/info.html",
+        "type": 301
+      },
+      {
         "source": "/unplugged",
         "destination": "/unplugged.html",
         "type": 301
       },
       {
-      "source": "/yb",
-      "destination": "/yb.html",
-      "type": 301
-    },
+        "source": "/yb",
+        "destination": "/yb.html",
+        "type": 301
+      },
       {
         "source": "/socratic",
         "destination": "/socratic.html",
