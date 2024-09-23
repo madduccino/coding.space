@@ -1,0 +1,45 @@
+<link href="./projects.css" rel="stylesheet">
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<h1><a href="./index.html"><span class="glyphicon glyphicon-arrow-left"></span></a> Trivia through an API</h1>
+<style>
+    img {
+      width: 100%;
+    }
+</style>
+<div class="container">
+    <div class="block">
+      Let's make a trivia game that uses questions from an online resource. We'll be using the <a target="_blank" href="https://opentdb.com/api_config.php">Open Trivia Database</a> to generate questions, and use them in our project.
+      <br><a target="_blank" href="./code/trivia-code.html">Play this demo in full screen.</a>
+    </div>
+    <div class="block">
+      1) As a first step, have the API website generate an API URL, and save the URL as a variable in your project. You can change the settings on the website so the URL asks for different kinds of data. For now, have the settings ask for a single multiple choice question.
+    </div>
+    <div class="block">
+      2) We're going to use <code>getData</code> to get information from this URL. Once Woof has received the data, print it out in the console.
+      <br><a target="_blank" href="./snippets/trivia-step-2.html">Play this demo in full screen.</a>
+    </div>
+    <div class="block">
+      3) Explore the data in your console, which requires Inspecting the page. You'll probably need to expand out the data to see how it is organized. It will likely look something like:
+      <img src="./images/TriviaData.png">
+    </div>
+    <div class="block">
+      4) Make a text sprite that displays the question's text. You'll need to follow the data's organization from the console to properly display the question. You could also use this <a target="_blank" href="https://jsonpathfinder.com/">JSON Path Finder</a> to help refer to the data properly.
+      <br><a target="_blank" href="./snippets/trivia-step-4.html">Play this demo in full screen.</a>
+    </div>
+    <div class="block">
+      5) Display the choices for the multiple choice question. (Hint: The correct answer is stored in a separate field from the incorrect answers)
+      <br><a target="_blank" href="./snippets/trivia-step-5.html">Play this demo in full screen.</a>
+    </div>
+    <div class="block">
+      6) If the right answer is clicked, celebrate the correct choice!
+      <br><a target="_blank" href="./snippets/trivia-step-6.html">Play this demo in full screen.</a>
+    </div>
+    <div class="block">
+      7) If a wrong answer is clicked, indicate that it is wrong.
+      <br><a target="_blank" href="./snippets/trivia-step-7.html">Play this demo in full screen.</a>
+    </div>
+    <div class="block">
+      8) (Challenge) Include more than one question. You should modify the API URL to retrieve multiple questions at once, and may want to write a function that sets up the sprites for a question.
+      <br><a target="_blank" href="./code/trivia-code.html">Play this demo in full screen.</a>
+    </div>
+</div>
