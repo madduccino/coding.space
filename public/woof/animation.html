@@ -1,0 +1,32 @@
+<link href="./projects.css" rel="stylesheet">
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<h1><a href="./index.html"><span class="glyphicon glyphicon-arrow-left"></span></a>Animation</h1>
+<style>
+    img {
+      width: 100%;
+    }
+</style>
+<div class="container">
+    <div class="block">
+      We're going to explore how to give sprites multiple costumes and swap between them. For this project, we're just going to be making a simple animation, but there are lots of ways to use this pattern.
+      <br><a target="_blank" href="./code/animation-code.html">Play this demo in full screen.</a>
+    </div>
+    <div class="block">
+      1) Chose costumes for your sprite. If you are creating your own (or using costumes from a sprite sheet you like), it's best to have each costume be a similar size. Upload each costume as a separate sprite.
+      <br><a target="_blank" href="./snippets/animation-step-1.html">Play this demo in full screen.</a>
+    </div>
+    <div class="block">
+      2) Make a list that contains all the URLs for the costumes of your sprite.
+    </div>
+    <div class="block">
+      3) Make a variable that keeps track of which costume in the list you'd like to display. (Note that Woof is zero-indexed, which means that we use '0' to refer to the first item in a list).
+    </div>
+    <div class="block">
+      4) Every time you want to swap costumes, change your variable by 1 and then set your sprite's URL to the proper costume in the list. You'll need to make sure that the veriable gets set back to zero each time it gets to the end of the list of costumes.
+      <br><a target="_blank" href="./snippets/animation-step-4.html">Play this demo in full screen.</a>
+    </div>
+    <div class="block">
+      5) (Bonus) Add movement, and only advance the animation when the player is moving.
+      <br><a target="_blank" href="./code/animation-code.html">Play this demo in full screen.</a>
+    </div>
+</div>

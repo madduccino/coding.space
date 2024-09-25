@@ -1,0 +1,70 @@
+<head>
+  <script src="https://cdn.jsdelivr.net/gh/stevekrouse/WoofJS@85709456a5b1d8abd8c032cd3b39c5be2381d399/woof.js"></script>
+    <script>
+      setBackdropURL("../images/platformer-backdrop2.png")
+      setBackdropStyle("cover")
+      
+      var instructions = new Text()
+      instructions.y = 100
+      instructions.size = 30
+      instructions.color = 'black'
+      instructions.text = 'Use Left and Right to move'
+      
+      var sprite1 = new Image()
+      sprite1.y = -150
+      sprite1.url = "../images/runCycle1.png"
+      sprite1.costumes = ["../images/runCycle1.png",
+			  "../images/runCycle2.png",
+			  "../images/runCycle3.png",
+			  "../images/runCycle4.png",
+			  "../images/runCycle5.png",
+			  "../images/runCycle6.png"]
+      sprite1.costumeNum = 0
+      sprite1.setRotationStyle('ROTATE LEFT RIGHT')
+
+      function nextCostume(sprite) {
+	  sprite.costumeNum += 1
+	  if (sprite.costumeNum >= sprite.costumes.length) {
+	      sprite.costumeNum = 0
+	  }
+	  sprite.url = sprite.costumes[sprite.costumeNum]
+      }
+      
+      // this repeat makes Woof load all the costumes, which should
+      //   reduce the amount of flickering as it loads new costumes
+      repeat(sprite1.costumes.length, () => {
+	  nextCostume(sprite1)
+      })
+
+      // a simpler way to handle animation (but feels slightly less smooth)
+      // every(0.1, 'second', () => {
+      //   if (keysDown.includes('LEFT') || keysDown.includes('RIGHT')) {
+      //     nextCostume(sprite1)
+      //   }
+      // })
+
+      var cooldown = 0
+      
+      forever(() => {
+	  if (keysDown.includes('LEFT')) {
+	      sprite1.angle = LEFT
+	      sprite1.x -= 5
+	      if (cooldown === 0) {
+		  nextCostume(sprite1)
+		  cooldown = 3
+	      }
+	      cooldown--
+	  } else if (keysDown.includes('RIGHT')) {
+	      sprite1.angle = RIGHT
+	      sprite1.x += 5
+	      if (cooldown === 0) {
+		  nextCostume(sprite1)
+		  cooldown = 3
+	      }
+	      cooldown--
+	  } else {
+	      cooldown = 0
+	  }
+      })
+    </script>
+</head>
