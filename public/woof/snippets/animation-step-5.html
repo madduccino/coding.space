@@ -15,15 +15,12 @@
 			  "../images/runCycle5.png"]
       var sprite1CostumeNum = 0
 
-      var costumeNumDisplay = new Text()
-      costumeNumDisplay.size = 30
-      costumeNumDisplay.text = () => sprite1CostumeNum
-
-      every(1, 'second', () => {
+      every(0.1, 'second', () => {
 	  sprite1CostumeNum += 1
 	  if (sprite1CostumeNum >= sprite1Costumes.length) {
 	      sprite1CostumeNum = 0
 	  }
+	  sprite1.url = sprite1Costumes[sprite1CostumeNum]
       })
 
     </script>
