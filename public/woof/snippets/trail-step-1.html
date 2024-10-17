@@ -1,0 +1,93 @@
+<head>
+  <script src="https://cdn.jsdelivr.net/gh/stevekrouse/WoofJS@16e2f13972707e47e284b73667e2552f193aab39/woof.js"></script>
+  <script>
+    setBackdropURL("../images/rr-backdrop.jpg")
+
+    var player = new Image()
+    player.url = '../images/rr-rocket.png'
+    player.width = 100
+    player.height = 50
+    
+    var trail = []
+    
+    forever(() => {
+	if (keysDown.includes('SPACE') || keysDown.includes('UP') || keysDown.includes('W')) {
+	    // then move the player
+	    player.move(4)
+	    // and wrap around edges if needed
+	    if (player.x > maxX) { player.x = minX }
+	    if (player.x < minX) { player.x = maxX }
+	    if (player.y > maxY) { player.y = minY }
+	    if (player.y < minY) { player.y = maxY }
+	}
+	if (keysDown.includes('A') || keysDown.includes('LEFT')) {
+	    player.turnLeft(5)
+	}
+	if (keysDown.includes('D') || keysDown.includes('RIGHT')) {
+	    player.turnRight(5)
+	}
+    })
+    
+    var score = 0
+    var scoreboard = new Text()
+    scoreboard.size = 24
+    scoreboard.y = maxY - 18
+    scoreboard.color = 'white'
+    scoreboard.text = () => "Score: " + score
+    
+    // create stars to collect
+    var stars = []
+    every(3, 'second', () => {
+	var star = new Image()
+	star.url = '../images/rr-star.png'
+	star.width = 40
+	star.height = 40
+	star.x = randomX()
+	star.y = randomY()
+	// keep track of the sprite
+	stars.push(star)
+    })
+    
+    // make it so the player can collect stars
+    forever(() => {
+	stars.forEach(star => {
+	    if (player.touching(star)) {
+		score += 1
+		star.delete()
+		stars.remove(star)
+	    }
+	})
+    })
+    
+    // create planets
+    var planets = []
+    every(() => random(5,10), 'second', () => {
+	var planet = new Image()
+	planet.url = '../images/rr-planet.png'
+        planet.width = random(60,100)
+        planet.height = planet.width
+	planet.x = randomX()
+	planet.y = randomY()
+	// keep track of the planet
+	planets.push(planet)
+    })
+    
+    var gameOverText = new Text()
+    gameOverText.text = () => "Good game, you collected " + score + " stars"
+    gameOverText.size = 30
+    gameOverText.hide()
+    gameOverText.color = '#FF13F0'
+    
+    // if the rocket hits any planet, it ends the game
+    forever(() => {
+	planets.forEach(planet => {
+	    if (player.touching(planet)) {
+		freeze()
+		gameOverText.show()
+		scoreboard.hide()
+		gameOverText.sendToFront()
+	    }
+	})
+    })
+  </script>
+</head>
