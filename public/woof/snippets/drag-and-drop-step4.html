@@ -1,0 +1,28 @@
+<head>
+  <script src="https://cdn.jsdelivr.net/gh/stevekrouse/WoofJS@85709456a5b1d8abd8c032cd3b39c5be2381d399/woof.js"></script>
+    <script>
+      setBackdropURL("../images/grass.jpg")
+      setBackdropStyle("cover")
+      
+      var bb8 = new Image()
+      bb8.url = '../images/BB8.png'
+      bb8.width = 100
+      bb8.height = 120
+
+      // when you click on bb8...
+      bb8.onMouseDown(() => {
+	  // ...have bb8 follow the mouse until you release the mouse button
+	  repeatUntil(() => !mouseDown, () => {
+	      bb8.x = mouseX
+	      bb8.y = mouseY
+	  })
+      })
+	  
+      var bb8target = new Image()
+      bb8target.url = '../images/BB8.png'
+      bb8target.width = 100
+      bb8target.height = 120
+      bb8target.x = minX + 70
+      bb8target.y = maxY - 70
+    </script>
+</head>
