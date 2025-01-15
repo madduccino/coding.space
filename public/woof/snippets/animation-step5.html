@@ -1,0 +1,27 @@
+<head>
+  <script src="https://cdn.jsdelivr.net/gh/stevekrouse/WoofJS@85709456a5b1d8abd8c032cd3b39c5be2381d399/woof.js"></script>
+    <script>
+      setBackdropURL("../images/platformer-backdrop2.png")
+      setBackdropStyle("cover")
+
+      var sprite1 = new Image()
+      sprite1.y = -150
+      sprite1.url = "../images/runCycle1.png"
+      sprite1Costumes = ["../images/runCycle0.png",
+			  "../images/runCycle1.png",
+			  "../images/runCycle2.png",
+			  "../images/runCycle3.png",
+			  "../images/runCycle4.png",
+			  "../images/runCycle5.png"]
+      var sprite1CostumeNum = 0
+
+      every(0.1, 'second', () => {
+	  sprite1CostumeNum += 1
+	  if (sprite1CostumeNum >= sprite1Costumes.length) {
+	      sprite1CostumeNum = 0
+	  }
+	  sprite1.url = sprite1Costumes[sprite1CostumeNum]
+      })
+
+    </script>
+</head>

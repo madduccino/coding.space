@@ -1,0 +1,147 @@
+<head>
+  <script src="https://cdn.jsdelivr.net/gh/stevekrouse/WoofJS@85709456a5b1d8abd8c032cd3b39c5be2381d399/woof.js"></script>
+    <script>
+      setBackdropURL("../images/grass.jpg")
+      setBackdropStyle("cover")
+      
+      // a function that will make the parameter sprite draggable
+      function draggable(sprite) {
+	  if (true) { // this is the prefered solution
+	      // when we click on the sprite
+	      sprite.onMouseDown(() => {
+		  // compute its offset
+		  var offsetX = sprite.x - mouseX
+		  var offsetY = sprite.y - mouseY
+		  // until we release the mouse...
+		  repeatUntil(() => !mouseDown, () => {
+		      // ...make the sprite follow the mouse
+		      sprite.x = mouseX + offsetX
+		      sprite.y = mouseY + offsetY
+		  })
+	      })
+	  } else if (false) { // other way to do it - boolean keeping track of state
+	      // make a variable keeping track of if this sprite is being dragged
+	      //   (Pelle would prefer this to make this a property of the sprite,
+	      //    but having it be a variable is probably easier)
+	      var isBeingDragged = false
+	      forever(() => {
+		  // keep track of if we currently want to be dragging this
+		  if (mouseDown && sprite.mouseOver) {
+		      isBeingDragged = true
+		  } else if (isBeingDragged && !mouseDown) {
+		      isBeingDragged = false
+		  }
+		  
+		  // if we're currently dragging this, move it to the mouse
+		  if (isBeingDragged) {
+		      sprite.x = mouseX
+		      sprite.y = mouseY
+		  }
+	      })
+          } else if (false) { // boolean strategy but with offset
+	      // make a variable keeping track of if this sprite is being dragged
+	      //   (Pelle would prefer this to make this a property of the sprite,
+	      //    but having it be a variable is probably easier)
+	      var isBeingDragged = false
+	      var offsetX, offsetY
+	      forever(() => {
+		  // keep track of if we currently want to be dragging this
+		  if (mouseDown && sprite.mouseOver) {
+		      if (isBeingDragged === false) {
+			  offsetX = sprite.x - mouseX
+			  offsetY = sprite.y - mouseY
+		      }
+		      isBeingDragged = true
+		  } else if (isBeingDragged && !mouseDown) {
+		      isBeingDragged = false
+		  }
+      
+		  // if we're currently dragging this, move it to the mouse
+		  if (isBeingDragged) {
+		      sprite.x = mouseX + offsetX
+		      sprite.y = mouseY + offsetY
+		  }
+	      })
+	  }
+      } // draggable
+      
+      var bb8 = new Image()
+      bb8.url = '../images/BB8.png'
+      bb8.width = 100
+      bb8.height = 120
+      bb8.x = randomX()
+      bb8.y = randomY()
+      
+      draggable(bb8)
+      
+      var bb8target = new Image()
+      bb8target.url = '../images/BB8.png'
+      bb8target.width = 100
+      bb8target.height = 120
+      bb8target.x = minX + 70
+      bb8target.y = maxY - 70
+      
+      var unicorn = new Image()
+      unicorn.url = "../images/unicorn.png"
+      unicorn.width = 120
+      unicorn.height = 80
+      unicorn.x = randomX()
+      unicorn.y = randomY()
+      
+      draggable(unicorn)
+      
+      var unicornTarget = new Image()
+      unicornTarget.url = "../images/unicorn.png"
+      unicornTarget.width = 120
+      unicornTarget.height = 80
+      unicornTarget.x = maxX - 70
+      unicornTarget.y = maxY - 50
+      
+      
+      var mario = new Image()
+      mario.url = "../images/mario.png"
+      mario.width = 100
+      mario.height = 150
+      mario.x = randomX()
+      mario.y = randomY()
+      
+      draggable(mario)
+      
+      var marioTarget = new Image()
+      marioTarget.url = "../images/mario.png"
+      marioTarget.width = 100
+      marioTarget.height = 150
+      marioTarget.x = minX + 60
+      marioTarget.y = minY + 80
+      
+      var cupcake = new Image()
+      cupcake.url = "../images/cupcake.png"
+      cupcake.width = 130
+      cupcake.height = 130
+      cupcake.x = randomX()
+      cupcake.y = randomY()
+      
+      draggable(cupcake)
+      
+      var cupcakeTarget = new Image()
+      cupcakeTarget.url = "../images/cupcake.png"
+      cupcakeTarget.width = 130
+      cupcakeTarget.height = 130
+      cupcakeTarget.x = maxX - 80
+      cupcakeTarget.y = minY + 80
+      
+      var winText = new Text()
+      winText.text = 'They all match!'
+      winText.size = 70
+      winText.color = 'black'
+      
+      // if all sprites are touching their targets, show a win message
+      forever(() => {
+	  if (bb8.touching(bb8target) && mario.touching(marioTarget) && unicorn.touching(unicornTarget) && cupcake.touching(cupcakeTarget)) {
+	      winText.show()
+	  } else {
+	      winText.hide()
+	  }
+      })
+    </script>
+</head>

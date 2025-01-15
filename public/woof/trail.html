@@ -1,0 +1,33 @@
+<link href="./projects.css" rel="stylesheet">
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<h1><a href="./index.html"><span class="glyphicon glyphicon-arrow-left"></span></a> Adding Trails to Sprites</h1>
+<style>
+    img {
+      width: 100%;
+    }
+</style>
+<div class="container">
+    <div class="block">
+      In this project we're going to be adding to Rocket Race so the player leaves a trail behind them. If you haven't already finished Rocket Race you should do that first!
+      <br><a target="_blank" href="./code/trail-code.html">Play this demo in full screen.</a>
+    </div>
+    <div class="block">
+      1) Create a list to keep track of the trail.
+      <br><a target="_blank" href="./snippets/trail-step1.html">Play this demo in full screen.</a>
+    </div>
+    <div class="block">
+      2) Each time the player moves, create a new sprite that has all the same properties as the player's sprite. Add this new sprite to your list. Use <code>sendToFront</code> on the player's sprite so it doesn't get hidden behind the trail.
+      <br><a target="_blank" href="./snippets/trail-step2.html">Play this demo in full screen.</a>
+    </div>
+    <div class="block">
+      3) Sprites in the trail should fade over time. In Woof, we use the <code>brightness</code> attribute, though other envioronments may call this transparency, opacity, alpha, or ghost.
+      <br><a target="_blank" href="./snippets/trail-step3.html">Play this demo in full screen.</a>
+    </div>
+    <div class="block">
+      4) When a sprite in the trail is no longer visible, delete it and remove it from the list. (If you don't do this, the game may slow down over time)
+    </div>
+    <div class="block">
+      5) (Bonus) Try adding other effects to the trail. You could make the sprites shrink over time, and if you aren't using an image sprite you can randomize the colors to make it a rainbow trail!
+      <br><a target="_blank" href="./code/trail-code.html">Play this demo in full screen.</a>
+    </div>
+</div>

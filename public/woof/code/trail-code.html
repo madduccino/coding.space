@@ -1,0 +1,136 @@
+<head>
+  <script src="https://cdn.jsdelivr.net/gh/stevekrouse/WoofJS@16e2f13972707e47e284b73667e2552f193aab39/woof.js"></script>
+  <script>
+    setBackdropURL("../images/rr-backdrop.jpg")
+
+    // create a triangle for the player to control
+    var player = new Polygon()
+    player.length = 30
+    player.sides = 3
+    player.color = 'red'
+    
+    // create a list to keep track of the trail
+    var trail = []
+    
+    forever(() => {
+	// if we're moving
+	if (keysDown.includes('SPACE') || keysDown.includes('UP') || keysDown.includes('W')) {
+	    // create a copy of the player with a random color
+	    var trailSprite = new Polygon(player)
+	    trailSprite.color = randomColor()
+	    // keep track of the trail sprites
+	    trail.push(trailSprite)
+	    // make sure the player always stays visible
+	    player.sendToFront()
+	    
+	    // then move the player
+	    player.move(4)
+	    // and wrap around edges if needed
+	    if (player.x > maxX) { player.x = minX }
+	    if (player.x < minX) { player.x = maxX }
+	    if (player.y > maxY) { player.y = minY }
+	    if (player.y < minY) { player.y = maxY }
+	}
+	if (keysDown.includes('A') || keysDown.includes('LEFT')) {
+	    player.turnLeft(5)
+	}
+	if (keysDown.includes('D') || keysDown.includes('RIGHT')) {
+	    player.turnRight(5)
+	}
+    })
+
+    forever(() => {
+	// for each sprite in the trail
+	trail.forEach(t => {
+	    // randomize the color
+	    t.color = randomColor()
+	    // make it fade out and shrink
+	    t.brightness -= 2
+	    t.length -= 0.2
+	    // if the trail is no longer visible, delete this portion of the trail
+	    if (t.brightness <= 0 || t.length <= 0) {
+		t.delete()
+		trail.remove(t)
+	    }
+	})
+    })
+    
+    // create a scoreboard
+    var score = 0
+    var scoreboard = new Text()
+    scoreboard.size = 24
+    scoreboard.y = maxY - 18
+    scoreboard.color = 'white'
+    scoreboard.text = () => "Score: " + score
+    
+    // create stars to collect
+    var stars = []
+    every(3, 'second', () => {
+	var star = new Image()
+	star.url = '../images/rr-star.png'
+	star.width = 40
+	star.height = 40
+	star.x = randomX()
+	star.y = randomY()
+	// keep track of the star
+	stars.push(star)
+    })
+    
+    // make the rocket able to collect stars
+    forever(() => {
+	stars.forEach(star => {
+	    if (player.touching(star)) {
+		score += 1
+		star.delete()
+		stars.remove(star)
+	    }
+	})
+    })
+
+    var planets = []
+    every(() => random(5,10), 'second', () => {
+	// make a planet as a circle for its hitbox
+	var planet = new Circle()
+	planet.radius = random(30,50)
+	planet.x = randomX()
+	planet.y = randomY()
+	
+	// don't let it spawn on top of the player
+	while (planet.touching(player)) {
+	    planet.x = randomX()
+	    planet.y = randomY()
+	}
+	
+	// to make it pretty, we're going to put the planet sprite on 
+	//   top of the hitbox and store it as an attribute of the planet. 
+	//   We would need to call planet.sprite.delete() in addition to
+	//   planet.delete() if we needed to get rid of them. 
+	planet.sprite = new Image()
+	planet.sprite.x = planet.x
+	planet.sprite.y = planet.y
+	planet.sprite.url = '../images/rr-planet.png'
+	planet.sprite.width = planet.sprite.height = planet.radius * 2.2
+	// keep track of the planet
+	planets.push(planet)
+    })
+    
+    var gameOverText = new Text()
+    gameOverText.text = () => "Good game, you collected " + score + " stars"
+    gameOverText.size = 30
+    gameOverText.hide()
+    gameOverText.color = '#FF13F0'
+    
+    // if the rocket hits any planet, it ends the game
+    forever(() => {
+	planets.forEach(planet => {
+	    if (player.touching(planet)) {
+		freeze()
+		player.color = 'black'
+		gameOverText.show()
+		scoreboard.hide()
+		gameOverText.sendToFront()
+	    }
+	})
+    })
+  </script>
+</head>
