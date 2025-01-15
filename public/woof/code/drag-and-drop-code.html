@@ -6,19 +6,64 @@
       
       // a function that will make the parameter sprite draggable
       function draggable(sprite) {
-	  // when we click on the sprite
-	  sprite.onMouseDown(() => {
-	      // compute its offset
-	      var offsetX = sprite.x - mouseX
-	      var offsetY = sprite.y - mouseY
-	      // until we release the mouse...
-	      repeatUntil(() => !mouseDown, () => {
-		  // ...make the sprite follow the mouse
-		  sprite.x = mouseX + offsetX
-		  sprite.y = mouseY + offsetY
+	  if (true) { // this is the prefered solution
+	      // when we click on the sprite
+	      sprite.onMouseDown(() => {
+		  // compute its offset
+		  var offsetX = sprite.x - mouseX
+		  var offsetY = sprite.y - mouseY
+		  // until we release the mouse...
+		  repeatUntil(() => !mouseDown, () => {
+		      // ...make the sprite follow the mouse
+		      sprite.x = mouseX + offsetX
+		      sprite.y = mouseY + offsetY
+		  })
 	      })
-	  })
-      }
+	  } else if (false) { // other way to do it - boolean keeping track of state
+	      // make a variable keeping track of if this sprite is being dragged
+	      //   (Pelle would prefer this to make this a property of the sprite,
+	      //    but having it be a variable is probably easier)
+	      var isBeingDragged = false
+	      forever(() => {
+		  // keep track of if we currently want to be dragging this
+		  if (mouseDown && sprite.mouseOver) {
+		      isBeingDragged = true
+		  } else if (isBeingDragged && !mouseDown) {
+		      isBeingDragged = false
+		  }
+		  
+		  // if we're currently dragging this, move it to the mouse
+		  if (isBeingDragged) {
+		      sprite.x = mouseX
+		      sprite.y = mouseY
+		  }
+	      })
+          } else if (false) { // boolean strategy but with offset
+	      // make a variable keeping track of if this sprite is being dragged
+	      //   (Pelle would prefer this to make this a property of the sprite,
+	      //    but having it be a variable is probably easier)
+	      var isBeingDragged = false
+	      var offsetX, offsetY
+	      forever(() => {
+		  // keep track of if we currently want to be dragging this
+		  if (mouseDown && sprite.mouseOver) {
+		      if (isBeingDragged === false) {
+			  offsetX = sprite.x - mouseX
+			  offsetY = sprite.y - mouseY
+		      }
+		      isBeingDragged = true
+		  } else if (isBeingDragged && !mouseDown) {
+		      isBeingDragged = false
+		  }
+      
+		  // if we're currently dragging this, move it to the mouse
+		  if (isBeingDragged) {
+		      sprite.x = mouseX + offsetX
+		      sprite.y = mouseY + offsetY
+		  }
+	      })
+	  }
+      } // draggable
       
       var bb8 = new Image()
       bb8.url = '../images/BB8.png'
