@@ -456,7 +456,11 @@ class UntutorialPageBase extends React.Component {
     if (isNaN(Priority)) {
       errors["Priority"] = 'PRIORITY.<span className="red">ISINVALID</span>';
     }
-    if (![1, 2, 3, 4, 5, 6, 7].includes(parseInt(Priority))) {
+    if (
+      ![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15].includes(
+        parseInt(Priority)
+      )
+    ) {
       errors["Priority"] =
         'PRIORITY.<span className="red">ISOUTSIDERANGE</span>';
     } else {
@@ -1220,7 +1224,23 @@ class UntutorialPageBase extends React.Component {
                   disabled={false}
                   type={"select"}
                   className="priority"
-                  selectOptions={["1", "2", "3", "4", "5", "6", "7"]}
+                  selectOptions={[
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    "5",
+                    "6",
+                    "7",
+                    "8",
+                    "9",
+                    "10",
+                    "11",
+                    "12",
+                    "13",
+                    "14",
+                    "15",
+                  ]}
                   onEditorChange={this.handlePriorityOnChange}
                   onEditorSave={this.handlePriorityOnSave}
                   placeholder={"Priority"}
