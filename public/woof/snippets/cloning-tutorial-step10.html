@@ -5,7 +5,7 @@
 
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width">
-  <title>Clone Game Step 10</title>
+  <title>Clone Game Step 5</title>
 </head>
 <body>
 
@@ -13,29 +13,28 @@
 setBackdropColor("black");
 
 var score = 0;
-var scoreBoard = new Text({
-  text: () => "Score: " + score,
-  color: "white",
-  size: 20,
-  x: maxX - 50,
-  y: maxY - 20
-});
+var scoreBoard = new Text()
+scoreBoard.text = () => "Score: " + score
+scoreBoard.color = "white"
+scoreBoard.size = 20
+scoreBoard.x = maxX - 50
+scoreBoard.y = maxY - 20
 
 var ghosts = []
 
 every(0.3, "second", () => {
-  var ghost = new Circle({
-    color: "white",
-    radius: 20,
-    x: minX,
-    y: randomY()
-  })
+  var ghost = new Circle()
+  ghost.color = "white"
+  ghost.radius = 20
+  ghost.x = minX
+  ghost.y = randomY()
+
   ghosts.push(ghost)
 })
 
 forever(() => {
   ghosts.forEach(ghost => {
-    ghost.move(4)
+    ghost.move(10)
     if (ghost.x > maxX) {
       ghost.delete()
       ghosts.remove(ghost)
@@ -43,10 +42,13 @@ forever(() => {
     if (ghost.mouseOver) {
       ghost.delete()
       ghosts.remove(ghost)
-      score++
     }
   })
 })
+  
+var display = new Text()
+display.color = "white"
+display.text = () => ghosts
 
 </script>
 </body>

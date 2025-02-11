@@ -35,13 +35,18 @@ every(0.3, "second", () => {
 forever(() => {
   ghosts.forEach(ghost => {
     ghost.move(10)
+    if (ghost.x > maxX) {
+      ghost.delete()
+      ghosts.remove(ghost)
+    }
+    if (ghost.mouseOver) {
+      ghost.delete()
+      ghosts.remove(ghost)
+      score += 1
+    }
   })
 })
   
-var display = new Text()
-display.color = "white"
-display.text = () => ghosts
-
 </script>
 </body>
 </html>
