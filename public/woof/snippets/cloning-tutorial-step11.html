@@ -42,14 +42,11 @@ forever(() => {
     if (ghost.mouseOver) {
       ghost.delete()
       ghosts.remove(ghost)
+      score += 1
     }
   })
 })
   
-var display = new Text()
-display.color = "green"
-display.text = () => ghosts
-
 </script>
 </body>
 </html>
