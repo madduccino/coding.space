@@ -476,7 +476,7 @@ button {
 #signup,
 #signIn,
 #forget {
-  background: url("/images/bg.png") no-repeat;
+  background: url("images/bg.png") no-repeat;
   background-size: cover;
   background-position: 10% 50%;
   #rocket {
@@ -1569,7 +1569,7 @@ button {
 #forget,
 #signup,
 #signIn {
-  background: url("/images/bg2.png") no-repeat;
+  background: url("images/bg2.png") no-repeat;
   background-size: cover;
   background-position: 10% 20%;
   #rocket {
@@ -1601,7 +1601,7 @@ button {
   }
 }
 #rocket {
-  background: url("/images/roket.png") no-repeat;
+  background: url("images/roket.png") no-repeat;
   position: absolute;
   z-index: 99;
   width: 100px;
