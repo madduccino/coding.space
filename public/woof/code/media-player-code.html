@@ -1,0 +1,199 @@
+<head>
+  <script src="https://cdn.jsdelivr.net/gh/stevekrouse/WoofJS@85709456a5b1d8abd8c032cd3b39c5be2381d399/woof.js"></script>
+    <script>
+setBackdropURL("../images/starwars.jpg")
+setBackdropStyle("cover")
+
+var mySound = new Sound()
+mySound.url = "../audio/star-wars.mp3"
+mySound.loop = false
+mySound.speed = "normal"
+mySound.volume = 0.02
+
+//mySound.startPlaying()
+
+var playPauseToggle = new Rectangle()
+playPauseToggle.width = 45
+playPauseToggle.height = 55
+playPauseToggle.color = "black"
+playPauseToggle.x = 7
+playPauseToggle.brightness = 0
+
+var playButton = new Polygon()
+playButton.sides = 3 
+playButton.length = 30
+playButton.color = "#57e57b"
+playButton.x = 0
+
+var pause1 = new Rectangle()
+pause1.height = 40
+pause1.width = 10
+pause1.color = 'yellow'
+pause1.x = -5.5
+
+var pause2 = new Rectangle()
+pause2.height = 40
+pause2.width = 10
+pause2.color = 'yellow'
+pause2.x = 9.5
+pause1.hide()
+pause2.hide()
+      
+var stopButton = new Rectangle()
+stopButton.width = 35
+stopButton.height = 35
+stopButton.color = "red"
+stopButton.x = -55
+
+playPauseToggle.onMouseDown(() => {
+  if (mySound.isPlaying) {
+    mySound.pausePlaying()
+    pause1.hide()
+    pause2.hide()
+    playButton.show() 
+  } else {
+    mySound.startPlaying()
+    playButton.hide()
+    pause1.show()
+    pause2.show()
+  }
+})
+
+stopButton.onMouseDown(() => {
+  mySound.stopPlaying()
+  pause1.hide()
+  pause2.hide()
+  playButton.show()
+})
+
+var volumeBackground = new Line()
+volumeBackground.x = minX + 25
+volumeBackground.x1 = minX + 25
+volumeBackground.y = 0
+volumeBackground.y1 = 200
+volumeBackground.width = 25
+volumeBackground.color = "black"
+
+var volumeForeground = new Line()
+volumeForeground.x = minX + 25
+volumeForeground.x1 = minX + 25
+volumeForeground.y = 0
+volumeForeground.y1 = 20
+volumeForeground.width = 25
+volumeForeground.color = "white"
+
+forever(() => {
+  volumeBackground.x = minX + 25
+  volumeBackground.x1 = minX + 25
+  volumeForeground.x = minX + 25
+  volumeForeground.x1 = minX + 25
+})
+
+volumeBackground.onMouseDown(() => {
+  repeatUntil(() => !mouseDown, () => {
+    /* this if statement could be part of the repeatUntil,
+       but this makes it feel better to me. */
+    if (volumeBackground.mouseOver) {
+      volumeForeground.y1 = mouseY
+      mySound.volume = mouseY/200
+    }
+  })
+})
+
+var volumeText = new Text()
+volumeText.x = volumeBackground.x + 50
+volumeText.y = (volumeBackground.y+volumeBackground.y1)/2
+volumeText.text = () => "Volume: " + Math.round(mySound.volume*100)
+      
+var timeBackground = new Line()
+timeBackground.x = minX
+timeBackground.x1 = maxX
+timeBackground.y = -50
+timeBackground.y1 = -50
+timeBackground.width = 20
+timeBackground.color = "black"
+
+var timeForeground = new Line()
+timeForeground.y = -50
+timeForeground.x = minX
+timeForeground.y1 = -50
+timeForeground.width = 20
+timeForeground.color = "white"
+
+forever(() => {
+  timeBackground.x = minX
+  timeBackground.x1 = maxX
+  timeForeground.x = minX
+  timeForeground.x1 = minX + width * mySound.currentTime/mySound.duration
+})
+
+var playingHolder = false
+
+timeBackground.onMouseDown(() => {
+  playingHolder = mySound.isPlaying
+  mySound.pausePlaying()
+  repeatUntil(() => !mouseDown, () => {
+    /* this if statement could be part of the repeatUntil,
+       but this makes it feel better to me. */
+    if (timeBackground.mouseOver) {
+      mySound.currentTime = (mouseX - minX) * (mySound.duration / width)
+    }
+  }, () => {
+    if (playingHolder) {
+      mySound.startPlaying()
+    }
+  })
+})
+
+function timeFormat(val) {
+  var hold = Math.round(val%60)
+  if (hold < 10) {
+    hold = "0" + hold
+  }
+  return Math.floor(val/60) + ":" + hold
+}
+
+var timeText = new Text()
+timeText.y = timeBackground.y - 30
+timeText.text = () => timeFormat(mySound.currentTime) + " / " + timeFormat(mySound.duration)
+
+      
+var nextSong = new Rectangle()
+nextSong.width = 65
+nextSong.height = 50
+nextSong.brightness = 0
+nextSong.x = 78
+
+var ff1 = new Polygon()
+ff1.length = 30
+ff1.x = 60
+
+var ff2 = new Polygon()
+ff2.length = 28
+ff2.x = 80
+
+var songURLs = ["../audio/star-wars.mp3", 
+                "../audio/meow.mp3",
+                "../audio/river-ride.mp3"]
+
+var backgroundURLs = ["../images/starwars.jpg",
+                      "../images/candyland-backdrop.jpg",
+                      "../images/beach.jpg"]
+
+var songURLInd = 0
+
+nextSong.onMouseDown(() => {
+  mySound.stopPlaying()
+  songURLInd += 1
+  if (songURLInd >= songURLs.length) {
+    songURLInd = 0
+  }
+  mySound.url = songURLs[songURLInd]
+  setBackdropURL(backgroundURLs[songURLInd])
+  mySound.startPlaying()
+  pause1.show()
+  pause2.show()
+  playButton.hide() 
+})
+    </script>
+</head>
