@@ -1,0 +1,129 @@
+<head>
+  <script src="https://cdn.jsdelivr.net/gh/stevekrouse/WoofJS@fc5fc997455842dfac8e49288610fa9213bacf46/woof.js"></script>
+    <script>
+setBackdropURL("../images/starwars.jpg")
+setBackdropStyle("cover")
+
+var starWars = new Sound()
+starWars.url = "../audio/star-wars.mp3"
+starWars.loop = false
+starWars.speed = "normal"
+starWars.volume = "normal"
+
+var t = new Text()
+t.text = 'Click anywhere to play'
+t.size = 36
+t.color = 'red'
+t.y = 150
+
+var started = false
+onMouseDown(() => {
+  if (!started) {
+    starWars.startPlaying()    
+    started = true
+    t.delete()
+  }
+})
+
+var pauser = new Rectangle()
+pauser.color = 'yellow'
+pauser.width = 50
+pauser.height = 20
+var pauserText = new Text()
+pauserText.text = 'Pause'
+pauserText.x = pauser.x
+pauserText.y = pauser.y
+
+pauser.onMouseDown(() => {
+  starWars.pausePlaying()
+})
+
+var player = new Rectangle()
+player.color = 'lightgreen'
+player.width = 50
+player.height = 20
+player.x = 70
+var playerText = new Text()
+playerText.text = 'Play'
+playerText.x = player.x
+playerText.y = player.y
+
+player.onMouseDown(() => {
+  starWars.startPlaying()
+})
+
+var stopper = new Rectangle()
+stopper.color = 'red'
+stopper.width = 50
+stopper.height = 20
+stopper.x = -70
+var stopperText = new Text()
+stopperText.text = 'Stop'
+stopperText.x = stopper.x
+stopperText.y = stopper.y
+
+stopper.onMouseDown(() => {
+  starWars.stopPlaying()
+})
+
+var playingDisplay = new Text()
+playingDisplay.y = 30
+playingDisplay.size = 20
+playingDisplay.text = () => {
+  if (starWars.isPlaying) {
+    return "Playing"
+  } else {
+    return "Paused"
+  }
+}
+
+var volDisplay = new Text()
+volDisplay.x = minX + 10
+volDisplay.size = 20
+volDisplay.y = 90
+volDisplay.textAlign = 'left'
+volDisplay.text = () => "Volume: " + Math.round(starWars.volume*100) + 
+  "\nAdjust volume with UP and DOWN keys"
+
+onKeyDown(() => {
+  if (keysDown.includes('UP')) {
+    var hold = starWars.volume + 0.05
+    if (hold > 1) {
+      hold = 1
+    }
+    starWars.volume = hold
+  }
+  if (keysDown.includes('DOWN')) {
+    var hold = starWars.volume - 0.05
+    if (hold < 0) {
+      hold = 0
+    }
+    starWars.volume = hold
+  }
+})
+
+
+var timeDisplay = new Text()
+timeDisplay.y = -40
+timeDisplay.size = 20
+timeDisplay.text = () => "Time: " + Math.round(starWars.currentTime) +
+  " / " + Math.round(starWars.duration) + "\nMove time with LEFT and RIGHT"
+
+onKeyDown(() => {
+  if (keysDown.includes('LEFT')) {
+    var hold = starWars.currentTime - 5
+    if (hold < 0) {
+      hold = 0
+    }
+    starWars.currentTime = hold
+  }
+  if (keysDown.includes('RIGHT')) {
+    var hold = starWars.currentTime + 5
+    if (hold > starWars.duration) {
+      hold = starWars.duration
+    }
+    starWars.currentTime = hold
+  }
+})
+    </script>
+</head>

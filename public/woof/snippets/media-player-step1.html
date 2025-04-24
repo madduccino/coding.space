@@ -1,0 +1,28 @@
+<head>
+  <script src="https://cdn.jsdelivr.net/gh/stevekrouse/WoofJS@fc5fc997455842dfac8e49288610fa9213bacf46/woof.js"></script>
+    <script>
+setBackdropURL("../images/starwars.jpg")
+setBackdropStyle("cover")
+
+var starWars = new Sound()
+starWars.url = "../audio/star-wars.mp3"
+starWars.loop = false
+starWars.speed = "normal"
+starWars.volume = "normal"
+
+var t = new Text()
+t.text = 'Click anywhere to play'
+t.size = 36
+t.color = 'red'
+t.y = 150
+
+var started = false
+onMouseDown(() => {
+  if (!started) {
+    starWars.startPlaying()    
+    started = true
+    t.delete()
+  }
+})
+    </script>
+</head>
