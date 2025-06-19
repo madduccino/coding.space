@@ -56,7 +56,7 @@
 		      isBeingDragged = false
 		  }
       
-		  // if we're currently dragging this, move it to the mouse
+		  // if we are currently dragging this, move it to the mouse
 		  if (isBeingDragged) {
 		      sprite.x = mouseX + offsetX
 		      sprite.y = mouseY + offsetY
@@ -142,6 +142,19 @@
 	  } else {
 	      winText.hide()
 	  }
+      })
+
+      var instructions = new Text()
+      instructions.size = 50
+      instructions.color = 'black'
+      instructions.text = 'Drag each central sprite\nto the matching sprite\nin the corners'
+
+      after(10, 'second', () => {
+	instructions.hide()
+      })
+
+      onMouseDown(() => {
+	instructions.hide()
       })
     </script>
 </head>
