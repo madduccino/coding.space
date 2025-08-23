@@ -20,6 +20,11 @@
         "type": 301
       },
       {
+        "source": "/ymca",
+        "destination": "https://docs.google.com/spreadsheets/d/1Crei5OdD3RsSzjsI1lJ-qfkZ47c_Nu3LcGDySn5VaQI/edit?usp=sharing",
+        "type": 301
+      },
+      {
         "source": "/aboutme",
         "destination": "./aboutme.html",
         "type": 301

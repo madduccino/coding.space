@@ -9,3 +9,5 @@ export const INTRO2 = "INTRO TO SCRATCH";
 export const INTRO1 = "INTRO TO CODING";
 export const PYTHON = "PYTHON";
 export const CHALLENGES = "CHALLENGES";
+export const INTRO_TO_MACHINE_LEARNING = "INTRO TO MACHINE LEARNING";
+export const UNITY = "UNITY";
