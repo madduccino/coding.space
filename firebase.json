@@ -185,6 +185,11 @@
         "source": "/welcome",
         "destination": "/welcome.html",
         "type": 301
+      },
+      {
+        "source": "/scratchjr",
+        "destination": "https://codejr.org/scratchjr/index.html",
+        "type": 301
       }
     ],
     "rewrites": [

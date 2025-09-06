@@ -1147,6 +1147,19 @@ class UntutorialPageBase extends React.Component {
                   />
                 </a>
               )}
+              {!!untutorial.Categories["SCRATCHJR"] && (
+                <a
+                  className="scratch"
+                  href="https://coding.space/scratchjr"
+                  target="_Blank"
+                >
+                  <LazyImage
+                    file={this.props.firebase.storage.ref(
+                      "/public/scratchjr.png"
+                    )}
+                  />
+                </a>
+              )}
               {!!untutorial.Categories["WOOF"] && (
                 <a
                   className="scratch"
