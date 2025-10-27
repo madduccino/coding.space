@@ -55,16 +55,32 @@
   font-weight: 600;
 }
 
-// Colors
-$darkgreen: #274548;
-$lightGreen: #9fe2dd;
-$darkergreen: rgb(18, 33, 34);
-$lightblue: #9fe2dd;
-$beige: #fbf6ee;
-$orange: #edc034;
-$darkerOrange: #d8a200;
-$darkOrangeTransparent: rgba(216, 162, 0, 0.7);
-$lightgrey: rgb(219, 219, 219);
+// Professional Educator Pastel Color Palette
+// Primary Colors - Calming sage and teal tones
+$darkgreen: #6B9080;        // Soft sage green (primary)
+$lightGreen: #A4C3B2;       // Light sage (accents & highlights)
+$darkergreen: #4A7C68;      // Deeper sage (dark elements)
+$lightblue: #CCE3DE;        // Very light mint (backgrounds)
+
+// Secondary & Accent Colors
+$beige: #F6FFF8;            // Very light mint cream (backgrounds)
+$lavender: #E8D5E8;         // Soft lavender (secondary accent)
+$softPurple: #C5CAE9;       // Periwinkle (category badges)
+
+// Call-to-Action & Interactive
+$orange: #FFB4A2;           // Soft coral (buttons & CTAs)
+$darkerOrange: #FF9E88;     // Deeper coral (hover states)
+$darkOrangeTransparent: rgba(255, 158, 136, 0.7);
+
+// Status Colors - Muted pastels
+$successGreen: #C1E1C1;     // Soft mint (approved/success)
+$warningPeach: #FFE4D6;     // Soft peach (pending/warning)
+$errorRose: #F8BBD0;        // Soft rose (error/todo)
+
+// Neutrals
+$lightgrey: #E8EAF6;        // Soft grey-lavender
+$textDark: #3D5A51;         // Soft charcoal green
+$cardBg: #FFFFFF;           // Pure white for cards
 
 $fontSize: 18px;
 $headerFont: "Futura", sans-serif;
@@ -124,19 +140,38 @@ ul {
 }
 
 @mixin approve {
-  background-color: rgb(80, 221, 15);
+  background-color: $successGreen;
 }
 
 @mixin todo {
-  background-color: rgb(216, 61, 61);
+  background-color: $errorRose;
+}
+
+// Professional card shadow
+@mixin cardShadow {
+  box-shadow: 0 2px 8px rgba(107, 144, 128, 0.1),
+              0 1px 3px rgba(107, 144, 128, 0.06);
+  transition: all 0.3s ease;
+
+  &:hover {
+    box-shadow: 0 4px 16px rgba(107, 144, 128, 0.15),
+                0 2px 6px rgba(107, 144, 128, 0.1);
+    transform: translateY(-2px);
+  }
+}
+
+// Smooth transitions
+@mixin smoothTransition {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 body {
-  color: $darkgreen;
+  color: $textDark;
   font-size: $fontSize;
   font-family: $bodyFont;
   margin: 0;
   padding: 0;
+  background-color: $beige;
 }
 
 /* Position and sizing of burger button */
@@ -204,13 +239,14 @@ body {
   #classes,
   #new-class,
   #universe-publish {
-    background-color: $darkgreen;
-    color: #fff;
+    background: linear-gradient(135deg, $darkgreen 0%, lighten($darkgreen, 10%) 100%);
+    color: $cardBg;
     h1 {
       font-size: 6rem;
-      color: #fff;
-      text-shadow: rgb(53, 173, 185) 2px 1px 0px;
+      color: $cardBg;
+      text-shadow: rgba(107, 144, 128, 0.4) 2px 2px 4px;
       text-align: center;
+      font-weight: 600;
     }
   }
 }
@@ -280,15 +316,16 @@ img.pixel {
 }
 
 #header {
-  background-color: #fff;
+  background-color: $cardBg;
   width: 100%;
   display: flex;
+  box-shadow: 0 2px 8px rgba(107, 144, 128, 0.08);
   .menu {
     width: 100%;
-    background-color: #fff;
+    background-color: $cardBg;
     position: fixed;
     padding-bottom: 70px;
-    border-bottom: 1px solid $lightgrey;
+    border-bottom: 2px solid $lightGreen;
 
     z-index: 99;
   }
@@ -309,21 +346,29 @@ img.pixel {
     height: 70px;
     justify-content: flex-end;
     .signIn {
-      color: #fff;
+      color: $textDark;
       text-align: center;
       border-radius: 8px;
-      transition: background-color 2s;
+      @include smoothTransition;
       background-color: $orange;
       padding: 10px 20px;
+      font-weight: 500;
+      box-shadow: 0 2px 4px rgba(255, 180, 162, 0.2);
 
       &:hover {
         background-color: $darkerOrange;
+        box-shadow: 0 4px 8px rgba(255, 180, 162, 0.3);
+        transform: translateY(-1px);
       }
     }
     > a {
       margin: 0 20px;
+      color: $textDark;
+      font-weight: 500;
+      @include smoothTransition;
       &:hover {
         border-top: 4px solid $lightGreen;
+        color: $darkgreen;
       }
       &:not(.logo) {
         text-align: right;
@@ -396,7 +441,7 @@ img.pixel {
 
 button,
 .button {
-  border-radius: 4px;
+  border-radius: 8px;
   align-content: center;
   justify-content: center;
   flex-flow: column wrap;
@@ -404,16 +449,24 @@ button,
   border: 0;
   outline: 0;
   width: 100px;
-  padding: 6px 10px;
+  padding: 8px 16px;
   grid-column: 10;
   background-color: $orange;
+  color: $textDark;
   cursor: pointer;
-  transition: background-color 2s;
+  font-weight: 500;
+  @include smoothTransition;
+  box-shadow: 0 2px 4px rgba(255, 180, 162, 0.2);
   a {
-    color: #fff;
+    color: $textDark;
   }
   &:hover {
     background-color: $darkerOrange;
+    box-shadow: 0 4px 8px rgba(255, 180, 162, 0.3);
+    transform: translateY(-1px);
+  }
+  &:active {
+    transform: translateY(0);
   }
 }
 
@@ -444,14 +497,23 @@ button {
     button {
       display: block;
       margin: 10px auto;
-      padding: 10px 0;
+      padding: 12px 16px;
       font-family: $bodyFont;
       width: 250px;
       border: 0;
       outline: 0;
+      @include smoothTransition;
     }
     input {
-      padding-left: 10px;
+      padding-left: 16px;
+      border: 2px solid $lightGreen;
+      border-radius: 8px;
+      background-color: $cardBg;
+      color: $textDark;
+      &:focus {
+        border-color: $darkgreen;
+        box-shadow: 0 0 0 3px rgba(107, 144, 128, 0.1);
+      }
     }
     input[type="checkbox"] {
       display: inline-block;
@@ -529,12 +591,11 @@ button {
     background-color: #fff;
     color: $darkgreen;
     .sidebar {
-      color: #fff;
-      background-color: $beige;
-      // padding: 60px 30px;
-      background-color: $darkgreen;
+      color: $cardBg;
+      background: linear-gradient(180deg, $darkgreen 0%, lighten($darkgreen, 5%) 100%);
       word-wrap: break-word;
       padding: 60px 30px;
+      box-shadow: 2px 0 12px rgba(107, 144, 128, 0.1);
       > div {
         margin-bottom: 40px;
       }
@@ -545,8 +606,9 @@ button {
       }
       h1 {
         font-size: 1.4rem;
-        color: $darkgreen;
+        color: $cardBg;
         text-shadow: none;
+        font-weight: 600;
       }
       p {
         margin: 0;
@@ -570,11 +632,11 @@ button {
       .field {
         line-height: 1.8rem;
         &.draft > div {
-          background-color: red;
+          background-color: $errorRose;
         }
         &.approved {
           div {
-            background-color: #00b700;
+            background-color: $successGreen;
           }
         }
         &.level {
@@ -718,17 +780,25 @@ button {
     grid-template-columns: 250px 5fr;
     height: 100%;
     .main-content {
-      background-color: $darkgreen;
-      color: #fff;
+      background: linear-gradient(135deg, $darkgreen 0%, lighten($darkgreen, 8%) 100%);
+      color: $cardBg;
       .search {
-        padding: 10px;
+        padding: 12px 20px;
         width: 50%;
         display: block;
         margin: 0 auto;
-        border: 3px solid $orange;
+        border: 2px solid $lightGreen;
         outline: 0;
-        border-radius: 4px;
+        border-radius: 8px;
         margin: 40px auto;
+        background-color: $cardBg;
+        color: $textDark;
+        font-size: 1rem;
+        @include smoothTransition;
+        &:focus {
+          border-color: $orange;
+          box-shadow: 0 0 0 3px rgba(255, 180, 162, 0.2);
+        }
       }
       .items {
         @include flexhc;
@@ -736,23 +806,21 @@ button {
           margin: 20px 0;
         }
         .card {
-          background-color: #fff;
-          border-radius: 8px;
-          color: $darkgreen;
+          background-color: $cardBg;
+          border-radius: 12px;
+          color: $textDark;
           width: 28%;
           margin: 2%;
           position: relative;
-          box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.12),
-            0 1px 2px 0 rgba(0, 0, 0, 0.24);
+          @include cardShadow;
           padding-bottom: 30px;
+          border: 1px solid $lightGreen;
           img {
             width: 100%;
             height: 130px;
             object-fit: cover;
-            border-top-left-radius: 8px;
-            border-top-right-radius: 8px;
-            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.12),
-              0 1px 2px 0 rgba(0, 0, 0, 0.24);
+            border-top-left-radius: 12px;
+            border-top-right-radius: 12px;
           }
           > div {
             padding: 40px 20px;
@@ -762,35 +830,41 @@ button {
             min-height: 250px;
             h2 {
               margin-bottom: 20px;
+              color: $darkgreen;
+              font-weight: 600;
             }
             p {
               line-height: 1.6rem;
+              color: $textDark;
             }
             button {
               background-color: $darkgreen;
-              color: #fff;
+              color: $cardBg;
               position: absolute;
               bottom: 10px;
               left: 0;
               right: 0;
               width: 50%;
+              font-weight: 500;
             }
           }
         }
       }
     }
     .sidebar {
-      background-color: #fff;
-      border-right: 5px solid $orange;
+      background-color: $cardBg;
+      border-right: 3px solid $lightGreen;
       width: 250px;
+      box-shadow: 2px 0 8px rgba(107, 144, 128, 0.05);
       h2 {
         color: $darkgreen;
         margin-bottom: 20px;
+        font-weight: 600;
       }
       button {
-        transition: background-color 2s;
+        @include smoothTransition;
         &:hover {
-          background-color: #eeefef;
+          background-color: $lightblue;
         }
       }
     }
@@ -813,15 +887,17 @@ button {
   .main {
     @include flexhc;
     .card {
-      color: $darkgreen;
+      color: $textDark;
       width: 200px;
-      background-color: white;
+      background-color: $cardBg;
       margin: 40px;
       text-align: center;
-      border-radius: 8px;
+      border-radius: 12px;
       position: relative;
       padding-bottom: 50px;
       min-height: 300px;
+      @include cardShadow;
+      border: 1px solid $lightGreen;
       div {
         padding-bottom: 10px;
         font-weight: normal;
@@ -848,10 +924,8 @@ button {
         width: 100%;
         height: 130px;
         object-fit: cover;
-        border-top-left-radius: 8px;
-        border-top-right-radius: 8px;
-        box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.12),
-          0 1px 2px 0 rgba(0, 0, 0, 0.24);
+        border-top-left-radius: 12px;
+        border-top-right-radius: 12px;
       }
     }
   }
@@ -868,7 +942,7 @@ button {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
         .card {
-          transition: 2s;
+          @include smoothTransition;
           margin: 20px auto;
           width: 200px;
           height: 170px;
@@ -877,10 +951,12 @@ button {
           font-family: $headerFont;
           text-transform: capitalize;
           background-size: contain;
-          color: #fff;
-          border-radius: 8px;
+          color: $textDark;
+          border-radius: 12px;
           position: relative;
           background-color: $lightGreen;
+          @include cardShadow;
+          border: 1px solid $darkgreen;
           img {
             object-fit: contain;
             background-color: #f7f7f7;
@@ -890,15 +966,15 @@ button {
             position: absolute;
             font-size: 14px;
             bottom: 0;
-            background-color: $lightGreen;
-            color: $darkgreen;
+            background-color: $cardBg;
+            color: $textDark;
             left: 0;
             right: 0;
             bottom: 5px;
             margin: 0 auto;
-            &:hover {
-              // background-color: #61bbb5;
-            }
+            padding: 8px;
+            border-radius: 8px;
+            font-weight: 500;
           }
         }
       }
@@ -1120,7 +1196,7 @@ button {
     }
   }
   .main {
-    background-color: #f7f7f7;
+    background-color: $beige;
     .addDelete {
       @include flexhc;
       button {
@@ -1148,11 +1224,14 @@ button {
       }
     }
     .sidebar {
-      background-color: transparent;
-      color: $darkgreen;
+      background-color: $cardBg;
+      color: $textDark;
       margin-top: 20px;
       margin-right: 20px;
-      padding-top: 30px;
+      padding: 30px 20px;
+      border-radius: 12px;
+      @include cardShadow;
+      border: 1px solid $lightGreen;
       .tags {
         z-index: 9;
       }
@@ -1278,14 +1357,14 @@ button {
         }
         .step {
           text-align: left;
-          background-color: #fff;
+          background-color: $cardBg;
           position: relative;
           width: 533px;
           margin: 20px auto 60px;
-          border-bottom: 1px solid #ccc;
-          box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.15);
+          border: 1px solid $lightGreen;
+          @include cardShadow;
           padding: 0 20px 60px;
-          border-radius: 10px;
+          border-radius: 12px;
           .step-title {
             font-size: 2rem;
           }
@@ -1361,28 +1440,29 @@ button {
               height: 60px;
               font-size: 12px;
               @include flexvc;
+              @include smoothTransition;
               &.todo {
-                background-color: rgb(175, 23, 23);
+                background-color: $errorRose;
                 background: radial-gradient(
                   circle,
-                  rgb(236, 99, 99),
-                  rgb(247, 48, 48)
+                  lighten($errorRose, 10%),
+                  $errorRose
                 );
                 &:hover {
                   background: radial-gradient(
                     circle,
-                    rgb(206, 73, 73),
-                    rgb(247, 48, 48)
+                    lighten($errorRose, 5%),
+                    darken($errorRose, 5%)
                   );
                 }
               }
               &.pending {
-                background-color: $orange;
-                background: radial-gradient(circle, #e9dd33, $orange);
+                background-color: $warningPeach;
+                background: radial-gradient(circle, lighten($warningPeach, 5%), $warningPeach);
               }
               &.approved {
-                background-color: rgb(80, 221, 15);
-                background: radial-gradient(circle, #0bec3c, #11bd11);
+                background-color: $successGreen;
+                background: radial-gradient(circle, lighten($successGreen, 10%), $successGreen);
               }
             }
           }
@@ -1458,12 +1538,12 @@ button {
     > div:not(.field) {
       margin: 5px;
       &.red {
-        background-color: rgb(247, 48, 48);
-        background: radial-gradient(circle, rgb(236, 99, 99), rgb(247, 48, 48));
+        background-color: $errorRose;
+        background: radial-gradient(circle, lighten($errorRose, 10%), $errorRose);
       }
       &.blue {
-        background-color: blue;
-        background: radial-gradient(circle, rgb(17, 147, 233), rgb(4, 61, 136));
+        background-color: $softPurple;
+        background: radial-gradient(circle, lighten($softPurple, 10%), $softPurple);
       }
     }
   }
@@ -1637,12 +1717,19 @@ button {
     text-align: center;
     margin-top: 20px;
     a {
-      color: $darkgreen;
+      color: $textDark;
       background-color: $orange;
-      padding: 5px;
+      padding: 8px 16px;
       margin: 10px;
-      display: inline;
-      border-radius: 5px;
+      display: inline-block;
+      border-radius: 8px;
+      font-weight: 500;
+      @include smoothTransition;
+      &:hover {
+        background-color: $darkerOrange;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 8px rgba(255, 180, 162, 0.3);
+      }
     }
   }
   .container {
@@ -1719,8 +1806,8 @@ button {
       width: 15px;
       height: 15px;
       border-radius: 50%;
-      background-color: rgb(247, 48, 48);
-      background: radial-gradient(circle, rgb(236, 99, 99), rgb(247, 48, 48));
+      background-color: $errorRose;
+      background: radial-gradient(circle, lighten($errorRose, 10%), $errorRose);
       display: inline-block;
       margin-left: 5px;
     }
@@ -1728,8 +1815,8 @@ button {
   .progress {
     .pending,
     .approved {
-      color: $orange;
-      text-shadow: 0 0 3px $orange, 0 0 5px #e9dd33;
+      color: $darkgreen;
+      font-weight: 500;
     }
   }
 }
@@ -1830,11 +1917,13 @@ button {
   .main-area {
     max-width: 600px;
     margin: 20px auto;
-    background-color: #fff;
-    color: $darkgreen;
-    padding: 20px;
+    background-color: $cardBg;
+    color: $textDark;
+    padding: 30px;
     @include flexvc;
-    border-radius: 8px;
+    border-radius: 12px;
+    @include cardShadow;
+    border: 1px solid $lightGreen;
 
     h4 {
       margin: 0;
@@ -1970,8 +2059,8 @@ button {
     .approved {
       width: 15px;
       height: 15px;
-      background-color: rgb(80, 221, 15);
-      background: radial-gradient(circle, #0bec3c, #11bd11);
+      background-color: $successGreen;
+      background: radial-gradient(circle, lighten($successGreen, 15%), $successGreen);
       border-radius: 50%;
       display: inline-block;
       margin-left: 10px;
@@ -1980,16 +2069,20 @@ button {
       @include approve;
       width: 200px;
       margin-bottom: 20px;
+      color: $textDark;
+      font-weight: 500;
     }
     .disapprove {
       @include todo;
       width: 200px;
       margin-left: 10px;
       margin-bottom: 20px;
+      color: $textDark;
+      font-weight: 500;
     }
     .pending {
-      background-color: $orange;
-      background: radial-gradient(circle, #e9dd33, $orange);
+      background-color: $warningPeach;
+      background: radial-gradient(circle, lighten($warningPeach, 10%), $warningPeach);
       height: 15px;
       width: 15px;
       border-radius: 50%;
