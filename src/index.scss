@@ -55,32 +55,52 @@
   font-weight: 600;
 }
 
-// Professional Educator Pastel Color Palette
-// Primary Colors - Calming sage and teal tones
-$darkgreen: #6B9080;        // Soft sage green (primary)
-$lightGreen: #A4C3B2;       // Light sage (accents & highlights)
-$darkergreen: #4A7C68;      // Deeper sage (dark elements)
-$lightblue: #CCE3DE;        // Very light mint (backgrounds)
+// Professional Ed-Tech Color Palette - Canvas-Inspired
+// Primary Brand Colors - Vibrant Greens & Blues
+$primary: #3B7DDD;          // Vibrant Blue (primary brand)
+$primaryDark: #2D5DB5;      // Deep Blue (hover states)
+$primaryLight: #5A94E8;     // Light Blue (accents)
 
-// Secondary & Accent Colors
-$beige: #F6FFF8;            // Very light mint cream (backgrounds)
-$lavender: #E8D5E8;         // Soft lavender (secondary accent)
-$softPurple: #C5CAE9;       // Periwinkle (category badges)
+$teal: #00A99D;             // Vibrant Teal (secondary brand)
+$tealDark: #008B82;         // Deep Teal (hover)
+$tealLight: #1AC4B8;        // Light Teal (highlights)
 
-// Call-to-Action & Interactive
-$orange: #FFB4A2;           // Soft coral (buttons & CTAs)
-$darkerOrange: #FF9E88;     // Deeper coral (hover states)
-$darkOrangeTransparent: rgba(255, 158, 136, 0.7);
+$success: #28C76F;          // Bright Green (success/approved)
+$successDark: #1FA55A;      // Dark Green (hover)
+$successLight: #D4F4E2;     // Light Green (backgrounds)
 
-// Status Colors - Muted pastels
-$successGreen: #C1E1C1;     // Soft mint (approved/success)
-$warningPeach: #FFE4D6;     // Soft peach (pending/warning)
-$errorRose: #F8BBD0;        // Soft rose (error/todo)
+// Supporting Colors
+$info: #00CFE8;             // Bright Cyan (info/links)
+$warning: #FFB547;          // Friendly Orange (warnings)
+$danger: #EA5455;           // Clear Red (errors/important)
+$warningLight: #FFF3E0;     // Light Orange (warning backgrounds)
+$dangerLight: #FFE5E5;      // Light Red (error backgrounds)
 
-// Neutrals
-$lightgrey: #E8EAF6;        // Soft grey-lavender
-$textDark: #3D5A51;         // Soft charcoal green
-$cardBg: #FFFFFF;           // Pure white for cards
+// Neutrals - Clean & Modern
+$darkText: #2C3E50;         // Professional Dark Blue-Gray
+$bodyText: #5A6C7D;         // Medium Gray (body text)
+$lightText: #8898AA;        // Light Gray (secondary text)
+$borderColor: #E3E8EF;      // Subtle borders
+$background: #F8F9FA;       // Very Light Gray (page background)
+$cardBg: #FFFFFF;           // Pure White (cards)
+$sidebarBg: #2C3E50;        // Dark Professional (sidebars)
+
+// Legacy variable mappings for compatibility
+$darkgreen: $teal;
+$lightGreen: $tealLight;
+$darkergreen: $tealDark;
+$lightblue: #E8F5F7;
+$beige: $background;
+$orange: $primary;
+$darkerOrange: $primaryDark;
+$darkOrangeTransparent: rgba(59, 125, 221, 0.7);
+$successGreen: $successLight;
+$warningPeach: $warningLight;
+$errorRose: $dangerLight;
+$lightgrey: $borderColor;
+$textDark: $darkText;
+$lavender: #E8D5E8;
+$softPurple: #C5CAE9;
 
 $fontSize: 18px;
 $headerFont: "Futura", sans-serif;
@@ -147,17 +167,23 @@ ul {
   background-color: $errorRose;
 }
 
-// Professional card shadow
+// Professional Canvas-style card shadow
 @mixin cardShadow {
-  box-shadow: 0 2px 8px rgba(107, 144, 128, 0.1),
-              0 1px 3px rgba(107, 144, 128, 0.06);
-  transition: all 0.3s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08),
+              0 1px 2px rgba(0, 0, 0, 0.04);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
   &:hover {
-    box-shadow: 0 4px 16px rgba(107, 144, 128, 0.15),
-                0 2px 6px rgba(107, 144, 128, 0.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12),
+                0 2px 4px rgba(0, 0, 0, 0.06);
     transform: translateY(-2px);
   }
+}
+
+// Elevated card shadow (for interactive elements)
+@mixin cardShadowElevated {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1),
+              0 1px 4px rgba(0, 0, 0, 0.06);
 }
 
 // Smooth transitions
@@ -166,12 +192,14 @@ ul {
 }
 
 body {
-  color: $textDark;
+  color: $bodyText;
   font-size: $fontSize;
   font-family: $bodyFont;
   margin: 0;
   padding: 0;
-  background-color: $beige;
+  background-color: $background;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 /* Position and sizing of burger button */
@@ -239,14 +267,15 @@ body {
   #classes,
   #new-class,
   #universe-publish {
-    background: linear-gradient(135deg, $darkgreen 0%, lighten($darkgreen, 10%) 100%);
+    background: linear-gradient(135deg, $teal 0%, $primary 100%);
     color: $cardBg;
     h1 {
-      font-size: 6rem;
+      font-size: 5rem;
       color: $cardBg;
-      text-shadow: rgba(107, 144, 128, 0.4) 2px 2px 4px;
+      text-shadow: rgba(0, 0, 0, 0.15) 0 2px 8px;
       text-align: center;
-      font-weight: 600;
+      font-weight: 700;
+      letter-spacing: -0.02em;
     }
   }
 }
@@ -319,13 +348,14 @@ img.pixel {
   background-color: $cardBg;
   width: 100%;
   display: flex;
-  box-shadow: 0 2px 8px rgba(107, 144, 128, 0.08);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06),
+              0 1px 2px rgba(0, 0, 0, 0.04);
   .menu {
     width: 100%;
     background-color: $cardBg;
     position: fixed;
     padding-bottom: 70px;
-    border-bottom: 2px solid $lightGreen;
+    border-bottom: 1px solid $borderColor;
 
     z-index: 99;
   }
@@ -346,29 +376,31 @@ img.pixel {
     height: 70px;
     justify-content: flex-end;
     .signIn {
-      color: $textDark;
+      color: $cardBg;
       text-align: center;
-      border-radius: 8px;
+      border-radius: 6px;
       @include smoothTransition;
-      background-color: $orange;
-      padding: 10px 20px;
-      font-weight: 500;
-      box-shadow: 0 2px 4px rgba(255, 180, 162, 0.2);
+      background-color: $primary;
+      padding: 10px 24px;
+      font-weight: 600;
+      font-size: 15px;
+      box-shadow: 0 2px 4px rgba(59, 125, 221, 0.15);
 
       &:hover {
-        background-color: $darkerOrange;
-        box-shadow: 0 4px 8px rgba(255, 180, 162, 0.3);
+        background-color: $primaryDark;
+        box-shadow: 0 4px 8px rgba(59, 125, 221, 0.25);
         transform: translateY(-1px);
       }
     }
     > a {
       margin: 0 20px;
-      color: $textDark;
+      color: $darkText;
       font-weight: 500;
+      font-size: 15px;
       @include smoothTransition;
       &:hover {
-        border-top: 4px solid $lightGreen;
-        color: $darkgreen;
+        border-top: 3px solid $primary;
+        color: $primary;
       }
       &:not(.logo) {
         text-align: right;
@@ -441,37 +473,60 @@ img.pixel {
 
 button,
 .button {
-  border-radius: 8px;
+  border-radius: 6px;
   align-content: center;
   justify-content: center;
   flex-flow: column wrap;
   margin: 0 auto;
   border: 0;
   outline: 0;
-  width: 100px;
-  padding: 8px 16px;
+  width: auto;
+  min-width: 100px;
+  padding: 10px 20px;
   grid-column: 10;
-  background-color: $orange;
-  color: $textDark;
+  background-color: $primary;
+  color: $cardBg;
   cursor: pointer;
-  font-weight: 500;
+  font-weight: 600;
+  font-size: 15px;
   @include smoothTransition;
-  box-shadow: 0 2px 4px rgba(255, 180, 162, 0.2);
+  box-shadow: 0 2px 4px rgba(59, 125, 221, 0.15);
   a {
-    color: $textDark;
+    color: $cardBg;
   }
   &:hover {
-    background-color: $darkerOrange;
-    box-shadow: 0 4px 8px rgba(255, 180, 162, 0.3);
+    background-color: $primaryDark;
+    box-shadow: 0 4px 8px rgba(59, 125, 221, 0.25);
     transform: translateY(-1px);
   }
   &:active {
     transform: translateY(0);
+    box-shadow: 0 1px 2px rgba(59, 125, 221, 0.2);
   }
 }
 
 button {
-  background-color: $orange;
+  background-color: $primary;
+}
+
+// Secondary button style
+.button-secondary {
+  background-color: $teal;
+  box-shadow: 0 2px 4px rgba(0, 169, 157, 0.15);
+  &:hover {
+    background-color: $tealDark;
+    box-shadow: 0 4px 8px rgba(0, 169, 157, 0.25);
+  }
+}
+
+// Success button style
+.button-success {
+  background-color: $success;
+  box-shadow: 0 2px 4px rgba(40, 199, 111, 0.15);
+  &:hover {
+    background-color: $successDark;
+    box-shadow: 0 4px 8px rgba(40, 199, 111, 0.25);
+  }
 }
 
 .main {
@@ -496,23 +551,27 @@ button {
     input,
     button {
       display: block;
-      margin: 10px auto;
+      margin: 12px auto;
       padding: 12px 16px;
       font-family: $bodyFont;
-      width: 250px;
+      width: 280px;
       border: 0;
       outline: 0;
       @include smoothTransition;
     }
     input {
-      padding-left: 16px;
-      border: 2px solid $lightGreen;
-      border-radius: 8px;
+      padding: 12px 16px;
+      border: 2px solid $borderColor;
+      border-radius: 6px;
       background-color: $cardBg;
-      color: $textDark;
+      color: $darkText;
+      font-size: 15px;
+      &::placeholder {
+        color: $lightText;
+      }
       &:focus {
-        border-color: $darkgreen;
-        box-shadow: 0 0 0 3px rgba(107, 144, 128, 0.1);
+        border-color: $primary;
+        box-shadow: 0 0 0 3px rgba(59, 125, 221, 0.1);
       }
     }
     input[type="checkbox"] {
@@ -780,24 +839,30 @@ button {
     grid-template-columns: 250px 5fr;
     height: 100%;
     .main-content {
-      background: linear-gradient(135deg, $darkgreen 0%, lighten($darkgreen, 8%) 100%);
+      background: linear-gradient(135deg, $teal 0%, $primary 100%);
       color: $cardBg;
+      padding: 40px;
       .search {
-        padding: 12px 20px;
-        width: 50%;
+        padding: 14px 20px;
+        width: 100%;
+        max-width: 500px;
         display: block;
-        margin: 0 auto;
-        border: 2px solid $lightGreen;
+        margin: 0 auto 40px;
+        border: 2px solid rgba(255, 255, 255, 0.3);
         outline: 0;
         border-radius: 8px;
-        margin: 40px auto;
-        background-color: $cardBg;
-        color: $textDark;
-        font-size: 1rem;
+        background-color: rgba(255, 255, 255, 0.95);
+        color: $darkText;
+        font-size: 16px;
+        font-weight: 400;
         @include smoothTransition;
+        &::placeholder {
+          color: $lightText;
+        }
         &:focus {
-          border-color: $orange;
-          box-shadow: 0 0 0 3px rgba(255, 180, 162, 0.2);
+          border-color: $cardBg;
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+          background-color: $cardBg;
         }
       }
       .items {
@@ -807,45 +872,49 @@ button {
         }
         .card {
           background-color: $cardBg;
-          border-radius: 12px;
-          color: $textDark;
+          border-radius: 8px;
+          color: $darkText;
           width: 28%;
           margin: 2%;
           position: relative;
           @include cardShadow;
           padding-bottom: 30px;
-          border: 1px solid $lightGreen;
+          border: 1px solid $borderColor;
+          overflow: hidden;
           img {
             width: 100%;
-            height: 130px;
+            height: 160px;
             object-fit: cover;
-            border-top-left-radius: 12px;
-            border-top-right-radius: 12px;
           }
           > div {
-            padding: 40px 20px;
-            font-size: 1rem;
+            padding: 24px;
+            font-size: 15px;
             font-family: $bodyFont;
-            font-weight: 300;
+            font-weight: 400;
             min-height: 250px;
             h2 {
-              margin-bottom: 20px;
-              color: $darkgreen;
+              margin-bottom: 12px;
+              color: $darkText;
               font-weight: 600;
+              font-size: 1.25rem;
+              line-height: 1.4;
             }
             p {
-              line-height: 1.6rem;
-              color: $textDark;
+              line-height: 1.6;
+              color: $bodyText;
+              margin-bottom: 16px;
             }
             button {
-              background-color: $darkgreen;
+              background-color: $primary;
               color: $cardBg;
               position: absolute;
-              bottom: 10px;
-              left: 0;
-              right: 0;
-              width: 50%;
-              font-weight: 500;
+              bottom: 20px;
+              left: 24px;
+              right: 24px;
+              width: auto;
+              font-weight: 600;
+              font-size: 14px;
+              padding: 10px 20px;
             }
           }
         }
@@ -853,18 +922,26 @@ button {
     }
     .sidebar {
       background-color: $cardBg;
-      border-right: 3px solid $lightGreen;
+      border-right: 1px solid $borderColor;
       width: 250px;
-      box-shadow: 2px 0 8px rgba(107, 144, 128, 0.05);
+      box-shadow: 1px 0 3px rgba(0, 0, 0, 0.04);
+      padding: 24px 20px;
       h2 {
-        color: $darkgreen;
+        color: $darkText;
         margin-bottom: 20px;
         font-weight: 600;
+        font-size: 1.1rem;
       }
       button {
         @include smoothTransition;
+        background-color: transparent;
+        color: $bodyText;
+        font-weight: 500;
+        border: 1px solid $borderColor;
         &:hover {
-          background-color: $lightblue;
+          background-color: $background;
+          color: $primary;
+          border-color: $primary;
         }
       }
     }
@@ -1442,27 +1519,19 @@ button {
               @include flexvc;
               @include smoothTransition;
               &.todo {
-                background-color: $errorRose;
-                background: radial-gradient(
-                  circle,
-                  lighten($errorRose, 10%),
-                  $errorRose
-                );
+                background-color: $danger;
+                background: $danger;
                 &:hover {
-                  background: radial-gradient(
-                    circle,
-                    lighten($errorRose, 5%),
-                    darken($errorRose, 5%)
-                  );
+                  background-color: darken($danger, 5%);
                 }
               }
               &.pending {
-                background-color: $warningPeach;
-                background: radial-gradient(circle, lighten($warningPeach, 5%), $warningPeach);
+                background-color: $warning;
+                background: $warning;
               }
               &.approved {
-                background-color: $successGreen;
-                background: radial-gradient(circle, lighten($successGreen, 10%), $successGreen);
+                background-color: $success;
+                background: $success;
               }
             }
           }
@@ -1717,18 +1786,32 @@ button {
     text-align: center;
     margin-top: 20px;
     a {
-      color: $textDark;
-      background-color: $orange;
-      padding: 8px 16px;
-      margin: 10px;
+      color: $cardBg;
+      background-color: $primary;
+      padding: 10px 20px;
+      margin: 8px;
       display: inline-block;
-      border-radius: 8px;
-      font-weight: 500;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 14px;
       @include smoothTransition;
+      box-shadow: 0 2px 4px rgba(59, 125, 221, 0.15);
       &:hover {
-        background-color: $darkerOrange;
+        background-color: $primaryDark;
         transform: translateY(-1px);
-        box-shadow: 0 4px 8px rgba(255, 180, 162, 0.3);
+        box-shadow: 0 4px 8px rgba(59, 125, 221, 0.25);
+      }
+      &:nth-child(odd) {
+        background-color: $teal;
+        &:hover {
+          background-color: $tealDark;
+        }
+      }
+      &:nth-child(3n) {
+        background-color: $success;
+        &:hover {
+          background-color: $successDark;
+        }
       }
     }
   }
@@ -2059,8 +2142,7 @@ button {
     .approved {
       width: 15px;
       height: 15px;
-      background-color: $successGreen;
-      background: radial-gradient(circle, lighten($successGreen, 15%), $successGreen);
+      background-color: $success;
       border-radius: 50%;
       display: inline-block;
       margin-left: 10px;
@@ -2069,20 +2151,21 @@ button {
       @include approve;
       width: 200px;
       margin-bottom: 20px;
-      color: $textDark;
-      font-weight: 500;
+      color: $cardBg;
+      font-weight: 600;
+      background-color: $success;
     }
     .disapprove {
       @include todo;
       width: 200px;
       margin-left: 10px;
       margin-bottom: 20px;
-      color: $textDark;
-      font-weight: 500;
+      color: $cardBg;
+      font-weight: 600;
+      background-color: $danger;
     }
     .pending {
-      background-color: $warningPeach;
-      background: radial-gradient(circle, lighten($warningPeach, 10%), $warningPeach);
+      background-color: $warning;
       height: 15px;
       width: 15px;
       border-radius: 50%;
