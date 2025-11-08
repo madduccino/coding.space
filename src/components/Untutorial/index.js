@@ -113,22 +113,33 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
   const saveChangesHandler = useCallback(() => {
     if (Object.values(errorsRef.current).length === 0) {
       setUntutorial((currentUntutorial) => {
-        const updatedUntutorial = {
+        // Get the author key - handle both object and string cases
+        const authorKey =
+          typeof currentUntutorial.Author === 'object' && currentUntutorial.Author?.key
+            ? currentUntutorial.Author.key
+            : currentUntutorial.Author;
+
+        // Create the data to save to Firebase (with Author as string key)
+        const dataToSave = {
           ...currentUntutorial,
           LastModified: Date.now(),
-          Author: currentUntutorial.Author.key,
+          Author: authorKey,
         };
 
         firebase
           .untutorial(key)
-          .set(updatedUntutorial)
+          .set(dataToSave)
           .then(() => {
             console.log("Successfully Saved");
             setDirty(false);
           })
           .catch((error) => setError(error.message));
 
-        return updatedUntutorial;
+        // Keep Author as object in local state to avoid breaking image URLs
+        return {
+          ...currentUntutorial,
+          LastModified: dataToSave.LastModified,
+        };
       });
     }
   }, [firebase, key]);
