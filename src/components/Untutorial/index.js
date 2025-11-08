@@ -1073,17 +1073,20 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
                     >
                       {isAuthorized && lang !== "Español" && (
                         <>
-                          <p
-                            className={
-                              untutorial.steps[index].ThumbnailFilename
-                                ? "change"
-                                : "add"
-                            }
-                          >
-                            {untutorial.steps[index].ThumbnailFilename
-                              ? "Update Screenshot"
-                              : "+ Add Screenshot"}
-                          </p>
+                          <label htmlFor={"step" + index + "-thumbnail-upload"}>
+                            <p
+                              className={
+                                untutorial.steps[index].ThumbnailFilename
+                                  ? "change"
+                                  : "add"
+                              }
+                              style={{ cursor: "pointer" }}
+                            >
+                              {untutorial.steps[index].ThumbnailFilename
+                                ? "Update Screenshot"
+                                : "+ Add Screenshot"}
+                            </p>
+                          </label>
                           <label
                             htmlFor={"step" + index + "-thumbnail-upload"}
                             className={
@@ -1151,17 +1154,20 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
 
                       {isAuthorized && lang === "Español" && (
                         <>
-                          <p
-                            className={
-                              untutorial.steps[index].ThumbnailFilenameSp
-                                ? "change"
-                                : "add"
-                            }
-                          >
-                            {untutorial.steps[index].ThumbnailFilenameSp
-                              ? "Update Screenshot (ES)"
-                              : "+ Add Screenshot (ES)"}
-                          </p>
+                          <label htmlFor={"step" + index + "-thumbnail-upload-sp"}>
+                            <p
+                              className={
+                                untutorial.steps[index].ThumbnailFilenameSp
+                                  ? "change"
+                                  : "add"
+                              }
+                              style={{ cursor: "pointer" }}
+                            >
+                              {untutorial.steps[index].ThumbnailFilenameSp
+                                ? "Update Screenshot (ES)"
+                                : "+ Add Screenshot (ES)"}
+                            </p>
+                          </label>
                           <label
                             htmlFor={"step" + index + "-thumbnail-upload-sp"}
                             className={
