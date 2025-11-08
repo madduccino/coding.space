@@ -16,14 +16,18 @@ const LazyImage = ({ file, className }) => {
   const [url, setUrl] = useState("/images/loading.gif");
   const [guid] = useState(generateGuid());
 
+  // Get the file path to use as a stable dependency
+  const filePath = file ? file.fullPath : null;
+
   // ComponentDidMount & ComponentDidUpdate equivalent
   useEffect(() => {
-    file.getDownloadURL().then((url) => {
-      setLoading(false);
-      setUrl(url);
-      console.log({ file, url }); // Logging the file and URL
-    });
-  }, [file]); // The useEffect hook will re-run if the 'file' prop changes.
+    if (file) {
+      file.getDownloadURL().then((url) => {
+        setLoading(false);
+        setUrl(url);
+      });
+    }
+  }, [filePath]); // Depend on the path string, not the object reference
 
   // Render
   return <img className={className} id={guid} key={guid} src={url} />;
