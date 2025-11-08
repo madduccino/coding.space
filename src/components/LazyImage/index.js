@@ -22,10 +22,17 @@ const LazyImage = ({ file, className }) => {
   // ComponentDidMount & ComponentDidUpdate equivalent
   useEffect(() => {
     if (file) {
-      file.getDownloadURL().then((url) => {
-        setLoading(false);
-        setUrl(url);
-      });
+      file
+        .getDownloadURL()
+        .then((url) => {
+          setLoading(false);
+          setUrl(url);
+        })
+        .catch((error) => {
+          console.error("Error loading image:", error);
+          setLoading(false);
+          // Keep the loading gif as fallback
+        });
     }
   }, [filePath]); // Depend on the path string, not the object reference
 
