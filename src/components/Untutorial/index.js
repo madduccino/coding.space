@@ -114,10 +114,18 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
     if (Object.values(errorsRef.current).length === 0) {
       setUntutorial((currentUntutorial) => {
         // Get the author key - handle both object and string cases
-        const authorKey =
-          typeof currentUntutorial.Author === 'object' && currentUntutorial.Author?.key
-            ? currentUntutorial.Author.key
-            : currentUntutorial.Author;
+        let authorKey;
+        if (typeof currentUntutorial.Author === 'object' && currentUntutorial.Author?.key) {
+          authorKey = currentUntutorial.Author.key;
+        } else if (typeof currentUntutorial.Author === 'string') {
+          authorKey = currentUntutorial.Author;
+        } else {
+          console.error("CRITICAL: Author is invalid, cannot save:", currentUntutorial.Author);
+          setError("Cannot save - Author field is invalid");
+          return currentUntutorial;
+        }
+
+        console.log("Saving with Author key:", authorKey);
 
         // Create the data to save to Firebase (with Author as string key)
         const dataToSave = {
