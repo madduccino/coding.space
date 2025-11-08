@@ -653,15 +653,28 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
   );
 
   const deleteProjectHandler = useCallback(() => {
-    firebase.untutorial(key).remove();
-    window.location = ROUTES.LANDING;
+    firebase
+      .untutorial(key)
+      .remove()
+      .then(() => {
+        window.location = ROUTES.LANDING;
+      })
+      .catch((error) => {
+        console.error("Error deleting untutorial:", error);
+        setError(error.message);
+      });
   }, [firebase, key]);
 
   const chooseLang = useCallback(
     (event) => {
       setLang(event.target.value);
       if (authUser) {
-        firebase.profile(authUser.uid + "/lang").set(event.target.value);
+        firebase
+          .profile(authUser.uid + "/lang")
+          .set(event.target.value)
+          .catch((error) => {
+            console.error("Error saving language preference:", error);
+          });
       }
     },
     [authUser, firebase]
@@ -689,6 +702,11 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
             if (location.search.includes("loadProgress")) {
               loadProgress();
             }
+          })
+          .catch((error) => {
+            console.error("Error loading author profile:", error);
+            setError(error.message);
+            setLoading(false);
           });
       }
     });
