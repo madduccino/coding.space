@@ -595,10 +595,11 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
   }, []);
 
   const loadProgress = useCallback(() => {
-    if (authUser) {
+    if (authUser && untutorial.key) {
       firebase
         .progress(authUser.uid, untutorial.key)
-        .on("value", (snapshot) => {
+        .once("value")
+        .then((snapshot) => {
           if (snapshot.exists()) {
             let progress = snapshot.val();
             if (!progress.steps) progress.steps = [];
@@ -686,7 +687,8 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
     return () => {
       firebase.untutorial(key).off("value", unsubscribe);
     };
-  }, [firebase, key, location.search, loadProgress]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [firebase, key, location.search]);
 
   useEffect(() => {
     if (authUser && !init && lang !== authUser.lang) {
