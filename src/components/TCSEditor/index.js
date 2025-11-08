@@ -19,8 +19,17 @@ const TCSEditor = (props) => {
   });
 
   useEffect(() => {
-    setState((prevState) => ({ ...prevState, ...props }));
-  }, [props]);
+    setState((prevState) => ({
+      ...prevState,
+      text: props.text,
+      disabled: props.disabled,
+      buttonText: props.buttonText ? props.buttonText : "Edit",
+      selectOptions: props.selectOptions,
+      placeholder: props.placeholder,
+      type: props.type,
+      name: props.name
+    }));
+  }, [props.text, props.disabled, props.buttonText, props.selectOptions, props.placeholder, props.type, props.name]);
 
   const handleChange = (value) => {
     setState((prevState) => ({ ...prevState, text: value }));
