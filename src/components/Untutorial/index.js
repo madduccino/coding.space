@@ -135,11 +135,9 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
           })
           .catch((error) => setError(error.message));
 
-        // Keep Author as object in local state to avoid breaking image URLs
-        return {
-          ...currentUntutorial,
-          LastModified: dataToSave.LastModified,
-        };
+        // Don't update state here - let the Firebase listener handle it
+        // This prevents race conditions where Author becomes a string temporarily
+        return currentUntutorial;
       });
     }
   }, [firebase, key]);
@@ -700,18 +698,26 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
   useEffect(() => {
     const unsubscribe = firebase.untutorial(key).on("value", (snapshot) => {
       const untutorialData = snapshot.val();
-      if (untutorialData) {
+      console.log("Firebase data received, Author:", untutorialData?.Author);
+
+      if (untutorialData && untutorialData.Author) {
         firebase
           .profile(untutorialData.Author)
           .once("value")
           .then((snapshot2) => {
             const author = snapshot2.val();
-            untutorialData.Author = author;
-            setUntutorial(untutorialData);
-            setLoading(false);
+            if (author && author.key) {
+              untutorialData.Author = author;
+              setUntutorial(untutorialData);
+              setLoading(false);
 
-            if (location.search.includes("loadProgress")) {
-              loadProgress();
+              if (location.search.includes("loadProgress")) {
+                loadProgress();
+              }
+            } else {
+              console.error("Author profile not found, Author ID was:", untutorialData.Author);
+              setError("Author profile not found");
+              setLoading(false);
             }
           })
           .catch((error) => {
@@ -719,6 +725,9 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
             setError(error.message);
             setLoading(false);
           });
+      } else {
+        console.error("Untutorial data has undefined/missing Author field. Data:", untutorialData);
+        setLoading(false);
       }
     });
 
