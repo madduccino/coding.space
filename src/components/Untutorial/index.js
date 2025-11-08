@@ -13,8 +13,6 @@ import "./untutorial.scss";
 import { Helmet } from "react-helmet";
 
 const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
-  console.log("🚀 UNTUTORIAL COMPONENT LOADED - NEW CODE IS RUNNING!");
-
   const { key } = useParams();
   const location = useLocation();
   const history = useHistory();
@@ -126,8 +124,6 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
           setError("Cannot save - Author field is invalid");
           return currentUntutorial;
         }
-
-        console.log("Saving with Author key:", authorKey);
 
         // Create the data to save to Firebase (with Author as string key)
         const dataToSave = {
@@ -708,7 +704,6 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
   useEffect(() => {
     const unsubscribe = firebase.untutorial(key).on("value", (snapshot) => {
       const untutorialData = snapshot.val();
-      console.log("Firebase data received, Author:", untutorialData?.Author);
 
       if (untutorialData && untutorialData.Author) {
         firebase
@@ -1045,25 +1040,25 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
                         <>
                           <p
                             className={
-                              untutorial.steps[index].ThumbnailFilename
+                              untutorial.steps[index].ThumbnailFilenameSp
                                 ? "change"
                                 : "add"
                             }
                           >
-                            {untutorial.steps[index].ThumbnailFilename
-                              ? "Update Screenshot"
-                              : "+ Add Screenshot"}
+                            {untutorial.steps[index].ThumbnailFilenameSp
+                              ? "Update Screenshot (ES)"
+                              : "+ Add Screenshot (ES)"}
                           </p>
                           <label
-                            htmlFor={"step" + index + "-thumbnail-upload"}
+                            htmlFor={"step" + index + "-thumbnail-upload-sp"}
                             className={
-                              untutorial.steps[index].ThumbnailFilename
+                              untutorial.steps[index].ThumbnailFilenameSp
                                 ? "upload replace"
                                 : "upload"
                             }
                           >
                             <input
-                              id={"step" + index + "-thumbnail-upload"}
+                              id={"step" + index + "-thumbnail-upload-sp"}
                               type="file"
                               onChange={(event) =>
                                 handleStepThumbnailUpload(event, index)
