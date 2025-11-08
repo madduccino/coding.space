@@ -1069,6 +1069,11 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
                                 ? "change"
                                 : "add"
                             }
+                            style={
+                              untutorial.steps[index].ThumbnailFilename
+                                ? { position: "relative", zIndex: 1, background: "transparent" }
+                                : {}
+                            }
                           >
                             <label
                               htmlFor={"step" + index + "-thumbnail-upload"}
@@ -1079,49 +1084,52 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
                                 : "+ Add Screenshot"}
                             </label>
                           </p>
-                          <label
-                            htmlFor={"step" + index + "-thumbnail-upload"}
-                            className={
-                              untutorial.steps[index].ThumbnailFilename
-                                ? "upload replace"
-                                : "upload"
-                            }
-                            style={
-                              untutorial.steps[index].ThumbnailFilename
-                                ? { display: "none" }
-                                : {}
-                            }
-                          >
-                            <input
-                              id={"step" + index + "-thumbnail-upload"}
-                              type="file"
-                              onChange={(event) =>
-                                handleStepThumbnailUpload(event, index)
-                              }
-                            />
-                          </label>
+                          {!untutorial.steps[index].ThumbnailFilename && (
+                            <label
+                              htmlFor={"step" + index + "-thumbnail-upload"}
+                              className="upload"
+                            >
+                              <input
+                                id={"step" + index + "-thumbnail-upload"}
+                                type="file"
+                                onChange={(event) =>
+                                  handleStepThumbnailUpload(event, index)
+                                }
+                              />
+                            </label>
+                          )}
                           {untutorial.steps[index].ThumbnailFilename &&
                             untutorial.steps[index].ThumbnailFilename.length !==
                               0 && (
-                              <button
-                                type="button"
-                                onClick={(e) =>
-                                  handleStepThumbnailDelete(e, index, false)
-                                }
-                                style={{
-                                  marginLeft: "10px",
-                                  padding: "5px 10px",
-                                  background: "#dc3545",
-                                  color: "white",
-                                  border: "none",
-                                  borderRadius: "3px",
-                                  cursor: "pointer",
-                                  position: "relative",
-                                  zIndex: 100,
-                                }}
-                              >
-                                Delete
-                              </button>
+                              <>
+                                <input
+                                  id={"step" + index + "-thumbnail-upload"}
+                                  type="file"
+                                  onChange={(event) =>
+                                    handleStepThumbnailUpload(event, index)
+                                  }
+                                  style={{ display: "none" }}
+                                />
+                                <button
+                                  type="button"
+                                  onClick={(e) =>
+                                    handleStepThumbnailDelete(e, index, false)
+                                  }
+                                  style={{
+                                    marginLeft: "10px",
+                                    padding: "5px 10px",
+                                    background: "#dc3545",
+                                    color: "white",
+                                    border: "none",
+                                    borderRadius: "3px",
+                                    cursor: "pointer",
+                                    position: "relative",
+                                    zIndex: 100,
+                                  }}
+                                >
+                                  Delete
+                                </button>
+                              </>
                             )}
                         </>
                       )}
@@ -1156,6 +1164,11 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
                                 ? "change"
                                 : "add"
                             }
+                            style={
+                              untutorial.steps[index].ThumbnailFilenameSp
+                                ? { position: "relative", zIndex: 1, background: "transparent" }
+                                : {}
+                            }
                           >
                             <label
                               htmlFor={"step" + index + "-thumbnail-upload-sp"}
@@ -1166,49 +1179,52 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
                                 : "+ Add Screenshot (ES)"}
                             </label>
                           </p>
-                          <label
-                            htmlFor={"step" + index + "-thumbnail-upload-sp"}
-                            className={
-                              untutorial.steps[index].ThumbnailFilenameSp
-                                ? "upload replace"
-                                : "upload"
-                            }
-                            style={
-                              untutorial.steps[index].ThumbnailFilenameSp
-                                ? { display: "none" }
-                                : {}
-                            }
-                          >
-                            <input
-                              id={"step" + index + "-thumbnail-upload-sp"}
-                              type="file"
-                              onChange={(event) =>
-                                handleStepThumbnailUpload(event, index)
-                              }
-                            />
-                          </label>
+                          {!untutorial.steps[index].ThumbnailFilenameSp && (
+                            <label
+                              htmlFor={"step" + index + "-thumbnail-upload-sp"}
+                              className="upload"
+                            >
+                              <input
+                                id={"step" + index + "-thumbnail-upload-sp"}
+                                type="file"
+                                onChange={(event) =>
+                                  handleStepThumbnailUpload(event, index)
+                                }
+                              />
+                            </label>
+                          )}
                           {untutorial.steps[index].ThumbnailFilenameSp &&
                             untutorial.steps[index].ThumbnailFilenameSp.length !==
                               0 && (
-                              <button
-                                type="button"
-                                onClick={(e) =>
-                                  handleStepThumbnailDelete(e, index, true)
-                                }
-                                style={{
-                                  marginLeft: "10px",
-                                  padding: "5px 10px",
-                                  background: "#dc3545",
-                                  color: "white",
-                                  border: "none",
-                                  borderRadius: "3px",
-                                  cursor: "pointer",
-                                  position: "relative",
-                                  zIndex: 100,
-                                }}
-                              >
-                                Delete
-                              </button>
+                              <>
+                                <input
+                                  id={"step" + index + "-thumbnail-upload-sp"}
+                                  type="file"
+                                  onChange={(event) =>
+                                    handleStepThumbnailUpload(event, index)
+                                  }
+                                  style={{ display: "none" }}
+                                />
+                                <button
+                                  type="button"
+                                  onClick={(e) =>
+                                    handleStepThumbnailDelete(e, index, true)
+                                  }
+                                  style={{
+                                    marginLeft: "10px",
+                                    padding: "5px 10px",
+                                    background: "#dc3545",
+                                    color: "white",
+                                    border: "none",
+                                    borderRadius: "3px",
+                                    cursor: "pointer",
+                                    position: "relative",
+                                    zIndex: 100,
+                                  }}
+                                >
+                                  Delete
+                                </button>
+                              </>
                             )}
                         </>
                       )}
