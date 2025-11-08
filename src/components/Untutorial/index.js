@@ -794,9 +794,49 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
 
       <div className={`thumbnail hero ${showiframe ? "blur" : ""}`}>
         {isAuthorized && (
+<<<<<<< HEAD
           <label htmlFor="files" className="upload">
             <input id="files" type="file" onChange={handleThumbnailUpload} />
           </label>
+=======
+          <>
+            <label
+              htmlFor="files"
+              className="upload"
+              style={{ pointerEvents: "none" }}
+            >
+              <input
+                id="files"
+                type="file"
+                onChange={handleThumbnailUpload}
+                style={{ pointerEvents: "auto" }}
+              />
+            </label>
+            {untutorial.ThumbnailFilename &&
+              untutorial.ThumbnailFilename.length !== 0 && (
+                <button
+                  type="button"
+                  onClick={(e) => handleThumbnailDelete(e)}
+                  className="delete-thumbnail"
+                  style={{
+                    position: "absolute",
+                    top: "10px",
+                    right: "10px",
+                    padding: "5px 10px",
+                    background: "rgba(255, 0, 0, 0.7)",
+                    color: "white",
+                    border: "none",
+                    borderRadius: "3px",
+                    cursor: "pointer",
+                    zIndex: 10,
+                    pointerEvents: "auto",
+                  }}
+                >
+                  Delete Image
+                </button>
+              )}
+          </>
+>>>>>>> 656857d (fix: add pointer-events CSS to fix delete button click interception)
         )}
         {uploading && <progress value={uploadPercent} max="100" />}
         {untutorial.ThumbnailFilename &&
@@ -948,6 +988,7 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
                                 ? "upload replace"
                                 : "upload"
                             }
+                            style={{ pointerEvents: "none" }}
                           >
                             <input
                               id={"step" + index + "-thumbnail-upload"}
@@ -955,8 +996,34 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
                               onChange={(event) =>
                                 handleStepThumbnailUpload(event, index)
                               }
+                              style={{ pointerEvents: "auto" }}
                             />
                           </label>
+<<<<<<< HEAD
+=======
+                          {untutorial.steps[index].ThumbnailFilename &&
+                            untutorial.steps[index].ThumbnailFilename.length !==
+                              0 && (
+                              <button
+                                type="button"
+                                onClick={(e) =>
+                                  handleStepThumbnailDelete(e, index, false)
+                                }
+                                style={{
+                                  marginLeft: "10px",
+                                  padding: "5px 10px",
+                                  background: "#dc3545",
+                                  color: "white",
+                                  border: "none",
+                                  borderRadius: "3px",
+                                  cursor: "pointer",
+                                  pointerEvents: "auto",
+                                }}
+                              >
+                                Delete
+                              </button>
+                            )}
+>>>>>>> 656857d (fix: add pointer-events CSS to fix delete button click interception)
                         </>
                       )}
 
@@ -1002,6 +1069,7 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
                                 ? "upload replace"
                                 : "upload"
                             }
+                            style={{ pointerEvents: "none" }}
                           >
                             <input
                               id={"step" + index + "-thumbnail-upload"}
@@ -1009,8 +1077,34 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
                               onChange={(event) =>
                                 handleStepThumbnailUpload(event, index)
                               }
+                              style={{ pointerEvents: "auto" }}
                             />
                           </label>
+<<<<<<< HEAD
+=======
+                          {untutorial.steps[index].ThumbnailFilenameSp &&
+                            untutorial.steps[index].ThumbnailFilenameSp.length !==
+                              0 && (
+                              <button
+                                type="button"
+                                onClick={(e) =>
+                                  handleStepThumbnailDelete(e, index, true)
+                                }
+                                style={{
+                                  marginLeft: "10px",
+                                  padding: "5px 10px",
+                                  background: "#dc3545",
+                                  color: "white",
+                                  border: "none",
+                                  borderRadius: "3px",
+                                  cursor: "pointer",
+                                  pointerEvents: "auto",
+                                }}
+                              >
+                                Delete
+                              </button>
+                            )}
+>>>>>>> 656857d (fix: add pointer-events CSS to fix delete button click interception)
                         </>
                       )}
 
