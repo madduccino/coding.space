@@ -536,7 +536,10 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
   );
 
   // Delete handlers
-  const handleThumbnailDelete = useCallback(() => {
+  const handleThumbnailDelete = useCallback((e) => {
+    e.preventDefault();
+    e.stopPropagation();
+
     setUntutorial((currentUntutorial) => {
       const updatedUntutorial = { ...currentUntutorial };
 
@@ -553,7 +556,10 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
   }, [authUser, saveChangesHandler]);
 
   const handleStepThumbnailDelete = useCallback(
-    (step, isSpanish = false) => {
+    (e, step, isSpanish = false) => {
+      e.preventDefault();
+      e.stopPropagation();
+
       setUntutorial((currentUntutorial) => {
         const updatedUntutorial = { ...currentUntutorial };
 
@@ -897,7 +903,7 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
               untutorial.ThumbnailFilename.length !== 0 && (
                 <button
                   type="button"
-                  onClick={handleThumbnailDelete}
+                  onClick={(e) => handleThumbnailDelete(e)}
                   className="delete-thumbnail"
                   style={{
                     position: "absolute",
@@ -1081,8 +1087,8 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
                               0 && (
                               <button
                                 type="button"
-                                onClick={() =>
-                                  handleStepThumbnailDelete(index, false)
+                                onClick={(e) =>
+                                  handleStepThumbnailDelete(e, index, false)
                                 }
                                 style={{
                                   marginLeft: "10px",
@@ -1156,8 +1162,8 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
                               0 && (
                               <button
                                 type="button"
-                                onClick={() =>
-                                  handleStepThumbnailDelete(index, true)
+                                onClick={(e) =>
+                                  handleStepThumbnailDelete(e, index, true)
                                 }
                                 style={{
                                   marginLeft: "10px",
