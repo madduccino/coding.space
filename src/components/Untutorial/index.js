@@ -904,8 +904,17 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
       <div className={`thumbnail hero ${showiframe ? "blur" : ""}`}>
         {isAuthorized && (
           <>
-            <label htmlFor="files" className="upload">
-              <input id="files" type="file" onChange={handleThumbnailUpload} />
+            <label
+              htmlFor="files"
+              className="upload"
+              style={{ pointerEvents: "none" }}
+            >
+              <input
+                id="files"
+                type="file"
+                onChange={handleThumbnailUpload}
+                style={{ pointerEvents: "auto" }}
+              />
             </label>
             {untutorial.ThumbnailFilename &&
               untutorial.ThumbnailFilename.length !== 0 && (
@@ -924,6 +933,7 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
                     borderRadius: "3px",
                     cursor: "pointer",
                     zIndex: 10,
+                    pointerEvents: "auto",
                   }}
                 >
                   Delete Image
@@ -1081,6 +1091,7 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
                                 ? "upload replace"
                                 : "upload"
                             }
+                            style={{ pointerEvents: "none" }}
                           >
                             <input
                               id={"step" + index + "-thumbnail-upload"}
@@ -1088,6 +1099,7 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
                               onChange={(event) =>
                                 handleStepThumbnailUpload(event, index)
                               }
+                              style={{ pointerEvents: "auto" }}
                             />
                           </label>
                           {untutorial.steps[index].ThumbnailFilename &&
@@ -1106,6 +1118,7 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
                                   border: "none",
                                   borderRadius: "3px",
                                   cursor: "pointer",
+                                  pointerEvents: "auto",
                                 }}
                               >
                                 Delete
@@ -1156,6 +1169,7 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
                                 ? "upload replace"
                                 : "upload"
                             }
+                            style={{ pointerEvents: "none" }}
                           >
                             <input
                               id={"step" + index + "-thumbnail-upload-sp"}
@@ -1163,6 +1177,7 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
                               onChange={(event) =>
                                 handleStepThumbnailUpload(event, index)
                               }
+                              style={{ pointerEvents: "auto" }}
                             />
                           </label>
                           {untutorial.steps[index].ThumbnailFilenameSp &&
@@ -1181,6 +1196,7 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
                                   border: "none",
                                   borderRadius: "3px",
                                   cursor: "pointer",
+                                  pointerEvents: "auto",
                                 }}
                               >
                                 Delete
