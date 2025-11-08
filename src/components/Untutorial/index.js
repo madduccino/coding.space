@@ -595,7 +595,7 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
   }, []);
 
   const loadProgress = useCallback(() => {
-    if (authUser && untutorial.key) {
+    if (authUser && untutorial.key && untutorial.steps) {
       firebase
         .progress(authUser.uid, untutorial.key)
         .once("value")
@@ -613,13 +613,22 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
               untut: key,
               url: "",
             };
-            untutorial.steps.forEach((step, i) => {
-              progress.steps.push({ Status: "DRAFT", Comments: "" });
-            });
+            if (Array.isArray(untutorial.steps)) {
+              untutorial.steps.forEach((step, i) => {
+                progress.steps.push({ Status: "DRAFT", Comments: "" });
+              });
+            }
             snapshot.ref.set({ ...progress }).then(() => {
               setProgress(progress);
+            }).catch((error) => {
+              console.error("Error setting progress:", error);
+              setError(error.message);
             });
           }
+        })
+        .catch((error) => {
+          console.error("Error loading progress:", error);
+          setError(error.message);
         });
     }
 
