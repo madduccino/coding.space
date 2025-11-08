@@ -535,6 +535,47 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
     [authUser, firebase, lang, saveChangesHandler]
   );
 
+  // Delete handlers
+  const handleThumbnailDelete = useCallback(() => {
+    setUntutorial((currentUntutorial) => {
+      const updatedUntutorial = { ...currentUntutorial };
+
+      if (authUser && authUser.roles["STUDENT"]) {
+        updatedUntutorial.Status = "DRAFT";
+      }
+
+      updatedUntutorial.ThumbnailFilename = "";
+      setDirty(true);
+      setTimeout(saveChangesHandler, 0);
+
+      return updatedUntutorial;
+    });
+  }, [authUser, saveChangesHandler]);
+
+  const handleStepThumbnailDelete = useCallback(
+    (step, isSpanish = false) => {
+      setUntutorial((currentUntutorial) => {
+        const updatedUntutorial = { ...currentUntutorial };
+
+        if (authUser && authUser.roles["STUDENT"]) {
+          updatedUntutorial.Status = "DRAFT";
+        }
+
+        if (isSpanish) {
+          updatedUntutorial.steps[step].ThumbnailFilenameSp = "";
+        } else {
+          updatedUntutorial.steps[step].ThumbnailFilename = "";
+        }
+
+        setDirty(true);
+        setTimeout(saveChangesHandler, 0);
+
+        return updatedUntutorial;
+      });
+    },
+    [authUser, saveChangesHandler]
+  );
+
   // Category and skills handlers
   const handleSkillsOnChange = useCallback((event) => {
     if (event.target.value !== "-1") {
@@ -848,9 +889,32 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
 
       <div className={`thumbnail hero ${showiframe ? "blur" : ""}`}>
         {isAuthorized && (
-          <label htmlFor="files" className="upload">
-            <input id="files" type="file" onChange={handleThumbnailUpload} />
-          </label>
+          <>
+            <label htmlFor="files" className="upload">
+              <input id="files" type="file" onChange={handleThumbnailUpload} />
+            </label>
+            {untutorial.ThumbnailFilename &&
+              untutorial.ThumbnailFilename.length !== 0 && (
+                <button
+                  onClick={handleThumbnailDelete}
+                  className="delete-thumbnail"
+                  style={{
+                    position: "absolute",
+                    top: "10px",
+                    right: "10px",
+                    padding: "5px 10px",
+                    background: "rgba(255, 0, 0, 0.7)",
+                    color: "white",
+                    border: "none",
+                    borderRadius: "3px",
+                    cursor: "pointer",
+                    zIndex: 10,
+                  }}
+                >
+                  Delete Image
+                </button>
+              )}
+          </>
         )}
         {uploading && <progress value={uploadPercent} max="100" />}
         {untutorial.ThumbnailFilename &&
@@ -1011,6 +1075,26 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
                               }
                             />
                           </label>
+                          {untutorial.steps[index].ThumbnailFilename &&
+                            untutorial.steps[index].ThumbnailFilename.length !==
+                              0 && (
+                              <button
+                                onClick={() =>
+                                  handleStepThumbnailDelete(index, false)
+                                }
+                                style={{
+                                  marginLeft: "10px",
+                                  padding: "5px 10px",
+                                  background: "#dc3545",
+                                  color: "white",
+                                  border: "none",
+                                  borderRadius: "3px",
+                                  cursor: "pointer",
+                                }}
+                              >
+                                Delete
+                              </button>
+                            )}
                         </>
                       )}
 
@@ -1065,6 +1149,26 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
                               }
                             />
                           </label>
+                          {untutorial.steps[index].ThumbnailFilenameSp &&
+                            untutorial.steps[index].ThumbnailFilenameSp.length !==
+                              0 && (
+                              <button
+                                onClick={() =>
+                                  handleStepThumbnailDelete(index, true)
+                                }
+                                style={{
+                                  marginLeft: "10px",
+                                  padding: "5px 10px",
+                                  background: "#dc3545",
+                                  color: "white",
+                                  border: "none",
+                                  borderRadius: "3px",
+                                  cursor: "pointer",
+                                }}
+                              >
+                                Delete
+                              </button>
+                            )}
                         </>
                       )}
 
