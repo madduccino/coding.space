@@ -1,0 +1,168 @@
+<html>
+
+<head>
+  <title>Build a Login Page with Firebase</title>
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css?family=Quicksand" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="./styles-2.css">
+  <link rel="shortcut icon" href="images/favicon.ico" type="images/x-icon">
+</head>
+
+<body>
+  <!---->
+  <!---->
+  <!--NAVBAR-->
+  <!---->
+  <!---->
+  <div class="navbar navbar-inverse navbar-fixed-left" style="width: 165px">
+    <span class="navbar-brand white">Need Help?</span>
+    <ul class="nav navbar-nav">
+      <li><a href="web-guide.html" target="_blank">Intro to Web Programming</a></li>
+      <li><a href="html-guide.html" target="_blank">Intro to HTML</a></li>
+      <li><a href="css-guide.html" target="_blank">Intro to CSS</a></li>
+      <li><a href="woof-to-js.html" target="_blank">From Woof to JavaScript</a></li>
+      <li><a href="reference-guide.html" target="_blank">Web Reference Guide</a></li>
+      <li>
+        <form method="get" action="https://www.google.com/search" target="_blank"><input id="g-input" type="text" name="q" placeholder="Search Google"></form>
+      </li>
+    </ul>
+  </div>
+
+  <div class="container">
+    <h1>Build a Login Page with Firebase</h1>
+    <div class="steps">
+      <p>In this project, you're going to make a login page using Firebase! When you're ready, head on over to <a target="_blank" href="https://firebase.google.com/">Firebase</a> and click "Get Started."</p>
+      <iframe width="305" height="268" src="./code/login-page-code.html" scrolling="no"></iframe>
+      <p><a href="./code/login-page-code.html" target="_blank">Click here to view fullscreen.</a></p>
+    </div>
+
+    <div class="steps">
+      <p>1. To use Firebase, you will need a Google account. If you have one already, you can log in with it. If you don't, ask a teacher to log you in with students@thecodingspace.com credentials.
+      </p>
+      <img width="305" height="268" src="./steps/login-page/step-1.png"/>
+    </div>
+
+    <div class="steps">
+      <p>2. In the Firebase console, you'll see an option to add a new project. Go ahead and add one!</p>
+       <img width="305" height="268" src="./steps/login-page/step-2.png"/>
+    </div>
+
+    <div class="steps">
+      <p>3. Once you create your project, you'll see a number of options. Choose the one that allows you to add Firebase to your web app. Follow Firebase's instructions on how to add it to an HTML page.</p>
+       <img width="305" height="268" src="./steps/login-page/step-3.png"/>
+    </div>
+    
+    <div class="steps">
+      <p>4. In the <a href="https://console.firebase.google.com/" target="_blank">Firebase console</a>, click on your project and review the menu that appears on the left. Figure out how to view your current list of users. Then set up an email/password sign-in method.</p>
+      <img width="305" height="268" src="./steps/login-page/step-4.png">
+    </div>
+
+    <div class="steps">
+      <p>5. In the HTML page that you added Firebase initialization code to, add an <code>h1</code> tag that tells users a little bit about the page. Underneath that, add a <code>button</code> that says "Sign Up."</p>
+       <iframe width="305" height="268" src="./steps/login-page/step-5.html" scrolling="no"></iframe>
+       <p><a href="./steps/login-page/step-5.html" target="_blank">Click here to view fullscreen.</a></p>
+    </div>
+
+    <div class="steps">
+      <p>6. Next add <code>input</code> tags that will capture a user's email address and password. </p>
+      <iframe width="305" height="268" src="./steps/login-page/step-6.html" scrolling="no"></iframe>
+      <p><a href="./steps/login-page/step-6.html" target="_blank">Click here to view fullscreen.</a></p>
+    </div>
+
+    <div class="steps">
+      <p>7. Attach an event to the signup button that when clicked creates an account on Firebase with the given email address and password. See Firebase's <a href="https://firebase.google.com/docs/auth/web/start?authuser=1" target="_blank">authentication docs</a> for instructions on how to do this.</p>
+     <iframe width="305" height="268" src="./steps/login-page/step-7.html" scrolling="no"></iframe>
+      <p><a href="./steps/login-page/step-7.html" target="_blank">Click here to view fullscreen.</a></p>
+    </div>
+
+    <div class="steps">
+      <p>8. Test what you have so far. Enter an email address and password into the input fields in your HTML page and click the signup button. Then revisit the Firebase console. Did the user list update with the email address you submitted? If so, great! Move on to step 9. If not, check the browser console (CTRL+SHIFT+J in Chrome or use the Inspect tool) for errors and troubleshoot.</p>
+       <img width="305" height="268" src="./steps/login-page/step-8.png">
+    </div>
+
+    <div class="steps">
+      <p>9. Now you need some way to indicate to users that they are signed up. Read the Firebase docs and figure out how to tell if users have successfully signed up. If they have, hide the form, change the signup button so that it now says "Sign Out," and show a message welcoming them.</p>
+      <iframe width="305" height="268" src="./steps/login-page/step-9.html" scrolling="no"></iframe>
+      <p><a href="./steps/login-page/step-9.html" target="_blank">Click here to view fullscreen.</a></p>
+    </div>
+
+    <div class="steps">
+      <p>10. Signed in users will need a way to sign out. Search through the Firebase docs and find a way to sign users out. If a user signs out successfully, make the screen look the same as it did before signing up. (When testing this, make sure to use an email address that is not already in Firebase!)</p>
+      <iframe width="305" height="268" src="./steps/login-page/step-10.html" scrolling="no"></iframe>
+      <p><a href="./steps/login-page/step-10.html" target="_blank">Click here to view fullscreen.</a></p>
+    </div>
+
+    <div class="steps">
+      <p>11. What if the user wants to sign back in later? Create another button that says "Log In." </p>
+      <iframe width="305" height="268" src="./steps/login-page/step-11.html" scrolling="no"></iframe>
+      <p><a href="./steps/login-page/step-11.html" target="_blank">Click here to view fullscreen.</a></p>
+    </div>
+    
+    <div class="steps">
+      <p>12. Search through the Firebase docs and figure out how to make it so that when the Login button is clicked, a user who already has an account is logged in. If this happens successfully, make the screen look the same way as it does when a user signs up successfully.</p>
+      <iframe width="305" height="268" src="./steps/login-page/step-12.html" scrolling="no"></iframe>
+      <p><a href="./steps/login-page/step-12.html" target="_blank">Click here to view fullscreen.</a></p>
+    </div>
+    
+      <div class="steps">
+      <p>13. Sometimes Firebase will throw errors preventing the user from signing up or logging in. For instance, Firebase will not allow someone to sign up if the password is less than 6 characters. Check out the Firebase code that you've added to your HTML doc and determine how errors are handled. Display the error messages on your HTML page if they occur. In the example below, try signing up with a password that is 3 characters long.</p>
+      <iframe width="305" height="268" src="./steps/login-page/step-13.html" scrolling="no"></iframe>
+      <p><a href="./steps/login-page/step-13.html" target="_blank">Click here to view fullscreen.</a></p>
+    </div>
+    
+    <div class="steps">
+      <p>14. Make it so that you only see the Signup and Login buttons when the page loads. Then when one button is clicked, show the form and hide the button that was not clicked. Make sure the first button click doesn't submit any data and just reveals the form.</p>
+      <iframe width="305" height="268" src="./steps/login-page/step-14.html" scrolling="no"></iframe>
+      <p><a href="./steps/login-page/step-14.html" target="_blank">Click here to view fullscreen.</a></p>
+    </div>
+    
+    <div class="steps">
+      <p>15. Once a button is clicked and the form is showing, make it so that when the user clicks the login or signup button again, an attempt is made to log the user in or sign the user up, respectively.</p>
+      <iframe width="305" height="268" src="./steps/login-page/step-15.html" scrolling="no"></iframe>
+      <p><a href="./steps/login-page/step-15.html" target="_blank">Click here to view fullscreen.</a></p>
+    </div>
+    
+    <div class="steps">
+      <p>16. What if the user didn't mean to click a button? Add in an option to close the form.</p>
+      <iframe width="305" height="268" src="./steps/login-page/step-16.html" scrolling="no"></iframe>
+      <p><a href="./steps/login-page/step-16.html" target="_blank">Click here to view fullscreen.</a></p>
+    </div>
+    
+    <div class="steps">
+      <p>17. What if the user meant to click the signup button instead of the login button or vice versa? Add in a way to switch between the two sign-in types.</p>
+      <iframe width="305" height="268" src="./steps/login-page/step-17.html" scrolling="no"></iframe>
+      <p><a href="./steps/login-page/step-17.html" target="_blank">Click here to view fullscreen.</a></p>
+    </div>
+    
+    <div class="steps">
+      <p>18. What if a user forgets their password? Read the Firebase docs and figure out how to add an option to reset the password. Make it appear only when the user clicks the login button.</p>
+      <iframe width="305" height="268" src="./steps/login-page/step-18.html" scrolling="no"></iframe>
+      <p><a href="./steps/login-page/step-18.html" target="_blank">Click here to view fullscreen.</a></p>
+    </div>
+    
+      <div class="steps">
+      <p>19. Use CSS to make your page look more inviting. Add a background image or color, jazz up the buttons, find the perfect font - whatever looks good to you!</p>
+      <iframe width="305" height="268" src="./code/login-page-code.html" scrolling="no"></iframe>
+      <p><a href="./code/login-page-code.html" target="_blank">Click here to view fullscreen.</a></p>
+    </div>
+    
+
+  </div>
+  <script>
+    (function(i, s, o, g, r, a, m) {
+      i['GoogleAnalyticsObject'] = r;
+      i[r] = i[r] || function() {
+        (i[r].q = i[r].q || []).push(arguments)
+      }, i[r].l = 1 * new Date();
+      a = s.createElement(o),
+        m = s.getElementsByTagName(o)[0];
+      a.async = 1;
+      a.src = g;
+      m.parentNode.insertBefore(a, m)
+    })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+    ga('create', 'UA-86847686-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+</body>
+
+</html>

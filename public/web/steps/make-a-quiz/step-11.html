@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Which Dog Breed Are You?</title>
+
+    <!-- Google fonts-->
+    <link
+      href="https://fonts.googleapis.com/css?family=Maven+Pro:900|Open+Sans|Roboto|Roboto+Condensed"
+      rel="stylesheet"
+    />
+
+    <!--jQuery library-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <script>
+      $(document).ready(function () {
+        select("#one");
+
+        function select(answer) {
+          $(answer + " div").click(function () {
+            console.log(this);
+            $(answer + " div").removeClass("highlight");
+            $(this).addClass("highlight");
+          });
+        }
+        // Create object to store dog breed information and map answers to dog
+        var dog = {
+          data: [
+            {
+              breed: "golden retriever",
+              count: 0,
+              pic: "./images/Golden-Retriever.jpg",
+              desc: "You are eager to please and friendly with all. People know they can depend on you, and you know just how to cheer them up!",
+            },
+            {
+              breed: "irish setter",
+              count: 0,
+              pic: "./images/irish-setter.jpg",
+              desc: "You thrive on lots of exercise and athletic activities. You're good-natured and enjoy the company of others. Some may call you stubborn, but you just know what you want!",
+            },
+            {
+              breed: "chiahuahua",
+              count: 0,
+              pic: "./images/Chihuahua_Breed.jpg",
+              desc: "You have a quirky sense of humor and easily entertain all of those around you. You are very loyal to the ones you love but can be slightly suspicious of strangers.",
+            },
+            {
+              breed: "pug",
+              count: 0,
+              pic: "./images/pug.jpg",
+              desc: "You have excellent manners and seldom get into mischief. Although you are happy to be around others, you're just as satisfied with a nice solitary nap.",
+            },
+          ],
+        };
+        $("#result").show();
+        $("#result-title").html("<h3>What Dog Breed Are You?</h3>");
+        $("#result-outer-box").addClass("result-outer-box");
+        $("#result-inner-box").html(
+          "<div><img src=" +
+            dog.data[0].pic +
+            " /></div><div><h3 id='result-header'>You Got: " +
+            dog.data[0].breed +
+            "</h3></div> <div><p>" +
+            dog.data[0].desc +
+            "</p></div> "
+        );
+        $("#result-inner-box").addClass("result-inner-box");
+      });
+    </script>
+
+    <style>
+      html,
+      body {
+        width: 100%;
+        height: 100%;
+      }
+
+      body {
+        background-color: #ededed;
+        margin: 0;
+        font-family: "Open Sans";
+      }
+
+      img {
+        width: 100%;
+        height: 100%;
+      }
+
+      .container {
+        margin: 5%;
+      }
+
+      .header {
+        color: #e32;
+        font-family: "Maven Pro";
+        font-size: 22px;
+        font-weight: 900;
+        background: #fff;
+        margin: 0;
+        box-shadow: 0 2px 2px #ccc;
+        width: 100%;
+        padding: 10px 1%;
+      }
+
+      .smallD {
+        font-size: 18px;
+      }
+
+      .answers {
+        display: flex;
+        flex-flow: row wrap;
+        align-content: stretch;
+        align-items: stretch;
+        color: #fff;
+        cursor: pointer;
+      }
+
+      .answers div {
+        text-align: center;
+        opacity: 0.6;
+        width: 48%;
+        margin: 1%;
+        font-size: 18px;
+      }
+
+      h2 {
+        font-size: 18px;
+      }
+
+      .answers div:hover {
+        background-color: #1d6faf;
+      }
+
+      .answers div img:hover {
+        opacity: 1;
+      }
+
+      .answers div.highlight {
+        opacity: 1;
+        background-color: #0e548c;
+      }
+
+      .answers div.highlight img {
+        opacity: 1;
+      }
+
+      .result-outer-box {
+        background-color: rgb(155, 93, 251);
+        padding: 10px;
+        color: #fff;
+      }
+
+      .result-inner-box {
+        background-color: #fff;
+        padding: 20px;
+        margin: 20px 0;
+        color: #000;
+        display: flex;
+        flex-flow: row wrap;
+        align-items: flex-start;
+      }
+
+      .result-inner-box div {
+        flex: 0 1 auto;
+      }
+
+      .result-inner-box p {
+        margin-right: 50px;
+        font-size: 12px;
+      }
+
+      .result-inner-box h3 {
+        color: #000;
+        font-size: 16px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <!--Display result-->
+    <div class="container">
+      <div id="result">
+        <div id="result-outer-box">
+          <div id="result-title"></div>
+          <div style="display: block" id="result-inner-box"></div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

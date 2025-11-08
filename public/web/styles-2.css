@@ -1,0 +1,108 @@
+html body {
+    background: linear-gradient(37deg, #8972DD, #293CAE);
+    background-repeat: no-repeat; 
+    font-family: 'Quicksand' ,sans-serif !important;
+    text-align: center;
+}
+
+h1 {
+    margin-top: 20px;
+    text-align: center;
+    color:white;
+}
+h2 {
+    font-weight: 700;
+    
+}
+p {font-size: 140%;}
+
+iframe {
+    border: 1px solid #000;
+	border-radius: 2px;
+	overflow: hidden;
+}
+
+code {
+    border: 1px solid #DDD;
+}
+
+pre > code {
+    border: none;
+}
+
+.navbar-fixed-left {
+  width: 140px;
+  position: fixed;
+  border-radius: 0;
+  height: 100%;
+  background-color: #0099ff;
+  border: none;
+}
+
+.navbar-fixed-left .navbar-nav > li {
+  float: none;
+  width: 139px;
+}
+
+.navbar-fixed-left + .container {
+  padding-left: 160px;
+}
+
+.white {
+    color: white;
+}
+
+.navbar-inverse .navbar-brand {
+    color: black;   
+}
+
+.navbar-inverse .navbar-brand:hover, 
+.navbar-inverse .navbar-brand:focus {
+    color: black;
+}
+
+.navbar .nav > li > a {
+    color:  white;
+}
+
+.navbar .nav > li > a:hover {
+    color:  black;
+}
+
+
+.steps {
+    
+    width: 485px;
+    margin: 15px auto;
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.6);
+    border-radius: 6px;
+    padding: 15px;
+    color:white;
+}
+
+.sectionhead {
+    background-color: #7EA9C9;
+    color: white;
+    height: 50px;
+    padding-left: 20px;
+}
+
+.row {
+    margin-bottom: 20px;
+}
+
+#submit {
+    width: 485px;
+    margin: auto;
+}
+
+#g-input {
+    margin-top: 25px;
+    margin-left: 5px;
+    width: 100%;
+}
+
+
+
+

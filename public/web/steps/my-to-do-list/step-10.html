@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>My To-Do List</title>
+        <link href="https://fonts.googleapis.com/css?family=Short+Stack" rel="stylesheet">
+        <style>
+            body{
+              background-image: url('../../images/my-to-do-list-background.jpg');
+              background-size: cover;
+              text-align: center; 
+              font-family: "short stack";
+            }
+            h1 {
+              color: #d42e00;
+              font-size: 7vh;
+            }
+            #textBox {
+              padding: 12px 50px 12px 10px;
+              border: 0;
+              margin: 5px 20px;
+              box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.16), 0 0 0 1px rgba(0, 0, 0, 0.08);
+            }
+            #add {
+                box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.16), 0 0 0 1px rgba(0, 0, 0, 0.08);
+                background-color: #d42e00;
+                border-color: #d42e00;
+                color: #fff;
+                padding: 12px;
+                border-radius: 3px;
+                font-size: 18px;
+                cursor: pointer;
+            }
+
+            ul {
+              padding: 20px;
+              background: #ffff99;
+              min-height: 450px;
+              box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+              text-align: left;
+              width: 450px;
+              margin: 20px auto;
+            }
+
+        </style>
+    </head>
+    <body>
+        <div id="container">
+          <h1>My To-Do List</h1>
+          <input id="textBox" type="text" placeholder="to do...">
+          <button id="add">add item</button>
+          <ul id="to-do"></ul>
+        </div>
+        <script>
+          
+          // Save list and input content 
+          var todo = document.getElementById("to-do");
+          var input = document.getElementById("textBox");
+          
+          // Create function to add li items and append to their ul parent
+          function createListElement() {
+            var item = document.createElement("LI");
+            var task = document.createElement("SPAN");
+            task.textContent = input.value;
+            item.appendChild(task);
+            todo.appendChild(item);
+          }
+          
+          // Add event listener to add button and call function when button pressed
+          document.getElementById("add").addEventListener("click", function() {
+            createListElement()
+          })
+          
+          // Add event listener to input field and call function when enter key pressed
+          document.getElementById("textBox").addEventListener("keydown", function(e) {
+            if (e.keyCode == 13) {
+             createListElement()
+            }
+          })
+        </script>  
+    </body>
+</html>

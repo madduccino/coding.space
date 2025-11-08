@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>My To-Do List</title>
+        <link href="https://fonts.googleapis.com/css?family=Short+Stack" rel="stylesheet">
+        <style>
+            body{
+              background-image: url('../../images/my-to-do-list-background.jpg');
+              background-size: cover;
+              text-align: center;  
+              font-family: "short stack";
+            }
+            h1 {
+              color: #d42e00;
+              font-size: 7vh;
+            }
+            
+            #textBox {
+              padding: 12px 50px 12px 10px;
+              border: 0;
+              margin: 5px 20px;
+              font-size: 18px;
+              box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.16), 0 0 0 1px rgba(0, 0, 0, 0.08);
+            }
+            
+            #add {
+                box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.16), 0 0 0 1px rgba(0, 0, 0, 0.08);
+                background-color: #d42e00;
+                border-color: #d42e00;
+                color: #fff;
+                padding: 12px;
+                border-radius: 3px;
+                font-size: 18px;
+                cursor: pointer;
+            }
+            
+            ul {
+              position: relative;
+              padding: 20px;
+              background: #ffff99;
+              min-height: 400px;
+              box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+              text-align: left;
+              width: 400px;
+              margin: 20px auto;
+            }
+            
+            li {
+              list-style: none;
+              margin-bottom: 20px;
+            }
+            
+            .trash {
+              position: absolute; 
+              right: 20px; 
+              text-align: center; 
+              cursor: pointer; 
+              width: 40px; 
+              height: 29px; 
+              vertical-align: middle;
+              margin-top: 4px;
+            }
+            
+            .done {
+              position: absolute; 
+              text-align: center; 
+              cursor: pointer; 
+              right: 80px; 
+              width: 30px; 
+              height: 30px;
+
+            }
+            
+            .cross-out {
+              text-decoration: line-through;
+            }
+
+        </style>
+    </head>
+    <body>
+        <div id="container">
+          <h1>My To-Do List</h1>
+          <input id="textBox" type="text" placeholder="to do...">
+          <button id="add">add item</button>
+          <ul id="to-do"></ul>
+        </div>
+        <script>
+          
+          // Save list and input content 
+          var todo = document.getElementById("to-do");
+          var input = document.getElementById("textBox");
+          
+          // Create function to add li items and append to their ul parent
+          function createListElement() {
+            var item = document.createElement("LI");
+            var task = document.createElement("SPAN");
+            task.textContent = input.value;
+            // Create trash can
+            var close = document.createElement("IMG");
+            close.src = "https://www.icon2s.com/wp-content/uploads/2013/07/ios7-trash-icon.png";
+            close.className = "trash";
+            // Create checkbox
+            var check = document.createElement("INPUT");
+            check.type = "checkbox";
+            check.className = "done";
+            item.appendChild(task);
+            item.appendChild(close);
+            item.appendChild(check);
+            todo.appendChild(item);
+
+            input.value = "";
+          }
+          
+          // Add event listener to add button and call function when button pressed
+          document.getElementById("add").addEventListener("click", function() {
+            createListElement()
+          })
+          
+          // Add event listener to input field and call function when enter key pressed
+          document.getElementById("textBox").addEventListener("keydown", function(e) {
+            if (e.keyCode == 13) {
+             createListElement()
+            }
+          })
+          
+         // Check to see if the trash image is clicked
+         document.body.addEventListener("click", function(e) {
+           if (e.target.className == "trash") {
+             // Remove li parent node  
+             document.getElementById("to-do").removeChild(e.target.parentNode);
+           }
+          else if (e.target.checked) {
+            // Cross text out  
+            e.target.parentNode.firstChild.className = "cross-out";
+          }
+          else if (e.target.type == "checkbox") {
+            // Remove cross out class if box not checked
+            e.target.parentNode.firstChild.classList.remove("cross-out");
+          } 
+         }) 
+         
+        </script>  
+    </body>
+</html>
