@@ -1086,6 +1086,11 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
                                 ? "upload replace"
                                 : "upload"
                             }
+                            style={
+                              untutorial.steps[index].ThumbnailFilename
+                                ? { display: "none" }
+                                : {}
+                            }
                           >
                             <input
                               id={"step" + index + "-thumbnail-upload"}
@@ -1167,6 +1172,11 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
                               untutorial.steps[index].ThumbnailFilenameSp
                                 ? "upload replace"
                                 : "upload"
+                            }
+                            style={
+                              untutorial.steps[index].ThumbnailFilenameSp
+                                ? { display: "none" }
+                                : {}
                             }
                           >
                             <input
