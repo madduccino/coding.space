@@ -537,10 +537,12 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
 
   // Delete handlers
   const handleThumbnailDelete = useCallback((e) => {
+    console.log("🗑️ DELETE BUTTON CLICKED - handleThumbnailDelete called");
     e.preventDefault();
     e.stopPropagation();
 
     setUntutorial((currentUntutorial) => {
+      console.log("🗑️ Deleting thumbnail, current filename:", currentUntutorial.ThumbnailFilename);
       const updatedUntutorial = { ...currentUntutorial };
 
       if (authUser && authUser.roles["STUDENT"]) {
@@ -551,16 +553,21 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
       setDirty(true);
       setTimeout(saveChangesHandler, 0);
 
+      console.log("🗑️ Thumbnail deleted, new filename:", updatedUntutorial.ThumbnailFilename);
       return updatedUntutorial;
     });
   }, [authUser, saveChangesHandler]);
 
   const handleStepThumbnailDelete = useCallback(
     (e, step, isSpanish = false) => {
+      console.log(`🗑️ DELETE BUTTON CLICKED - step ${step}, isSpanish: ${isSpanish}`);
       e.preventDefault();
       e.stopPropagation();
 
       setUntutorial((currentUntutorial) => {
+        const fieldName = isSpanish ? "ThumbnailFilenameSp" : "ThumbnailFilename";
+        console.log(`🗑️ Deleting step ${step} ${fieldName}:`, currentUntutorial.steps[step][fieldName]);
+
         const updatedUntutorial = { ...currentUntutorial };
 
         if (authUser && authUser.roles["STUDENT"]) {
@@ -576,6 +583,7 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
         setDirty(true);
         setTimeout(saveChangesHandler, 0);
 
+        console.log(`🗑️ Step ${step} ${fieldName} deleted, new value:`, updatedUntutorial.steps[step][fieldName]);
         return updatedUntutorial;
       });
     },
