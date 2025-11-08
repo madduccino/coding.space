@@ -13,6 +13,8 @@ import "./untutorial.scss";
 import { Helmet } from "react-helmet";
 
 const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
+  console.log("🚀 UNTUTORIAL COMPONENT LOADED - NEW CODE IS RUNNING!");
+
   const { key } = useParams();
   const location = useLocation();
   const history = useHistory();
