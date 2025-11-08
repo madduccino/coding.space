@@ -896,6 +896,7 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
             {untutorial.ThumbnailFilename &&
               untutorial.ThumbnailFilename.length !== 0 && (
                 <button
+                  type="button"
                   onClick={handleThumbnailDelete}
                   className="delete-thumbnail"
                   style={{
@@ -1046,7 +1047,7 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
                           : "thumbnail"
                       }
                     >
-                      {isAuthorized && (
+                      {isAuthorized && lang !== "Español" && (
                         <>
                           <p
                             className={
@@ -1079,6 +1080,7 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
                             untutorial.steps[index].ThumbnailFilename.length !==
                               0 && (
                               <button
+                                type="button"
                                 onClick={() =>
                                   handleStepThumbnailDelete(index, false)
                                 }
@@ -1153,6 +1155,7 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
                             untutorial.steps[index].ThumbnailFilenameSp.length !==
                               0 && (
                               <button
+                                type="button"
                                 onClick={() =>
                                   handleStepThumbnailDelete(index, true)
                                 }
