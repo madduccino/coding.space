@@ -874,6 +874,13 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
     return untutorial && untutorial.steps ? untutorial.steps.length : 0;
   }, [untutorial]);
 
+  const authorKey = useMemo(() => {
+    if (!untutorial || !untutorial.Author) return null;
+    return typeof untutorial.Author === 'string'
+      ? untutorial.Author
+      : untutorial.Author.key;
+  }, [untutorial]);
+
   const nextStep = useMemo(() => {
     if (!progress) return -1;
     let next = progress.nextStep;
@@ -1004,13 +1011,11 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
         {uploading && <progress value={uploadPercent} max="100" />}
         {untutorial.ThumbnailFilename &&
           untutorial.ThumbnailFilename.length !== 0 &&
-          !uploading && (
+          !uploading &&
+          authorKey && (
             <LazyImage
               file={firebase.storage.ref(
-                "/public/" +
-                  untutorial.Author.key +
-                  "/" +
-                  untutorial.ThumbnailFilename
+                "/public/" + authorKey + "/" + untutorial.ThumbnailFilename
               )}
             />
           )}
@@ -1193,6 +1198,7 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
                         untutorial.steps[index].ThumbnailFilename.length !==
                           0 &&
                         !uploading &&
+                        authorKey &&
                         (lang === "English" ||
                           !untutorial.steps[index].ThumbnailFilenameSp) && (
                           <LazyImage
@@ -1200,7 +1206,7 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
                             className="crop"
                             file={firebase.storage.ref(
                               "/public/" +
-                                untutorial.Author.key +
+                                authorKey +
                                 "/" +
                                 untutorial.steps[index].ThumbnailFilename
                             )}
@@ -1265,13 +1271,14 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
                         untutorial.steps[index].ThumbnailFilenameSp.length !==
                           0 &&
                         !uploading &&
+                        authorKey &&
                         lang === "Español" && (
                           <LazyImage
                             id={"step" + index + "-thumbnail"}
                             className="crop"
                             file={firebase.storage.ref(
                               "/public/" +
-                                untutorial.Author.key +
+                                authorKey +
                                 "/" +
                                 untutorial.steps[index].ThumbnailFilenameSp
                             )}
@@ -1431,7 +1438,7 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
             <h3>
               by:{" "}
               <a
-                href={"/profile/" + untutorial.Author.key}
+                href={"/profile/" + authorKey}
                 dangerouslySetInnerHTML={{
                   __html: untutorial.Author.DisplayName,
                 }}
