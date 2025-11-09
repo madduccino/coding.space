@@ -1189,10 +1189,14 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
                           0 && (
                           <button
                             type="button"
-                            onClick={(e) =>
-                              handleStepThumbnailDelete(e, index, false)
-                            }
+                            onClick={(e) => {
+                              e.preventDefault();
+                              e.stopPropagation();
+                              handleStepThumbnailDelete(e, index, false);
+                            }}
                             style={{
+                              position: "relative",
+                              zIndex: 1000,
                               marginLeft: "10px",
                               padding: "5px 10px",
                               background: "#dc3545",
@@ -1268,10 +1272,14 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
                           0 && (
                           <button
                             type="button"
-                            onClick={(e) =>
-                              handleStepThumbnailDelete(e, index, true)
-                            }
+                            onClick={(e) => {
+                              e.preventDefault();
+                              e.stopPropagation();
+                              handleStepThumbnailDelete(e, index, true);
+                            }}
                             style={{
+                              position: "relative",
+                              zIndex: 1000,
                               marginLeft: "10px",
                               padding: "5px 10px",
                               background: "#dc3545",
