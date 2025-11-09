@@ -902,21 +902,9 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
   }, [progress, stepCount]);
 
   const isAuthorized = useMemo(() => {
-    if (!authUser) {
-      console.log("isAuthorized: false - no authUser");
-      return false;
-    }
-    if (authUser.roles["ADMIN"]) {
-      console.log("isAuthorized: true - user is ADMIN");
-      return true;
-    }
-    const authorized = authUser.uid === authorKey;
-    console.log("isAuthorized check:", {
-      authUserUid: authUser.uid,
-      authorKey,
-      authorized
-    });
-    return authorized;
+    if (!authUser) return false;
+    if (authUser.roles["ADMIN"]) return true;
+    return authUser.uid === authorKey;
   }, [authUser, authorKey]);
 
   if (loading) return <div className="loading">Loading ...</div>;
