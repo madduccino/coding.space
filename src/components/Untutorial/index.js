@@ -828,11 +828,14 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
         // Check if Author is already an object or needs to be fetched
         if (typeof untutorialData.Author === 'string') {
           // Author is a user ID string, fetch the full author profile
+          const authorId = untutorialData.Author;
           firebase
-            .profile(untutorialData.Author)
+            .profile(authorId)
             .once("value")
             .then((snapshot2) => {
               const author = snapshot2.val();
+              // Add the key property to the author object for authorization checks
+              author.key = authorId;
               untutorialData.Author = author;
               setUntutorial(untutorialData);
               setLoading(false);
