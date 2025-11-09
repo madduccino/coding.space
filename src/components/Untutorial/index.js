@@ -1180,30 +1180,32 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
                               }
                             />
                           </label>
-                          {untutorial.steps[index].ThumbnailFilename &&
-                            untutorial.steps[index].ThumbnailFilename.length !==
-                              0 && (
-                              <button
-                                type="button"
-                                onClick={(e) =>
-                                  handleStepThumbnailDelete(e, index, false)
-                                }
-                                style={{
-                                  marginLeft: "10px",
-                                  padding: "5px 10px",
-                                  background: "#dc3545",
-                                  color: "white",
-                                  border: "none",
-                                  borderRadius: "3px",
-                                  cursor: "pointer",
-                                  pointerEvents: "auto",
-                                }}
-                              >
-                                Delete
-                              </button>
-                            )}
                         </>
                       )}
+
+                      {isAuthorized &&
+                        untutorial.steps[index].ThumbnailFilename &&
+                        untutorial.steps[index].ThumbnailFilename.length !==
+                          0 && (
+                          <button
+                            type="button"
+                            onClick={(e) =>
+                              handleStepThumbnailDelete(e, index, false)
+                            }
+                            style={{
+                              marginLeft: "10px",
+                              padding: "5px 10px",
+                              background: "#dc3545",
+                              color: "white",
+                              border: "none",
+                              borderRadius: "3px",
+                              cursor: "pointer",
+                              pointerEvents: "auto",
+                            }}
+                          >
+                            Delete
+                          </button>
+                        )}
 
                       {uploading && (
                         <progress value={uploadPercent} max="100" />
@@ -1256,30 +1258,33 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
                               }
                             />
                           </label>
-                          {untutorial.steps[index].ThumbnailFilenameSp &&
-                            untutorial.steps[index].ThumbnailFilenameSp.length !==
-                              0 && (
-                              <button
-                                type="button"
-                                onClick={(e) =>
-                                  handleStepThumbnailDelete(e, index, true)
-                                }
-                                style={{
-                                  marginLeft: "10px",
-                                  padding: "5px 10px",
-                                  background: "#dc3545",
-                                  color: "white",
-                                  border: "none",
-                                  borderRadius: "3px",
-                                  cursor: "pointer",
-                                  pointerEvents: "auto",
-                                }}
-                              >
-                                Delete
-                              </button>
-                            )}
                         </>
                       )}
+
+                      {isAuthorized &&
+                        lang === "Español" &&
+                        untutorial.steps[index].ThumbnailFilenameSp &&
+                        untutorial.steps[index].ThumbnailFilenameSp.length !==
+                          0 && (
+                          <button
+                            type="button"
+                            onClick={(e) =>
+                              handleStepThumbnailDelete(e, index, true)
+                            }
+                            style={{
+                              marginLeft: "10px",
+                              padding: "5px 10px",
+                              background: "#dc3545",
+                              color: "white",
+                              border: "none",
+                              borderRadius: "3px",
+                              cursor: "pointer",
+                              pointerEvents: "auto",
+                            }}
+                          >
+                            Delete
+                          </button>
+                        )}
 
                       {untutorial.steps[index].ThumbnailFilenameSp &&
                         untutorial.steps[index].ThumbnailFilenameSp.length !==
