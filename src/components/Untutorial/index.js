@@ -538,22 +538,37 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
 
         const filename = updatedUntutorial.ThumbnailFilename;
         if (filename) {
-          // Handle both cases: Author as object or as string key
-          const authorKey = typeof updatedUntutorial.Author === 'string'
-            ? updatedUntutorial.Author
-            : updatedUntutorial.Author.key;
+          try {
+            // Handle both cases: Author as object or as string key
+            const authorKey = typeof updatedUntutorial.Author === 'string'
+              ? updatedUntutorial.Author
+              : updatedUntutorial.Author?.key;
 
-          const storageRef = firebase.storage.ref(
-            "/public/" + authorKey + "/" + filename
-          );
-          storageRef
-            .delete()
-            .then(() => {
-              console.log("Thumbnail deleted successfully");
-            })
-            .catch((error) => {
-              console.log("Error deleting thumbnail:", error);
-            });
+            if (!authorKey) {
+              console.error("Cannot delete thumbnail: Author key is missing");
+              return updatedUntutorial;
+            }
+
+            const storageRef = firebase.storage.ref(
+              "/public/" + authorKey + "/" + filename
+            );
+            storageRef
+              .delete()
+              .then(() => {
+                console.log("Thumbnail deleted successfully");
+              })
+              .catch((error) => {
+                // Handle the case where file doesn't exist (not a critical error)
+                if (error.code === 'storage/object-not-found') {
+                  console.log("Thumbnail file not found in storage, clearing reference");
+                } else {
+                  console.error("Error deleting thumbnail:", error.code, error.message);
+                }
+              });
+          } catch (error) {
+            console.error("Error in handleThumbnailDelete:", error);
+            return updatedUntutorial;
+          }
         }
 
         updatedUntutorial.ThumbnailFilename = "";
@@ -582,26 +597,41 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
         }
 
         const filename = isSpanish
-          ? updatedUntutorial.steps[step].ThumbnailFilenameSp
-          : updatedUntutorial.steps[step].ThumbnailFilename;
+          ? updatedUntutorial.steps[step]?.ThumbnailFilenameSp
+          : updatedUntutorial.steps[step]?.ThumbnailFilename;
 
         if (filename) {
-          // Handle both cases: Author as object or as string key
-          const authorKey = typeof updatedUntutorial.Author === 'string'
-            ? updatedUntutorial.Author
-            : updatedUntutorial.Author.key;
+          try {
+            // Handle both cases: Author as object or as string key
+            const authorKey = typeof updatedUntutorial.Author === 'string'
+              ? updatedUntutorial.Author
+              : updatedUntutorial.Author?.key;
 
-          const storageRef = firebase.storage.ref(
-            "/public/" + authorKey + "/" + filename
-          );
-          storageRef
-            .delete()
-            .then(() => {
-              console.log("Step thumbnail deleted successfully");
-            })
-            .catch((error) => {
-              console.log("Error deleting step thumbnail:", error);
-            });
+            if (!authorKey) {
+              console.error("Cannot delete step thumbnail: Author key is missing");
+              return updatedUntutorial;
+            }
+
+            const storageRef = firebase.storage.ref(
+              "/public/" + authorKey + "/" + filename
+            );
+            storageRef
+              .delete()
+              .then(() => {
+                console.log("Step thumbnail deleted successfully");
+              })
+              .catch((error) => {
+                // Handle the case where file doesn't exist (not a critical error)
+                if (error.code === 'storage/object-not-found') {
+                  console.log("Step thumbnail file not found in storage, clearing reference");
+                } else {
+                  console.error("Error deleting step thumbnail:", error.code, error.message);
+                }
+              });
+          } catch (error) {
+            console.error("Error in handleStepThumbnailDelete:", error);
+            return updatedUntutorial;
+          }
         }
 
         if (isSpanish) {
@@ -765,19 +795,35 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
     const unsubscribe = firebase.untutorial(key).on("value", (snapshot) => {
       const untutorialData = snapshot.val();
       if (untutorialData) {
-        firebase
-          .profile(untutorialData.Author)
-          .once("value")
-          .then((snapshot2) => {
-            const author = snapshot2.val();
-            untutorialData.Author = author;
-            setUntutorial(untutorialData);
-            setLoading(false);
+        // Check if Author is already an object or needs to be fetched
+        if (typeof untutorialData.Author === 'string') {
+          // Author is a user ID string, fetch the full author profile
+          firebase
+            .profile(untutorialData.Author)
+            .once("value")
+            .then((snapshot2) => {
+              const author = snapshot2.val();
+              untutorialData.Author = author;
+              setUntutorial(untutorialData);
+              setLoading(false);
 
-            if (location.search.includes("loadProgress")) {
-              loadProgress();
-            }
-          });
+              if (location.search.includes("loadProgress")) {
+                loadProgress();
+              }
+            })
+            .catch((error) => {
+              console.error("Error loading author profile:", error);
+              setLoading(false);
+            });
+        } else {
+          // Author is already an object, use it directly
+          setUntutorial(untutorialData);
+          setLoading(false);
+
+          if (location.search.includes("loadProgress")) {
+            loadProgress();
+          }
+        }
       }
     });
 
