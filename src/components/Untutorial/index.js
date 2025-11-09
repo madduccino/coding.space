@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useMemo, useRef } from "react";
+import React, { useState, useEffect, useCallback, useMemo } from "react";
 import { useParams, useLocation, useHistory } from "react-router-dom";
 import LazyImage from "../LazyImage";
 import { withAuthentication } from "../Session";
@@ -17,7 +17,7 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
   const location = useLocation();
   const history = useHistory();
 
-  // Split state into logical pieces to avoid unnecessary re-renders
+  // Consolidated state management
   const [loading, setLoading] = useState(true);
   const [untutorial, setUntutorial] = useState({});
   const [errors, setErrors] = useState({});
@@ -27,134 +27,197 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
   const [uploading, setUploading] = useState(false);
   const [uploadPercent, setUploadPercent] = useState(0);
   const [showiframe, setShowiframe] = useState(true);
-  const [lang, setLang] = useState(authUser ? authUser.lang : "English");
+  const [lang, setLang] = useState(authUser?.lang || "English");
   const [languageSelect, setLanguageSelect] = useState(true);
-  const [init, setInit] = useState(false);
 
-  // Use refs to avoid recreating callbacks
-  const errorsRef = useRef(errors);
-  errorsRef.current = errors;
+  // Use ref instead of state for isEditing to avoid triggering re-renders
+  const isEditingRef = React.useRef(false);
 
-  // Helper function to validate fields
-  const validateField = useCallback((field, value, lang) => {
+  // Memoized values
+  const progressSteps = useMemo(() => progress?.steps || null, [progress]);
+  const stepCount = useMemo(
+    () => untutorial?.steps?.length || 0,
+    [untutorial?.steps]
+  );
+  const nextStep = useMemo(() => {
+    const step = progress?.nextStep || -1;
+    return step > stepCount ? 0 : step;
+  }, [progress?.nextStep, stepCount]);
+
+  // Event handlers
+  const handleClick = useCallback((e) => {
+    if (e.target.className === "iframe-on") {
+      setShowiframe(false);
+    }
+  }, []);
+
+  const toggleVisibility = useCallback(() => {
+    setLanguageSelect((prev) => !prev);
+  }, []);
+
+  // Validation functions
+  const validateTitle = useCallback(() => {
+    setErrors((prevErrors) => {
+      const newErrors = { ...prevErrors };
+      const text = untutorial.Title
+        ? untutorial.Title.replace(/<(.|\n)*?>/g, "").trim()
+        : "";
+      const textEs = untutorial.TitleEs
+        ? untutorial.TitleEs.replace(/<(.|\n)*?>/g, "").trim()
+        : "";
+
+      if (lang === "English") {
+        if (text.length === 0) {
+          newErrors["Title"] = 'TITLE.<span class="red">ISREQUIRED</span>';
+        } else {
+          delete newErrors["Title"];
+        }
+      }
+      if (lang === "Español") {
+        if (textEs.length === 0) {
+          newErrors["TitleEs"] = 'TITLE.<span class="red">ISREQUIRED</span>';
+        } else {
+          delete newErrors["TitleEs"];
+        }
+      }
+      return newErrors;
+    });
+  }, [untutorial.Title, untutorial.TitleEs, lang]);
+
+  const validateDescription = useCallback(() => {
     setErrors((prevErrors) => {
       const newErrors = { ...prevErrors };
 
-      switch (field) {
-        case "Title":
-        case "TitleEs": {
-          const text = value ? value.replace(/<(.|\n)*?>/g, "").trim() : "";
-          if (text.length === 0) {
-            newErrors[field] = 'TITLE.<span className="red">ISREQUIRED</span>';
-          } else {
-            delete newErrors[field];
-          }
-          break;
+      if (lang === "English") {
+        if (untutorial.Description === "") {
+          newErrors["Description"] = "Description is required.";
+        } else {
+          delete newErrors["Description"];
         }
-        case "Description":
-        case "DescriptionEs": {
-          if (value === "") {
-            newErrors[field] = "Description is required.";
-          } else {
-            delete newErrors[field];
-          }
-          break;
-        }
-        case "Status": {
-          if (!["DRAFT", "APPROVED"].includes(value)) {
-            newErrors[field] = 'STATUS.<span className="red">ISINVALID</span>';
-          } else {
-            delete newErrors[field];
-          }
-          break;
-        }
-        case "Level": {
-          if (isNaN(value)) {
-            newErrors[field] = 'LEVEL.<span className="red">ISINVALID</span>';
-          } else if (![1, 2, 3, 4, 5, 6, 7].includes(parseInt(value))) {
-            newErrors[field] = 'LEVEL.<span className="red">ISOUTSIDERANGE</span>';
-          } else {
-            delete newErrors[field];
-          }
-          break;
-        }
-        case "Priority": {
-          if (isNaN(value)) {
-            newErrors[field] = 'PRIORITY.<span className="red">ISINVALID</span>';
-          } else if (
-            ![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15].includes(parseInt(value))
-          ) {
-            newErrors[field] = 'PRIORITY.<span className="red">ISOUTSIDERANGE</span>';
-          } else {
-            delete newErrors[field];
-          }
-          break;
-        }
-        default:
-          if (field.startsWith("STEP")) {
-            const text = value.replace(/<(.|\n)*?>/g, "").trim();
-            const index = field.replace("STEP", "");
-            if (text === "") {
-              newErrors[field] = `STEP.<span className="orange">${index}</span>.<span className="red">ISREQUIRED</span>`;
-            } else if (text.length < 20) {
-              newErrors[field] = `STEP.<span className="orange">${index}</span>.<span className="red">ISTOOSHORT</span>`;
-            } else {
-              delete newErrors[field];
-            }
-          }
-          break;
       }
-
+      if (lang === "Español") {
+        if (untutorial.DescriptionEs === "") {
+          newErrors["DescriptionEs"] = "Description is required.";
+        } else {
+          delete newErrors["DescriptionEs"];
+        }
+      }
       return newErrors;
     });
-  }, []);
+  }, [untutorial.Description, untutorial.DescriptionEs, lang]);
+
+  const validateStatus = useCallback(() => {
+    setErrors((prevErrors) => {
+      const newErrors = { ...prevErrors };
+
+      if (!["DRAFT", "APPROVED"].includes(untutorial.Status)) {
+        newErrors["Status"] = 'STATUS.<span class="red">ISINVALID</span>';
+      } else {
+        delete newErrors["Status"];
+      }
+      return newErrors;
+    });
+  }, [untutorial.Status]);
+
+  const validateLevel = useCallback(() => {
+    setErrors((prevErrors) => {
+      const newErrors = { ...prevErrors };
+
+      if (isNaN(untutorial.Level)) {
+        newErrors["Level"] = 'LEVEL.<span class="red">ISINVALID</span>';
+      } else if (![1, 2, 3, 4, 5, 6, 7].includes(parseInt(untutorial.Level))) {
+        newErrors["Level"] = 'LEVEL.<span class="red">ISOUTSIDERANGE</span>';
+      } else {
+        delete newErrors["Level"];
+      }
+      return newErrors;
+    });
+  }, [untutorial.Level]);
+
+  const validatePriority = useCallback(() => {
+    setErrors((prevErrors) => {
+      const newErrors = { ...prevErrors };
+
+      if (isNaN(untutorial.Priority)) {
+        newErrors["Priority"] = 'PRIORITY.<span class="red">ISINVALID</span>';
+      } else if (
+        ![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15].includes(
+          parseInt(untutorial.Priority)
+        )
+      ) {
+        newErrors["Priority"] =
+          'PRIORITY.<span class="red">ISOUTSIDERANGE</span>';
+      } else {
+        delete newErrors["Priority"];
+      }
+      return newErrors;
+    });
+  }, [untutorial.Priority]);
+
+  const validateStep = useCallback(
+    (index) => {
+      setErrors((prevErrors) => {
+        const newErrors = { ...prevErrors };
+        const step = untutorial.steps?.[index];
+        if (!step) return newErrors;
+
+        const text = step.Description.replace(/<(.|\n)*?>/g, "").trim();
+
+        if (text === "") {
+          newErrors[
+            "STEP" + index
+          ] = `STEP.<span class="orange">${index}</span>.<span class="red">ISREQUIRED</span>`;
+        } else if (text.length < 20) {
+          newErrors[
+            "STEP" + index
+          ] = `STEP.<span class="orange">${index}</span>.<span class="red">ISTOOSHORT</span>`;
+        } else {
+          delete newErrors["STEP" + index];
+        }
+        return newErrors;
+      });
+    },
+    [untutorial.steps]
+  );
 
   // Save functions
   const saveChangesHandler = useCallback(() => {
-    if (Object.values(errorsRef.current).length === 0) {
-      setUntutorial((currentUntutorial) => {
-        const updatedUntutorial = {
-          ...currentUntutorial,
-          LastModified: Date.now(),
-          Author: currentUntutorial.Author.key,
-        };
+    if (Object.values(errors).length === 0 && untutorial.key) {
+      const updatedUntutorial = {
+        ...untutorial,
+        LastModified: Date.now(),
+        Author: untutorial.Author.key,
+      };
 
-        firebase
-          .untutorial(key)
-          .set(updatedUntutorial)
-          .then(() => {
-            console.log("Successfully Saved");
-            setDirty(false);
-          })
-          .catch((error) => setError(error.message));
-
-        return updatedUntutorial;
-      });
+      firebase
+        .untutorial(key)
+        .set(updatedUntutorial)
+        .then(() => {
+          console.log("Successfully Saved");
+          setDirty(false);
+        })
+        .catch((error) => setError(error.message));
     }
-  }, [firebase, key]);
+  }, [errors, untutorial, firebase, key]);
 
   const saveProgressHandler = useCallback(() => {
-    if (Object.values(errorsRef.current).length === 0) {
-      setProgress((currentProgress) => {
-        const updatedProgress = {
-          ...currentProgress,
-          LastModified: Date.now(),
-        };
+    if (Object.values(errors).length === 0 && progress) {
+      const updatedProgress = {
+        ...progress,
+        LastModified: Date.now(),
+      };
 
-        firebase
-          .progress(authUser.uid, untutorial.key)
-          .set(updatedProgress)
-          .then(() => {
-            console.log("Successfully Saved Progress");
-          })
-          .catch((error) => console.log(error));
-
-        return updatedProgress;
-      });
+      firebase
+        .progress(authUser.uid, untutorial.key)
+        .set(updatedProgress)
+        .then(() => {
+          console.log("Successfully Saved Progress");
+        })
+        .catch((error) => console.log(error));
     } else {
-      const badFields = Object.keys(errorsRef.current);
+      const badFields = Object.keys(errors);
       const messages = badFields.map((field) => ({
-        html: errorsRef.current[field],
+        html: errors[field],
         type: true,
       }));
 
@@ -168,240 +231,222 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
         showMessage: true,
       });
     }
-  }, [firebase, authUser, untutorial.key, setGlobalState]);
+  }, [errors, progress, firebase, authUser, untutorial.key, setGlobalState]);
 
-  // Event handlers
-  const handleClick = useCallback((e) => {
-    if (e.target.className === "iframe-on") {
-      setShowiframe(false);
-    }
-  }, []);
-
-  const toggleVisibility = useCallback(() => {
-    setLanguageSelect((prev) => !prev);
-  }, []);
-
-  // Content change handlers - FIXED to update state in all cases
+  // Content change handlers with proper state updates
   const handleTitleOnChange = useCallback(
     (value) => {
-      setUntutorial((currentUntutorial) => {
-        const updatedUntutorial = { ...currentUntutorial };
-        let hasChanged = false;
-
+      isEditingRef.current = true;
+      setUntutorial((prev) => {
+        const updated = { ...prev };
         if (lang === "Español") {
-          if (value !== updatedUntutorial.TitleEs) {
-            updatedUntutorial.TitleEs = value;
-            hasChanged = true;
-            validateField("TitleEs", value, lang);
+          if (value !== updated.TitleEs) {
+            updated.TitleEs = value;
           }
         } else {
-          if (value !== updatedUntutorial.Title) {
-            updatedUntutorial.Title = value;
-            hasChanged = true;
-            validateField("Title", value, lang);
+          if (value !== updated.Title) {
+            updated.Title = value;
+          }
+          if (authUser?.roles?.["STUDENT"]) {
+            updated.Status = "DRAFT";
           }
         }
-
-        if (hasChanged) {
-          if (authUser && authUser.roles["STUDENT"]) {
-            updatedUntutorial.Status = "DRAFT";
-          }
-          setDirty(true);
-        }
-
-        return hasChanged ? updatedUntutorial : currentUntutorial;
+        return updated;
       });
+      setDirty(true);
+      setTimeout(validateTitle, 0);
     },
-    [authUser, lang, validateField]
+    [lang, authUser, validateTitle]
   );
 
   const handleDescriptionOnChange = useCallback(
     (value) => {
-      setUntutorial((currentUntutorial) => {
-        const updatedUntutorial = { ...currentUntutorial };
-        let hasChanged = false;
-
+      isEditingRef.current = true;
+      setUntutorial((prev) => {
+        const updated = { ...prev };
         if (lang === "Español") {
-          if (value !== updatedUntutorial.DescriptionEs) {
-            updatedUntutorial.DescriptionEs = value;
-            hasChanged = true;
-            validateField("DescriptionEs", value, lang);
+          if (value !== updated.DescriptionEs) {
+            updated.DescriptionEs = value;
           }
         } else {
-          if (value !== updatedUntutorial.Description) {
-            updatedUntutorial.Description = value;
-            hasChanged = true;
-            validateField("Description", value, lang);
+          if (value !== updated.Description) {
+            updated.Description = value;
           }
         }
-
-        if (hasChanged) {
-          if (authUser && authUser.roles["STUDENT"]) {
-            updatedUntutorial.Status = "DRAFT";
-          }
-          setDirty(true);
+        if (authUser?.roles?.["STUDENT"]) {
+          updated.Status = "DRAFT";
         }
-
-        return hasChanged ? updatedUntutorial : currentUntutorial;
+        return updated;
       });
+      setDirty(true);
+      setTimeout(validateDescription, 0);
     },
-    [authUser, lang, validateField]
+    [lang, authUser, validateDescription]
   );
 
   const handleStatusOnChange = useCallback(
     (value) => {
-      setUntutorial((currentUntutorial) => {
-        if (value !== currentUntutorial.Status) {
+      setUntutorial((prev) => {
+        if (value !== prev.Status) {
+          const updated = { ...prev, Status: value };
           setDirty(true);
-          validateField("Status", value);
-          return { ...currentUntutorial, Status: value };
+          setTimeout(validateStatus, 0);
+          return updated;
         }
-        return currentUntutorial;
+        return prev;
       });
     },
-    [validateField]
+    [validateStatus]
   );
 
   const handleLevelOnChange = useCallback(
     (value) => {
-      setUntutorial((currentUntutorial) => {
-        if (value !== currentUntutorial.Level) {
-          const updatedUntutorial = { ...currentUntutorial, Level: value };
-          if (authUser && authUser.roles["STUDENT"]) {
-            updatedUntutorial.Status = "DRAFT";
+      setUntutorial((prev) => {
+        if (value !== prev.Level) {
+          const updated = { ...prev, Level: value };
+          if (authUser?.roles?.["STUDENT"]) {
+            updated.Status = "DRAFT";
           }
           setDirty(true);
-          validateField("Level", value);
-          return updatedUntutorial;
+          setTimeout(validateLevel, 0);
+          return updated;
         }
-        return currentUntutorial;
+        return prev;
       });
     },
-    [authUser, validateField]
+    [authUser, validateLevel]
   );
 
   const handlePriorityOnChange = useCallback(
     (value) => {
-      setUntutorial((currentUntutorial) => {
-        if (value !== currentUntutorial.Priority) {
-          const updatedUntutorial = { ...currentUntutorial, Priority: value };
-          if (authUser && authUser.roles["STUDENT"]) {
-            updatedUntutorial.Status = "DRAFT";
+      setUntutorial((prev) => {
+        if (value !== prev.Priority) {
+          const updated = { ...prev, Priority: value };
+          if (authUser?.roles?.["STUDENT"]) {
+            updated.Status = "DRAFT";
           }
           setDirty(true);
-          validateField("Priority", value);
-          return updatedUntutorial;
+          setTimeout(validatePriority, 0);
+          return updated;
         }
-        return currentUntutorial;
+        return prev;
       });
     },
-    [authUser, validateField]
+    [authUser, validatePriority]
   );
 
-  // Step handlers - FIXED
+  // Step handlers with proper immutable updates
   const handleStepTitleOnChange = useCallback(
-    (value, step) => {
-      setUntutorial((currentUntutorial) => {
-        const currentValue = lang === "Español"
-          ? currentUntutorial.steps[step].TitleEs
-          : currentUntutorial.steps[step].Title;
+    (value, stepIndex) => {
+      isEditingRef.current = true;
+      setUntutorial((prev) => {
+        const updated = { ...prev };
+        const steps = [...(updated.steps || [])];
 
-        if (value !== currentValue) {
-          const updatedUntutorial = { ...currentUntutorial };
+        if (!steps[stepIndex]) return prev;
 
-          if (lang === "Español") {
-            updatedUntutorial.steps[step].TitleEs = value;
-          } else {
-            updatedUntutorial.steps[step].Title = value;
+        const currentStep = { ...steps[stepIndex] };
+
+        if (lang === "Español") {
+          if (value !== currentStep.TitleEs) {
+            currentStep.TitleEs = value;
           }
-
-          if (authUser && authUser.roles["STUDENT"]) {
-            updatedUntutorial.Status = "DRAFT";
+        } else {
+          if (value !== currentStep.Title) {
+            currentStep.Title = value;
           }
-
-          setDirty(true);
-          return updatedUntutorial;
         }
-        return currentUntutorial;
+
+        if (authUser?.roles?.["STUDENT"]) {
+          updated.Status = "DRAFT";
+        }
+
+        steps[stepIndex] = currentStep;
+        updated.steps = steps;
+        setDirty(true);
+
+        return updated;
       });
     },
-    [authUser, lang]
+    [lang, authUser]
   );
 
   const handleStepOnChange = useCallback(
-    (value, step) => {
-      setUntutorial((currentUntutorial) => {
-        const updatedUntutorial = { ...currentUntutorial };
-        let hasChanged = false;
+    (value, stepIndex) => {
+      isEditingRef.current = true;
+      setUntutorial((prev) => {
+        const updated = { ...prev };
+        const steps = [...(updated.steps || [])];
 
+        if (!steps[stepIndex]) return prev;
+
+        const currentStep = { ...steps[stepIndex] };
+
+        // Update the appropriate language field
         if (lang === "Español") {
-          if (value !== updatedUntutorial.steps[step].DescriptionEs) {
-            updatedUntutorial.steps[step].DescriptionEs = value;
-            hasChanged = true;
-          }
+          currentStep.DescriptionEs = value;
+        } else {
+          currentStep.Description = value;
         }
 
-        if (value !== updatedUntutorial.steps[step].Description) {
-          updatedUntutorial.steps[step].Description = value;
-          hasChanged = true;
+        if (authUser?.roles?.["STUDENT"]) {
+          updated.Status = "DRAFT";
         }
 
-        if (hasChanged) {
-          if (authUser && authUser.roles["STUDENT"]) {
-            updatedUntutorial.Status = "DRAFT";
-          }
-          setDirty(true);
-        }
+        steps[stepIndex] = currentStep;
+        updated.steps = steps;
 
-        return hasChanged ? updatedUntutorial : currentUntutorial;
+        return updated;
       });
+      setDirty(true);
+      setTimeout(() => {
+        validateStep(stepIndex);
+        isEditingRef.current = false;
+      }, 100);
     },
-    [authUser, lang]
+    [lang, authUser, validateStep]
   );
 
   const addStepHandler = useCallback(() => {
-    setUntutorial((currentUntutorial) => {
-      const updatedUntutorial = { ...currentUntutorial };
+    setUntutorial((prev) => {
+      const updated = { ...prev };
+      const steps = [...(updated.steps || [])];
 
-      if (authUser && authUser.roles["STUDENT"]) {
-        updatedUntutorial.Status = "DRAFT";
+      if (authUser?.roles?.["STUDENT"]) {
+        updated.Status = "DRAFT";
       }
 
-      updatedUntutorial.steps[
-        Math.max(...Object.keys(updatedUntutorial.steps)) + 1
-      ] = {
+      steps.push({
         Description: "",
-      };
+        Title: "",
+      });
 
+      updated.steps = steps;
       setDirty(true);
-      setTimeout(saveChangesHandler, 0);
-      return updatedUntutorial;
+
+      return updated;
     });
+    setTimeout(saveChangesHandler, 0);
   }, [authUser, saveChangesHandler]);
 
   const deleteStepHandler = useCallback(
-    (event, stepKey) => {
-      setUntutorial((currentUntutorial) => {
-        const updatedUntutorial = { ...currentUntutorial };
+    (event, stepIndex) => {
+      setUntutorial((prev) => {
+        const updated = { ...prev };
+        const steps = [...(updated.steps || [])];
 
-        if (authUser && authUser.roles["STUDENT"]) {
-          updatedUntutorial.Status = "DRAFT";
+        if (authUser?.roles?.["STUDENT"]) {
+          updated.Status = "DRAFT";
         }
 
-        delete updatedUntutorial.steps[stepKey];
-
-        // Shift steps up
-        const newSteps = [];
-        const steps = Object.values(updatedUntutorial.steps);
-        steps.forEach((step, i) => {
-          newSteps[i] = step;
-        });
-        updatedUntutorial.steps = newSteps;
-
+        // Remove the step and reindex
+        steps.splice(stepIndex, 1);
+        updated.steps = steps;
         setDirty(true);
-        setTimeout(saveChangesHandler, 0);
-        return updatedUntutorial;
+
+        return updated;
       });
+      setTimeout(saveChangesHandler, 0);
     },
     [authUser, saveChangesHandler]
   );
@@ -413,198 +458,196 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
       if (!file) return;
 
       const ext = file.name.substring(file.name.lastIndexOf(".") + 1);
+      const filename = uuidv4() + "." + ext;
 
-      setUntutorial((currentUntutorial) => {
-        const updatedUntutorial = { ...currentUntutorial };
-
-        if (authUser && authUser.roles["STUDENT"]) {
-          updatedUntutorial.Status = "DRAFT";
+      setUntutorial((prev) => {
+        const updated = { ...prev };
+        if (authUser?.roles?.["STUDENT"]) {
+          updated.Status = "DRAFT";
         }
-
-        updatedUntutorial.ThumbnailFilename = uuidv4() + "." + ext;
-
-        const storageRef = firebase.storage.ref(
-          "/public/" +
-            updatedUntutorial.Author.key +
-            "/" +
-            updatedUntutorial.ThumbnailFilename
-        );
-        const task = storageRef.put(file);
-
-        task.on(
-          "state_changed",
-          (snapshot) => {
-            const percentage =
-              (100 * snapshot.bytesTransferred) / snapshot.totalBytes;
-            setUploadPercent(percentage);
-            setUploading(true);
-          },
-          (error) => {
-            setUploadPercent(0);
-            setUploading(false);
-          },
-          () => {
-            setUploadPercent(0);
-            setUploading(false);
-            setDirty(true);
-            setTimeout(saveChangesHandler, 0);
-          }
-        );
-
-        return updatedUntutorial;
+        updated.ThumbnailFilename = filename;
+        return updated;
       });
+
+      const storageRef = firebase.storage.ref(
+        `/public/${untutorial.Author.key}/${filename}`
+      );
+      const task = storageRef.put(file);
+
+      task.on(
+        "state_changed",
+        (snapshot) => {
+          const percentage =
+            (100 * snapshot.bytesTransferred) / snapshot.totalBytes;
+          setUploadPercent(percentage);
+          setUploading(true);
+        },
+        (error) => {
+          console.error(error);
+          setUploadPercent(0);
+          setUploading(false);
+        },
+        () => {
+          setUploadPercent(0);
+          setUploading(false);
+          setDirty(true);
+          setTimeout(saveChangesHandler, 0);
+        }
+      );
     },
-    [authUser, firebase, saveChangesHandler]
+    [authUser, firebase, untutorial.Author, saveChangesHandler]
   );
 
   const handleStepThumbnailUpload = useCallback(
-    (event, step) => {
+    (event, stepIndex) => {
       const file = event.target.files[0];
       if (!file) return;
 
       const ext = file.name.substring(file.name.lastIndexOf(".") + 1);
+      const filename = uuidv4() + "." + ext;
 
-      setUntutorial((currentUntutorial) => {
-        const updatedUntutorial = { ...currentUntutorial };
+      setUntutorial((prev) => {
+        const updated = { ...prev };
+        const steps = [...(updated.steps || [])];
 
-        if (authUser && authUser.roles["STUDENT"]) {
-          updatedUntutorial.Status = "DRAFT";
+        if (!steps[stepIndex]) return prev;
+
+        const currentStep = { ...steps[stepIndex] };
+
+        if (authUser?.roles?.["STUDENT"]) {
+          updated.Status = "DRAFT";
         }
 
-        let storageRef;
         if (lang === "Español") {
-          updatedUntutorial.steps[step].ThumbnailFilenameSp =
-            uuidv4() + "." + ext;
-          storageRef = firebase.storage.ref(
-            "/public/" +
-              updatedUntutorial.Author.key +
-              "/" +
-              updatedUntutorial.steps[step].ThumbnailFilenameSp
-          );
+          currentStep.ThumbnailFilenameSp = filename;
         } else {
-          updatedUntutorial.steps[step].ThumbnailFilename = uuidv4() + "." + ext;
-          storageRef = firebase.storage.ref(
-            "/public/" +
-              updatedUntutorial.Author.key +
-              "/" +
-              updatedUntutorial.steps[step].ThumbnailFilename
-          );
+          currentStep.ThumbnailFilename = filename;
         }
 
-        const task = storageRef.put(file);
+        steps[stepIndex] = currentStep;
+        updated.steps = steps;
 
-        task.on(
-          "state_changed",
-          (snapshot) => {
-            const percentage =
-              (100 * snapshot.bytesTransferred) / snapshot.totalBytes;
-            setUploadPercent(percentage);
-            setUploading(true);
-          },
-          (error) => {
-            console.log(error);
-            setUploadPercent(0);
-            setUploading(false);
-          },
-          () => {
-            setUploadPercent(0);
-            setUploading(false);
-            setDirty(true);
-            setTimeout(saveChangesHandler, 0);
-          }
-        );
-
-        return updatedUntutorial;
+        return updated;
       });
+
+      const storageRef = firebase.storage.ref(
+        `/public/${untutorial.Author.key}/${filename}`
+      );
+      const task = storageRef.put(file);
+
+      task.on(
+        "state_changed",
+        (snapshot) => {
+          const percentage =
+            (100 * snapshot.bytesTransferred) / snapshot.totalBytes;
+          setUploadPercent(percentage);
+          setUploading(true);
+        },
+        (error) => {
+          console.error(error);
+          setUploadPercent(0);
+          setUploading(false);
+        },
+        () => {
+          setUploadPercent(0);
+          setUploading(false);
+          setDirty(true);
+          setTimeout(saveChangesHandler, 0);
+        }
+      );
     },
-    [authUser, firebase, lang, saveChangesHandler]
+    [lang, authUser, firebase, untutorial.Author, saveChangesHandler]
   );
 
   // Category and skills handlers
   const handleSkillsOnChange = useCallback((event) => {
     if (event.target.value !== "-1") {
-      setUntutorial((currentUntutorial) => {
-        const updatedUntutorial = { ...currentUntutorial };
-        updatedUntutorial.Skills[event.target.value] = event.target.value;
-        return updatedUntutorial;
+      setUntutorial((prev) => {
+        const updated = { ...prev };
+        updated.Skills = {
+          ...(updated.Skills || {}),
+          [event.target.value]: event.target.value,
+        };
+        return updated;
       });
     }
   }, []);
 
-  const handleSkillsOnClick = useCallback((text) => {
-    setUntutorial((currentUntutorial) => {
-      const updatedUntutorial = { ...currentUntutorial };
-      delete updatedUntutorial.Skills[text];
-      return updatedUntutorial;
+  const handleSkillsOnClick = useCallback((skillKey) => {
+    setUntutorial((prev) => {
+      const updated = { ...prev };
+      const skills = { ...(updated.Skills || {}) };
+      delete skills[skillKey];
+      updated.Skills = skills;
+      return updated;
     });
   }, []);
 
   const handleSkillsValidate = useCallback(() => {
-    setUntutorial((currentUntutorial) => {
-      try {
-        if (Object.keys(currentUntutorial.Skills).length < 1) {
-          throw "At least one skill required";
-        } else {
-          saveChangesHandler();
-          setError("");
-        }
-      } catch (error) {
-        setError(error);
+    try {
+      if (Object.keys(untutorial.Skills || {}).length < 1) {
+        throw new Error("At least one skill required");
+      } else {
+        saveChangesHandler();
+        setError("");
       }
-      return currentUntutorial;
-    });
-  }, [saveChangesHandler]);
+    } catch (error) {
+      setError(error.message);
+    }
+  }, [untutorial.Skills, saveChangesHandler]);
 
   const handlePCategoryOnChange = useCallback((event) => {
     if (event.target.value !== "-1") {
-      setUntutorial((currentUntutorial) => {
-        const updatedUntutorial = { ...currentUntutorial };
-        updatedUntutorial.Categories[event.target.value] = event.target.value;
-        return updatedUntutorial;
+      setUntutorial((prev) => {
+        const updated = { ...prev };
+        updated.Categories = {
+          ...(updated.Categories || {}),
+          [event.target.value]: event.target.value,
+        };
+        return updated;
       });
     }
   }, []);
 
-  const handleCategoryOnClick = useCallback((text) => {
-    setUntutorial((currentUntutorial) => {
-      const updatedUntutorial = { ...currentUntutorial };
-      delete updatedUntutorial.Categories[text];
-      return updatedUntutorial;
+  const handleCategoryOnClick = useCallback((categoryKey) => {
+    setUntutorial((prev) => {
+      const updated = { ...prev };
+      const categories = { ...(updated.Categories || {}) };
+      delete categories[categoryKey];
+      updated.Categories = categories;
+      return updated;
     });
   }, []);
 
   const handleCategoryValidate = useCallback(() => {
-    setUntutorial((currentUntutorial) => {
-      try {
-        if (Object.keys(currentUntutorial.Categories).length < 1) {
-          throw "At least one category required";
-        } else {
-          saveChangesHandler();
-          setError("");
-        }
-      } catch (error) {
-        setError(error);
+    try {
+      if (Object.keys(untutorial.Categories || {}).length < 1) {
+        throw new Error("At least one category required");
+      } else {
+        saveChangesHandler();
+        setError("");
       }
-      return currentUntutorial;
-    });
-  }, [saveChangesHandler]);
+    } catch (error) {
+      setError(error.message);
+    }
+  }, [untutorial.Categories, saveChangesHandler]);
 
   // Progress handlers
   const handleProgressURLOnChange = useCallback((value) => {
-    setProgress((currentProgress) => ({ ...currentProgress, URL: value }));
+    setProgress((prev) => ({ ...prev, URL: value }));
   }, []);
 
   const loadProgress = useCallback(() => {
-    if (authUser) {
+    if (authUser && untutorial.key) {
       firebase
         .progress(authUser.uid, untutorial.key)
         .on("value", (snapshot) => {
           if (snapshot.exists()) {
-            let progress = snapshot.val();
-            if (!progress.steps) progress.steps = [];
-            setProgress(progress);
+            let progressData = snapshot.val();
+            if (!progressData.steps) progressData.steps = [];
+            setProgress(progressData);
           } else {
-            let progress = {
+            let progressData = {
               Status: "DRAFT",
               steps: [],
               LastModified: Date.now(),
@@ -612,46 +655,50 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
               untut: key,
               url: "",
             };
-            untutorial.steps.forEach((step, i) => {
-              progress.steps.push({ Status: "DRAFT", Comments: "" });
+            untutorial.steps?.forEach((step, i) => {
+              progressData.steps.push({ Status: "DRAFT", Comments: "" });
             });
-            snapshot.ref.set({ ...progress }).then(() => {
-              setProgress(progress);
+            snapshot.ref.set({ ...progressData }).then(() => {
+              setProgress(progressData);
             });
           }
         });
     }
 
-    if (showiframe) setShowiframe(false);
-  }, [authUser, firebase, key, untutorial.key, untutorial.steps, showiframe]);
+    setShowiframe(false);
+  }, [authUser, firebase, untutorial.key, untutorial.steps, key]);
 
   const studentApprove = useCallback(
-    (step) => {
-      setProgress((currentProgress) => {
-        const updatedProgress = { ...currentProgress };
+    (stepIndex) => {
+      setProgress((prev) => {
+        const updated = { ...prev };
+        const steps = [...(updated.steps || [])];
 
-        if (!currentProgress.steps[step]) {
-          currentProgress.steps[step] = { Status: "PENDING", Comments: "" };
+        if (!steps[stepIndex]) {
+          steps[stepIndex] = { Status: "PENDING", Comments: "" };
+        } else {
+          steps[stepIndex] = { ...steps[stepIndex], Status: "PENDING" };
         }
-        currentProgress.steps[step].Status = "PENDING";
 
-        setTimeout(saveProgressHandler, 0);
-        return updatedProgress;
+        updated.steps = steps;
+        return updated;
       });
+      setTimeout(saveProgressHandler, 0);
     },
     [saveProgressHandler]
   );
 
   const deleteProjectHandler = useCallback(() => {
     firebase.untutorial(key).remove();
-    window.location = ROUTES.LANDING;
-  }, [firebase, key]);
+    history.push(ROUTES.LANDING);
+  }, [firebase, key, history]);
 
   const chooseLang = useCallback(
     (event) => {
-      setLang(event.target.value);
+      const newLang = event.target.value;
+      setLang(newLang);
       if (authUser) {
-        firebase.profile(authUser.uid + "/lang").set(event.target.value);
+        firebase.profile(authUser.uid + "/lang").set(newLang);
       }
     },
     [authUser, firebase]
@@ -666,7 +713,8 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
   useEffect(() => {
     const unsubscribe = firebase.untutorial(key).on("value", (snapshot) => {
       const untutorialData = snapshot.val();
-      if (untutorialData) {
+      // Only update if we're not currently editing
+      if (untutorialData && !isEditingRef.current) {
         firebase
           .profile(untutorialData.Author)
           .once("value")
@@ -689,29 +737,27 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
   }, [firebase, key, location.search, loadProgress]);
 
   useEffect(() => {
-    if (authUser && !init && lang !== authUser.lang) {
-      setInit(true);
+    if (authUser && lang !== authUser.lang) {
       setLang(authUser.lang);
     }
-  }, [authUser, init, lang]);
+  }, [authUser]);
 
-  // Memoize computed values
-  const stepCount = useMemo(() => {
-    return untutorial && untutorial.steps ? untutorial.steps.length : 0;
-  }, [untutorial]);
+  // Auto-save effect
+  useEffect(() => {
+    if (dirty) {
+      const timeoutId = setTimeout(() => {
+        saveChangesHandler();
+        isEditingRef.current = false;
+      }, 2000);
 
-  const nextStep = useMemo(() => {
-    if (!progress) return -1;
-    let next = progress.nextStep;
-    if (next > stepCount) next = 0;
-    return next;
-  }, [progress, stepCount]);
+      return () => clearTimeout(timeoutId);
+    }
+  }, [dirty, saveChangesHandler]);
 
-  const isAuthorized = useMemo(() => {
-    return authUser && (authUser.roles["ADMIN"] || authUser.uid === untutorial.Author?.key);
-  }, [authUser, untutorial.Author]);
-
+  // Render
   if (loading) return <div className="loading">Loading ...</div>;
+
+  const { Title, Description, Level, steps } = untutorial;
 
   return (
     <section id="untutorial">
@@ -720,8 +766,8 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
           authUser
             ? `${authUser.Username.replace(/\./g, " ").replace(/\w\S*/g, (w) =>
                 w.replace(/^\w/, (c) => c.toUpperCase())
-              )} - ${untutorial.Title.replace(/<(.|\n)*?>/g, "").trim()}`
-            : untutorial.Title.replace(/<(.|\n)*?>/g, "").trim()
+              )} - ${untutorial.Title?.replace(/<(.|\n)*?>/g, "").trim() || ""}`
+            : untutorial.Title?.replace(/<(.|\n)*?>/g, "").trim() || ""
         }`}</title>
       </Helmet>
 
@@ -784,7 +830,7 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
             </>
           )}
           <div
-            onClick={() => setShowiframe((prev) => !prev)}
+            onClick={() => setShowiframe(!showiframe)}
             className="toggle-iframe"
           >
             <i className="fa fa-code"></i>
@@ -793,79 +839,38 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
       </div>
 
       <div className={`thumbnail hero ${showiframe ? "blur" : ""}`}>
-        {isAuthorized && (
-<<<<<<< HEAD
-          <label htmlFor="files" className="upload">
-            <input id="files" type="file" onChange={handleThumbnailUpload} />
-          </label>
-=======
-          <>
-            <label
-              htmlFor="files"
-              className="upload"
-              style={{ pointerEvents: "none" }}
-            >
-              <input
-                id="files"
-                type="file"
-                onChange={handleThumbnailUpload}
-                style={{ pointerEvents: "auto" }}
-              />
+        {authUser &&
+          (authUser.roles?.["ADMIN"] ||
+            authUser.uid === untutorial.Author?.key) && (
+            <label htmlFor="files" className="upload">
+              <input id="files" type="file" onChange={handleThumbnailUpload} />
             </label>
-            {untutorial.ThumbnailFilename &&
-              untutorial.ThumbnailFilename.length !== 0 && (
-                <button
-                  type="button"
-                  onClick={(e) => handleThumbnailDelete(e)}
-                  className="delete-thumbnail"
-                  style={{
-                    position: "absolute",
-                    top: "10px",
-                    right: "10px",
-                    padding: "5px 10px",
-                    background: "rgba(255, 0, 0, 0.7)",
-                    color: "white",
-                    border: "none",
-                    borderRadius: "3px",
-                    cursor: "pointer",
-                    zIndex: 10,
-                    pointerEvents: "auto",
-                  }}
-                >
-                  Delete Image
-                </button>
-              )}
-          </>
->>>>>>> 656857d (fix: add pointer-events CSS to fix delete button click interception)
-        )}
+          )}
         {uploading && <progress value={uploadPercent} max="100" />}
         {untutorial.ThumbnailFilename &&
           untutorial.ThumbnailFilename.length !== 0 &&
           !uploading && (
             <LazyImage
               file={firebase.storage.ref(
-                "/public/" +
-                  untutorial.Author.key +
-                  "/" +
-                  untutorial.ThumbnailFilename
+                `/public/${untutorial.Author?.key}/${untutorial.ThumbnailFilename}`
               )}
             />
           )}
       </div>
 
       <div className="workOnProject">
-        {progress && progress.Status === "APPROVED" && (
+        {progress?.Status === "APPROVED" && (
           <h3>
             GREAT JOB! You finished this project!{" "}
-            <Link to={ROUTES.UNIVERSE + "/" + progress.untut}>
+            <Link to={`${ROUTES.UNIVERSE}/${progress.untut}`}>
               Publish to the UNIVERSE!
             </Link>
           </h3>
         )}
-        {progress && progress.Status === "PENDING" && (
+        {progress?.Status === "PENDING" && (
           <h3>Your teacher is reviewing your project!</h3>
         )}
-        {progress && progress.Status === "DRAFT" && nextStep > 0 && (
+        {progress?.Status === "DRAFT" && nextStep > 0 && (
           <h3>Keep it Up! You're on Step {nextStep}!</h3>
         )}
         {error && <h3>{error}</h3>}
@@ -894,262 +899,199 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
           </div>
 
           <div className="steps">
-            {untutorial &&
-              untutorial.steps.map((step, index) => (
-                <div
-                  key={index}
-                  className={
-                    "step " +
-                    (progress && progress.steps[index]?.Status === "PENDING"
-                      ? ""
-                      : "")
-                  }
-                >
-                  <div className="checkOff">
-                    <div className={"step-title status"}>
-                      <p>
-                        {lang === "Español"
-                          ? `Paso ${index + 1}`
-                          : `Step ${index + 1}`}
-                        {step.Title && step.Title.length && <>:</>}
-                      </p>
+            {untutorial.steps?.map((step, index) => (
+              <div
+                key={index}
+                className={
+                  "step " +
+                  (progress?.steps?.[index]?.Status === "PENDING" ? "" : "")
+                }
+              >
+                <div className="checkOff">
+                  <div className={"step-title status"}>
+                    <p>
+                      {lang === "Español"
+                        ? `Paso ${index + 1}`
+                        : `Step ${index + 1}`}
+                      {step.Title && step.Title.length && <>:</>}
+                    </p>
 
-                      <TCSEditor
-                        disabled={!isAuthorized}
-                        type={"plain"}
-                        className="header"
-                        onEditorChange={(value) =>
-                          handleStepTitleOnChange(value, index)
-                        }
-                        onEditorSave={saveChangesHandler}
-                        placeholder={"Step Title"}
-                        buttonText={progress ? "" : "Edit Title"}
-                        text={
-                          lang === "Español" && untutorial.steps[index].TitleEs
-                            ? untutorial.steps[index].TitleEs
-                            : untutorial.steps[index].Title
-                        }
-                      />
-                    </div>
-                  </div>
-
-                  <div className={"step-content"}>
                     <TCSEditor
-                      disabled={!isAuthorized}
-                      type={"text"}
-                      className={progress ? "no-button" : "editor"}
+                      disabled={
+                        !(
+                          authUser &&
+                          (authUser.roles?.["ADMIN"] ||
+                            authUser.uid === untutorial.Author?.key)
+                        )
+                      }
+                      type={"plain"}
+                      className="header"
                       onEditorChange={(value) =>
-                        handleStepOnChange(value, index)
+                        handleStepTitleOnChange(value, index)
                       }
                       onEditorSave={saveChangesHandler}
-                      placeholder={"Step Description"}
-                      buttonText={progress ? "" : "Edit Description"}
+                      placeholder={"Step Title"}
+                      buttonText={progress ? "" : "Edit Title"}
                       text={
-                        lang === "Español" &&
-                        untutorial.steps[index].DescriptionEs
-                          ? untutorial.steps[index].DescriptionEs
-                          : untutorial.steps[index].Description
+                        lang === "Español" && step.TitleEs
+                          ? step.TitleEs
+                          : step.Title
                       }
                     />
+                  </div>
+                </div>
 
-                    {progress &&
-                      progress.steps[index] &&
-                      progress.steps[index].Comments !== "" && (
-                        <div className={"comments"}>
-                          <h4>Teacher comments:</h4>{" "}
-                          {progress.steps[index].Comments}
-                        </div>
-                      )}
+                <div className={"step-content"}>
+                  <TCSEditor
+                    disabled={
+                      !(
+                        authUser &&
+                        (authUser.roles?.["ADMIN"] ||
+                          authUser.uid === untutorial.Author?.key)
+                      )
+                    }
+                    type={"text"}
+                    className={progress ? "no-button" : "editor"}
+                    onEditorChange={(value) => handleStepOnChange(value, index)}
+                    onEditorSave={saveChangesHandler}
+                    placeholder={"Step Description"}
+                    buttonText={progress ? "" : "Edit Description"}
+                    text={
+                      lang === "Español" && step.DescriptionEs
+                        ? step.DescriptionEs
+                        : step.Description
+                    }
+                  />
 
-                    <div
-                      className={
-                        untutorial.steps[index].ThumbnailFilename
-                          ? "thumbnail crop"
-                          : "thumbnail"
-                      }
-                    >
-                      {isAuthorized && (
-                        <>
-                          <p
-                            className={
-                              untutorial.steps[index].ThumbnailFilename
-                                ? "change"
-                                : "add"
-                            }
-                          >
-                            {untutorial.steps[index].ThumbnailFilename
-                              ? "Update Screenshot"
-                              : "+ Add Screenshot"}
-                          </p>
-                          <label
-                            htmlFor={"step" + index + "-thumbnail-upload"}
-                            className={
-                              untutorial.steps[index].ThumbnailFilename
-                                ? "upload replace"
-                                : "upload"
-                            }
-                            style={{ pointerEvents: "none" }}
-                          >
-                            <input
-                              id={"step" + index + "-thumbnail-upload"}
-                              type="file"
-                              onChange={(event) =>
-                                handleStepThumbnailUpload(event, index)
-                              }
-                              style={{ pointerEvents: "auto" }}
-                            />
-                          </label>
-<<<<<<< HEAD
-=======
-                          {untutorial.steps[index].ThumbnailFilename &&
-                            untutorial.steps[index].ThumbnailFilename.length !==
-                              0 && (
-                              <button
-                                type="button"
-                                onClick={(e) =>
-                                  handleStepThumbnailDelete(e, index, false)
-                                }
-                                style={{
-                                  marginLeft: "10px",
-                                  padding: "5px 10px",
-                                  background: "#dc3545",
-                                  color: "white",
-                                  border: "none",
-                                  borderRadius: "3px",
-                                  cursor: "pointer",
-                                  pointerEvents: "auto",
-                                }}
-                              >
-                                Delete
-                              </button>
-                            )}
->>>>>>> 656857d (fix: add pointer-events CSS to fix delete button click interception)
-                        </>
-                      )}
-
-                      {uploading && (
-                        <progress value={uploadPercent} max="100" />
-                      )}
-
-                      {untutorial.steps[index].ThumbnailFilename &&
-                        untutorial.steps[index].ThumbnailFilename.length !==
-                          0 &&
-                        !uploading &&
-                        (lang === "English" ||
-                          !untutorial.steps[index].ThumbnailFilenameSp) && (
-                          <LazyImage
-                            id={"step" + index + "-thumbnail"}
-                            className="crop"
-                            file={firebase.storage.ref(
-                              "/public/" +
-                                untutorial.Author.key +
-                                "/" +
-                                untutorial.steps[index].ThumbnailFilename
-                            )}
-                          />
-                        )}
-
-                      {isAuthorized && lang === "Español" && (
-                        <>
-                          <p
-                            className={
-                              untutorial.steps[index].ThumbnailFilename
-                                ? "change"
-                                : "add"
-                            }
-                          >
-                            {untutorial.steps[index].ThumbnailFilename
-                              ? "Update Screenshot"
-                              : "+ Add Screenshot"}
-                          </p>
-                          <label
-                            htmlFor={"step" + index + "-thumbnail-upload"}
-                            className={
-                              untutorial.steps[index].ThumbnailFilename
-                                ? "upload replace"
-                                : "upload"
-                            }
-                            style={{ pointerEvents: "none" }}
-                          >
-                            <input
-                              id={"step" + index + "-thumbnail-upload"}
-                              type="file"
-                              onChange={(event) =>
-                                handleStepThumbnailUpload(event, index)
-                              }
-                              style={{ pointerEvents: "auto" }}
-                            />
-                          </label>
-<<<<<<< HEAD
-=======
-                          {untutorial.steps[index].ThumbnailFilenameSp &&
-                            untutorial.steps[index].ThumbnailFilenameSp.length !==
-                              0 && (
-                              <button
-                                type="button"
-                                onClick={(e) =>
-                                  handleStepThumbnailDelete(e, index, true)
-                                }
-                                style={{
-                                  marginLeft: "10px",
-                                  padding: "5px 10px",
-                                  background: "#dc3545",
-                                  color: "white",
-                                  border: "none",
-                                  borderRadius: "3px",
-                                  cursor: "pointer",
-                                  pointerEvents: "auto",
-                                }}
-                              >
-                                Delete
-                              </button>
-                            )}
->>>>>>> 656857d (fix: add pointer-events CSS to fix delete button click interception)
-                        </>
-                      )}
-
-                      {untutorial.steps[index].ThumbnailFilenameSp &&
-                        untutorial.steps[index].ThumbnailFilenameSp.length !==
-                          0 &&
-                        !uploading &&
-                        lang === "Español" && (
-                          <LazyImage
-                            id={"step" + index + "-thumbnail"}
-                            className="crop"
-                            file={firebase.storage.ref(
-                              "/public/" +
-                                untutorial.Author.key +
-                                "/" +
-                                untutorial.steps[index].ThumbnailFilenameSp
-                            )}
-                          />
-                        )}
+                  {progress?.steps?.[index]?.Comments && (
+                    <div className={"comments"}>
+                      <h4>Teacher comments:</h4>{" "}
+                      {progress.steps[index].Comments}
                     </div>
+                  )}
 
-                    {progress &&
-                      (!progress.steps[index] ||
-                        progress.steps[index].Status === "DRAFT") && (
-                        <button
-                          disabled={false}
-                          className={"done-button todo"}
-                          onClick={() => studentApprove(index)}
-                        >
-                          Mark Done
-                        </button>
+                  <div
+                    className={
+                      step.ThumbnailFilename ? "thumbnail crop" : "thumbnail"
+                    }
+                  >
+                    {authUser &&
+                      (authUser.roles?.["ADMIN"] ||
+                        authUser.uid === untutorial.Author?.key) && (
+                        <>
+                          <p
+                            className={
+                              step.ThumbnailFilename ? "change" : "add"
+                            }
+                          >
+                            {step.ThumbnailFilename
+                              ? "Update Screenshot"
+                              : "+ Add Screenshot"}
+                          </p>
+                          <label
+                            htmlFor={`step${index}-thumbnail-upload`}
+                            className={
+                              step.ThumbnailFilename
+                                ? "upload replace"
+                                : "upload"
+                            }
+                          >
+                            <input
+                              id={`step${index}-thumbnail-upload`}
+                              type="file"
+                              onChange={(event) =>
+                                handleStepThumbnailUpload(event, index)
+                              }
+                            />
+                          </label>
+                        </>
                       )}
-                    {progress &&
-                      progress.steps[index] &&
-                      progress.steps[index].Status === "PENDING" && (
-                        <div className="done-button pending">In Review</div>
+
+                    {uploading && <progress value={uploadPercent} max="100" />}
+
+                    {step.ThumbnailFilename &&
+                      step.ThumbnailFilename.length !== 0 &&
+                      !uploading &&
+                      (lang === "English" || !step.ThumbnailFilenameSp) && (
+                        <LazyImage
+                          id={`step${index}-thumbnail`}
+                          className="crop"
+                          file={firebase.storage.ref(
+                            `/public/${untutorial.Author?.key}/${step.ThumbnailFilename}`
+                          )}
+                        />
                       )}
-                    {progress &&
-                      progress.steps[index] &&
-                      progress.steps[index].Status === "APPROVED" && (
-                        <div className="done-button approved">Approved</div>
+
+                    {authUser &&
+                      (authUser.roles?.["ADMIN"] ||
+                        authUser.uid === untutorial.Author?.key) &&
+                      lang === "Español" && (
+                        <>
+                          <p
+                            className={
+                              step.ThumbnailFilenameSp ? "change" : "add"
+                            }
+                          >
+                            {step.ThumbnailFilenameSp
+                              ? "Update Screenshot"
+                              : "+ Add Screenshot"}
+                          </p>
+                          <label
+                            htmlFor={`step${index}-thumbnail-upload-es`}
+                            className={
+                              step.ThumbnailFilenameSp
+                                ? "upload replace"
+                                : "upload"
+                            }
+                          >
+                            <input
+                              id={`step${index}-thumbnail-upload-es`}
+                              type="file"
+                              onChange={(event) =>
+                                handleStepThumbnailUpload(event, index)
+                              }
+                            />
+                          </label>
+                        </>
+                      )}
+
+                    {step.ThumbnailFilenameSp &&
+                      step.ThumbnailFilenameSp.length !== 0 &&
+                      !uploading &&
+                      lang === "Español" && (
+                        <LazyImage
+                          id={`step${index}-thumbnail`}
+                          className="crop"
+                          file={firebase.storage.ref(
+                            `/public/${untutorial.Author?.key}/${step.ThumbnailFilenameSp}`
+                          )}
+                        />
                       )}
                   </div>
 
-                  {stepCount > 1 && isAuthorized && (
+                  {progress &&
+                    (!progress.steps?.[index] ||
+                      progress.steps[index].Status === "DRAFT") && (
+                      <button
+                        disabled={false}
+                        className={"done-button todo"}
+                        onClick={() => studentApprove(index)}
+                      >
+                        Mark Done
+                      </button>
+                    )}
+                  {progress?.steps?.[index]?.Status === "PENDING" && (
+                    <div className="done-button pending">In Review</div>
+                  )}
+                  {progress?.steps?.[index]?.Status === "APPROVED" && (
+                    <div className="done-button approved">Approved</div>
+                  )}
+                </div>
+
+                {stepCount > 1 &&
+                  authUser &&
+                  (authUser.roles?.["ADMIN"] ||
+                    authUser.uid === untutorial.Author?.key) && (
                     <button
                       className="del"
                       onClick={(event) => deleteStepHandler(event, index)}
@@ -1157,17 +1099,19 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
                       Delete Step
                     </button>
                   )}
-                </div>
-              ))}
-
-            {isAuthorized && (
-              <div className="addDelete">
-                <button onClick={addStepHandler}>Add Step</button>
-                <button onClick={deleteProjectHandler}>
-                  Delete Untutorial
-                </button>
               </div>
-            )}
+            ))}
+
+            {authUser &&
+              (authUser.roles?.["ADMIN"] ||
+                authUser.uid === untutorial.Author?.key) && (
+                <div className="addDelete">
+                  <button onClick={addStepHandler}>Add Step</button>
+                  <button onClick={deleteProjectHandler}>
+                    Delete Untutorial
+                  </button>
+                </div>
+              )}
           </div>
         </div>
 
@@ -1212,7 +1156,13 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
           <div className="container">
             <div className={"titleStatus"}>
               <TCSEditor
-                disabled={!isAuthorized}
+                disabled={
+                  !(
+                    authUser &&
+                    (authUser.roles?.["ADMIN"] ||
+                      authUser.uid === untutorial.Author?.key)
+                  )
+                }
                 type={"text"}
                 className={"title"}
                 name={"title"}
@@ -1231,7 +1181,13 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
           <div className="container">
             Level:
             <TCSEditor
-              disabled={!isAuthorized}
+              disabled={
+                !(
+                  authUser &&
+                  (authUser.roles?.["ADMIN"] ||
+                    authUser.uid === untutorial.Author?.key)
+                )
+              }
               type={"select"}
               className="level"
               selectOptions={["1", "2", "3", "4", "5", "6", "7"]}
@@ -1242,7 +1198,7 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
             />
           </div>
 
-          {authUser && authUser.roles["ADMIN"] && (
+          {authUser?.roles?.["ADMIN"] && (
             <div className="container">
               Priority:
               <TCSEditor
@@ -1278,9 +1234,9 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
             <h3>
               by:{" "}
               <a
-                href={"/profile/" + untutorial.Author.key}
+                href={`/profile/${untutorial.Author?.key}`}
                 dangerouslySetInnerHTML={{
-                  __html: untutorial.Author.DisplayName,
+                  __html: untutorial.Author?.DisplayName,
                 }}
               />
             </h3>
@@ -1288,7 +1244,13 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
 
           <div className="container">
             <TCSEditor
-              disabled={!isAuthorized}
+              disabled={
+                !(
+                  authUser &&
+                  (authUser.roles?.["ADMIN"] ||
+                    authUser.uid === untutorial.Author?.key)
+                )
+              }
               type={"text"}
               onEditorChange={handleDescriptionOnChange}
               onEditorSave={saveChangesHandler}
@@ -1302,58 +1264,62 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
             />
           </div>
 
-          {isAuthorized && (
-            <div className="container">
-              <h4>Status</h4>
-              <TCSEditor
-                disabled={!(authUser && authUser.roles["ADMIN"])}
-                type={"select"}
-                selectOptions={["DRAFT", "APPROVED"]}
-                name={"status"}
-                className={
-                  untutorial.Status === "APPROVED" ? "approved" : "draft"
-                }
-                onEditorChange={handleStatusOnChange}
-                onEditorSave={saveChangesHandler}
-                placeholder={"Status"}
-                text={untutorial.Status}
-              />
-            </div>
-          )}
+          {authUser &&
+            (authUser.roles?.["ADMIN"] ||
+              authUser.uid === untutorial.Author?.key) && (
+              <div className="container">
+                <h4>Status</h4>
+                <TCSEditor
+                  disabled={!(authUser && authUser.roles?.["ADMIN"])}
+                  type={"select"}
+                  selectOptions={["DRAFT", "APPROVED"]}
+                  name={"status"}
+                  className={
+                    untutorial.Status === "APPROVED" ? "approved" : "draft"
+                  }
+                  onEditorChange={handleStatusOnChange}
+                  onEditorSave={saveChangesHandler}
+                  placeholder={"Status"}
+                  text={untutorial.Status}
+                />
+              </div>
+            )}
 
-          {isAuthorized && (
-            <div className="container">
-              <h4>Category</h4>
-              <div className="filter">
-                {Object.keys(untutorial.Categories || {}).length !==
-                  Object.keys(FILTERS).length && (
-                  <select onChange={handlePCategoryOnChange}>
-                    <option value="-1">-------</option>
-                    {Object.keys(FILTERS)
-                      .filter(
-                        (f) =>
-                          !Object.keys(untutorial.Categories || {}).includes(
-                            f
-                          )
-                      )
-                      .map((catName) => (
-                        <option key={catName} value={catName}>
-                          {FILTERS[catName]}
-                        </option>
-                      ))}
-                  </select>
-                )}
+          {authUser &&
+            (authUser.roles?.["ADMIN"] ||
+              authUser.uid === untutorial.Author?.key) && (
+              <div className="container">
+                <h4>Category</h4>
+                <div className="filter">
+                  {Object.keys(untutorial.Categories || {}).length !==
+                    Object.keys(FILTERS).length && (
+                    <select onChange={handlePCategoryOnChange}>
+                      <option value="-1">-------</option>
+                      {Object.keys(FILTERS)
+                        .filter(
+                          (f) =>
+                            !Object.keys(untutorial.Categories || {}).includes(
+                              f
+                            )
+                        )
+                        .map((catName) => (
+                          <option key={catName} value={catName}>
+                            {FILTERS[catName]}
+                          </option>
+                        ))}
+                    </select>
+                  )}
 
-                <div className="filter-categories">
-                  {Object.keys(untutorial.Categories || {}).map((f) => (
-                    <a key={f} onClick={() => handleCategoryOnClick(f)}>
-                      {FILTERS[f]}
-                    </a>
-                  ))}
+                  <div className="filter-categories">
+                    {Object.keys(untutorial.Categories || {}).map((f) => (
+                      <a key={f} onClick={() => handleCategoryOnClick(f)}>
+                        {FILTERS[f]}
+                      </a>
+                    ))}
+                  </div>
                 </div>
               </div>
-            </div>
-          )}
+            )}
         </div>
       </div>
     </section>
