@@ -520,6 +520,94 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
     [authUser, firebase, lang, saveChangesHandler]
   );
 
+  const handleThumbnailDelete = useCallback(
+    (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+
+      if (!window.confirm("Are you sure you want to delete this image?")) {
+        return;
+      }
+
+      setUntutorial((currentUntutorial) => {
+        const updatedUntutorial = { ...currentUntutorial };
+
+        if (authUser && authUser.roles["STUDENT"]) {
+          updatedUntutorial.Status = "DRAFT";
+        }
+
+        const filename = updatedUntutorial.ThumbnailFilename;
+        if (filename) {
+          const storageRef = firebase.storage.ref(
+            "/public/" + updatedUntutorial.Author.key + "/" + filename
+          );
+          storageRef
+            .delete()
+            .then(() => {
+              console.log("Thumbnail deleted successfully");
+            })
+            .catch((error) => {
+              console.log("Error deleting thumbnail:", error);
+            });
+        }
+
+        updatedUntutorial.ThumbnailFilename = "";
+        setDirty(true);
+        setTimeout(saveChangesHandler, 0);
+        return updatedUntutorial;
+      });
+    },
+    [authUser, firebase, saveChangesHandler]
+  );
+
+  const handleStepThumbnailDelete = useCallback(
+    (event, step, isSpanish) => {
+      event.preventDefault();
+      event.stopPropagation();
+
+      if (!window.confirm("Are you sure you want to delete this image?")) {
+        return;
+      }
+
+      setUntutorial((currentUntutorial) => {
+        const updatedUntutorial = { ...currentUntutorial };
+
+        if (authUser && authUser.roles["STUDENT"]) {
+          updatedUntutorial.Status = "DRAFT";
+        }
+
+        const filename = isSpanish
+          ? updatedUntutorial.steps[step].ThumbnailFilenameSp
+          : updatedUntutorial.steps[step].ThumbnailFilename;
+
+        if (filename) {
+          const storageRef = firebase.storage.ref(
+            "/public/" + updatedUntutorial.Author.key + "/" + filename
+          );
+          storageRef
+            .delete()
+            .then(() => {
+              console.log("Step thumbnail deleted successfully");
+            })
+            .catch((error) => {
+              console.log("Error deleting step thumbnail:", error);
+            });
+        }
+
+        if (isSpanish) {
+          updatedUntutorial.steps[step].ThumbnailFilenameSp = "";
+        } else {
+          updatedUntutorial.steps[step].ThumbnailFilename = "";
+        }
+
+        setDirty(true);
+        setTimeout(saveChangesHandler, 0);
+        return updatedUntutorial;
+      });
+    },
+    [authUser, firebase, saveChangesHandler]
+  );
+
   // Category and skills handlers
   const handleSkillsOnChange = useCallback((event) => {
     if (event.target.value !== "-1") {
@@ -794,11 +882,6 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
 
       <div className={`thumbnail hero ${showiframe ? "blur" : ""}`}>
         {isAuthorized && (
-<<<<<<< HEAD
-          <label htmlFor="files" className="upload">
-            <input id="files" type="file" onChange={handleThumbnailUpload} />
-          </label>
-=======
           <>
             <label
               htmlFor="files"
@@ -836,7 +919,6 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
                 </button>
               )}
           </>
->>>>>>> 656857d (fix: add pointer-events CSS to fix delete button click interception)
         )}
         {uploading && <progress value={uploadPercent} max="100" />}
         {untutorial.ThumbnailFilename &&
@@ -999,8 +1081,6 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
                               style={{ pointerEvents: "auto" }}
                             />
                           </label>
-<<<<<<< HEAD
-=======
                           {untutorial.steps[index].ThumbnailFilename &&
                             untutorial.steps[index].ThumbnailFilename.length !==
                               0 && (
@@ -1023,7 +1103,6 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
                                 Delete
                               </button>
                             )}
->>>>>>> 656857d (fix: add pointer-events CSS to fix delete button click interception)
                         </>
                       )}
 
@@ -1080,8 +1159,6 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
                               style={{ pointerEvents: "auto" }}
                             />
                           </label>
-<<<<<<< HEAD
-=======
                           {untutorial.steps[index].ThumbnailFilenameSp &&
                             untutorial.steps[index].ThumbnailFilenameSp.length !==
                               0 && (
@@ -1104,7 +1181,6 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
                                 Delete
                               </button>
                             )}
->>>>>>> 656857d (fix: add pointer-events CSS to fix delete button click interception)
                         </>
                       )}
 
