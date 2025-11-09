@@ -36,7 +36,10 @@ const LazyImage = ({ file, className }) => {
   }, [file]); // The useEffect hook will re-run if the 'file' prop changes.
 
   // Render
-  if (!url || url === "") return null;
+  // Don't render anything if we had an error loading the image
+  if (!loading && url === "") return null;
+
+  // Show image (either loading state or actual image)
   return <img className={className} id={guid} key={guid} src={url} />;
 };
 
