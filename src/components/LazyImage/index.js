@@ -18,21 +18,31 @@ const LazyImage = ({ file, className }) => {
 
   // ComponentDidMount & ComponentDidUpdate equivalent
   useEffect(() => {
+    let isMounted = true;
+
     file
       .getDownloadURL()
       .then((url) => {
-        setLoading(false);
-        setUrl(url);
-        console.log({ file, url }); // Logging the file and URL
+        if (isMounted) {
+          setLoading(false);
+          setUrl(url);
+          console.log({ file, url }); // Logging the file and URL
+        }
       })
       .catch((error) => {
-        // Handle missing files gracefully
-        setLoading(false);
-        setUrl(""); // Clear URL so image won't render
-        if (error.code !== 'storage/object-not-found') {
-          console.error("Error loading image:", error);
+        if (isMounted) {
+          // Handle missing files gracefully
+          setLoading(false);
+          setUrl(""); // Clear URL so image won't render
+          if (error.code !== 'storage/object-not-found') {
+            console.error("Error loading image:", error);
+          }
         }
       });
+
+    return () => {
+      isMounted = false;
+    };
   }, [file]); // The useEffect hook will re-run if the 'file' prop changes.
 
   // Render
