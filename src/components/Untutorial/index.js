@@ -939,16 +939,11 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
       <div className={`thumbnail hero ${showiframe ? "blur" : ""}`}>
         {isAuthorized && (
           <>
-            <label
-              htmlFor="files"
-              className="upload"
-              style={{ pointerEvents: "none" }}
-            >
+            <label htmlFor="files" className="upload">
               <input
                 id="files"
                 type="file"
                 onChange={handleThumbnailUpload}
-                style={{ pointerEvents: "auto" }}
               />
             </label>
             {untutorial.ThumbnailFilename &&
@@ -1126,7 +1121,6 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
                                 ? "upload replace"
                                 : "upload"
                             }
-                            style={{ pointerEvents: "none" }}
                           >
                             <input
                               id={"step" + index + "-thumbnail-upload"}
@@ -1134,7 +1128,6 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
                               onChange={(event) =>
                                 handleStepThumbnailUpload(event, index)
                               }
-                              style={{ pointerEvents: "auto" }}
                             />
                           </label>
                           {untutorial.steps[index].ThumbnailFilename &&
@@ -1204,7 +1197,6 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
                                 ? "upload replace"
                                 : "upload"
                             }
-                            style={{ pointerEvents: "none" }}
                           >
                             <input
                               id={"step" + index + "-thumbnail-upload"}
@@ -1212,7 +1204,6 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
                               onChange={(event) =>
                                 handleStepThumbnailUpload(event, index)
                               }
-                              style={{ pointerEvents: "auto" }}
                             />
                           </label>
                           {untutorial.steps[index].ThumbnailFilenameSp &&
