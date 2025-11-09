@@ -425,56 +425,59 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
       if (!file) return;
 
       const ext = file.name.substring(file.name.lastIndexOf(".") + 1);
+      const filename = uuidv4() + "." + ext;
 
-      setUntutorial((currentUntutorial) => {
-        const updatedUntutorial = { ...currentUntutorial };
+      // Get author key before starting upload
+      const authorKey = typeof untutorial.Author === 'string'
+        ? untutorial.Author
+        : untutorial.Author?.key;
 
-        if (authUser && authUser.roles["STUDENT"]) {
-          updatedUntutorial.Status = "DRAFT";
+      if (!authorKey) {
+        console.error("Cannot upload thumbnail: Author key is missing");
+        return;
+      }
+
+      // Start upload immediately without updating state
+      const storageRef = firebase.storage.ref(
+        "/public/" + authorKey + "/" + filename
+      );
+      const task = storageRef.put(file);
+
+      task.on(
+        "state_changed",
+        (snapshot) => {
+          const percentage =
+            (100 * snapshot.bytesTransferred) / snapshot.totalBytes;
+          setUploadPercent(percentage);
+          setUploading(true);
+        },
+        (error) => {
+          console.error("Error uploading thumbnail:", error);
+          setUploadPercent(0);
+          setUploading(false);
+        },
+        () => {
+          // Only update state AFTER upload completes successfully
+          setUntutorial((currentUntutorial) => {
+            const updatedUntutorial = { ...currentUntutorial };
+
+            if (authUser && authUser.roles["STUDENT"]) {
+              updatedUntutorial.Status = "DRAFT";
+            }
+
+            updatedUntutorial.ThumbnailFilename = filename;
+
+            return updatedUntutorial;
+          });
+
+          setUploadPercent(0);
+          setUploading(false);
+          setDirty(true);
+          setTimeout(saveChangesHandler, 0);
         }
-
-        // Handle both cases: Author as object or as string key
-        const authorKey = typeof updatedUntutorial.Author === 'string'
-          ? updatedUntutorial.Author
-          : updatedUntutorial.Author?.key;
-
-        if (!authorKey) {
-          console.error("Cannot upload thumbnail: Author key is missing");
-          return currentUntutorial;
-        }
-
-        updatedUntutorial.ThumbnailFilename = uuidv4() + "." + ext;
-
-        const storageRef = firebase.storage.ref(
-          "/public/" + authorKey + "/" + updatedUntutorial.ThumbnailFilename
-        );
-        const task = storageRef.put(file);
-
-        task.on(
-          "state_changed",
-          (snapshot) => {
-            const percentage =
-              (100 * snapshot.bytesTransferred) / snapshot.totalBytes;
-            setUploadPercent(percentage);
-            setUploading(true);
-          },
-          (error) => {
-            console.error("Error uploading thumbnail:", error);
-            setUploadPercent(0);
-            setUploading(false);
-          },
-          () => {
-            setUploadPercent(0);
-            setUploading(false);
-            setDirty(true);
-            setTimeout(saveChangesHandler, 0);
-          }
-        );
-
-        return updatedUntutorial;
-      });
+      );
     },
-    [authUser, firebase, saveChangesHandler]
+    [authUser, firebase, saveChangesHandler, untutorial.Author]
   );
 
   const handleStepThumbnailUpload = useCallback(
@@ -483,71 +486,65 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
       if (!file) return;
 
       const ext = file.name.substring(file.name.lastIndexOf(".") + 1);
+      const filename = uuidv4() + "." + ext;
 
-      setUntutorial((currentUntutorial) => {
-        const updatedUntutorial = { ...currentUntutorial };
+      // Get author key before starting upload
+      const authorKey = typeof untutorial.Author === 'string'
+        ? untutorial.Author
+        : untutorial.Author?.key;
 
-        if (authUser && authUser.roles["STUDENT"]) {
-          updatedUntutorial.Status = "DRAFT";
+      if (!authorKey) {
+        console.error("Cannot upload step thumbnail: Author key is missing");
+        return;
+      }
+
+      // Start upload immediately without updating state
+      const storageRef = firebase.storage.ref(
+        "/public/" + authorKey + "/" + filename
+      );
+
+      const task = storageRef.put(file);
+
+      task.on(
+        "state_changed",
+        (snapshot) => {
+          const percentage =
+            (100 * snapshot.bytesTransferred) / snapshot.totalBytes;
+          setUploadPercent(percentage);
+          setUploading(true);
+        },
+        (error) => {
+          console.error("Error uploading step thumbnail:", error);
+          setUploadPercent(0);
+          setUploading(false);
+        },
+        () => {
+          // Only update state AFTER upload completes successfully
+          setUntutorial((currentUntutorial) => {
+            const updatedUntutorial = { ...currentUntutorial };
+
+            if (authUser && authUser.roles["STUDENT"]) {
+              updatedUntutorial.Status = "DRAFT";
+            }
+
+            // Set filename based on language
+            if (lang === "Español") {
+              updatedUntutorial.steps[step].ThumbnailFilenameSp = filename;
+            } else {
+              updatedUntutorial.steps[step].ThumbnailFilename = filename;
+            }
+
+            return updatedUntutorial;
+          });
+
+          setUploadPercent(0);
+          setUploading(false);
+          setDirty(true);
+          setTimeout(saveChangesHandler, 0);
         }
-
-        // Handle both cases: Author as object or as string key
-        const authorKey = typeof updatedUntutorial.Author === 'string'
-          ? updatedUntutorial.Author
-          : updatedUntutorial.Author?.key;
-
-        if (!authorKey) {
-          console.error("Cannot upload step thumbnail: Author key is missing");
-          return currentUntutorial;
-        }
-
-        let storageRef;
-        if (lang === "Español") {
-          updatedUntutorial.steps[step].ThumbnailFilenameSp =
-            uuidv4() + "." + ext;
-          storageRef = firebase.storage.ref(
-            "/public/" +
-              authorKey +
-              "/" +
-              updatedUntutorial.steps[step].ThumbnailFilenameSp
-          );
-        } else {
-          updatedUntutorial.steps[step].ThumbnailFilename = uuidv4() + "." + ext;
-          storageRef = firebase.storage.ref(
-            "/public/" +
-              authorKey +
-              "/" +
-              updatedUntutorial.steps[step].ThumbnailFilename
-          );
-        }
-
-        const task = storageRef.put(file);
-
-        task.on(
-          "state_changed",
-          (snapshot) => {
-            const percentage =
-              (100 * snapshot.bytesTransferred) / snapshot.totalBytes;
-            setUploadPercent(percentage);
-            setUploading(true);
-          },
-          (error) => {
-            console.error("Error uploading step thumbnail:", error);
-            setUploadPercent(0);
-            setUploading(false);
-          },
-          () => {
-            setUploadPercent(0);
-            setUploading(false);
-            setDirty(true);
-            setTimeout(saveChangesHandler, 0);
-          }
-        );
-
-        return updatedUntutorial;
-      });
+      );
     },
-    [authUser, firebase, lang, saveChangesHandler]
+    [authUser, firebase, lang, saveChangesHandler, untutorial.Author]
   );
 
   const handleThumbnailDelete = useCallback(
