@@ -113,22 +113,34 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
   const saveChangesHandler = useCallback(() => {
     if (Object.values(errorsRef.current).length === 0) {
       setUntutorial((currentUntutorial) => {
-        const updatedUntutorial = {
+        const timestamp = Date.now();
+
+        // Handle both cases: Author as object or as string key
+        const authorKey = typeof currentUntutorial.Author === 'string'
+          ? currentUntutorial.Author
+          : currentUntutorial.Author?.key;
+
+        // Prepare data for Firebase (with Author as string)
+        const firebaseData = {
           ...currentUntutorial,
-          LastModified: Date.now(),
-          Author: currentUntutorial.Author.key,
+          LastModified: timestamp,
+          Author: authorKey,
         };
 
         firebase
           .untutorial(key)
-          .set(updatedUntutorial)
+          .set(firebaseData)
           .then(() => {
             console.log("Successfully Saved");
             setDirty(false);
           })
           .catch((error) => setError(error.message));
 
-        return updatedUntutorial;
+        // Return local state with Author as object (unchanged except LastModified)
+        return {
+          ...currentUntutorial,
+          LastModified: timestamp,
+        };
       });
     }
   }, [firebase, key]);
