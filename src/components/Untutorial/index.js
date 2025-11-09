@@ -35,9 +35,6 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
   const errorsRef = useRef(errors);
   errorsRef.current = errors;
 
-  // Track the cached author to prevent refetching
-  const cachedAuthorRef = useRef(null);
-
   // Helper function to validate fields
   const validateField = useCallback((field, value, lang) => {
     setErrors((prevErrors) => {
@@ -830,63 +827,41 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
       if (untutorialData) {
         // Check if Author is already an object or needs to be fetched
         if (typeof untutorialData.Author === 'string') {
-          // Author is a user ID string
+          // Author is a user ID string, fetch the full author profile
           const authorId = untutorialData.Author;
+          firebase
+            .profile(authorId)
+            .once("value")
+            .then((snapshot2) => {
+              const author = snapshot2.val();
+              // Add the key property to the author object for authorization checks
+              if (author) {
+                author.key = authorId;
+                untutorialData.Author = author;
+              } else {
+                // If author profile doesn't exist, create minimal object with key
+                untutorialData.Author = { key: authorId };
+              }
+              setUntutorial(untutorialData);
+              setLoading(false);
 
-          // Check if we have a cached author with the same key
-          if (cachedAuthorRef.current && cachedAuthorRef.current.key === authorId) {
-            // Reuse cached author object to avoid refetch and flickering
-            untutorialData.Author = cachedAuthorRef.current;
-            setUntutorial(untutorialData);
-            setLoading(false);
-            if (location.search.includes("loadProgress")) {
-              loadProgress();
-            }
-          } else {
-            // Need to fetch the author profile
-            firebase
-              .profile(authorId)
-              .once("value")
-              .then((snapshot2) => {
-                const author = snapshot2.val();
-                // Add the key property to the author object for authorization checks
-                if (author) {
-                  author.key = authorId;
-                  untutorialData.Author = author;
-                  cachedAuthorRef.current = author;
-                } else {
-                  // If author profile doesn't exist, create minimal object with key
-                  const minimalAuthor = { key: authorId };
-                  untutorialData.Author = minimalAuthor;
-                  cachedAuthorRef.current = minimalAuthor;
-                }
-                setUntutorial(untutorialData);
-                setLoading(false);
-
-                if (location.search.includes("loadProgress")) {
-                  loadProgress();
-                }
-              })
-              .catch((error) => {
-                console.error("Error loading author profile:", error);
-                // Still set minimal author object so authorization works
-                const minimalAuthor = { key: authorId };
-                untutorialData.Author = minimalAuthor;
-                cachedAuthorRef.current = minimalAuthor;
-                setUntutorial(untutorialData);
-                setLoading(false);
-              });
-          }
+              if (location.search.includes("loadProgress")) {
+                loadProgress();
+              }
+            })
+            .catch((error) => {
+              console.error("Error loading author profile:", error);
+              // Still set minimal author object so authorization works
+              untutorialData.Author = { key: authorId };
+              setUntutorial(untutorialData);
+              setLoading(false);
+            });
         } else {
           // Author is already an object, ensure it has the key property
           if (untutorialData.Author && !untutorialData.Author.key) {
             // If Author object exists but doesn't have key, we can't determine it
             // This shouldn't happen, but handle gracefully
             console.warn("Author object missing key property");
-          }
-          // Cache the author object
-          if (untutorialData.Author) {
-            cachedAuthorRef.current = untutorialData.Author;
           }
           setUntutorial(untutorialData);
           setLoading(false);
