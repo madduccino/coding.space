@@ -538,8 +538,13 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
 
         const filename = updatedUntutorial.ThumbnailFilename;
         if (filename) {
+          // Handle both cases: Author as object or as string key
+          const authorKey = typeof updatedUntutorial.Author === 'string'
+            ? updatedUntutorial.Author
+            : updatedUntutorial.Author.key;
+
           const storageRef = firebase.storage.ref(
-            "/public/" + updatedUntutorial.Author.key + "/" + filename
+            "/public/" + authorKey + "/" + filename
           );
           storageRef
             .delete()
@@ -581,8 +586,13 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
           : updatedUntutorial.steps[step].ThumbnailFilename;
 
         if (filename) {
+          // Handle both cases: Author as object or as string key
+          const authorKey = typeof updatedUntutorial.Author === 'string'
+            ? updatedUntutorial.Author
+            : updatedUntutorial.Author.key;
+
           const storageRef = firebase.storage.ref(
-            "/public/" + updatedUntutorial.Author.key + "/" + filename
+            "/public/" + authorKey + "/" + filename
           );
           storageRef
             .delete()
