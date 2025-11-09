@@ -1199,8 +1199,7 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
                           0 &&
                         !uploading &&
                         authorKey &&
-                        (lang === "English" ||
-                          !untutorial.steps[index].ThumbnailFilenameSp) && (
+                        lang === "English" && (
                           <LazyImage
                             id={"step" + index + "-thumbnail"}
                             className="crop"
