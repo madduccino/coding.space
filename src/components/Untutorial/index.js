@@ -905,8 +905,11 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
   }, [progress, stepCount]);
 
   const isAuthorized = useMemo(() => {
-    return authUser && (authUser.roles["ADMIN"] || authUser.uid === untutorial.Author?.key);
-  }, [authUser, untutorial.Author]);
+    if (!authUser) return false;
+    if (authUser.roles["ADMIN"]) return true;
+    // Use authorKey which handles both string and object Author types
+    return authUser.uid === authorKey;
+  }, [authUser, authorKey]);
 
   if (loading) return <div className="loading">Loading ...</div>;
 
