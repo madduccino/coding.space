@@ -421,13 +421,20 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
           updatedUntutorial.Status = "DRAFT";
         }
 
+        // Handle both cases: Author as object or as string key
+        const authorKey = typeof updatedUntutorial.Author === 'string'
+          ? updatedUntutorial.Author
+          : updatedUntutorial.Author?.key;
+
+        if (!authorKey) {
+          console.error("Cannot upload thumbnail: Author key is missing");
+          return currentUntutorial;
+        }
+
         updatedUntutorial.ThumbnailFilename = uuidv4() + "." + ext;
 
         const storageRef = firebase.storage.ref(
-          "/public/" +
-            updatedUntutorial.Author.key +
-            "/" +
-            updatedUntutorial.ThumbnailFilename
+          "/public/" + authorKey + "/" + updatedUntutorial.ThumbnailFilename
         );
         const task = storageRef.put(file);
 
@@ -440,6 +447,7 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
             setUploading(true);
           },
           (error) => {
+            console.error("Error uploading thumbnail:", error);
             setUploadPercent(0);
             setUploading(false);
           },
@@ -471,13 +479,23 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
           updatedUntutorial.Status = "DRAFT";
         }
 
+        // Handle both cases: Author as object or as string key
+        const authorKey = typeof updatedUntutorial.Author === 'string'
+          ? updatedUntutorial.Author
+          : updatedUntutorial.Author?.key;
+
+        if (!authorKey) {
+          console.error("Cannot upload step thumbnail: Author key is missing");
+          return currentUntutorial;
+        }
+
         let storageRef;
         if (lang === "Español") {
           updatedUntutorial.steps[step].ThumbnailFilenameSp =
             uuidv4() + "." + ext;
           storageRef = firebase.storage.ref(
             "/public/" +
-              updatedUntutorial.Author.key +
+              authorKey +
               "/" +
               updatedUntutorial.steps[step].ThumbnailFilenameSp
           );
@@ -485,7 +503,7 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
           updatedUntutorial.steps[step].ThumbnailFilename = uuidv4() + "." + ext;
           storageRef = firebase.storage.ref(
             "/public/" +
-              updatedUntutorial.Author.key +
+              authorKey +
               "/" +
               updatedUntutorial.steps[step].ThumbnailFilename
           );
@@ -502,7 +520,7 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
             setUploading(true);
           },
           (error) => {
-            console.log(error);
+            console.error("Error uploading step thumbnail:", error);
             setUploadPercent(0);
             setUploading(false);
           },
