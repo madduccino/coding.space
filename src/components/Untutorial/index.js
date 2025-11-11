@@ -933,7 +933,13 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
                       }
                       onEditorSave={saveChangesHandler}
                       placeholder={"Step Title"}
-                      buttonText={progress ? "" : "Edit Title"}
+                      buttonText={
+                        authUser &&
+                        (authUser.roles?.["ADMIN"] ||
+                          authUser.uid === untutorial.Author?.key)
+                          ? "Edit Title"
+                          : ""
+                      }
                       text={
                         lang === "Español" && step.TitleEs
                           ? step.TitleEs
@@ -953,11 +959,25 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
                       )
                     }
                     type={"text"}
-                    className={progress ? "no-button" : "editor"}
+                    className={
+                      authUser &&
+                      (authUser.roles?.["ADMIN"] ||
+                        authUser.uid === untutorial.Author?.key)
+                        ? "editor"
+                        : progress
+                        ? "no-button"
+                        : "editor"
+                    }
                     onEditorChange={(value) => handleStepOnChange(value, index)}
                     onEditorSave={saveChangesHandler}
                     placeholder={"Step Description"}
-                    buttonText={progress ? "" : "Edit Description"}
+                    buttonText={
+                      authUser &&
+                      (authUser.roles?.["ADMIN"] ||
+                        authUser.uid === untutorial.Author?.key)
+                        ? "Edit Description"
+                        : ""
+                    }
                     text={
                       lang === "Español" && step.DescriptionEs
                         ? step.DescriptionEs
