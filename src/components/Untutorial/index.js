@@ -199,10 +199,11 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
     }
   }, [errors, untutorial, firebase, key]);
 
-  const saveProgressHandler = useCallback(() => {
-    if (progress) {
+  const saveProgressHandler = useCallback((progressToSave) => {
+    const currentProgress = progressToSave || progress;
+    if (currentProgress) {
       const updatedProgress = {
-        ...progress,
+        ...currentProgress,
         LastModified: Date.now(),
       };
 
@@ -666,9 +667,12 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
         }
 
         updated.steps = steps;
+
+        // Save the updated progress immediately with the new value
+        setTimeout(() => saveProgressHandler(updated), 0);
+
         return updated;
       });
-      setTimeout(saveProgressHandler, 0);
     },
     [saveProgressHandler]
   );
