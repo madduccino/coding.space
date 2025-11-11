@@ -200,7 +200,7 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
   }, [errors, untutorial, firebase, key]);
 
   const saveProgressHandler = useCallback(() => {
-    if (Object.values(errors).length === 0 && progress) {
+    if (progress) {
       const updatedProgress = {
         ...progress,
         LastModified: Date.now(),
@@ -213,24 +213,8 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
           // Progress saved successfully
         })
         .catch((error) => console.error(error));
-    } else {
-      const badFields = Object.keys(errors);
-      const messages = badFields.map((field) => ({
-        html: errors[field],
-        type: true,
-      }));
-
-      messages.push({
-        html: "Press any key to continue...",
-        type: false,
-      });
-
-      setGlobalState({
-        messages: messages,
-        showMessage: true,
-      });
     }
-  }, [errors, progress, firebase, authUser, untutorial.key, setGlobalState]);
+  }, [progress, firebase, authUser, untutorial.key]);
 
   // Content change handlers with proper state updates
   const handleTitleOnChange = useCallback(
@@ -400,7 +384,6 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
       setDirty(true);
       setTimeout(() => {
         validateStep(stepIndex);
-        isEditingRef.current = false;
       }, 100);
     },
     [lang, authUser, validateStep]
