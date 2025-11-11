@@ -199,10 +199,11 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
     }
   }, [errors, untutorial, firebase, key]);
 
-  const saveProgressHandler = useCallback(() => {
-    if (Object.values(errors).length === 0 && progress) {
+  const saveProgressHandler = useCallback((progressToSave) => {
+    const currentProgress = progressToSave || progress;
+    if (currentProgress) {
       const updatedProgress = {
-        ...progress,
+        ...currentProgress,
         LastModified: Date.now(),
       };
 
@@ -213,24 +214,8 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
           // Progress saved successfully
         })
         .catch((error) => console.error(error));
-    } else {
-      const badFields = Object.keys(errors);
-      const messages = badFields.map((field) => ({
-        html: errors[field],
-        type: true,
-      }));
-
-      messages.push({
-        html: "Press any key to continue...",
-        type: false,
-      });
-
-      setGlobalState({
-        messages: messages,
-        showMessage: true,
-      });
     }
-  }, [errors, progress, firebase, authUser, untutorial.key, setGlobalState]);
+  }, [progress, firebase, authUser, untutorial.key]);
 
   // Content change handlers with proper state updates
   const handleTitleOnChange = useCallback(
@@ -400,7 +385,6 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
       setDirty(true);
       setTimeout(() => {
         validateStep(stepIndex);
-        isEditingRef.current = false;
       }, 100);
     },
     [lang, authUser, validateStep]
@@ -683,9 +667,12 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
         }
 
         updated.steps = steps;
+
+        // Save the updated progress immediately with the new value
+        setTimeout(() => saveProgressHandler(updated), 0);
+
         return updated;
       });
-      setTimeout(saveProgressHandler, 0);
     },
     [saveProgressHandler]
   );
@@ -933,7 +920,13 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
                       }
                       onEditorSave={saveChangesHandler}
                       placeholder={"Step Title"}
-                      buttonText={progress ? "" : "Edit Title"}
+                      buttonText={
+                        authUser &&
+                        (authUser.roles?.["ADMIN"] ||
+                          authUser.uid === untutorial.Author?.key)
+                          ? "Edit Title"
+                          : ""
+                      }
                       text={
                         lang === "Español" && step.TitleEs
                           ? step.TitleEs
@@ -953,11 +946,25 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
                       )
                     }
                     type={"text"}
-                    className={progress ? "no-button" : "editor"}
+                    className={
+                      authUser &&
+                      (authUser.roles?.["ADMIN"] ||
+                        authUser.uid === untutorial.Author?.key)
+                        ? "editor"
+                        : progress
+                        ? "no-button"
+                        : "editor"
+                    }
                     onEditorChange={(value) => handleStepOnChange(value, index)}
                     onEditorSave={saveChangesHandler}
                     placeholder={"Step Description"}
-                    buttonText={progress ? "" : "Edit Description"}
+                    buttonText={
+                      authUser &&
+                      (authUser.roles?.["ADMIN"] ||
+                        authUser.uid === untutorial.Author?.key)
+                        ? "Edit Description"
+                        : ""
+                    }
                     text={
                       lang === "Español" && step.DescriptionEs
                         ? step.DescriptionEs
