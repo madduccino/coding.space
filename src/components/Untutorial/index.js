@@ -193,7 +193,6 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
         .untutorial(key)
         .set(updatedUntutorial)
         .then(() => {
-          console.log("Successfully Saved");
           setDirty(false);
         })
         .catch((error) => setError(error.message));
@@ -211,9 +210,9 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
         .progress(authUser.uid, untutorial.key)
         .set(updatedProgress)
         .then(() => {
-          console.log("Successfully Saved Progress");
+          // Progress saved successfully
         })
-        .catch((error) => console.log(error));
+        .catch((error) => console.error(error));
     } else {
       const badFields = Object.keys(errors);
       const messages = badFields.map((field) => ({
@@ -466,36 +465,38 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
           updated.Status = "DRAFT";
         }
         updated.ThumbnailFilename = filename;
+
+        // Upload to Firebase with the current author key
+        const storageRef = firebase.storage.ref(
+          `/public/${prev.Author?.key}/${filename}`
+        );
+        const task = storageRef.put(file);
+
+        task.on(
+          "state_changed",
+          (snapshot) => {
+            const percentage =
+              (100 * snapshot.bytesTransferred) / snapshot.totalBytes;
+            setUploadPercent(percentage);
+            setUploading(true);
+          },
+          (error) => {
+            console.error(error);
+            setUploadPercent(0);
+            setUploading(false);
+          },
+          () => {
+            setUploadPercent(0);
+            setUploading(false);
+            setDirty(true);
+            setTimeout(saveChangesHandler, 0);
+          }
+        );
+
         return updated;
       });
-
-      const storageRef = firebase.storage.ref(
-        `/public/${untutorial.Author.key}/${filename}`
-      );
-      const task = storageRef.put(file);
-
-      task.on(
-        "state_changed",
-        (snapshot) => {
-          const percentage =
-            (100 * snapshot.bytesTransferred) / snapshot.totalBytes;
-          setUploadPercent(percentage);
-          setUploading(true);
-        },
-        (error) => {
-          console.error(error);
-          setUploadPercent(0);
-          setUploading(false);
-        },
-        () => {
-          setUploadPercent(0);
-          setUploading(false);
-          setDirty(true);
-          setTimeout(saveChangesHandler, 0);
-        }
-      );
     },
-    [authUser, firebase, untutorial.Author, saveChangesHandler]
+    [authUser, firebase, saveChangesHandler]
   );
 
   const handleStepThumbnailUpload = useCallback(
@@ -527,36 +528,37 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
         steps[stepIndex] = currentStep;
         updated.steps = steps;
 
+        // Upload to Firebase using the author key from prev state
+        const storageRef = firebase.storage.ref(
+          `/public/${prev.Author?.key}/${filename}`
+        );
+        const task = storageRef.put(file);
+
+        task.on(
+          "state_changed",
+          (snapshot) => {
+            const percentage =
+              (100 * snapshot.bytesTransferred) / snapshot.totalBytes;
+            setUploadPercent(percentage);
+            setUploading(true);
+          },
+          (error) => {
+            console.error(error);
+            setUploadPercent(0);
+            setUploading(false);
+          },
+          () => {
+            setUploadPercent(0);
+            setUploading(false);
+            setDirty(true);
+            setTimeout(saveChangesHandler, 0);
+          }
+        );
+
         return updated;
       });
-
-      const storageRef = firebase.storage.ref(
-        `/public/${untutorial.Author.key}/${filename}`
-      );
-      const task = storageRef.put(file);
-
-      task.on(
-        "state_changed",
-        (snapshot) => {
-          const percentage =
-            (100 * snapshot.bytesTransferred) / snapshot.totalBytes;
-          setUploadPercent(percentage);
-          setUploading(true);
-        },
-        (error) => {
-          console.error(error);
-          setUploadPercent(0);
-          setUploading(false);
-        },
-        () => {
-          setUploadPercent(0);
-          setUploading(false);
-          setDirty(true);
-          setTimeout(saveChangesHandler, 0);
-        }
-      );
     },
-    [lang, authUser, firebase, untutorial.Author, saveChangesHandler]
+    [lang, authUser, firebase, saveChangesHandler]
   );
 
   // Category and skills handlers
@@ -924,7 +926,7 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
                             authUser.uid === untutorial.Author?.key)
                         )
                       }
-                      type={"plain"}
+                      type={"code"}
                       className="header"
                       onEditorChange={(value) =>
                         handleStepTitleOnChange(value, index)
