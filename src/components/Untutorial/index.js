@@ -182,7 +182,7 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
 
   // Save functions
   const saveChangesHandler = useCallback(() => {
-    if (Object.values(errors).length === 0 && untutorial.key) {
+    if (Object.values(errors).length === 0 && untutorial.key && untutorial.Author?.key) {
       const updatedUntutorial = {
         ...untutorial,
         LastModified: Date.now(),
