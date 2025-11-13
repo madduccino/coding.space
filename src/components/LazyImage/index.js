@@ -21,7 +21,6 @@ const LazyImage = ({ file, className }) => {
     file.getDownloadURL().then((url) => {
       setLoading(false);
       setUrl(url);
-      console.log({ file, url }); // Logging the file and URL
     });
   }, [file]); // The useEffect hook will re-run if the 'file' prop changes.
 
