@@ -443,6 +443,7 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
       const ext = file.name.substring(file.name.lastIndexOf(".") + 1);
       const filename = uuidv4() + "." + ext;
 
+      isEditingRef.current = true;
       setUntutorial((prev) => {
         const updated = { ...prev };
         if (authUser?.roles?.["STUDENT"]) {
@@ -468,6 +469,7 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
             console.error(error);
             setUploadPercent(0);
             setUploading(false);
+            isEditingRef.current = false;
           },
           () => {
             setUploadPercent(0);
@@ -491,6 +493,7 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
       const ext = file.name.substring(file.name.lastIndexOf(".") + 1);
       const filename = uuidv4() + "." + ext;
 
+      isEditingRef.current = true;
       setUntutorial((prev) => {
         const updated = { ...prev };
         const steps = [...(updated.steps || [])];
@@ -530,6 +533,7 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
             console.error(error);
             setUploadPercent(0);
             setUploading(false);
+            isEditingRef.current = false;
           },
           () => {
             setUploadPercent(0);
