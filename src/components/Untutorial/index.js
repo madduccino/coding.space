@@ -181,12 +181,13 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
   );
 
   // Save functions
-  const saveChangesHandler = useCallback(() => {
-    if (Object.values(errors).length === 0 && untutorial.key && untutorial.Author?.key) {
+  const saveChangesHandler = useCallback((untutorialToSave) => {
+    const currentUntutorial = untutorialToSave || untutorial;
+    if (Object.values(errors).length === 0 && currentUntutorial.key && currentUntutorial.Author?.key) {
       const updatedUntutorial = {
-        ...untutorial,
+        ...currentUntutorial,
         LastModified: Date.now(),
-        Author: untutorial.Author.key,
+        Author: currentUntutorial.Author.key,
       };
 
       firebase
@@ -480,12 +481,15 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
               updated.Status = "DRAFT";
             }
             updated.ThumbnailFilename = filename;
+
+            // Save the updated untutorial immediately with the new value
+            setTimeout(() => saveChangesHandler(updated), 0);
+
             return updated;
           });
           setUploadPercent(0);
           setUploading(false);
           setDirty(true);
-          setTimeout(saveChangesHandler, 0);
         }
       );
     },
@@ -552,12 +556,14 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
             steps[stepIndex] = currentStep;
             updated.steps = steps;
 
+            // Save the updated untutorial immediately with the new value
+            setTimeout(() => saveChangesHandler(updated), 0);
+
             return updated;
           });
           setUploadPercent(0);
           setUploading(false);
           setDirty(true);
-          setTimeout(saveChangesHandler, 0);
         }
       );
     },
