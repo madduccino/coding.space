@@ -645,7 +645,17 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
 
   // Progress handlers
   const handleProgressURLOnChange = useCallback((value) => {
-    setProgress((prev) => ({ ...prev, URL: value }));
+    setProgress((prev) => {
+      const updated = { ...prev, URL: value };
+      // Save the updated progress immediately with the new value
+      setTimeout(() => saveProgressHandler(updated), 0);
+      return updated;
+    });
+  }, [saveProgressHandler]);
+
+  const handleProgressURLSave = useCallback(() => {
+    // Wrapper function to prevent TCSEditor from passing text argument to saveProgressHandler
+    // The actual save happens in handleProgressURLOnChange
   }, []);
 
   const loadProgress = useCallback(() => {
@@ -903,7 +913,7 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
                 type={"plain"}
                 className="url"
                 onEditorChange={handleProgressURLOnChange}
-                onEditorSave={saveProgressHandler}
+                onEditorSave={handleProgressURLSave}
                 placeholder={"http://"}
                 url={true}
                 buttonText={progress.URL ? "Edit Link" : "Add Link"}
