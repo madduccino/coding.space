@@ -304,6 +304,7 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
 
   const handlePriorityOnChange = useCallback(
     (value) => {
+      isEditingRef.current = true;
       setUntutorial((prev) => {
         if (value !== prev.Priority) {
           const updated = { ...prev, Priority: value };
@@ -609,23 +610,27 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
 
   const handlePCategoryOnChange = useCallback((event) => {
     if (event.target.value !== "-1") {
+      isEditingRef.current = true;
       setUntutorial((prev) => {
         const updated = { ...prev };
         updated.Categories = {
           ...(updated.Categories || {}),
           [event.target.value]: event.target.value,
         };
+        setDirty(true);
         return updated;
       });
     }
   }, []);
 
   const handleCategoryOnClick = useCallback((categoryKey) => {
+    isEditingRef.current = true;
     setUntutorial((prev) => {
       const updated = { ...prev };
       const categories = { ...(updated.Categories || {}) };
       delete categories[categoryKey];
       updated.Categories = categories;
+      setDirty(true);
       return updated;
     });
   }, []);
