@@ -654,36 +654,41 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
     saveProgressHandler();
   }, [saveProgressHandler]);
 
-  const loadProgress = useCallback(() => {
-    if (authUser && untutorial.key) {
-      firebase
-        .progress(authUser.uid, untutorial.key)
-        .on("value", (snapshot) => {
-          if (snapshot.exists()) {
-            let progressData = snapshot.val();
-            if (!progressData.steps) progressData.steps = [];
-            setProgress(progressData);
-          } else {
-            let progressData = {
-              Status: "DRAFT",
-              steps: [],
-              LastModified: Date.now(),
-              profile: authUser.uid,
-              untut: key,
-              url: "",
-            };
-            untutorial.steps?.forEach((step, i) => {
-              progressData.steps.push({ Status: "DRAFT", Comments: "" });
-            });
-            snapshot.ref.set({ ...progressData }).then(() => {
-              setProgress(progressData);
-            });
-          }
-        });
-    }
+  // Setup Firebase listener for progress with proper cleanup
+  useEffect(() => {
+    if (authUser && untutorial.key && location.search.includes("loadProgress")) {
+      setShowiframe(false);
 
-    setShowiframe(false);
-  }, [authUser, firebase, untutorial.key, untutorial.steps, key]);
+      const progressRef = firebase.progress(authUser.uid, untutorial.key);
+      const unsubscribe = progressRef.on("value", (snapshot) => {
+        if (snapshot.exists()) {
+          let progressData = snapshot.val();
+          if (!progressData.steps) progressData.steps = [];
+          setProgress(progressData);
+        } else {
+          let progressData = {
+            Status: "DRAFT",
+            steps: [],
+            LastModified: Date.now(),
+            profile: authUser.uid,
+            untut: key,
+            url: "",
+          };
+          untutorial.steps?.forEach((step, i) => {
+            progressData.steps.push({ Status: "DRAFT", Comments: "" });
+          });
+          snapshot.ref.set({ ...progressData }).then(() => {
+            setProgress(progressData);
+          });
+        }
+      });
+
+      // Cleanup: remove the listener when component unmounts or dependencies change
+      return () => {
+        progressRef.off("value", unsubscribe);
+      };
+    }
+  }, [authUser, firebase, untutorial.key, untutorial.steps, key, location.search]);
 
   const studentApprove = useCallback(
     (stepIndex) => {
@@ -743,10 +748,6 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
             untutorialData.Author = author;
             setUntutorial(untutorialData);
             setLoading(false);
-
-            if (location.search.includes("loadProgress")) {
-              loadProgress();
-            }
           });
       }
     });
@@ -754,7 +755,7 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
     return () => {
       firebase.untutorial(key).off("value", unsubscribe);
     };
-  }, [firebase, key, location.search, loadProgress]);
+  }, [firebase, key]);
 
   useEffect(() => {
     if (authUser && lang !== authUser.lang) {
