@@ -271,6 +271,7 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
 
   const handleStatusOnChange = useCallback(
     (value) => {
+      isEditingRef.current = true;
       setUntutorial((prev) => {
         if (value !== prev.Status) {
           const updated = { ...prev, Status: value };
@@ -286,6 +287,7 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
 
   const handleLevelOnChange = useCallback(
     (value) => {
+      isEditingRef.current = true;
       setUntutorial((prev) => {
         if (value !== prev.Level) {
           const updated = { ...prev, Level: value };
@@ -304,6 +306,7 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
 
   const handlePriorityOnChange = useCallback(
     (value) => {
+      isEditingRef.current = true;
       setUntutorial((prev) => {
         if (value !== prev.Priority) {
           const updated = { ...prev, Priority: value };
@@ -573,6 +576,7 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
   // Category and skills handlers
   const handleSkillsOnChange = useCallback((event) => {
     if (event.target.value !== "-1") {
+      isEditingRef.current = true;
       setUntutorial((prev) => {
         const updated = { ...prev };
         updated.Skills = {
@@ -586,6 +590,7 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
   }, []);
 
   const handleSkillsOnClick = useCallback((skillKey) => {
+    isEditingRef.current = true;
     setUntutorial((prev) => {
       const updated = { ...prev };
       const skills = { ...(updated.Skills || {}) };
@@ -611,6 +616,7 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
 
   const handlePCategoryOnChange = useCallback((event) => {
     if (event.target.value !== "-1") {
+      isEditingRef.current = true;
       setUntutorial((prev) => {
         const updated = { ...prev };
         updated.Categories = {
@@ -624,6 +630,7 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
   }, []);
 
   const handleCategoryOnClick = useCallback((categoryKey) => {
+    isEditingRef.current = true;
     setUntutorial((prev) => {
       const updated = { ...prev };
       const categories = { ...(updated.Categories || {}) };
