@@ -274,12 +274,12 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
       setUntutorial((prev) => {
         if (value !== prev.Status) {
           const updated = { ...prev, Status: value };
-          setDirty(true);
-          setTimeout(validateStatus, 0);
           return updated;
         }
         return prev;
       });
+      setDirty(true);
+      setTimeout(validateStatus, 0);
     },
     [validateStatus]
   );
@@ -292,12 +292,12 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
           if (authUser?.roles?.["STUDENT"]) {
             updated.Status = "DRAFT";
           }
-          setDirty(true);
-          setTimeout(validateLevel, 0);
           return updated;
         }
         return prev;
       });
+      setDirty(true);
+      setTimeout(validateLevel, 0);
     },
     [authUser, validateLevel]
   );
@@ -310,12 +310,12 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
           if (authUser?.roles?.["STUDENT"]) {
             updated.Status = "DRAFT";
           }
-          setDirty(true);
-          setTimeout(validatePriority, 0);
           return updated;
         }
         return prev;
       });
+      setDirty(true);
+      setTimeout(validatePriority, 0);
     },
     [authUser, validatePriority]
   );
@@ -581,6 +581,7 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
         };
         return updated;
       });
+      setDirty(true);
     }
   }, []);
 
@@ -592,6 +593,7 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
       updated.Skills = skills;
       return updated;
     });
+    setDirty(true);
   }, []);
 
   const handleSkillsValidate = useCallback(() => {
@@ -617,6 +619,7 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
         };
         return updated;
       });
+      setDirty(true);
     }
   }, []);
 
@@ -628,6 +631,7 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
       updated.Categories = categories;
       return updated;
     });
+    setDirty(true);
   }, []);
 
   const handleCategoryValidate = useCallback(() => {
