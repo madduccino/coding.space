@@ -645,18 +645,14 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
 
   // Progress handlers
   const handleProgressURLOnChange = useCallback((value) => {
-    setProgress((prev) => {
-      const updated = { ...prev, URL: value };
-      // Save the updated progress immediately with the new value
-      setTimeout(() => saveProgressHandler(updated), 0);
-      return updated;
-    });
-  }, [saveProgressHandler]);
+    setProgress((prev) => ({ ...prev, URL: value }));
+  }, []);
 
   const handleProgressURLSave = useCallback(() => {
     // Wrapper function to prevent TCSEditor from passing text argument to saveProgressHandler
-    // The actual save happens in handleProgressURLOnChange
-  }, []);
+    // Call saveProgressHandler without arguments so it uses current progress state
+    saveProgressHandler();
+  }, [saveProgressHandler]);
 
   const loadProgress = useCallback(() => {
     if (authUser && untutorial.key) {
