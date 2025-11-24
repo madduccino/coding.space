@@ -742,7 +742,7 @@ class ProfilePageBase extends React.Component {
                       </div>
 
                       <div className="complete">
-                        <img src="/images/roket.png" />
+                        <img src="/images/rocket.png" />
                         <p>you finished!</p>
                       </div>
                     </div>
@@ -848,7 +848,7 @@ class ProfilePageBase extends React.Component {
                                         </div>
                                         {progress.Status === "APPROVED" ? (
                                           <div className="complete">
-                                            <img src="/images/roket.png" />
+                                            <img src="/images/rocket.png" />
                                           </div>
                                         ) : progress.Status === "PENDING" ? (
                                           "Waiting for Teacher Approval"
