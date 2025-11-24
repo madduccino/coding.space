@@ -275,13 +275,13 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
       setUntutorial((prev) => {
         if (value !== prev.Status) {
           const updated = { ...prev, Status: value };
+          setTimeout(() => saveChangesHandler(updated), 0);
           return updated;
         }
         return prev;
       });
       setDirty(true);
       setTimeout(validateStatus, 0);
-      setTimeout(saveChangesHandler, 0);
     },
     [validateStatus, saveChangesHandler]
   );
@@ -295,13 +295,13 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
           if (authUser?.roles?.["STUDENT"]) {
             updated.Status = "DRAFT";
           }
+          setTimeout(() => saveChangesHandler(updated), 0);
           return updated;
         }
         return prev;
       });
       setDirty(true);
       setTimeout(validateLevel, 0);
-      setTimeout(saveChangesHandler, 0);
     },
     [authUser, validateLevel, saveChangesHandler]
   );
@@ -315,13 +315,13 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
           if (authUser?.roles?.["STUDENT"]) {
             updated.Status = "DRAFT";
           }
+          setTimeout(() => saveChangesHandler(updated), 0);
           return updated;
         }
         return prev;
       });
       setDirty(true);
       setTimeout(validatePriority, 0);
-      setTimeout(saveChangesHandler, 0);
     },
     [authUser, validatePriority, saveChangesHandler]
   );
@@ -586,10 +586,10 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
           ...(updated.Skills || {}),
           [event.target.value]: event.target.value,
         };
+        setTimeout(() => saveChangesHandler(updated), 0);
         return updated;
       });
       setDirty(true);
-      setTimeout(saveChangesHandler, 0);
     }
   }, [saveChangesHandler]);
 
@@ -600,10 +600,10 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
       const skills = { ...(updated.Skills || {}) };
       delete skills[skillKey];
       updated.Skills = skills;
+      setTimeout(() => saveChangesHandler(updated), 0);
       return updated;
     });
     setDirty(true);
-    setTimeout(saveChangesHandler, 0);
   }, [saveChangesHandler]);
 
   const handleSkillsValidate = useCallback(() => {
@@ -628,10 +628,10 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
           ...(updated.Categories || {}),
           [event.target.value]: event.target.value,
         };
+        setTimeout(() => saveChangesHandler(updated), 0);
         return updated;
       });
       setDirty(true);
-      setTimeout(saveChangesHandler, 0);
     }
   }, [saveChangesHandler]);
 
@@ -642,10 +642,10 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
       const categories = { ...(updated.Categories || {}) };
       delete categories[categoryKey];
       updated.Categories = categories;
+      setTimeout(() => saveChangesHandler(updated), 0);
       return updated;
     });
     setDirty(true);
-    setTimeout(saveChangesHandler, 0);
   }, [saveChangesHandler]);
 
   const handleCategoryValidate = useCallback(() => {
