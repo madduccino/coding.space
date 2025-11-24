@@ -271,51 +271,54 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
 
   const handleStatusOnChange = useCallback(
     (value) => {
+      isEditingRef.current = true;
       setUntutorial((prev) => {
         if (value !== prev.Status) {
           const updated = { ...prev, Status: value };
-          setDirty(true);
-          setTimeout(validateStatus, 0);
           return updated;
         }
         return prev;
       });
+      setDirty(true);
+      setTimeout(validateStatus, 0);
     },
     [validateStatus]
   );
 
   const handleLevelOnChange = useCallback(
     (value) => {
+      isEditingRef.current = true;
       setUntutorial((prev) => {
         if (value !== prev.Level) {
           const updated = { ...prev, Level: value };
           if (authUser?.roles?.["STUDENT"]) {
             updated.Status = "DRAFT";
           }
-          setDirty(true);
-          setTimeout(validateLevel, 0);
           return updated;
         }
         return prev;
       });
+      setDirty(true);
+      setTimeout(validateLevel, 0);
     },
     [authUser, validateLevel]
   );
 
   const handlePriorityOnChange = useCallback(
     (value) => {
+      isEditingRef.current = true;
       setUntutorial((prev) => {
         if (value !== prev.Priority) {
           const updated = { ...prev, Priority: value };
           if (authUser?.roles?.["STUDENT"]) {
             updated.Status = "DRAFT";
           }
-          setDirty(true);
-          setTimeout(validatePriority, 0);
           return updated;
         }
         return prev;
       });
+      setDirty(true);
+      setTimeout(validatePriority, 0);
     },
     [authUser, validatePriority]
   );
@@ -573,6 +576,7 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
   // Category and skills handlers
   const handleSkillsOnChange = useCallback((event) => {
     if (event.target.value !== "-1") {
+      isEditingRef.current = true;
       setUntutorial((prev) => {
         const updated = { ...prev };
         updated.Skills = {
@@ -581,10 +585,12 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
         };
         return updated;
       });
+      setDirty(true);
     }
   }, []);
 
   const handleSkillsOnClick = useCallback((skillKey) => {
+    isEditingRef.current = true;
     setUntutorial((prev) => {
       const updated = { ...prev };
       const skills = { ...(updated.Skills || {}) };
@@ -592,6 +598,7 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
       updated.Skills = skills;
       return updated;
     });
+    setDirty(true);
   }, []);
 
   const handleSkillsValidate = useCallback(() => {
@@ -609,6 +616,7 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
 
   const handlePCategoryOnChange = useCallback((event) => {
     if (event.target.value !== "-1") {
+      isEditingRef.current = true;
       setUntutorial((prev) => {
         const updated = { ...prev };
         updated.Categories = {
@@ -617,10 +625,12 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
         };
         return updated;
       });
+      setDirty(true);
     }
   }, []);
 
   const handleCategoryOnClick = useCallback((categoryKey) => {
+    isEditingRef.current = true;
     setUntutorial((prev) => {
       const updated = { ...prev };
       const categories = { ...(updated.Categories || {}) };
@@ -628,6 +638,7 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
       updated.Categories = categories;
       return updated;
     });
+    setDirty(true);
   }, []);
 
   const handleCategoryValidate = useCallback(() => {
