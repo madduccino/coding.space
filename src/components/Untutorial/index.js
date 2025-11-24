@@ -33,6 +33,14 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
   // Use ref instead of state for isEditing to avoid triggering re-renders
   const isEditingRef = React.useRef(false);
 
+  // Use ref to track latest untutorial value without causing re-renders
+  const untutorialRef = React.useRef(untutorial);
+
+  // Update ref whenever untutorial changes
+  React.useEffect(() => {
+    untutorialRef.current = untutorial;
+  }, [untutorial]);
+
   // Memoized values
   const progressSteps = useMemo(() => progress?.steps || null, [progress]);
   const stepCount = useMemo(
@@ -182,7 +190,7 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
 
   // Save functions
   const saveChangesHandler = useCallback((untutorialToSave) => {
-    const currentUntutorial = untutorialToSave || untutorial;
+    const currentUntutorial = untutorialToSave || untutorialRef.current;
     if (Object.values(errors).length === 0 && currentUntutorial.key && currentUntutorial.Author?.key) {
       const updatedUntutorial = {
         ...currentUntutorial,
@@ -198,7 +206,7 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
         })
         .catch((error) => setError(error.message));
     }
-  }, [errors, untutorial, firebase, key]);
+  }, [errors, firebase, key]);
 
   const saveProgressHandler = useCallback((progressToSave) => {
     const currentProgress = progressToSave || progress;
@@ -286,6 +294,7 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
 
   const handleLevelOnChange = useCallback(
     (value) => {
+      isEditingRef.current = true;
       setUntutorial((prev) => {
         if (value !== prev.Level) {
           const updated = { ...prev, Level: value };
