@@ -281,8 +281,9 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
       });
       setDirty(true);
       setTimeout(validateStatus, 0);
+      setTimeout(saveChangesHandler, 0);
     },
-    [validateStatus]
+    [validateStatus, saveChangesHandler]
   );
 
   const handleLevelOnChange = useCallback(
@@ -300,8 +301,9 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
       });
       setDirty(true);
       setTimeout(validateLevel, 0);
+      setTimeout(saveChangesHandler, 0);
     },
-    [authUser, validateLevel]
+    [authUser, validateLevel, saveChangesHandler]
   );
 
   const handlePriorityOnChange = useCallback(
@@ -319,8 +321,9 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
       });
       setDirty(true);
       setTimeout(validatePriority, 0);
+      setTimeout(saveChangesHandler, 0);
     },
-    [authUser, validatePriority]
+    [authUser, validatePriority, saveChangesHandler]
   );
 
   // Step handlers with proper immutable updates
@@ -586,8 +589,9 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
         return updated;
       });
       setDirty(true);
+      setTimeout(saveChangesHandler, 0);
     }
-  }, []);
+  }, [saveChangesHandler]);
 
   const handleSkillsOnClick = useCallback((skillKey) => {
     isEditingRef.current = true;
@@ -599,7 +603,8 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
       return updated;
     });
     setDirty(true);
-  }, []);
+    setTimeout(saveChangesHandler, 0);
+  }, [saveChangesHandler]);
 
   const handleSkillsValidate = useCallback(() => {
     try {
@@ -626,8 +631,9 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
         return updated;
       });
       setDirty(true);
+      setTimeout(saveChangesHandler, 0);
     }
-  }, []);
+  }, [saveChangesHandler]);
 
   const handleCategoryOnClick = useCallback((categoryKey) => {
     isEditingRef.current = true;
@@ -639,7 +645,8 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
       return updated;
     });
     setDirty(true);
-  }, []);
+    setTimeout(saveChangesHandler, 0);
+  }, [saveChangesHandler]);
 
   const handleCategoryValidate = useCallback(() => {
     try {
