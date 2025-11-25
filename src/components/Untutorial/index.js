@@ -329,7 +329,9 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
       isEditingRef.current = true;
       setUntutorial((prev) => {
         const updated = { ...prev };
-        const steps = [...(updated.steps || [])];
+        // Convert steps to array if Firebase returned it as an object
+        const stepsData = updated.steps || [];
+        const steps = Array.isArray(stepsData) ? [...stepsData] : Object.values(stepsData);
 
         if (!steps[stepIndex]) return prev;
 
@@ -364,7 +366,9 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
       isEditingRef.current = true;
       setUntutorial((prev) => {
         const updated = { ...prev };
-        const steps = [...(updated.steps || [])];
+        // Convert steps to array if Firebase returned it as an object
+        const stepsData = updated.steps || [];
+        const steps = Array.isArray(stepsData) ? [...stepsData] : Object.values(stepsData);
 
         if (!steps[stepIndex]) return prev;
 
@@ -397,7 +401,9 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
   const addStepHandler = useCallback(() => {
     setUntutorial((prev) => {
       const updated = { ...prev };
-      const steps = [...(updated.steps || [])];
+      // Convert steps to array if Firebase returned it as an object
+      const stepsData = updated.steps || [];
+      const steps = Array.isArray(stepsData) ? [...stepsData] : Object.values(stepsData);
 
       if (authUser?.roles?.["STUDENT"]) {
         updated.Status = "DRAFT";
@@ -420,7 +426,9 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
     (event, stepIndex) => {
       setUntutorial((prev) => {
         const updated = { ...prev };
-        const steps = [...(updated.steps || [])];
+        // Convert steps to array if Firebase returned it as an object
+        const stepsData = updated.steps || [];
+        const steps = Array.isArray(stepsData) ? [...stepsData] : Object.values(stepsData);
 
         if (authUser?.roles?.["STUDENT"]) {
           updated.Status = "DRAFT";
@@ -540,7 +548,9 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
           // Upload complete - now update the state with the filename
           setUntutorial((prev) => {
             const updated = { ...prev };
-            const steps = [...(updated.steps || [])];
+            // Convert steps to array if Firebase returned it as an object
+            const stepsData = updated.steps || [];
+            const steps = Array.isArray(stepsData) ? [...stepsData] : Object.values(stepsData);
 
             if (!steps[stepIndex]) return prev;
 
@@ -750,6 +760,11 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
       const untutorialData = snapshot.val();
       // Only update if we're not currently editing
       if (untutorialData && !isEditingRef.current) {
+        // Ensure steps is always an array, not an object
+        if (untutorialData.steps && !Array.isArray(untutorialData.steps)) {
+          untutorialData.steps = Object.values(untutorialData.steps);
+        }
+
         firebase
           .profile(untutorialData.Author)
           .once("value")
