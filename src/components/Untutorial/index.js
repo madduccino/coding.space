@@ -32,6 +32,7 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
 
   // Use ref instead of state for isEditing to avoid triggering re-renders
   const isEditingRef = React.useRef(false);
+  const dirtyRef = React.useRef(false);
 
   // Memoized values
   const progressSteps = useMemo(() => progress?.steps || null, [progress]);
@@ -786,6 +787,11 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
     }
   }, [authUser]);
 
+  // Sync dirty state to ref
+  useEffect(() => {
+    dirtyRef.current = dirty;
+  }, [dirty]);
+
   // Auto-save effect
   useEffect(() => {
     if (dirty) {
@@ -798,6 +804,25 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
       return () => clearTimeout(timeoutId);
     }
   }, [dirty, saveChangesHandler]);
+
+  // Save on page unload/refresh
+  useEffect(() => {
+    const handleBeforeUnload = (e) => {
+      if (dirtyRef.current) {
+        // Save immediately before unload
+        saveChangesHandler();
+      }
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+      // Save on component unmount if there are unsaved changes
+      if (dirtyRef.current) {
+        saveChangesHandler();
+      }
+    };
+  }, [saveChangesHandler]);
 
   // Render
   if (loading) return <div className="loading">Loading ...</div>;
