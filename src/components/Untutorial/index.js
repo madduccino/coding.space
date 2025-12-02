@@ -190,7 +190,7 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
         Author: currentUntutorial.Author.key,
       };
 
-      firebase
+      return firebase
         .untutorial(key)
         .set(updatedUntutorial)
         .then(() => {
@@ -198,6 +198,7 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
         })
         .catch((error) => setError(error.message));
     }
+    return Promise.resolve();
   }, [errors, untutorial, firebase, key]);
 
   const saveProgressHandler = useCallback((progressToSave) => {
@@ -413,7 +414,11 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
 
       return updated;
     });
-    setTimeout(saveChangesHandler, 0);
+    setTimeout(() => {
+      saveChangesHandler().then(() => {
+        isEditingRef.current = false;
+      });
+    }, 0);
   }, [authUser, saveChangesHandler]);
 
   const deleteStepHandler = useCallback(
@@ -433,7 +438,11 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
 
         return updated;
       });
-      setTimeout(saveChangesHandler, 0);
+      setTimeout(() => {
+        saveChangesHandler().then(() => {
+          isEditingRef.current = false;
+        });
+      }, 0);
     },
     [authUser, saveChangesHandler]
   );
@@ -781,8 +790,9 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
   useEffect(() => {
     if (dirty) {
       const timeoutId = setTimeout(() => {
-        saveChangesHandler();
-        isEditingRef.current = false;
+        saveChangesHandler().then(() => {
+          isEditingRef.current = false;
+        });
       }, 2000);
 
       return () => clearTimeout(timeoutId);
