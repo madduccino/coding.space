@@ -33,6 +33,7 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
   // Use ref instead of state for isEditing to avoid triggering re-renders
   const isEditingRef = React.useRef(false);
   const dirtyRef = React.useRef(false);
+  const untutorialRef = React.useRef(untutorial);
 
   // Memoized values
   const progressSteps = useMemo(() => progress?.steps || null, [progress]);
@@ -787,19 +788,20 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
     }
   }, [authUser]);
 
-  // Sync dirty state to ref
+  // Sync state to refs
   useEffect(() => {
     dirtyRef.current = dirty;
-  }, [dirty]);
+    untutorialRef.current = untutorial;
+  }, [dirty, untutorial]);
 
-  // Auto-save effect
+  // Auto-save effect (reduced to 500ms for faster saves)
   useEffect(() => {
     if (dirty) {
       const timeoutId = setTimeout(() => {
         saveChangesHandler().then(() => {
           isEditingRef.current = false;
         });
-      }, 2000);
+      }, 500);
 
       return () => clearTimeout(timeoutId);
     }
@@ -808,21 +810,44 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
   // Save on page unload/refresh
   useEffect(() => {
     const handleBeforeUnload = (e) => {
-      if (dirtyRef.current) {
-        // Save immediately before unload
-        saveChangesHandler();
+      if (dirtyRef.current && untutorialRef.current) {
+        // Save immediately before unload using the latest state from ref
+        const updatedUntutorial = {
+          ...untutorialRef.current,
+          LastModified: Date.now(),
+          Author: untutorialRef.current.Author?.key || untutorialRef.current.Author,
+        };
+
+        // Use navigator.sendBeacon for more reliable async save before unload
+        const data = JSON.stringify(updatedUntutorial);
+        try {
+          // Attempt synchronous save as fallback
+          firebase.untutorial(key).set(updatedUntutorial);
+        } catch (error) {
+          console.error('Error saving on unload:', error);
+        }
+      }
+    };
+
+    const handleVisibilityChange = () => {
+      // Save when page becomes hidden (user switching tabs, minimizing, etc.)
+      if (document.hidden && dirtyRef.current) {
+        saveChangesHandler(untutorialRef.current);
       }
     };
 
     window.addEventListener('beforeunload', handleBeforeUnload);
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
     return () => {
       window.removeEventListener('beforeunload', handleBeforeUnload);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
       // Save on component unmount if there are unsaved changes
-      if (dirtyRef.current) {
-        saveChangesHandler();
+      if (dirtyRef.current && untutorialRef.current) {
+        saveChangesHandler(untutorialRef.current);
       }
     };
-  }, [saveChangesHandler]);
+  }, [saveChangesHandler, firebase, key]);
 
   // Render
   if (loading) return <div className="loading">Loading ...</div>;
