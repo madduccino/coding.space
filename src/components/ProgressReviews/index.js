@@ -217,27 +217,30 @@ class ProgressReviews extends React.Component {
           </div>
           <div className="main-content">
             <h1>Student Progress</h1>
-            <div className="grid-container">
-              {profiles
-                .sort((profile) => profile.DisplayName)
-                .filter(
-                  (profile) =>
-                    (classFilter ? classMembers.includes(profile.key) : true) &&
-                    (textFilter.length == 0 ||
-                      profile.Username.toLowerCase().includes(
-                        textFilter.toLowerCase()
-                      ) ||
-                      profile.DisplayName.toLowerCase().includes(
-                        textFilter.toLowerCase()
-                      ))
-                )
-                .map((profile) => (
-                  <>
-                    {!!activeProgress.uid &&
-                      activeProgress.uid === profile.key &&
-                      activeProgress.progresses
-                        .filter((progress) => true)
-                        .map((progress, pIndex) => (
+            {!activeProgress.uid || activeProgress.progresses.length === 0 ? (
+              <p>No progress yet</p>
+            ) : (
+              <div className="grid-container">
+                {profiles
+                  .sort((profile) => profile.DisplayName)
+                  .filter(
+                    (profile) =>
+                      (classFilter ? classMembers.includes(profile.key) : true) &&
+                      (textFilter.length == 0 ||
+                        profile.Username.toLowerCase().includes(
+                          textFilter.toLowerCase()
+                        ) ||
+                        profile.DisplayName.toLowerCase().includes(
+                          textFilter.toLowerCase()
+                        ))
+                  )
+                  .map((profile) => (
+                    <>
+                      {!!activeProgress.uid &&
+                        activeProgress.uid === profile.key &&
+                        activeProgress.progresses
+                          .filter((progress) => true)
+                          .map((progress, pIndex) => (
                           <div
                             id={profile.key + progress.untutorial.key}
                             className="project"
@@ -352,7 +355,8 @@ class ProgressReviews extends React.Component {
                         ))}
                   </>
                 ))}
-            </div>
+              </div>
+            )}
           </div>
         </div>
       </section>
