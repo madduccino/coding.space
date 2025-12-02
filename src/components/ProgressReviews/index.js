@@ -33,6 +33,7 @@ class ProgressReviews extends React.Component {
     //classes too
     this.props.firebase.profiles().on("child_added", (snapshot) => {
       let profile = snapshot.val();
+      profile.key = snapshot.key;
       profiles.push(profile);
       this.setState({ profiles });
     });
@@ -189,7 +190,7 @@ class ProgressReviews extends React.Component {
             <div className="filters">
               <input
                 className="search"
-                type="textFilter"
+                type="text"
                 value={textFilter}
                 onChange={this.onTextFilterChange}
                 placeholder="Search..."
