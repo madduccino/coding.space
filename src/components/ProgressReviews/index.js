@@ -33,13 +33,20 @@ class ProgressReviews extends React.Component {
     //classes too
     this.props.firebase.profiles().on("child_added", (snapshot) => {
       let profile = snapshot.val();
+      profile.key = snapshot.key;
       profiles.push(profile);
+      this.setState({ profiles });
     });
   }
 
   componentWillUnmount() {
     this.props.firebase.profiles().off();
     this.props.firebase.class().off();
+    // Clean up active progress listener if exists
+    const { activeProgress } = this.state;
+    if (activeProgress.uid) {
+      this.props.firebase.progresses(activeProgress.uid).off();
+    }
   }
   onPendingFilterChange() {
     const { pendingFilter } = this.state;
@@ -76,11 +83,14 @@ class ProgressReviews extends React.Component {
     }
   }
   onProfileActivate(uid) {
-    const { profiles } = this.state;
-    let activeProgress = {};
-    activeProgress.progresses = [];
-    activeProgress.uid = 0;
-    this.setState({ activeProgress: activeProgress }, () => {
+    const { activeProgress } = this.state;
+    // Clean up previous listener if exists
+    if (activeProgress.uid) {
+      this.props.firebase.progresses(activeProgress.uid).off();
+    }
+
+    let newActiveProgress = { uid: uid, progresses: [] };
+    this.setState({ activeProgress: newActiveProgress }, () => {
       this.props.firebase.progresses(uid).on("child_added", (snapshot) => {
         let untutProg = snapshot.val();
 
@@ -88,20 +98,18 @@ class ProgressReviews extends React.Component {
           .untutorial(snapshot.key)
           .once("value", (snapshot2) => {
             let untutorial = snapshot2.val();
-            activeProgress.uid = uid;
-            activeProgress.progresses.push({
+            newActiveProgress.progresses.push({
               untutorial: untutorial,
               steps: untutProg.steps,
               URL: untutProg.URL,
             });
-            this.setState({ activeProgress: activeProgress });
+            this.setState({ activeProgress: { ...newActiveProgress } });
           });
       });
     });
   }
   approveStep(uid, untutKey, pIndex, stepId, comments) {
     const { activeProgress } = this.state;
-    var apCopy = activeProgress;
     this.props.firebase
       .progress(uid, untutKey)
       .child("steps")
@@ -112,8 +120,9 @@ class ProgressReviews extends React.Component {
       })
       .then(() => {
         console.log("Step Approved. Yay!");
-        apCopy.progresses[pIndex].steps[stepId].Status = "APPROVED";
-        this.setState({ activeProgress: apCopy });
+        const updatedProgress = { ...activeProgress };
+        updatedProgress.progresses[pIndex].steps[stepId].Status = "APPROVED";
+        this.setState({ activeProgress: updatedProgress });
       })
       .catch((err) => {
         console.log("NOOOOOoooo");
@@ -121,7 +130,6 @@ class ProgressReviews extends React.Component {
   }
   disapproveStep(uid, untutKey, pIndex, stepId, comments) {
     const { activeProgress } = this.state;
-    var apCopy = activeProgress;
 
     this.props.firebase
       .progress(uid, untutKey)
@@ -133,8 +141,9 @@ class ProgressReviews extends React.Component {
       })
       .then(() => {
         console.log("Step Disapproved. Yay!");
-        apCopy.progresses[pIndex].steps[stepId].Status = "DRAFT";
-        this.setState({ activeProgress: apCopy });
+        const updatedProgress = { ...activeProgress };
+        updatedProgress.progresses[pIndex].steps[stepId].Status = "DRAFT";
+        this.setState({ activeProgress: updatedProgress });
       })
       .catch((err) => {
         console.log("NOOOOOoooo");
@@ -142,10 +151,10 @@ class ProgressReviews extends React.Component {
   }
   onFeedbackUpdate(uid, untutKey, pIndex, stepId, value) {
     const { activeProgress } = this.state;
-    let pCopy = activeProgress;
     if (activeProgress.progresses[pIndex].steps[stepId].Comments != value) {
-      pCopy.progresses[pIndex].steps[stepId].Comments = value;
-      this.setState({ activeProgress: pCopy });
+      const updatedProgress = { ...activeProgress };
+      updatedProgress.progresses[pIndex].steps[stepId].Comments = value;
+      this.setState({ activeProgress: updatedProgress });
     }
   }
   render() {
@@ -159,6 +168,20 @@ class ProgressReviews extends React.Component {
     } = this.state;
     const { authUser } = this.props;
 
+    const filteredProfiles = profiles
+      .sort((profile) => profile.DisplayName)
+      .filter(
+        (profile) =>
+          (classFilter ? classMembers.includes(profile.key) : true) &&
+          (textFilter.length == 0 ||
+            profile.Username.toLowerCase().includes(
+              textFilter.toLowerCase()
+            ) ||
+            profile.DisplayName.toLowerCase().includes(
+              textFilter.toLowerCase()
+            ))
+      );
+
     //console.log("hiya")
     return (
       <section id="progress-reviews">
@@ -167,7 +190,7 @@ class ProgressReviews extends React.Component {
             <div className="filters">
               <input
                 className="search"
-                type="textFilter"
+                type="text"
                 value={textFilter}
                 onChange={this.onTextFilterChange}
                 placeholder="Search..."
@@ -190,55 +213,38 @@ class ProgressReviews extends React.Component {
               </div>
             </div>
             <ul>
-              {profiles
-                .sort((profile) => profile.DisplayName)
-                .filter(
-                  (profile) =>
-                    (classFilter ? classMembers.includes(profile.key) : true) &&
-                    (textFilter.length == 0 ||
-                      profile.Username.toLowerCase().includes(
-                        textFilter.toLowerCase()
-                      ) ||
-                      profile.DisplayName.toLowerCase().includes(
-                        textFilter.toLowerCase()
-                      ))
-                )
-                .map((profile) => (
-                  <li>
-                    <h3
-                      onClick={() => this.onProfileActivate(profile.key)}
-                      onHover={() => this.onProfileActivate(profile.key)}
-                    >
+              {textFilter.length === 0 && !classFilter ? (
+                <li>
+                  <p>Enter a name in the search bar to find a student</p>
+                </li>
+              ) : (
+                filteredProfiles.map((profile) => (
+                  <li key={profile.key}>
+                    <h3 onClick={() => this.onProfileActivate(profile.key)}>
                       {profile.Username}
                     </h3>
                   </li>
-                ))}
+                ))
+              )}
             </ul>
           </div>
           <div className="main-content">
             <h1>Student Progress</h1>
-            <div className="grid-container">
-              {profiles
-                .sort((profile) => profile.DisplayName)
-                .filter(
-                  (profile) =>
-                    (classFilter ? classMembers.includes(profile.key) : true) &&
-                    (textFilter.length == 0 ||
-                      profile.Username.toLowerCase().includes(
-                        textFilter.toLowerCase()
-                      ) ||
-                      profile.DisplayName.toLowerCase().includes(
-                        textFilter.toLowerCase()
-                      ))
-                )
-                .map((profile) => (
-                  <>
-                    {!!activeProgress.uid &&
-                      activeProgress.uid === profile.key &&
-                      activeProgress.progresses
+            {!activeProgress.uid ? (
+              <p>Select a student from the sidebar to view progress</p>
+            ) : activeProgress.progresses.length === 0 ? (
+              <p>No progress yet</p>
+            ) : (
+              <div className="grid-container">
+                {filteredProfiles
+                  .filter((profile) => profile.key === activeProgress.uid)
+                  .map((profile) => (
+                  <React.Fragment key={profile.key}>
+                    {activeProgress.progresses
                         .filter((progress) => true)
                         .map((progress, pIndex) => (
                           <div
+                            key={profile.key + progress.untutorial.key}
                             id={profile.key + progress.untutorial.key}
                             className="project"
                           >
@@ -260,7 +266,7 @@ class ProgressReviews extends React.Component {
 
                             {progress.steps.length > 0 &&
                               progress.steps.map((step, i) => (
-                                <>
+                                <React.Fragment key={progress.untutorial.key + "" + i}>
                                   {(!pendingFilter ||
                                     (pendingFilter &&
                                       step.Status === "PENDING")) && (
@@ -313,7 +319,7 @@ class ProgressReviews extends React.Component {
                                               }
                                               onClick={() =>
                                                 this.approveStep(
-                                                  activeProgress.uid,
+                                                  profile.key,
                                                   progress.untutorial.key,
                                                   pIndex,
                                                   i
@@ -332,7 +338,7 @@ class ProgressReviews extends React.Component {
                                               }
                                               onClick={() =>
                                                 this.disapproveStep(
-                                                  activeProgress.uid,
+                                                  profile.key,
                                                   progress.untutorial.key,
                                                   pIndex,
                                                   i
@@ -346,13 +352,14 @@ class ProgressReviews extends React.Component {
                                       )}
                                     </div>
                                   )}
-                                </>
+                                </React.Fragment>
                               ))}
                           </div>
                         ))}
-                  </>
+                  </React.Fragment>
                 ))}
-            </div>
+              </div>
+            )}
           </div>
         </div>
       </section>
