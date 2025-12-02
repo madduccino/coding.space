@@ -213,13 +213,19 @@ class ProgressReviews extends React.Component {
               </div>
             </div>
             <ul>
-              {filteredProfiles.map((profile) => (
-                <li key={profile.key}>
-                  <h3 onClick={() => this.onProfileActivate(profile.key)}>
-                    {profile.Username}
-                  </h3>
+              {textFilter.length === 0 && !classFilter ? (
+                <li>
+                  <p>Enter a name in the search bar to find a student</p>
                 </li>
-              ))}
+              ) : (
+                filteredProfiles.map((profile) => (
+                  <li key={profile.key}>
+                    <h3 onClick={() => this.onProfileActivate(profile.key)}>
+                      {profile.Username}
+                    </h3>
+                  </li>
+                ))
+              )}
             </ul>
           </div>
           <div className="main-content">
