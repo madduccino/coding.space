@@ -183,43 +183,53 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
   );
 
   // Save functions
-  const saveChangesHandler = useCallback((untutorialToSave) => {
-    const currentUntutorial = untutorialToSave || untutorial;
-    if (Object.values(errors).length === 0 && currentUntutorial.key && currentUntutorial.Author?.key) {
-      const updatedUntutorial = {
-        ...currentUntutorial,
-        LastModified: Date.now(),
-        Author: currentUntutorial.Author.key,
-      };
+  const saveChangesHandler = useCallback(
+    (untutorialToSave) => {
+      const currentUntutorial = untutorialToSave || untutorial;
+      if (
+        Object.values(errors).length === 0 &&
+        currentUntutorial.key &&
+        currentUntutorial.Author?.key
+      ) {
+        const updatedUntutorial = {
+          ...currentUntutorial,
+          LastModified: Date.now(),
+          Author: currentUntutorial.Author.key,
+        };
 
-      return firebase
-        .untutorial(key)
-        .set(updatedUntutorial)
-        .then(() => {
-          setDirty(false);
-        })
-        .catch((error) => setError(error.message));
-    }
-    return Promise.resolve();
-  }, [errors, untutorial, firebase, key]);
+        return firebase
+          .untutorial(key)
+          .set(updatedUntutorial)
+          .then(() => {
+            setDirty(false);
+          })
+          .catch((error) => setError(error.message));
+      }
+      return Promise.resolve();
+    },
+    [errors, untutorial, firebase, key]
+  );
 
-  const saveProgressHandler = useCallback((progressToSave) => {
-    const currentProgress = progressToSave || progress;
-    if (currentProgress) {
-      const updatedProgress = {
-        ...currentProgress,
-        LastModified: Date.now(),
-      };
+  const saveProgressHandler = useCallback(
+    (progressToSave) => {
+      const currentProgress = progressToSave || progress;
+      if (currentProgress) {
+        const updatedProgress = {
+          ...currentProgress,
+          LastModified: Date.now(),
+        };
 
-      firebase
-        .progress(authUser.uid, untutorial.key)
-        .set(updatedProgress)
-        .then(() => {
-          // Progress saved successfully
-        })
-        .catch((error) => console.error(error));
-    }
-  }, [progress, firebase, authUser, untutorial.key]);
+        firebase
+          .progress(authUser.uid, untutorial.key)
+          .set(updatedProgress)
+          .then(() => {
+            // Progress saved successfully
+          })
+          .catch((error) => console.error(error));
+      }
+    },
+    [progress, firebase, authUser, untutorial.key]
+  );
 
   // Content change handlers with proper state updates
   const handleTitleOnChange = useCallback(
@@ -666,14 +676,17 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
   }, [untutorial.Categories, saveChangesHandler]);
 
   // Progress handlers
-  const handleProgressURLOnChange = useCallback((value) => {
-    setProgress((prev) => {
-      const updated = { ...prev, URL: value };
-      // Save the updated progress immediately with the new value
-      setTimeout(() => saveProgressHandler(updated), 0);
-      return updated;
-    });
-  }, [saveProgressHandler]);
+  const handleProgressURLOnChange = useCallback(
+    (value) => {
+      setProgress((prev) => {
+        const updated = { ...prev, URL: value };
+        // Save the updated progress immediately with the new value
+        setTimeout(() => saveProgressHandler(updated), 0);
+        return updated;
+      });
+    },
+    [saveProgressHandler]
+  );
 
   const handleProgressURLSave = useCallback(() => {
     // Wrapper function to prevent TCSEditor from passing text argument to saveProgressHandler
@@ -815,7 +828,8 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
         const updatedUntutorial = {
           ...untutorialRef.current,
           LastModified: Date.now(),
-          Author: untutorialRef.current.Author?.key || untutorialRef.current.Author,
+          Author:
+            untutorialRef.current.Author?.key || untutorialRef.current.Author,
         };
 
         // Use navigator.sendBeacon for more reliable async save before unload
@@ -824,7 +838,7 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
           // Attempt synchronous save as fallback
           firebase.untutorial(key).set(updatedUntutorial);
         } catch (error) {
-          console.error('Error saving on unload:', error);
+          console.error("Error saving on unload:", error);
         }
       }
     };
@@ -836,12 +850,12 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
       }
     };
 
-    window.addEventListener('beforeunload', handleBeforeUnload);
-    document.addEventListener('visibilitychange', handleVisibilityChange);
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    document.addEventListener("visibilitychange", handleVisibilityChange);
 
     return () => {
-      window.removeEventListener('beforeunload', handleBeforeUnload);
-      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
       // Save on component unmount if there are unsaved changes
       if (dirtyRef.current && untutorialRef.current) {
         saveChangesHandler(untutorialRef.current);
@@ -1257,7 +1271,7 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
                 style={{ padding: "10px", marginBottom: "30px" }}
                 onClick={() =>
                   window.open(
-                    "/v1/web/reference-guide.html",
+                    "/web/reference-guide.html",
                     "_blank",
                     "noopener,noreferrer"
                   )
