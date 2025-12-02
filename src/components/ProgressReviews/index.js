@@ -217,7 +217,9 @@ class ProgressReviews extends React.Component {
           </div>
           <div className="main-content">
             <h1>Student Progress</h1>
-            {!activeProgress.uid || activeProgress.progresses.length === 0 ? (
+            {!activeProgress.uid ? (
+              <p>Select a student from the sidebar to view progress</p>
+            ) : activeProgress.progresses.length === 0 ? (
               <p>No progress yet</p>
             ) : (
               <div className="grid-container">
