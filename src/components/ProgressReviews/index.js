@@ -13,14 +13,14 @@ class ProgressReviews extends React.Component {
     this.state = {
       profiles: [],
       steps: [],
-      allProgress: {},
+      activeProgress: {},
       pendingFilter: true,
       classFilter: false,
       classMembers: null,
       textFilter: "",
       allApproved: true,
     };
-    this.loadProfileProgress = this.loadProfileProgress.bind(this);
+    this.onProfileActivate = this.onProfileActivate.bind(this);
     this.approveStep = this.approveStep.bind(this);
     this.onFeedbackUpdate = this.onFeedbackUpdate.bind(this);
     this.onPendingFilterChange = this.onPendingFilterChange.bind(this);
@@ -34,18 +34,18 @@ class ProgressReviews extends React.Component {
     this.props.firebase.profiles().on("child_added", (snapshot) => {
       let profile = snapshot.val();
       profiles.push(profile);
-      this.loadProfileProgress(profile.key);
+      this.setState({ profiles });
     });
   }
 
   componentWillUnmount() {
     this.props.firebase.profiles().off();
     this.props.firebase.class().off();
-    // Clean up progress listeners for all profiles
-    const { profiles } = this.state;
-    profiles.forEach((profile) => {
-      this.props.firebase.progresses(profile.key).off();
-    });
+    // Clean up active progress listener if exists
+    const { activeProgress } = this.state;
+    if (activeProgress.uid) {
+      this.props.firebase.progresses(activeProgress.uid).off();
+    }
   }
   onPendingFilterChange() {
     const { pendingFilter } = this.state;
@@ -81,81 +81,85 @@ class ProgressReviews extends React.Component {
       } else this.setState({ classFilter: true });
     }
   }
-  loadProfileProgress(uid) {
-    const { allProgress } = this.state;
-    if (!allProgress[uid]) {
-      allProgress[uid] = { progresses: [] };
+  onProfileActivate(uid) {
+    const { activeProgress } = this.state;
+    // Clean up previous listener if exists
+    if (activeProgress.uid) {
+      this.props.firebase.progresses(activeProgress.uid).off();
     }
 
-    this.props.firebase.progresses(uid).on("child_added", (snapshot) => {
-      let untutProg = snapshot.val();
+    let newActiveProgress = { uid: uid, progresses: [] };
+    this.setState({ activeProgress: newActiveProgress }, () => {
+      this.props.firebase.progresses(uid).on("child_added", (snapshot) => {
+        let untutProg = snapshot.val();
 
-      this.props.firebase
-        .untutorial(snapshot.key)
-        .once("value", (snapshot2) => {
-          let untutorial = snapshot2.val();
-          allProgress[uid].progresses.push({
-            untutorial: untutorial,
-            steps: untutProg.steps,
-            URL: untutProg.URL,
+        this.props.firebase
+          .untutorial(snapshot.key)
+          .once("value", (snapshot2) => {
+            let untutorial = snapshot2.val();
+            newActiveProgress.progresses.push({
+              untutorial: untutorial,
+              steps: untutProg.steps,
+              URL: untutProg.URL,
+            });
+            this.setState({ activeProgress: { ...newActiveProgress } });
           });
-          this.setState({ allProgress: { ...allProgress } });
-        });
+      });
     });
   }
   approveStep(uid, untutKey, pIndex, stepId, comments) {
-    const { allProgress } = this.state;
+    const { activeProgress } = this.state;
     this.props.firebase
       .progress(uid, untutKey)
       .child("steps")
       .child(stepId)
       .set({
-        Comments: allProgress[uid].progresses[pIndex].steps[stepId].Comments,
+        Comments: activeProgress.progresses[pIndex].steps[stepId].Comments,
         Status: "APPROVED",
       })
       .then(() => {
         console.log("Step Approved. Yay!");
-        const updatedProgress = { ...allProgress };
-        updatedProgress[uid].progresses[pIndex].steps[stepId].Status = "APPROVED";
-        this.setState({ allProgress: updatedProgress });
+        const updatedProgress = { ...activeProgress };
+        updatedProgress.progresses[pIndex].steps[stepId].Status = "APPROVED";
+        this.setState({ activeProgress: updatedProgress });
       })
       .catch((err) => {
         console.log("NOOOOOoooo");
       });
   }
   disapproveStep(uid, untutKey, pIndex, stepId, comments) {
-    const { allProgress } = this.state;
+    const { activeProgress } = this.state;
 
     this.props.firebase
       .progress(uid, untutKey)
       .child("steps")
       .child(stepId)
       .set({
-        Comments: allProgress[uid].progresses[pIndex].steps[stepId].Comments,
+        Comments: activeProgress.progresses[pIndex].steps[stepId].Comments,
         Status: "DRAFT",
       })
       .then(() => {
         console.log("Step Disapproved. Yay!");
-        const updatedProgress = { ...allProgress };
-        updatedProgress[uid].progresses[pIndex].steps[stepId].Status = "DRAFT";
-        this.setState({ allProgress: updatedProgress });
+        const updatedProgress = { ...activeProgress };
+        updatedProgress.progresses[pIndex].steps[stepId].Status = "DRAFT";
+        this.setState({ activeProgress: updatedProgress });
       })
       .catch((err) => {
         console.log("NOOOOOoooo");
       });
   }
   onFeedbackUpdate(uid, untutKey, pIndex, stepId, value) {
-    const { allProgress } = this.state;
-    if (allProgress[uid].progresses[pIndex].steps[stepId].Comments != value) {
-      const updatedProgress = { ...allProgress };
-      updatedProgress[uid].progresses[pIndex].steps[stepId].Comments = value;
-      this.setState({ allProgress: updatedProgress });
+    const { activeProgress } = this.state;
+    if (activeProgress.progresses[pIndex].steps[stepId].Comments != value) {
+      const updatedProgress = { ...activeProgress };
+      updatedProgress.progresses[pIndex].steps[stepId].Comments = value;
+      this.setState({ activeProgress: updatedProgress });
     }
   }
   render() {
     const {
       profiles,
-      allProgress,
+      activeProgress,
       pendingFilter,
       classFilter,
       classMembers,
@@ -176,10 +180,6 @@ class ProgressReviews extends React.Component {
               textFilter.toLowerCase()
             ))
       );
-
-    const hasAnyProgress = filteredProfiles.some(
-      (profile) => allProgress[profile.key] && allProgress[profile.key].progresses.length > 0
-    );
 
     //console.log("hiya")
     return (
@@ -214,21 +214,26 @@ class ProgressReviews extends React.Component {
             <ul>
               {filteredProfiles.map((profile) => (
                 <li key={profile.key}>
-                  <h3>{profile.Username}</h3>
+                  <h3 onClick={() => this.onProfileActivate(profile.key)}>
+                    {profile.Username}
+                  </h3>
                 </li>
               ))}
             </ul>
           </div>
           <div className="main-content">
             <h1>Student Progress</h1>
-            {!hasAnyProgress ? (
+            {!activeProgress.uid ? (
+              <p>Select a student from the sidebar to view progress</p>
+            ) : activeProgress.progresses.length === 0 ? (
               <p>No progress yet</p>
             ) : (
               <div className="grid-container">
-                {filteredProfiles.map((profile) => (
+                {filteredProfiles
+                  .filter((profile) => profile.key === activeProgress.uid)
+                  .map((profile) => (
                   <React.Fragment key={profile.key}>
-                    {allProgress[profile.key] &&
-                      allProgress[profile.key].progresses
+                    {activeProgress.progresses
                         .filter((progress) => true)
                         .map((progress, pIndex) => (
                           <div
