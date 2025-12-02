@@ -13,14 +13,14 @@ class ProgressReviews extends React.Component {
     this.state = {
       profiles: [],
       steps: [],
-      activeProgress: {},
+      allProgress: {},
       pendingFilter: true,
       classFilter: false,
       classMembers: null,
       textFilter: "",
       allApproved: true,
     };
-    this.onProfileActivate = this.onProfileActivate.bind(this);
+    this.loadProfileProgress = this.loadProfileProgress.bind(this);
     this.approveStep = this.approveStep.bind(this);
     this.onFeedbackUpdate = this.onFeedbackUpdate.bind(this);
     this.onPendingFilterChange = this.onPendingFilterChange.bind(this);
@@ -34,12 +34,18 @@ class ProgressReviews extends React.Component {
     this.props.firebase.profiles().on("child_added", (snapshot) => {
       let profile = snapshot.val();
       profiles.push(profile);
+      this.loadProfileProgress(profile.key);
     });
   }
 
   componentWillUnmount() {
     this.props.firebase.profiles().off();
     this.props.firebase.class().off();
+    // Clean up progress listeners for all profiles
+    const { profiles } = this.state;
+    profiles.forEach((profile) => {
+      this.props.firebase.progresses(profile.key).off();
+    });
   }
   onPendingFilterChange() {
     const { pendingFilter } = this.state;
@@ -75,89 +81,105 @@ class ProgressReviews extends React.Component {
       } else this.setState({ classFilter: true });
     }
   }
-  onProfileActivate(uid) {
-    const { profiles } = this.state;
-    let activeProgress = {};
-    activeProgress.progresses = [];
-    activeProgress.uid = 0;
-    this.setState({ activeProgress: activeProgress }, () => {
-      this.props.firebase.progresses(uid).on("child_added", (snapshot) => {
-        let untutProg = snapshot.val();
+  loadProfileProgress(uid) {
+    const { allProgress } = this.state;
+    if (!allProgress[uid]) {
+      allProgress[uid] = { progresses: [] };
+    }
 
-        this.props.firebase
-          .untutorial(snapshot.key)
-          .once("value", (snapshot2) => {
-            let untutorial = snapshot2.val();
-            activeProgress.uid = uid;
-            activeProgress.progresses.push({
-              untutorial: untutorial,
-              steps: untutProg.steps,
-              URL: untutProg.URL,
-            });
-            this.setState({ activeProgress: activeProgress });
+    this.props.firebase.progresses(uid).on("child_added", (snapshot) => {
+      let untutProg = snapshot.val();
+
+      this.props.firebase
+        .untutorial(snapshot.key)
+        .once("value", (snapshot2) => {
+          let untutorial = snapshot2.val();
+          allProgress[uid].progresses.push({
+            untutorial: untutorial,
+            steps: untutProg.steps,
+            URL: untutProg.URL,
           });
-      });
+          this.setState({ allProgress: { ...allProgress } });
+        });
     });
   }
   approveStep(uid, untutKey, pIndex, stepId, comments) {
-    const { activeProgress } = this.state;
-    var apCopy = activeProgress;
+    const { allProgress } = this.state;
     this.props.firebase
       .progress(uid, untutKey)
       .child("steps")
       .child(stepId)
       .set({
-        Comments: activeProgress.progresses[pIndex].steps[stepId].Comments,
+        Comments: allProgress[uid].progresses[pIndex].steps[stepId].Comments,
         Status: "APPROVED",
       })
       .then(() => {
         console.log("Step Approved. Yay!");
-        apCopy.progresses[pIndex].steps[stepId].Status = "APPROVED";
-        this.setState({ activeProgress: apCopy });
+        const updatedProgress = { ...allProgress };
+        updatedProgress[uid].progresses[pIndex].steps[stepId].Status = "APPROVED";
+        this.setState({ allProgress: updatedProgress });
       })
       .catch((err) => {
         console.log("NOOOOOoooo");
       });
   }
   disapproveStep(uid, untutKey, pIndex, stepId, comments) {
-    const { activeProgress } = this.state;
-    var apCopy = activeProgress;
+    const { allProgress } = this.state;
 
     this.props.firebase
       .progress(uid, untutKey)
       .child("steps")
       .child(stepId)
       .set({
-        Comments: activeProgress.progresses[pIndex].steps[stepId].Comments,
+        Comments: allProgress[uid].progresses[pIndex].steps[stepId].Comments,
         Status: "DRAFT",
       })
       .then(() => {
         console.log("Step Disapproved. Yay!");
-        apCopy.progresses[pIndex].steps[stepId].Status = "DRAFT";
-        this.setState({ activeProgress: apCopy });
+        const updatedProgress = { ...allProgress };
+        updatedProgress[uid].progresses[pIndex].steps[stepId].Status = "DRAFT";
+        this.setState({ allProgress: updatedProgress });
       })
       .catch((err) => {
         console.log("NOOOOOoooo");
       });
   }
   onFeedbackUpdate(uid, untutKey, pIndex, stepId, value) {
-    const { activeProgress } = this.state;
-    let pCopy = activeProgress;
-    if (activeProgress.progresses[pIndex].steps[stepId].Comments != value) {
-      pCopy.progresses[pIndex].steps[stepId].Comments = value;
-      this.setState({ activeProgress: pCopy });
+    const { allProgress } = this.state;
+    if (allProgress[uid].progresses[pIndex].steps[stepId].Comments != value) {
+      const updatedProgress = { ...allProgress };
+      updatedProgress[uid].progresses[pIndex].steps[stepId].Comments = value;
+      this.setState({ allProgress: updatedProgress });
     }
   }
   render() {
     const {
       profiles,
-      activeProgress,
+      allProgress,
       pendingFilter,
       classFilter,
       classMembers,
       textFilter,
     } = this.state;
     const { authUser } = this.props;
+
+    const filteredProfiles = profiles
+      .sort((profile) => profile.DisplayName)
+      .filter(
+        (profile) =>
+          (classFilter ? classMembers.includes(profile.key) : true) &&
+          (textFilter.length == 0 ||
+            profile.Username.toLowerCase().includes(
+              textFilter.toLowerCase()
+            ) ||
+            profile.DisplayName.toLowerCase().includes(
+              textFilter.toLowerCase()
+            ))
+      );
+
+    const hasAnyProgress = filteredProfiles.some(
+      (profile) => allProgress[profile.key] && allProgress[profile.key].progresses.length > 0
+    );
 
     //console.log("hiya")
     return (
@@ -190,60 +212,27 @@ class ProgressReviews extends React.Component {
               </div>
             </div>
             <ul>
-              {profiles
-                .sort((profile) => profile.DisplayName)
-                .filter(
-                  (profile) =>
-                    (classFilter ? classMembers.includes(profile.key) : true) &&
-                    (textFilter.length == 0 ||
-                      profile.Username.toLowerCase().includes(
-                        textFilter.toLowerCase()
-                      ) ||
-                      profile.DisplayName.toLowerCase().includes(
-                        textFilter.toLowerCase()
-                      ))
-                )
-                .map((profile) => (
-                  <li>
-                    <h3
-                      onClick={() => this.onProfileActivate(profile.key)}
-                      onHover={() => this.onProfileActivate(profile.key)}
-                    >
-                      {profile.Username}
-                    </h3>
-                  </li>
-                ))}
+              {filteredProfiles.map((profile) => (
+                <li key={profile.key}>
+                  <h3>{profile.Username}</h3>
+                </li>
+              ))}
             </ul>
           </div>
           <div className="main-content">
             <h1>Student Progress</h1>
-            {!activeProgress.uid ? (
-              <p>Select a student from the sidebar to view progress</p>
-            ) : activeProgress.progresses.length === 0 ? (
+            {!hasAnyProgress ? (
               <p>No progress yet</p>
             ) : (
               <div className="grid-container">
-                {profiles
-                  .sort((profile) => profile.DisplayName)
-                  .filter(
-                    (profile) =>
-                      (classFilter ? classMembers.includes(profile.key) : true) &&
-                      (textFilter.length == 0 ||
-                        profile.Username.toLowerCase().includes(
-                          textFilter.toLowerCase()
-                        ) ||
-                        profile.DisplayName.toLowerCase().includes(
-                          textFilter.toLowerCase()
-                        ))
-                  )
-                  .map((profile) => (
-                    <>
-                      {!!activeProgress.uid &&
-                        activeProgress.uid === profile.key &&
-                        activeProgress.progresses
-                          .filter((progress) => true)
-                          .map((progress, pIndex) => (
+                {filteredProfiles.map((profile) => (
+                  <React.Fragment key={profile.key}>
+                    {allProgress[profile.key] &&
+                      allProgress[profile.key].progresses
+                        .filter((progress) => true)
+                        .map((progress, pIndex) => (
                           <div
+                            key={profile.key + progress.untutorial.key}
                             id={profile.key + progress.untutorial.key}
                             className="project"
                           >
@@ -265,7 +254,7 @@ class ProgressReviews extends React.Component {
 
                             {progress.steps.length > 0 &&
                               progress.steps.map((step, i) => (
-                                <>
+                                <React.Fragment key={progress.untutorial.key + "" + i}>
                                   {(!pendingFilter ||
                                     (pendingFilter &&
                                       step.Status === "PENDING")) && (
@@ -318,7 +307,7 @@ class ProgressReviews extends React.Component {
                                               }
                                               onClick={() =>
                                                 this.approveStep(
-                                                  activeProgress.uid,
+                                                  profile.key,
                                                   progress.untutorial.key,
                                                   pIndex,
                                                   i
@@ -337,7 +326,7 @@ class ProgressReviews extends React.Component {
                                               }
                                               onClick={() =>
                                                 this.disapproveStep(
-                                                  activeProgress.uid,
+                                                  profile.key,
                                                   progress.untutorial.key,
                                                   pIndex,
                                                   i
@@ -351,11 +340,11 @@ class ProgressReviews extends React.Component {
                                       )}
                                     </div>
                                   )}
-                                </>
+                                </React.Fragment>
                               ))}
                           </div>
                         ))}
-                  </>
+                  </React.Fragment>
                 ))}
               </div>
             )}
