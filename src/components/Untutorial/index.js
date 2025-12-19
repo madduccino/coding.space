@@ -775,13 +775,16 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
           .profile(untutorialData.Author)
           .once("value")
           .then((snapshot2) => {
-            const author = snapshot2.val();
-            untutorialData.Author = author;
-            setUntutorial(untutorialData);
-            setLoading(false);
+            // Check again before updating - user might have started editing during async fetch
+            if (!isEditingRef.current) {
+              const author = snapshot2.val();
+              untutorialData.Author = author;
+              setUntutorial(untutorialData);
+              setLoading(false);
 
-            if (location.search.includes("loadProgress")) {
-              loadProgress();
+              if (location.search.includes("loadProgress")) {
+                loadProgress();
+              }
             }
           });
       }
