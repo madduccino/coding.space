@@ -811,11 +811,10 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
   useEffect(() => {
     if (dirty) {
       const timeoutId = setTimeout(() => {
-        saveChangesHandler().then((result) => {
-          // Only reset editing flag if save actually succeeded
-          if (result?.saved) {
-            isEditingRef.current = false;
-          }
+        saveChangesHandler().then(() => {
+          // Reset editing flag after auto-save attempt
+          // The Firebase listener has its own race condition protection
+          isEditingRef.current = false;
         });
       }, 500);
 
