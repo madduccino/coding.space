@@ -443,10 +443,11 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
         // Remove the step and reindex
         steps.splice(stepIndex, 1);
         updated.steps = steps;
-        setDirty(true);
 
         return updated;
       });
+
+      setDirty(true);
     },
     [authUser]
   );
