@@ -421,7 +421,6 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
       if (authUser?.roles?.["STUDENT"]) updated.Status = "DRAFT";
 
       steps.push({
-        id: uuidv4(), // Add unique ID for React key
         Title: "",
         Description: "",
         TitleEs: "",
@@ -782,15 +781,6 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
             if (!isEditingRef.current) {
               const author = snapshot2.val();
               untutorialData.Author = author;
-
-              // Ensure all steps have unique IDs for React keys
-              if (untutorialData.steps) {
-                untutorialData.steps = untutorialData.steps.map(step => ({
-                  ...step,
-                  id: step.id || uuidv4()
-                }));
-              }
-
               setUntutorial(untutorialData);
               setLoading(false);
 
@@ -1024,7 +1014,7 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
           <div className="steps">
             {untutorial.steps?.map((step, index) => (
               <div
-                key={step.id || index}
+                key={index}
                 className={
                   "step " +
                   (progress?.steps?.[index]?.Status === "PENDING" ? "" : "")
