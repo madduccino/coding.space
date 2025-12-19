@@ -408,30 +408,27 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
   );
 
   const addStepHandler = useCallback(() => {
+    isEditingRef.current = true;
+
     setUntutorial((prev) => {
       const updated = { ...prev };
       const steps = [...(updated.steps || [])];
 
-      if (authUser?.roles?.["STUDENT"]) {
-        updated.Status = "DRAFT";
-      }
+      if (authUser?.roles?.["STUDENT"]) updated.Status = "DRAFT";
 
       steps.push({
-        Description: "",
         Title: "",
+        Description: "",
+        TitleEs: "",
+        DescriptionEs: "",
       });
 
       updated.steps = steps;
-      setDirty(true);
-
       return updated;
     });
-    setTimeout(() => {
-      saveChangesHandler().then(() => {
-        isEditingRef.current = false;
-      });
-    }, 0);
-  }, [authUser, saveChangesHandler]);
+
+    setDirty(true);
+  }, [authUser]);
 
   const deleteStepHandler = useCallback(
     (event, stepIndex) => {
