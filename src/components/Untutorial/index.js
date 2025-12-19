@@ -438,7 +438,12 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
     (event, stepIndex) => {
       isEditingRef.current = true;
 
+      console.log('DELETE CLICKED - Index:', stepIndex);
+      console.log('Current steps count:', untutorial.steps?.length);
+      console.log('Step to delete:', untutorial.steps?.[stepIndex]);
+
       setUntutorial((prev) => {
+        console.log('BEFORE DELETE - Steps count:', prev.steps?.length);
         const updated = { ...prev };
         const steps = [...(updated.steps || [])];
 
@@ -446,8 +451,13 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
           updated.Status = "DRAFT";
         }
 
+        console.log('Deleting step at index:', stepIndex);
+        console.log('Step being deleted:', steps[stepIndex]);
+
         // Remove the step and reindex
         steps.splice(stepIndex, 1);
+
+        console.log('AFTER DELETE - Steps count:', steps.length);
         updated.steps = steps;
 
         return updated;
@@ -455,7 +465,7 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
 
       setDirty(true);
     },
-    [authUser]
+    [authUser, untutorial.steps]
   );
 
   // Upload handlers
