@@ -436,6 +436,8 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
 
   const deleteStepHandler = useCallback(
     (event, stepIndex) => {
+      isEditingRef.current = true;
+
       setUntutorial((prev) => {
         const updated = { ...prev };
         const steps = [...(updated.steps || [])];
