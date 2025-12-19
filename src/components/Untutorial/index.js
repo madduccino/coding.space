@@ -202,10 +202,14 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
           .set(updatedUntutorial)
           .then(() => {
             setDirty(false);
+            return { saved: true };
           })
-          .catch((error) => setError(error.message));
+          .catch((error) => {
+            setError(error.message);
+            return { saved: false };
+          });
       }
-      return Promise.resolve();
+      return Promise.resolve({ saved: false });
     },
     [errors, untutorial, firebase, key]
   );
@@ -804,8 +808,11 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
   useEffect(() => {
     if (dirty) {
       const timeoutId = setTimeout(() => {
-        saveChangesHandler().then(() => {
-          isEditingRef.current = false;
+        saveChangesHandler().then((result) => {
+          // Only reset editing flag if save actually succeeded
+          if (result?.saved) {
+            isEditingRef.current = false;
+          }
         });
       }, 500);
 
