@@ -68,7 +68,7 @@ const TCSEditor = (props) => {
   if (!!disabled) {
     return (
       <div className={"field " + className}>
-        <div name={name} dangerouslySetInnerHTML={{ __html: text }} />
+        <div className="ql-editor" name={name} dangerouslySetInnerHTML={{ __html: text }} />
       </div>
     );
   } else if (!disabled && !editing) {
@@ -93,7 +93,7 @@ const TCSEditor = (props) => {
       // Changed this.props.name to name
       return (
         <div className={"field " + className}>
-          <div dangerouslySetInnerHTML={{ __html: text }} />
+          <div className="ql-editor" dangerouslySetInnerHTML={{ __html: text }} />
           <button className="editor-button" onClick={handleEdit}>
             {buttonText}
           </button>
@@ -102,7 +102,7 @@ const TCSEditor = (props) => {
     }
     return (
       <div className={"field " + className}>
-        <div name={name} dangerouslySetInnerHTML={{ __html: text }} />
+        <div className="ql-editor" name={name} dangerouslySetInnerHTML={{ __html: text }} />
         <button className="editor-button" onClick={handleEdit}>
           {buttonText}
         </button>
