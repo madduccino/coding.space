@@ -421,6 +421,7 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
       if (authUser?.roles?.["STUDENT"]) updated.Status = "DRAFT";
 
       steps.push({
+        id: uuidv4(), // Stable unique ID for React key
         Title: "",
         Description: "",
         TitleEs: "",
@@ -438,12 +439,7 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
     (event, stepIndex) => {
       isEditingRef.current = true;
 
-      console.log('DELETE CLICKED - Index:', stepIndex);
-      console.log('Current steps count:', untutorial.steps?.length);
-      console.log('Step to delete:', untutorial.steps?.[stepIndex]);
-
       setUntutorial((prev) => {
-        console.log('BEFORE DELETE - Steps count:', prev.steps?.length);
         const updated = { ...prev };
         const steps = [...(updated.steps || [])];
 
@@ -451,13 +447,8 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
           updated.Status = "DRAFT";
         }
 
-        console.log('Deleting step at index:', stepIndex);
-        console.log('Step being deleted:', steps[stepIndex]);
-
         // Remove the step and reindex
         steps.splice(stepIndex, 1);
-
-        console.log('AFTER DELETE - Steps count:', steps.length);
         updated.steps = steps;
 
         return updated;
@@ -465,7 +456,7 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
 
       setDirty(true);
     },
-    [authUser, untutorial.steps]
+    [authUser]
   );
 
   // Upload handlers
@@ -819,6 +810,28 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
     untutorialRef.current = untutorial;
   }, [dirty, untutorial]);
 
+  // One-time migration: ensure all steps have IDs
+  useEffect(() => {
+    if (untutorial.steps && untutorial.steps.length > 0) {
+      const needsMigration = untutorial.steps.some(step => !step.id);
+
+      if (needsMigration) {
+        isEditingRef.current = true;
+
+        setUntutorial(prev => {
+          const updated = { ...prev };
+          updated.steps = prev.steps.map(step => ({
+            ...step,
+            id: step.id || uuidv4()
+          }));
+          return updated;
+        });
+
+        setDirty(true); // This will save the IDs to Firebase
+      }
+    }
+  }, [untutorial.key]); // Only run when untutorial loads (key changes)
+
   // Auto-save effect (reduced to 500ms for faster saves)
   useEffect(() => {
     if (dirty) {
@@ -1024,7 +1037,7 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
           <div className="steps">
             {untutorial.steps?.map((step, index) => (
               <div
-                key={index}
+                key={step.id || `step-${index}`}
                 className={
                   "step " +
                   (progress?.steps?.[index]?.Status === "PENDING" ? "" : "")
