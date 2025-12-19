@@ -450,13 +450,8 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
 
         return updated;
       });
-      setTimeout(() => {
-        saveChangesHandler().then(() => {
-          isEditingRef.current = false;
-        });
-      }, 0);
     },
-    [authUser, saveChangesHandler]
+    [authUser]
   );
 
   // Upload handlers
