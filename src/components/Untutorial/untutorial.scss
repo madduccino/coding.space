@@ -46,4 +46,12 @@
 
 #untutorial .ql-editor {
   padding-top: 0;
+
+  p {
+    margin-bottom: 0.5em;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
 }
