@@ -39,7 +39,7 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
   const progressSteps = useMemo(() => progress?.steps || null, [progress]);
   const stepCount = useMemo(
     () => untutorial?.steps?.length || 0,
-    [untutorial?.steps]
+    [untutorial?.steps],
   );
   const nextStep = useMemo(() => {
     const step = progress?.nextStep || -1;
@@ -144,7 +144,7 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
         newErrors["Priority"] = 'PRIORITY.<span class="red">ISINVALID</span>';
       } else if (
         ![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15].includes(
-          parseInt(untutorial.Priority)
+          parseInt(untutorial.Priority),
         )
       ) {
         newErrors["Priority"] =
@@ -166,20 +166,18 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
         const text = step.Description.replace(/<(.|\n)*?>/g, "").trim();
 
         if (text === "") {
-          newErrors[
-            "STEP" + index
-          ] = `STEP.<span class="orange">${index}</span>.<span class="red">ISREQUIRED</span>`;
+          newErrors["STEP" + index] =
+            `STEP.<span class="orange">${index}</span>.<span class="red">ISREQUIRED</span>`;
         } else if (text.length < 20) {
-          newErrors[
-            "STEP" + index
-          ] = `STEP.<span class="orange">${index}</span>.<span class="red">ISTOOSHORT</span>`;
+          newErrors["STEP" + index] =
+            `STEP.<span class="orange">${index}</span>.<span class="red">ISTOOSHORT</span>`;
         } else {
           delete newErrors["STEP" + index];
         }
         return newErrors;
       });
     },
-    [untutorial.steps]
+    [untutorial.steps],
   );
 
   // Save functions
@@ -211,7 +209,7 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
       }
       return Promise.resolve({ saved: false });
     },
-    [errors, untutorial, firebase, key]
+    [errors, untutorial, firebase, key],
   );
 
   const saveProgressHandler = useCallback(
@@ -232,7 +230,7 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
           .catch((error) => console.error(error));
       }
     },
-    [progress, firebase, authUser, untutorial.key]
+    [progress, firebase, authUser, untutorial.key],
   );
 
   // Content change handlers with proper state updates
@@ -258,7 +256,7 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
       setDirty(true);
       setTimeout(validateTitle, 0);
     },
-    [lang, authUser, validateTitle]
+    [lang, authUser, validateTitle],
   );
 
   const handleDescriptionOnChange = useCallback(
@@ -283,7 +281,7 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
       setDirty(true);
       setTimeout(validateDescription, 0);
     },
-    [lang, authUser, validateDescription]
+    [lang, authUser, validateDescription],
   );
 
   const handleStatusOnChange = useCallback(
@@ -299,7 +297,7 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
       setDirty(true);
       setTimeout(validateStatus, 0);
     },
-    [validateStatus]
+    [validateStatus],
   );
 
   const handleLevelOnChange = useCallback(
@@ -318,7 +316,7 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
       setDirty(true);
       setTimeout(validateLevel, 0);
     },
-    [authUser, validateLevel]
+    [authUser, validateLevel],
   );
 
   const handlePriorityOnChange = useCallback(
@@ -337,7 +335,7 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
       setDirty(true);
       setTimeout(validatePriority, 0);
     },
-    [authUser, validatePriority]
+    [authUser, validatePriority],
   );
 
   // Step handlers with proper immutable updates
@@ -373,7 +371,7 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
         return updated;
       });
     },
-    [lang, authUser]
+    [lang, authUser],
   );
 
   const handleStepOnChange = useCallback(
@@ -408,7 +406,7 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
         validateStep(stepIndex);
       }, 100);
     },
-    [lang, authUser, validateStep]
+    [lang, authUser, validateStep],
   );
 
   const addStepHandler = useCallback(() => {
@@ -456,7 +454,7 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
 
       setDirty(true);
     },
-    [authUser]
+    [authUser],
   );
 
   // Upload handlers
@@ -479,7 +477,7 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
 
       // Upload to Firebase first
       const storageRef = firebase.storage.ref(
-        `/public/${authorKey}/${filename}`
+        `/public/${authorKey}/${filename}`,
       );
       const task = storageRef.put(file);
 
@@ -514,10 +512,10 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
           setUploadPercent(0);
           setUploading(false);
           setDirty(true);
-        }
+        },
       );
     },
-    [authUser, firebase, saveChangesHandler, untutorial.Author?.key]
+    [authUser, firebase, saveChangesHandler, untutorial.Author?.key],
   );
 
   const handleStepThumbnailUpload = useCallback(
@@ -539,7 +537,7 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
 
       // Upload to Firebase first
       const storageRef = firebase.storage.ref(
-        `/public/${authorKey}/${filename}`
+        `/public/${authorKey}/${filename}`,
       );
       const task = storageRef.put(file);
 
@@ -588,10 +586,10 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
           setUploadPercent(0);
           setUploading(false);
           setDirty(true);
-        }
+        },
       );
     },
-    [lang, authUser, firebase, saveChangesHandler, untutorial.Author?.key]
+    [lang, authUser, firebase, saveChangesHandler, untutorial.Author?.key],
   );
 
   // Category and skills handlers
@@ -685,7 +683,7 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
         return updated;
       });
     },
-    [saveProgressHandler]
+    [saveProgressHandler],
   );
 
   const handleProgressURLSave = useCallback(() => {
@@ -744,7 +742,7 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
         return updated;
       });
     },
-    [saveProgressHandler]
+    [saveProgressHandler],
   );
 
   const deleteProjectHandler = useCallback(() => {
@@ -760,7 +758,7 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
         firebase.profile(authUser.uid + "/lang").set(newLang);
       }
     },
-    [authUser, firebase]
+    [authUser, firebase],
   );
 
   // Effects
@@ -813,16 +811,16 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
   // One-time migration: ensure all steps have IDs
   useEffect(() => {
     if (untutorial.steps && untutorial.steps.length > 0) {
-      const needsMigration = untutorial.steps.some(step => !step.id);
+      const needsMigration = untutorial.steps.some((step) => !step.id);
 
       if (needsMigration) {
         isEditingRef.current = true;
 
-        setUntutorial(prev => {
+        setUntutorial((prev) => {
           const updated = { ...prev };
-          updated.steps = prev.steps.map(step => ({
+          updated.steps = prev.steps.map((step) => ({
             ...step,
-            id: step.id || uuidv4()
+            id: step.id || uuidv4(),
           }));
           return updated;
         });
@@ -901,7 +899,7 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
         <title>{`${
           authUser
             ? `${authUser.Username.replace(/\./g, " ").replace(/\w\S*/g, (w) =>
-                w.replace(/^\w/, (c) => c.toUpperCase())
+                w.replace(/^\w/, (c) => c.toUpperCase()),
               )} - ${untutorial.Title?.replace(/<(.|\n)*?>/g, "").trim() || ""}`
             : untutorial.Title?.replace(/<(.|\n)*?>/g, "").trim() || ""
         }`}</title>
@@ -988,7 +986,7 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
           !uploading && (
             <LazyImage
               file={firebase.storage.ref(
-                `/public/${untutorial.Author?.key}/${untutorial.ThumbnailFilename}`
+                `/public/${untutorial.Author?.key}/${untutorial.ThumbnailFilename}`,
               )}
             />
           )}
@@ -1099,8 +1097,8 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
                         authUser.uid === untutorial.Author?.key)
                         ? "editor"
                         : progress
-                        ? "no-button"
-                        : "editor"
+                          ? "no-button"
+                          : "editor"
                     }
                     onEditorChange={(value) => handleStepOnChange(value, index)}
                     onEditorSave={saveChangesHandler}
@@ -1173,7 +1171,7 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
                           id={`step${index}-thumbnail`}
                           className="crop"
                           file={firebase.storage.ref(
-                            `/public/${untutorial.Author?.key}/${step.ThumbnailFilename}`
+                            `/public/${untutorial.Author?.key}/${step.ThumbnailFilename}`,
                           )}
                         />
                       )}
@@ -1219,7 +1217,7 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
                           id={`step${index}-thumbnail`}
                           className="crop"
                           file={firebase.storage.ref(
-                            `/public/${untutorial.Author?.key}/${step.ThumbnailFilenameSp}`
+                            `/public/${untutorial.Author?.key}/${step.ThumbnailFilenameSp}`,
                           )}
                         />
                       )}
@@ -1273,16 +1271,30 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
 
         <div className="sidebar">
           <>
-            {untutorial.Categories?.["SCRATCH"] && (
-              <a
-                className="scratch"
-                href="https://scratch.mit.edu"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <LazyImage file={firebase.storage.ref("/public/scratch.png")} />
-              </a>
-            )}
+            {untutorial.Categories?.["ML_FOR_KIDS"] &&
+              !untutorial.Categories?.["MACHINE_LEARNING"] && (
+                <a
+                  className="scratch"
+                  href="https://scratch.mit.edu"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <LazyImage
+                    file={firebase.storage.ref("/public/scratch.png")}
+                  />
+                </a>
+              )}
+            {untutorial.Categories?.["ML_FOR_KIDS"] &&
+              untutorial.Categories?.["MACHINE_LEARNING"] && (
+                <a
+                  className="mlfk"
+                  href="/assets/mlfktg.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <LazyImage file={firebase.storage.ref("/public/mlfk.png")} />
+                </a>
+              )}
             {untutorial.Categories?.["WOOF"] && (
               <a
                 className="scratch"
@@ -1300,7 +1312,7 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
                   window.open(
                     "/web/reference-guide.html",
                     "_blank",
-                    "noopener,noreferrer"
+                    "noopener,noreferrer",
                   )
                 }
               >
@@ -1455,8 +1467,8 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
                         .filter(
                           (f) =>
                             !Object.keys(untutorial.Categories || {}).includes(
-                              f
-                            )
+                              f,
+                            ),
                         )
                         .map((catName) => (
                           <option key={catName} value={catName}>
