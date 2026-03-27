@@ -61,19 +61,28 @@
       // Adds the value in the input field to the current number inside the HTML element with id "screen"
       function add() {
         // Stores the HTML inside of element with id "screen" in the variable "screen"
-        let screen = document.querySelector("#screen");
-        // Sets the HTML inside of the element with id "Screen" to whatever it was before plus the value in the input field.
-        screen.innerHTML =
-          parseInt(screen.innerHTML) +
-          parseInt(document.querySelector("#text").value); // value of what user types in input field with id "text"
+        const text = document.querySelector("#text").value;
+        const screen = document.querySelector("#screen");
+        let temp = parseInt(screen.innerHTML) + parseInt(text);
+
+        if (Number.isNaN(temp)) {
+          alert("You must enter a number into the text box");
+        } else {
+          screen.innerHTML = temp
+        }
       }
+      
       // Operates the same way as the above function but with subtraction!
       function subtract() {
         const text = document.querySelector("#text").value;
-        let screen = document.querySelector("#screen");
-        screen.innerHTML =
-          parseInt(screen.innerHTML) -
-          parseInt(document.querySelector("#text").value);
+        const screen = document.querySelector("#screen");
+        let temp = parseInt(screen.innerHTML) - parseInt(text);
+
+        if (Number.isNaN(temp)) {
+        alert("You must enter a number into the text box");
+        } else {
+          screen.innerHTML = temp
+        }
       }
     </script>
   </body>
