@@ -1288,7 +1288,7 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
               untutorial.Categories?.["MACHINE_LEARNING"] && (
                 <a
                   className="mlfk"
-                  href="/assets/mlfktg.pdf"
+                  href="https://docs.google.com/document/d/1PYTPVuAVMsU5wkDTMpxmQtU7beUEZlz_m-YKYDdSlLg/edit?usp=sharing"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
