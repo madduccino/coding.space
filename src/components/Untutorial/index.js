@@ -35,6 +35,10 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
   const dirtyRef = React.useRef(false);
   const untutorialRef = React.useRef(untutorial);
 
+  // FIX: Store progress listener ref so we can clean it up properly
+  const progressListenerRef = React.useRef(null);
+  const progressKeyRef = React.useRef(null); // track which untutorial key the listener is for
+
   // Memoized values
   const progressSteps = useMemo(() => progress?.steps || null, [progress]);
   const stepCount = useMemo(
@@ -691,9 +695,23 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
     // The actual save happens in handleProgressURLOnChange
   }, []);
 
+  // FIX: Helper to detach the progress listener safely
+  const detachProgressListener = useCallback(() => {
+    if (progressListenerRef.current && progressKeyRef.current && authUser) {
+      firebase
+        .progress(authUser.uid, progressKeyRef.current)
+        .off("value", progressListenerRef.current);
+      progressListenerRef.current = null;
+      progressKeyRef.current = null;
+    }
+  }, [firebase, authUser]);
+
   const loadProgress = useCallback(() => {
     if (authUser && untutorial.key) {
-      firebase
+      // FIX: Detach any existing progress listener before attaching a new one
+      detachProgressListener();
+
+      const listener = firebase
         .progress(authUser.uid, untutorial.key)
         .on("value", (snapshot) => {
           if (snapshot.exists()) {
@@ -717,10 +735,21 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
             });
           }
         });
+
+      // FIX: Store the listener reference and the key it's attached to
+      progressListenerRef.current = listener;
+      progressKeyRef.current = untutorial.key;
     }
 
     setShowiframe(false);
-  }, [authUser, firebase, untutorial.key, untutorial.steps, key]);
+  }, [
+    authUser,
+    firebase,
+    untutorial.key,
+    untutorial.steps,
+    key,
+    detachProgressListener,
+  ]);
 
   const studentApprove = useCallback(
     (stepIndex) => {
@@ -793,8 +822,17 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
 
     return () => {
       firebase.untutorial(key).off("value", unsubscribe);
+      // FIX: Also clean up the progress listener when the component unmounts
+      // or when the key changes (user navigates to a different untutorial)
+      if (progressListenerRef.current && progressKeyRef.current && authUser) {
+        firebase
+          .progress(authUser.uid, progressKeyRef.current)
+          .off("value", progressListenerRef.current);
+        progressListenerRef.current = null;
+        progressKeyRef.current = null;
+      }
     };
-  }, [firebase, key, location.search, loadProgress]);
+  }, [firebase, key]); // FIX: removed loadProgress from deps to prevent listener stacking
 
   useEffect(() => {
     if (authUser && lang !== authUser.lang) {
