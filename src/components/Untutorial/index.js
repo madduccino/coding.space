@@ -38,6 +38,7 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
   // FIX: Store progress listener ref so we can clean it up properly
   const progressListenerRef = React.useRef(null);
   const progressKeyRef = React.useRef(null); // track which untutorial key the listener is for
+  const progressUidRef = React.useRef(null); // track uid so cleanup doesn't rely on stale authUser closure
 
   // Memoized values
   const progressSteps = useMemo(() => progress?.steps || null, [progress]);
@@ -697,14 +698,15 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
 
   // FIX: Helper to detach the progress listener safely
   const detachProgressListener = useCallback(() => {
-    if (progressListenerRef.current && progressKeyRef.current && authUser) {
+    if (progressListenerRef.current && progressKeyRef.current && progressUidRef.current) {
       firebase
-        .progress(authUser.uid, progressKeyRef.current)
+        .progress(progressUidRef.current, progressKeyRef.current)
         .off("value", progressListenerRef.current);
       progressListenerRef.current = null;
       progressKeyRef.current = null;
+      progressUidRef.current = null;
     }
-  }, [firebase, authUser]);
+  }, [firebase]);
 
   const loadProgress = useCallback(() => {
     if (authUser && untutorial.key) {
@@ -736,9 +738,10 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
           }
         });
 
-      // FIX: Store the listener reference and the key it's attached to
+      // FIX: Store the listener reference and the key/uid it's attached to
       progressListenerRef.current = listener;
       progressKeyRef.current = untutorial.key;
+      progressUidRef.current = authUser.uid;
     }
 
     setShowiframe(false);
@@ -822,15 +825,7 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
 
     return () => {
       firebase.untutorial(key).off("value", unsubscribe);
-      // FIX: Also clean up the progress listener when the component unmounts
-      // or when the key changes (user navigates to a different untutorial)
-      if (progressListenerRef.current && progressKeyRef.current && authUser) {
-        firebase
-          .progress(authUser.uid, progressKeyRef.current)
-          .off("value", progressListenerRef.current);
-        progressListenerRef.current = null;
-        progressKeyRef.current = null;
-      }
+      detachProgressListener();
     };
   }, [firebase, key]); // FIX: removed loadProgress from deps to prevent listener stacking
 
