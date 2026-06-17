@@ -16,6 +16,28 @@ const EditScritch = () => {
 
   const DATABASE_URL = process.env.REACT_APP_SCRITCH_KEY;
 
+  const getDatabaseUrl = () => {
+    if (!DATABASE_URL || DATABASE_URL === "undefined") {
+      throw new Error(
+        "Scritch database URL is not configured. Set REACT_APP_SCRITCH_KEY and restart the app."
+      );
+    }
+
+    return DATABASE_URL.replace(/\/$/, "");
+  };
+
+  const parseJsonResponse = async (response, action) => {
+    const contentType = response.headers.get("content-type") || "";
+
+    if (!contentType.includes("application/json")) {
+      throw new Error(
+        `${action} returned ${contentType || "non-JSON"} instead of JSON. Check the Scritch database URL.`
+      );
+    }
+
+    return response.json();
+  };
+
   const handleSubmission = async () => {
     try {
       if (!name || !fromClass || !toClass || !action) {
@@ -29,17 +51,18 @@ const EditScritch = () => {
       const FROM_CLASS = fromClass.toLowerCase();
       const TO_CLASS = toClass.toLowerCase();
       const ACTION = action.toLowerCase();
+      const databaseUrl = getDatabaseUrl();
 
       // Fetch class data for FROM_CLASS
       const classDataResponse = await fetch(
-        `${DATABASE_URL}/classes/${FROM_CLASS}/students.json`
+        `${databaseUrl}/classes/${FROM_CLASS}/students.json`
       );
 
       if (!classDataResponse.ok) {
         throw new Error("Failed to fetch class data.");
       }
 
-      const json = await classDataResponse.json();
+      const json = await parseJsonResponse(classDataResponse, "Fetching class data");
       const keys = Object.keys(json);
       const username = keys.find((key) => key.includes(STUDENT));
 
@@ -51,18 +74,21 @@ const EditScritch = () => {
 
       // Fetch student data for the student in FROM_CLASS
       const studentDataResponse = await fetch(
-        `${DATABASE_URL}/classes/${FROM_CLASS}/students/${encodedUsername}.json`
+        `${databaseUrl}/classes/${FROM_CLASS}/students/${encodedUsername}.json`
       );
 
       if (!studentDataResponse.ok) {
         throw new Error("Failed to fetch student data.");
       }
 
-      const jsonData = await studentDataResponse.json();
+      const jsonData = await parseJsonResponse(
+        studentDataResponse,
+        "Fetching student data"
+      );
 
       // Copy student data to the new class (TO_CLASS)
       const copyStudentResponse = await fetch(
-        `${DATABASE_URL}/classes/${TO_CLASS}/students/${encodedUsername}.json`,
+        `${databaseUrl}/classes/${TO_CLASS}/students/${encodedUsername}.json`,
         {
           method: "PATCH",
           body: JSON.stringify(jsonData),
@@ -76,7 +102,7 @@ const EditScritch = () => {
       // Delete from old class if moving
       if (ACTION === "move") {
         const deleteResponse = await fetch(
-          `${DATABASE_URL}/classes/${FROM_CLASS}/students/${encodedUsername}.json`,
+          `${databaseUrl}/classes/${FROM_CLASS}/students/${encodedUsername}.json`,
           {
             method: "DELETE",
           }
@@ -123,11 +149,15 @@ const EditScritch = () => {
 
       const CODE = classCode;
       const TITLE = classTitle;
+      const databaseUrl = getDatabaseUrl();
 
-      const checkResponse = await fetch(`${DATABASE_URL}/classes/${CODE}.json`);
+      const checkResponse = await fetch(`${databaseUrl}/classes/${CODE}.json`);
 
       if (checkResponse.ok) {
-        const responseData = await checkResponse.json();
+        const responseData = await parseJsonResponse(
+          checkResponse,
+          "Checking class code"
+        );
         if (responseData != null) {
           // Code already exists, generate a new one
           const newCode = generateRandomCode();
@@ -155,7 +185,7 @@ const EditScritch = () => {
 
       // Send the PUT request to create new data in the database
       const response = await fetch(
-        `${DATABASE_URL}/classes/${CODE}.json`,
+        `${databaseUrl}/classes/${CODE}.json`,
         requestOptions
       );
 
@@ -223,7 +253,7 @@ const EditScritch = () => {
             value={classTitle}
             onChange={handleClassTitleChange}
           />
-          <button onClick={createClass}>Create Class</button>
+          <button type="submit">Create Class</button>
           {errorMessage && <div className="error-message">{errorMessage}</div>}
           {successMessage && (
             <div className="success-message">{successMessage}</div>
@@ -293,7 +323,7 @@ const EditScritch = () => {
             <option value="move">Move</option>
           </select>
 
-          <button id="submitBtn" onClick={handleSubmission}>
+          <button id="submitBtn" type="submit">
             Submit
           </button>
 

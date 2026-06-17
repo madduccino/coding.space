@@ -13,3 +13,7 @@ export const MACHINE_LEARNING = "Machine Learning";
 export const UNITY = "Unity";
 export const DATA_SCIENCE = "Data Science";
 export const ML_FOR_KIDS = "ML for Kids";
+export const DIGITAL_ART = "Digital Art";
+export const GAME_DESIGN = "Game Design";
+export const ROBOTICS = "Robotics";
+export const ARTIFICIAL_INTELLIGENCE = "Artificial Intelligence";

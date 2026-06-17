@@ -15,6 +15,13 @@ const groupBy = function (xs, key) {
   }, {});
 };
 
+const CATEGORIES_WITHOUT_LEVELS = [
+  "DIGITAL_ART",
+  "GAME_DESIGN",
+  "ROBOTICS",
+  "ARTIFICIAL_INTELLIGENCE",
+];
+
 const LaunchPad = ({ authUser, firebase }) => {
   const [loading, setLoading] = useState(true);
   const [untutorials, setUntutorials] = useState([]);
@@ -32,7 +39,7 @@ const LaunchPad = ({ authUser, firebase }) => {
 
   // Initialize state from URL parameters
   const [cfilter, setCfilter] = useState(() => getQueryParam("c", "SCRATCH"));
-  const [lfilter, setLfilter] = useState(() => getQueryParam("l", ["LEVEL1"]));
+  const [lfilter, setLfilter] = useState(() => getQueryParam("l", []));
   const [textFilter, setTextFilter] = useState("");
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [updateKey, setUpdateKey] = useState(0);
@@ -62,7 +69,7 @@ const LaunchPad = ({ authUser, firebase }) => {
     const handlePopState = (event) => {
       // Re-read parameters from URL when user navigates back/forward
       const newCfilter = getQueryParam("c", "SCRATCH");
-      const newLfilter = getQueryParam("l", ["LEVEL1"]);
+      const newLfilter = getQueryParam("l", []);
 
       setCfilter(newCfilter);
       setLfilter(newLfilter);
@@ -125,6 +132,10 @@ const LaunchPad = ({ authUser, firebase }) => {
 
     if (cfilter !== value) {
       setCfilter(value);
+      const newLFilter = CATEGORIES_WITHOUT_LEVELS.includes(value)
+        ? []
+        : lfilter;
+      setLfilter(newLFilter);
 
       let newSelectedCategory = null;
       if (value === "PYTHON") {
@@ -135,7 +146,7 @@ const LaunchPad = ({ authUser, firebase }) => {
       }
 
       // Update URL immediately
-      updateURL(value, lfilter);
+      updateURL(value, newLFilter);
     }
   };
 
@@ -162,10 +173,14 @@ const LaunchPad = ({ authUser, firebase }) => {
     // Note: Category selection doesn't update URL as it's a sub-filter
   };
 
+  const shouldShowLevels = !CATEGORIES_WITHOUT_LEVELS.includes(cfilter);
+
   const filteredUntutorials = untutorials.filter((untutorial) => {
     const isApproved = untutorial.Status === "APPROVED";
     const matchesLevelFilter =
-      lfilter.length === 0 || lfilter.includes("LEVEL" + untutorial.Level);
+      !shouldShowLevels ||
+      lfilter.length === 0 ||
+      lfilter.includes("LEVEL" + untutorial.Level);
     const matchesTextFilter = untutorial.Title.toLowerCase().includes(
       textFilter.toLowerCase()
     );
@@ -198,6 +213,47 @@ const LaunchPad = ({ authUser, firebase }) => {
   });
 
   const untutorialLevels = groupBy(filteredUntutorials, "Level");
+  const prioritySortedUntutorials = [...filteredUntutorials].sort(
+    (a, b) => a.Priority - b.Priority
+  );
+
+  const renderUntutorialCard = (untutorial) => (
+    <a
+      key={untutorial.key}
+      className="card"
+      id={untutorial.key}
+      href={ROUTES.LAUNCHPAD + "/" + untutorial.key}
+      path={
+        "/public/" + untutorial.Author + "/" + untutorial.ThumbnailFilename
+      }
+    >
+      <LazyImage
+        key={untutorial.key}
+        file={firebase.storage.ref(
+          "/public/" + untutorial.Author + "/" + untutorial.ThumbnailFilename
+        )}
+      />
+      <div>
+        <h2
+          dangerouslySetInnerHTML={{
+            __html:
+              lang === "Español" && untutorial.TitleEs
+                ? untutorial.TitleEs
+                : untutorial.Title,
+          }}
+        />
+        <div
+          dangerouslySetInnerHTML={{
+            __html:
+              lang === "Español" && untutorial.DescriptionEs
+                ? untutorial.DescriptionEs.replace(/<(.|\n)*?>/g, "").trim()
+                : untutorial.Description.replace(/<(.|\n)*?>/g, "").trim(),
+          }}
+        />
+        <button>Go to Untutorial</button>
+      </div>
+    </a>
+  );
 
   if (loading) return <div className="loading">Loading...</div>;
 
@@ -227,19 +283,21 @@ const LaunchPad = ({ authUser, firebase }) => {
                   </button>
                 ))}
               </div>
-              <div>
-                <h2>Level</h2>
-                {Object.keys(LEVELS).map((f) => (
-                  <button
-                    key={f}
-                    onClick={toggleLFilter}
-                    value={f}
-                    className={lfilter.includes(f) ? "f" : ""}
-                  >
-                    {LEVELS[f]}
-                  </button>
-                ))}
-              </div>
+              {shouldShowLevels && (
+                <div>
+                  <h2>Level</h2>
+                  {Object.keys(LEVELS).map((f) => (
+                    <button
+                      key={f}
+                      onClick={toggleLFilter}
+                      value={f}
+                      className={lfilter.includes(f) ? "f" : ""}
+                    >
+                      {LEVELS[f]}
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
           <div className="main-content">
@@ -271,62 +329,18 @@ const LaunchPad = ({ authUser, firebase }) => {
             )}
             <div className="items">
               {Object.keys(filteredUntutorials).length > 0 ? (
-                Object.keys(untutorialLevels).map((level) => (
-                  <React.Fragment key={level}>
-                    <h1>{"Level " + level}</h1>
-                    {untutorialLevels[level]
-                      .sort((a, b) => a.Priority - b.Priority)
-                      .map((untutorial) => (
-                        <a
-                          key={untutorial.key}
-                          className="card"
-                          id={untutorial.key}
-                          href={ROUTES.LAUNCHPAD + "/" + untutorial.key}
-                          path={
-                            "/public/" +
-                            untutorial.Author +
-                            "/" +
-                            untutorial.ThumbnailFilename
-                          }
-                        >
-                          <LazyImage
-                            key={untutorial.key}
-                            file={firebase.storage.ref(
-                              "/public/" +
-                                untutorial.Author +
-                                "/" +
-                                untutorial.ThumbnailFilename
-                            )}
-                          />
-                          <div>
-                            <h2
-                              dangerouslySetInnerHTML={{
-                                __html:
-                                  lang === "Español" && untutorial.TitleEs
-                                    ? untutorial.TitleEs
-                                    : untutorial.Title,
-                              }}
-                            />
-                            <div
-                              dangerouslySetInnerHTML={{
-                                __html:
-                                  lang === "Español" && untutorial.DescriptionEs
-                                    ? untutorial.DescriptionEs.replace(
-                                        /<(.|\n)*?>/g,
-                                        ""
-                                      ).trim()
-                                    : untutorial.Description.replace(
-                                        /<(.|\n)*?>/g,
-                                        ""
-                                      ).trim(),
-                              }}
-                            />
-                            <button>Go to Untutorial</button>
-                          </div>
-                        </a>
-                      ))}
-                  </React.Fragment>
-                ))
+                shouldShowLevels ? (
+                  Object.keys(untutorialLevels).map((level) => (
+                    <React.Fragment key={level}>
+                      <h1>{"Level " + level}</h1>
+                      {untutorialLevels[level]
+                        .sort((a, b) => a.Priority - b.Priority)
+                        .map(renderUntutorialCard)}
+                    </React.Fragment>
+                  ))
+                ) : (
+                  prioritySortedUntutorials.map(renderUntutorialCard)
+                )
               ) : (
                 <div className="no-items-message">
                   No items found in this category

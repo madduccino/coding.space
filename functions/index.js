@@ -1,11 +1,9 @@
-const functions = require("firebase-functions");
-const serviceAccount = require("./credential.json");
+const functions = require("firebase-functions/v1");
 
 const cors = require("cors")({ origin: true });
 
 const admin = require("firebase-admin");
 admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
   databaseURL: "https://tcslms-staging.firebaseio.com",
 });
 
