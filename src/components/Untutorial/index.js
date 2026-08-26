@@ -35,6 +35,11 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
   const dirtyRef = React.useRef(false);
   const untutorialRef = React.useRef(untutorial);
 
+  // FIX: Store progress listener ref so we can clean it up properly
+  const progressListenerRef = React.useRef(null);
+  const progressKeyRef = React.useRef(null); // track which untutorial key the listener is for
+  const progressUidRef = React.useRef(null); // track uid so cleanup doesn't rely on stale authUser closure
+
   // Memoized values
   const progressSteps = useMemo(() => progress?.steps || null, [progress]);
   const stepCount = useMemo(
@@ -691,9 +696,24 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
     // The actual save happens in handleProgressURLOnChange
   }, []);
 
+  // FIX: Helper to detach the progress listener safely
+  const detachProgressListener = useCallback(() => {
+    if (progressListenerRef.current && progressKeyRef.current && progressUidRef.current) {
+      firebase
+        .progress(progressUidRef.current, progressKeyRef.current)
+        .off("value", progressListenerRef.current);
+      progressListenerRef.current = null;
+      progressKeyRef.current = null;
+      progressUidRef.current = null;
+    }
+  }, [firebase]);
+
   const loadProgress = useCallback(() => {
     if (authUser && untutorial.key) {
-      firebase
+      // FIX: Detach any existing progress listener before attaching a new one
+      detachProgressListener();
+
+      const listener = firebase
         .progress(authUser.uid, untutorial.key)
         .on("value", (snapshot) => {
           if (snapshot.exists()) {
@@ -717,10 +737,22 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
             });
           }
         });
+
+      // FIX: Store the listener reference and the key/uid it's attached to
+      progressListenerRef.current = listener;
+      progressKeyRef.current = untutorial.key;
+      progressUidRef.current = authUser.uid;
     }
 
     setShowiframe(false);
-  }, [authUser, firebase, untutorial.key, untutorial.steps, key]);
+  }, [
+    authUser,
+    firebase,
+    untutorial.key,
+    untutorial.steps,
+    key,
+    detachProgressListener,
+  ]);
 
   const studentApprove = useCallback(
     (stepIndex) => {
@@ -793,8 +825,9 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
 
     return () => {
       firebase.untutorial(key).off("value", unsubscribe);
+      detachProgressListener();
     };
-  }, [firebase, key, location.search, loadProgress]);
+  }, [firebase, key]); // FIX: removed loadProgress from deps to prevent listener stacking
 
   useEffect(() => {
     if (authUser && lang !== authUser.lang) {
@@ -1288,7 +1321,7 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
               untutorial.Categories?.["MACHINE_LEARNING"] && (
                 <a
                   className="mlfk"
-                  href="/assets/mlfktg.pdf"
+                  href="https://docs.google.com/document/d/1PYTPVuAVMsU5wkDTMpxmQtU7beUEZlz_m-YKYDdSlLg/edit?usp=sharing"
                   target="_blank"
                   rel="noopener noreferrer"
                 >

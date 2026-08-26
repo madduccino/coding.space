@@ -29,23 +29,17 @@ class ProgressReviews extends React.Component {
   }
 
   componentDidMount() {
-    const { profiles } = this.state;
-    //classes too
     this.props.firebase.profiles().on("child_added", (snapshot) => {
       let profile = snapshot.val();
       profile.key = snapshot.key;
-      profiles.push(profile);
-      this.setState({ profiles });
+      this.setState((prev) => ({ profiles: [...prev.profiles, profile] }));
     });
   }
 
   componentWillUnmount() {
     this.props.firebase.profiles().off();
-    this.props.firebase.class().off();
-    // Clean up active progress listener if exists
-    const { activeProgress } = this.state;
-    if (activeProgress.uid) {
-      this.props.firebase.progresses(activeProgress.uid).off();
+    if (this._activeUid) {
+      this.props.firebase.progresses(this._activeUid).off();
     }
   }
   onPendingFilterChange() {
@@ -83,11 +77,10 @@ class ProgressReviews extends React.Component {
     }
   }
   onProfileActivate(uid) {
-    const { activeProgress } = this.state;
-    // Clean up previous listener if exists
-    if (activeProgress.uid) {
-      this.props.firebase.progresses(activeProgress.uid).off();
+    if (this._activeUid) {
+      this.props.firebase.progresses(this._activeUid).off();
     }
+    this._activeUid = uid;
 
     let newActiveProgress = { uid: uid, progresses: [] };
     this.setState({ activeProgress: newActiveProgress }, () => {
