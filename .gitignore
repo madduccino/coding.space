@@ -33,3 +33,4 @@ functions/credential.json.*
 package-lock.json
 public/travel.html
 public/absences.html
+public/roster.html
