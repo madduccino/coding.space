@@ -31,3 +31,5 @@ functions/credential.json
 functions/credential.json.*
 *.cache
 package-lock.json
+public/travel.html
+public/absences.html
