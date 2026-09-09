@@ -7,11 +7,16 @@
   },
   "hosting": {
     "public": "build",
-    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+    "ignore": ["**/.*", "**/node_modules/**"],
     "redirects": [
       {
         "source": "/absences",
-        "destination": "/absences.html",
+        "destination": "https://airtable.com/appcfQaaO4NXPQMEO/pagpxNf0Ne1dmPxYQ/form",
+        "type": 301
+      },
+      {
+        "source": "/travel",
+        "destination": "/travel.html",
         "type": 301
       },
       {

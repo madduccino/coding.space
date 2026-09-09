@@ -28,5 +28,6 @@ firebase-debug.log*
 functions/tcslms/
 tcslms-staging-5b3e7c5f243d.json
 functions/credential.json
+functions/credential.json.*
 *.cache
 package-lock.json

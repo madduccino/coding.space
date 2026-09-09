@@ -3,6 +3,20 @@ const functions = require("firebase-functions/v1");
 const cors = require("cors")({ origin: true });
 
 const admin = require("firebase-admin");
+// This codebase deploys to two different GCP projects (tcslms for Hosting/
+// the live domain, tcslms-staging for Auth + the Realtime Database), so the
+// runtime service account can't be a single hardcoded value — Cloud
+// Functions gen1 requires the runtime service account to live in the same
+// project the function is deployed to. Only tcslms-staging has the scoped
+// functions-runtime account; elsewhere (e.g. tcslms) fall back to that
+// project's own default runtime identity.
+const RUNTIME_SERVICE_ACCOUNT =
+  process.env.GCLOUD_PROJECT === "tcslms-staging"
+    ? "functions-runtime@tcslms-staging.iam.gserviceaccount.com"
+    : undefined;
+const runtime = RUNTIME_SERVICE_ACCOUNT
+  ? functions.runWith({ serviceAccount: RUNTIME_SERVICE_ACCOUNT })
+  : functions;
 admin.initializeApp({
   databaseURL: "https://tcslms-staging.firebaseio.com",
 });
@@ -13,56 +27,65 @@ admin.initializeApp({
 // exports.helloWorld = functions.https.onRequest((request, response) => {
 //  response.send("Hello from Firebase!");
 // });
+const ALLOWED_ORIGINS = [
+  "http://staging.coding.space",
+  "https://staging.coding.space",
+  "http://coding.space",
+  "https://coding.space",
+];
 const headers = (req, res) => {
   res.header("Content-Type", "application/json");
-  res.header("Access-Control-Allow-Origin", [
-    "http://staging.coding.space",
-    "https://staging.coding.space",
-    "http://coding.space",
-    "https://coding.space",
-  ]);
+  const origin = req.get("Origin");
+  if (ALLOWED_ORIGINS.includes(origin)) {
+    res.header("Access-Control-Allow-Origin", origin);
+  }
   res.header("Access-Control-Allow-Headers", "Content-Type");
 };
 
-exports.createUser = functions.https.onRequest(async (req, res) => {
-  headers(req, res);
+exports.createUser = runtime.https.onRequest(async (req, res) => {
+    headers(req, res);
 
-  if (req.method !== "POST") {
-    res.status(400).send("Unsupported");
-    return 0;
-  }
+    if (req.method === "OPTIONS") {
+      res.status(204).send("");
+      return 0;
+    }
 
-  const email = req.body.email;
-  const pass = req.body.password;
-  const name = req.body.name;
-  admin
-    .auth()
-    .createUser({
-      email: email,
-      emailVerified: false,
-      displayName: name,
-      disabled: false,
-      password: pass,
-    })
-    .then((user) => {
-      console.log("User created: " + email);
-      res.json({
-        uid: user.uid,
-        email: user.email,
-        displayName: user.displayName,
+    if (req.method !== "POST") {
+      res.status(400).send("Unsupported");
+      return 0;
+    }
+
+    const email = req.body.email;
+    const pass = req.body.password;
+    const name = req.body.name;
+    admin
+      .auth()
+      .createUser({
+        email: email,
+        emailVerified: false,
+        displayName: name,
+        disabled: false,
+        password: pass,
+      })
+      .then((user) => {
+        console.log("User created: " + email);
+        res.json({
+          uid: user.uid,
+          email: user.email,
+          displayName: user.displayName,
+        });
+        return 1;
+      })
+      .catch((error) => {
+        console.log("Error creating user: " + email);
+        console.log(error);
+        res.json({ error: error });
+        return 1;
       });
-      return 1;
-    })
-    .catch((error) => {
-      console.log("Error creating user: " + email);
-      console.log(error);
-      res.json({ error: error });
-      return 1;
-    });
-  return 0;
-});
+    return 0;
+  });
 
-exports.autoCreateUser = functions.https.onRequest(async (req, res) => {
+exports.autoCreateUser = runtime.https.onRequest(async (req, res) => {
   headers(req, res);
 
   if (req.method !== "POST") {
@@ -132,7 +155,7 @@ exports.autoCreateUser = functions.https.onRequest(async (req, res) => {
   });
 });
 
-exports.progressStatus = functions.database
+exports.progressStatus = runtime.database
   .ref("/db/Progress/{uid}/{unid}/steps/")
   .onUpdate((change) => {
     var before = change.before.val();
