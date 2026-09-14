@@ -2,6 +2,9 @@ import React, { useState, useRef } from "react";
 import "./scritch.scss";
 import clipboardCopy from "clipboard-copy";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import DirectoryLogin from "./DirectoryLogin";
+import StudentDirectory from "./StudentDirectory";
+import { isDirectoryAuthenticated } from "./auth";
 
 const EditScritch = () => {
   const [name, setName] = useState("");
@@ -338,6 +341,9 @@ const EditScritch = () => {
           )}
         </form>
       </div>
+      <div className="directory-section">
+        <DirectorySection />
+      </div>
       <div className="notes">
         <p>
           To delete a class, please email{" "}
@@ -347,6 +353,16 @@ const EditScritch = () => {
       </div>
     </div>
   );
+};
+
+const DirectorySection = () => {
+  const [authed, setAuthed] = useState(isDirectoryAuthenticated);
+
+  if (!authed) {
+    return <DirectoryLogin onSuccess={() => setAuthed(true)} />;
+  }
+
+  return <StudentDirectory onLogout={() => setAuthed(false)} />;
 };
 
 export default EditScritch;

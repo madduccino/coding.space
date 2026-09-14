@@ -15,6 +15,11 @@ const groupBy = function (xs, key) {
   }, {});
 };
 
+const getAuthorId = (author) =>
+  typeof author === "object" && author !== null ? author.key : author;
+
+const stripHtml = (html) => String(html || "").replace(/<(.|\n)*?>/g, "").trim();
+
 const CATEGORIES_WITHOUT_LEVELS = [
   "DIGITAL_ART",
   "GAME_DESIGN",
@@ -181,9 +186,9 @@ const LaunchPad = ({ authUser, firebase }) => {
       !shouldShowLevels ||
       lfilter.length === 0 ||
       lfilter.includes("LEVEL" + untutorial.Level);
-    const matchesTextFilter = untutorial.Title.toLowerCase().includes(
-      textFilter.toLowerCase()
-    );
+    const matchesTextFilter = String(untutorial.Title || "")
+      .toLowerCase()
+      .includes(textFilter.toLowerCase());
     const hasCategories =
       untutorial.Categories && typeof untutorial.Categories === "object";
 
@@ -272,7 +277,7 @@ const LaunchPad = ({ authUser, firebase }) => {
               {loading && <div className="loading">Loading ...</div>}
               <div>
                 <h2>Category</h2>
-                {Object.keys(FILTER).map((f) => (
+                {Object.keys(FILTER).filter((f) => f !== "UNTUTORIALS" && f !== "ML_FOR_KIDS").map((f) => (
                   <button
                     key={f}
                     onClick={toggleCFilter}
