@@ -12,6 +12,19 @@ import { Link } from "react-router-dom";
 import "./untutorial.scss";
 import { Helmet } from "react-helmet";
 
+const extractScratchProjectId = (html) => {
+  const match = String(html || "").match(
+    /scratch\.mit\.edu\/projects\/(\d+)/i
+  );
+  return match ? match[1] : null;
+};
+
+const descriptionWithoutScratchIframes = (html) =>
+  String(html || "").replace(
+    /<iframe\b[^>]*scratch\.mit\.edu\/projects\/\d+[^>]*>\s*<\/iframe>/gi,
+    ""
+  );
+
 const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
   const { key } = useParams();
   const location = useLocation();
@@ -925,6 +938,11 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
   if (loading) return <div className="loading">Loading ...</div>;
 
   const { Title, Description, Level, steps } = untutorial;
+  const previewDescription =
+    lang === "Español" && untutorial.DescriptionEs
+      ? untutorial.DescriptionEs
+      : Description;
+  const scratchProjectId = extractScratchProjectId(previewDescription);
 
   return (
     <section id="untutorial">
@@ -974,12 +992,22 @@ const UntutorialPageBase = ({ authUser, firebase, setGlobalState }) => {
                 />
                 <div
                   dangerouslySetInnerHTML={{
-                    __html:
-                      lang === "Español" && untutorial.DescriptionEs
-                        ? untutorial.DescriptionEs
-                        : untutorial.Description,
+                    __html: descriptionWithoutScratchIframes(previewDescription),
                   }}
                 />
+                {scratchProjectId && (
+                  <iframe
+                    className="scratch-preview"
+                    title="Scratch project preview"
+                    src={`https://turbowarp.org/${scratchProjectId}/embed`}
+                    width="485"
+                    height="402"
+                    frameBorder="0"
+                    scrolling="no"
+                    allowFullScreen
+                    allowTransparency="true"
+                  />
+                )}
                 <button onClick={loadProgress}>Code This Project</button>
               </div>
               <a className="back" onClick={() => history.goBack()}>

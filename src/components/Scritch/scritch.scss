@@ -99,3 +99,101 @@
 .error-message {
   color: red;
 }
+
+.directory-section {
+  width: 100%;
+  margin-top: 40px;
+
+  .directory-login {
+    width: 100%;
+    max-width: 480px;
+  }
+
+  .directory {
+    width: 100%;
+    padding: 20px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+
+  .directory-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 1rem;
+
+    h2 {
+      margin-bottom: 8px;
+    }
+  }
+
+  .toolbar-actions {
+    display: flex;
+    gap: 0.5rem;
+    flex-shrink: 0;
+
+    button {
+      width: auto;
+      margin-top: 0;
+    }
+  }
+
+  .muted {
+    color: #5c6b7a;
+    font-size: 0.9rem;
+  }
+
+  .hint {
+    margin: -0.5rem 0 1rem;
+  }
+
+  .search-label input {
+    width: 100%;
+  }
+
+  .result-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .result-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.85rem 0;
+    border-bottom: 1px solid #d8dee6;
+  }
+
+  .result-main {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+
+  .result-actions {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+    flex-shrink: 0;
+
+    a {
+      text-decoration: underline;
+      white-space: nowrap;
+    }
+  }
+
+  button.secondary {
+    background: #fff;
+    color: #1a2332;
+    border: 1px solid #ccc;
+  }
+
+  button.secondary:hover:not(:disabled) {
+    background: #f4f6f9;
+  }
+}

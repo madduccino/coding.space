@@ -1,0 +1,18 @@
+# This file specifies files that are *not* uploaded to Google Cloud
+# using gcloud. It follows the same syntax as .gitignore, with the
+# addition of "#!include" directives (see below).
+
+.gcloudignore
+.git
+.gitignore
+
+node_modules/
+functions/node_modules/
+
+# Never upload local service-account keys / OAuth tokens.
+functions/credential.json
+functions/credential.json.*
+functions/credentials.json
+functions/token.json
+*.pem
+*.key

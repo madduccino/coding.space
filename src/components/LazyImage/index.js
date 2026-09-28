@@ -18,14 +18,34 @@ const LazyImage = ({ file, className }) => {
 
   // ComponentDidMount & ComponentDidUpdate equivalent
   useEffect(() => {
-    file.getDownloadURL().then((url) => {
+    if (!file || typeof file.getDownloadURL !== "function") {
       setLoading(false);
-      setUrl(url);
-    });
+      return undefined;
+    }
+
+    let cancelled = false;
+    file
+      .getDownloadURL()
+      .then((downloadUrl) => {
+        if (!cancelled) {
+          setLoading(false);
+          setUrl(downloadUrl);
+        }
+      })
+      .catch(() => {
+        if (!cancelled) {
+          setLoading(false);
+          setUrl("/images/loading.gif");
+        }
+      });
+
+    return () => {
+      cancelled = true;
+    };
   }, [file]); // The useEffect hook will re-run if the 'file' prop changes.
 
   // Render
-  return <img className={className} id={guid} key={guid} src={url} />;
+  return <img className={className} id={guid} key={guid} src={url} alt="" />;
 };
 
 export default withFirebase(LazyImage);

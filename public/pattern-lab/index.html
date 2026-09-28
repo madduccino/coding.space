@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pattern Lab — Live Text Classifier</title>
+<style>
+  :root{
+    --paper: #EEF0EA;
+    --paper-deep: #E4E7DE;
+    --ink: #232B26;
+    --ink-soft: #5B655D;
+    --rule: #CBD1C4;
+    --teal: #2F6F63;
+    --teal-tint: #E1EEE9;
+    --teal-tint-strong: #C7E1D8;
+    --amber: #C97A2E;
+    --amber-tint: #F6E9D9;
+    --amber-tint-strong: #EDD2AC;
+    --brick: #A8452F;
+    --brick-tint: #F3DFD8;
+    --white: #FBFCF9;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+    line-height:1.4;
+  }
+  .wrap{
+    max-width:1080px;
+    margin:0 auto;
+    padding:32px 28px 60px;
+  }
+  header{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-end;
+    gap:24px;
+    border-bottom:2px solid var(--ink);
+    padding-bottom:18px;
+    margin-bottom:28px;
+    flex-wrap:wrap;
+  }
+  .eyebrow{
+    font-family: Georgia, "Iowan Old Style", "Palatino Linotype", serif;
+    font-style:italic;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    font-size:12px;
+    color:var(--teal);
+    margin:0 0 6px;
+  }
+  h1{
+    font-family: Georgia, "Iowan Old Style", "Palatino Linotype", serif;
+    font-size:34px;
+    margin:0;
+    letter-spacing:-0.01em;
+  }
+  .sub{
+    max-width:460px;
+    font-size:14.5px;
+    color:var(--ink-soft);
+    margin:0;
+  }
+  .controls{
+    display:flex;
+    gap:10px;
+    align-items:center;
+  }
+  select, .btn, input[type=text]{
+    font-family:inherit;
+    font-size:14px;
+  }
+  select{
+    padding:9px 12px;
+    border-radius:8px;
+    border:1.5px solid var(--ink);
+    background:var(--white);
+    color:var(--ink);
+  }
+  .btn{
+    padding:9px 16px;
+    border-radius:8px;
+    border:1.5px solid var(--ink);
+    background:var(--ink);
+    color:var(--white);
+    cursor:pointer;
+    transition:transform .08s ease;
+  }
+  .btn:hover{transform:translateY(-1px);}
+  .btn.ghost{
+    background:transparent;
+    color:var(--ink);
+  }
+  .trays{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:20px;
+    margin-bottom:26px;
+  }
+  .tray{
+    border-radius:14px;
+    padding:18px;
+    border:1.5px solid var(--rule);
+    min-height:230px;
+    display:flex;
+    flex-direction:column;
+  }
+  .tray.a{background:var(--teal-tint); border-color:var(--teal-tint-strong);}
+  .tray.b{background:var(--amber-tint); border-color:var(--amber-tint-strong);}
+  .tray-head{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    margin-bottom:12px;
+  }
+  .swatch{width:12px;height:12px;border-radius:3px;flex-shrink:0;}
+  .tray.a .swatch{background:var(--teal);}
+  .tray.b .swatch{background:var(--amber);}
+  .tray-name{
+    font-family: Georgia, serif;
+    font-weight:700;
+    font-size:17px;
+    background:transparent;
+    border:none;
+    border-bottom:1.5px dashed transparent;
+    color:var(--ink);
+    padding:0 2px;
+    width:auto;
+    min-width:60px;
+  }
+  .tray-name:focus{outline:none; border-bottom-color:var(--ink-soft);}
+  .count-badge{
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size:12px;
+    color:var(--ink-soft);
+    margin-left:auto;
+  }
+  .cards{
+    display:flex;
+    flex-direction:column;
+    gap:7px;
+    margin-bottom:12px;
+    max-height:180px;
+    overflow-y:auto;
+    padding-right:2px;
+  }
+  .card{
+    background:var(--white);
+    border:1px solid var(--rule);
+    border-radius:8px;
+    padding:8px 10px;
+    font-size:13.5px;
+    animation:slideIn .25s ease;
+  }
+  @keyframes slideIn{
+    from{opacity:0; transform:translateX(-6px);}
+    to{opacity:1; transform:translateX(0);}
+  }
+  .empty-note{
+    font-size:13px;
+    color:var(--ink-soft);
+    font-style:italic;
+    padding:6px 2px;
+  }
+  .add-row{
+    display:flex;
+    gap:8px;
+    margin-top:auto;
+  }
+  .add-row input[type=text]{
+    flex:1;
+    padding:9px 11px;
+    border-radius:8px;
+    border:1.5px solid var(--rule);
+    background:var(--white);
+  }
+  .add-row .btn{padding:9px 14px; font-size:13px;}
+  .tray.a .add-row .btn{background:var(--teal); border-color:var(--teal);}
+  .tray.b .add-row .btn{background:var(--amber); border-color:var(--amber);}
+
+  .ledger{
+    border:1.5px solid var(--rule);
+    border-radius:14px;
+    padding:16px 18px;
+    margin-bottom:26px;
+    background:var(--white);
+  }
+  .ledger summary{
+    cursor:pointer;
+    font-family:Georgia, serif;
+    font-weight:700;
+    font-size:15px;
+    list-style:none;
+  }
+  .ledger summary::-webkit-details-marker{display:none;}
+  .ledger summary:before{content:"▸ "; color:var(--teal);}
+  .ledger[open] summary:before{content:"▾ ";}
+  .ledger-note{font-size:12.5px; color:var(--ink-soft); margin:8px 0 12px;}
+  table{width:100%; border-collapse:collapse; font-size:13px;}
+  th{
+    text-align:left;
+    font-family:ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:0.06em;
+    color:var(--ink-soft);
+    border-bottom:1px solid var(--rule);
+    padding:6px 8px;
+  }
+  td{
+    padding:6px 8px;
+    border-bottom:1px solid var(--paper-deep);
+    font-family:ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  }
+  .bar-cell{width:160px;}
+  .bar-track{
+    position:relative;
+    height:8px;
+    background:var(--paper-deep);
+    border-radius:4px;
+    overflow:hidden;
+  }
+  .bar-fill{
+    position:absolute;
+    top:0; bottom:0;
+    border-radius:4px;
+  }
+
+  .predict{
+    border:2px solid var(--ink);
+    border-radius:14px;
+    padding:22px;
+    background:var(--white);
+    margin-bottom:22px;
+  }
+  .predict h2{
+    font-family:Georgia, serif;
+    font-size:20px;
+    margin:0 0 4px;
+  }
+  .predict .hint{font-size:13px; color:var(--ink-soft); margin:0 0 14px;}
+  .predict-row{display:flex; gap:10px; margin-bottom:10px;}
+  .predict-row input{
+    flex:1;
+    padding:12px 14px;
+    border-radius:9px;
+    border:1.5px solid var(--rule);
+    font-size:15px;
+  }
+  .chips{display:flex; gap:8px; flex-wrap:wrap; margin-bottom:14px;}
+  .chip{
+    font-size:12.5px;
+    padding:5px 10px;
+    border-radius:999px;
+    border:1px solid var(--rule);
+    background:var(--paper);
+    cursor:pointer;
+    color:var(--ink-soft);
+  }
+  .chip:hover{border-color:var(--ink);}
+
+  .result{
+    border-top:1.5px dashed var(--rule);
+    padding-top:16px;
+    margin-top:4px;
+    display:none;
+  }
+  .result.show{display:block;}
+  .verdict{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    margin-bottom:12px;
+    flex-wrap:wrap;
+  }
+  .verdict-pill{
+    font-family:Georgia, serif;
+    font-weight:700;
+    font-size:18px;
+    padding:6px 16px;
+    border-radius:999px;
+    color:var(--white);
+  }
+  .conf{
+    font-family:ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size:13px;
+    color:var(--ink-soft);
+  }
+  .flag{
+    font-size:12px;
+    padding:3px 9px;
+    border-radius:6px;
+    background:var(--brick-tint);
+    color:var(--brick);
+    font-weight:600;
+  }
+  .sentence-render{
+    font-size:16px;
+    line-height:2.1;
+    padding:10px 2px;
+  }
+  .word-chip{
+    padding:2px 5px;
+    border-radius:5px;
+    margin:0 1px;
+  }
+  .word-unseen{
+    color:var(--ink-soft);
+    border-bottom:1px dotted var(--ink-soft);
+  }
+  footer{
+    font-size:12.5px;
+    color:var(--ink-soft);
+    border-top:1px solid var(--rule);
+    padding-top:14px;
+    max-width:640px;
+  }
+  @media (max-width:720px){
+    .trays{grid-template-columns:1fr;}
+    header{flex-direction:column; align-items:flex-start;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div>
+      <p class="eyebrow">Live demo · no account needed</p>
+      <h1>Pattern Lab</h1>
+      <p class="sub">Teach it a few examples. Watch it guess. Then try to trick it — and see exactly why it gets fooled.</p>
+    </div>
+    <div class="controls">
+      <select id="scenarioSelect">
+        <option value="urgent">Customer messages: Urgent / Not urgent</option>
+        <option value="reply">Emails: Reply today / Can wait</option>
+        <option value="review">Reviews: Positive / Negative</option>
+        <option value="custom">Custom labels</option>
+      </select>
+      <button class="btn ghost" id="resetBtn">Reset</button>
+    </div>
+  </header>
+
+  <div class="trays">
+    <div class="tray a">
+      <div class="tray-head">
+        <span class="swatch"></span>
+        <input class="tray-name" id="labelA" value="Urgent" />
+        <span class="count-badge" id="countA">0 examples</span>
+      </div>
+      <div class="cards" id="cardsA"></div>
+      <div class="add-row">
+        <input type="text" id="inputA" placeholder="Type an example and add it to this tray…" />
+        <button class="btn" id="addA">Add</button>
+      </div>
+    </div>
+
+    <div class="tray b">
+      <div class="tray-head">
+        <span class="swatch"></span>
+        <input class="tray-name" id="labelB" value="Not urgent" />
+        <span class="count-badge" id="countB">0 examples</span>
+      </div>
+      <div class="cards" id="cardsB"></div>
+      <div class="add-row">
+        <input type="text" id="inputB" placeholder="Type an example and add it to this tray…" />
+        <button class="btn" id="addB">Add</button>
+      </div>
+    </div>
+  </div>
+
+  <details class="ledger" id="ledgerPanel">
+    <summary>What it's actually learning (word-by-word)</summary>
+    <p class="ledger-note">Every time you add an example, it just counts words. That's it. No understanding — just tally marks per tray. This table shows the tally.</p>
+    <table>
+      <thead>
+        <tr><th>Word</th><th id="thA">Urgent</th><th id="thB">Not urgent</th><th class="bar-cell">Pull</th></tr>
+      </thead>
+      <tbody id="ledgerBody">
+        <tr><td colspan="4" class="empty-note">Add examples to both trays to see word patterns emerge.</td></tr>
+      </tbody>
+    </table>
+  </details>
+
+  <div class="predict">
+    <h2>Now test it</h2>
+    <p class="hint">Type something it hasn't seen and find out what it thinks — and why.</p>
+    <div class="predict-row">
+      <input type="text" id="testInput" placeholder="e.g. Can we push our call to Thursday?" />
+      <button class="btn" id="predictBtn">See its guess</button>
+    </div>
+    <div class="chips" id="trickChips"></div>
+
+    <div class="result" id="resultBox">
+      <div class="verdict">
+        <span class="verdict-pill" id="verdictPill">—</span>
+        <span class="conf" id="confText"></span>
+        <span class="flag" id="flagNote" style="display:none;">confidently wrong pattern</span>
+      </div>
+      <div class="sentence-render" id="sentenceRender"></div>
+    </div>
+  </div>
+
+  <footer>
+    <strong>The point:</strong> it never reads meaning — it matches word patterns against what you fed it. A tool like ChatGPT works on the same underlying principle at a vastly larger scale: examples in, patterns out, fluent-sounding answers that aren't always grounded. That's why the examples <em>you</em> give it in a prompt change what it does next.
+  </footer>
+
+</div>
+
+<script>
+(function(){
+  const state = {
+    labelA: 'Urgent', labelB: 'Not urgent',
+    examplesA: [], examplesB: [],
+    wordCountsA: {}, wordCountsB: {},
+    totalA: 0, totalB: 0
+  };
+
+  const scenarios = {
+    urgent: { a:'Urgent', b:'Not urgent', tricks:[
+      "Please advise when convenient, no deadline on this one.",
+      "This needs to happen before end of day, sorry for the short notice.",
+      "Just circling back whenever you get a chance — happy to wait.",
+      "Server is down and customers are calling, please help ASAP."
+    ]},
+    reply: { a:'Reply today', b:'Can wait', tricks:[
+      "Loved catching up last week, no need to respond to this one.",
+      "Client is upset and threatening to cancel the contract.",
+      "FYI for your records, nothing needed from you.",
+      "Quick heads up before your meeting in ten minutes."
+    ]},
+    review: { a:'Positive', b:'Negative', tricks:[
+      "It was fine I guess, nothing special but I'd probably order again.",
+      "Loved everything except the thirty minute wait and cold food.",
+      "Absolutely incredible, best purchase I've made all year.",
+      "Broke after two days, total waste of money."
+    ]},
+    custom: { a:'Label A', b:'Label B', tricks:[] }
+  };
+
+  const $ = id => document.getElementById(id);
+
+  function tokenize(text){
+    return (text.toLowerCase().match(/[a-z']+/g) || []);
+  }
+
+  function addExample(text, label){
+    const words = tokenize(text);
+    if(words.length === 0) return;
+    const counts = label === 'A' ? state.wordCountsA : state.wordCountsB;
+    words.forEach(w => { counts[w] = (counts[w]||0) + 1; });
+    if(label === 'A'){ state.examplesA.push(text); state.totalA += words.length; }
+    else { state.examplesB.push(text); state.totalB += words.length; }
+    render();
+  }
+
+  function vocabSize(){
+    const v = new Set([...Object.keys(state.wordCountsA), ...Object.keys(state.wordCountsB)]);
+    return v.size || 1;
+  }
+
+  function wordScore(word, counts, total){
+    const V = vocabSize();
+    return Math.log(((counts[word]||0) + 1) / (total + V));
+  }
+
+  function classify(text){
+    const words = tokenize(text);
+    if(words.length === 0) return null;
+    let scoreA = 0, scoreB = 0;
+    const perWord = [];
+    words.forEach(w => {
+      const sa = wordScore(w, state.wordCountsA, state.totalA);
+      const sb = wordScore(w, state.wordCountsB, state.totalB);
+      scoreA += sa; scoreB += sb;
+      const seen = (state.wordCountsA[w] || state.wordCountsB[w]);
+      perWord.push({ word:w, pull: sa - sb, seen: !!seen });
+    });
+    const diff = scoreA - scoreB;
+    const confA = 1 / (1 + Math.exp(-diff));
+    return { scoreA, scoreB, confA, perWord, predictA: diff >= 0 };
+  }
+
+  function renderCards(){
+    const cA = $('cardsA'), cB = $('cardsB');
+    cA.innerHTML = state.examplesA.length
+      ? state.examplesA.map(t => `<div class="card">${escapeHtml(t)}</div>`).join('')
+      : `<div class="empty-note">No examples yet — add one below.</div>`;
+    cB.innerHTML = state.examplesB.length
+      ? state.examplesB.map(t => `<div class="card">${escapeHtml(t)}</div>`).join('')
+      : `<div class="empty-note">No examples yet — add one below.</div>`;
+    $('countA').textContent = state.examplesA.length + (state.examplesA.length===1 ? ' example' : ' examples');
+    $('countB').textContent = state.examplesB.length + (state.examplesB.length===1 ? ' example' : ' examples');
+  }
+
+  function renderLedger(){
+    $('thA').textContent = state.labelA;
+    $('thB').textContent = state.labelB;
+    const words = new Set([...Object.keys(state.wordCountsA), ...Object.keys(state.wordCountsB)]);
+    const body = $('ledgerBody');
+    if(words.size === 0){
+      body.innerHTML = `<tr><td colspan="4" class="empty-note">Add examples to both trays to see word patterns emerge.</td></tr>`;
+      return;
+    }
+    const rows = [...words].map(w => {
+      const ca = state.wordCountsA[w] || 0;
+      const cb = state.wordCountsB[w] || 0;
+      const pull = wordScore(w, state.wordCountsA, state.totalA) - wordScore(w, state.wordCountsB, state.totalB);
+      return { w, ca, cb, pull };
+    }).sort((x,y) => Math.abs(y.pull) - Math.abs(x.pull)).slice(0, 25);
+
+    const maxPull = Math.max(0.3, ...rows.map(r => Math.abs(r.pull)));
+    body.innerHTML = rows.map(r => {
+      const pct = Math.min(100, Math.abs(r.pull) / maxPull * 50);
+      const color = r.pull >= 0 ? 'var(--teal)' : 'var(--amber)';
+      const left = r.pull >= 0 ? 50 : 50 - pct;
+      const width = pct;
+      return `<tr>
+        <td>${escapeHtml(r.w)}</td>
+        <td>${r.ca}</td>
+        <td>${r.cb}</td>
+        <td class="bar-cell"><div class="bar-track"><div class="bar-fill" style="left:${left}%;width:${width}%;background:${color};"></div></div></td>
+      </tr>`;
+    }).join('');
+  }
+
+  function renderTricks(){
+    const scen = scenarios[$('scenarioSelect').value];
+    const wrap = $('trickChips');
+    if(!scen.tricks.length){ wrap.innerHTML=''; return; }
+    wrap.innerHTML = '<span style="font-size:12px;color:var(--ink-soft);align-self:center;">Try:</span>' +
+      scen.tricks.map(t => `<button class="chip" data-t="${escapeAttr(t)}">${escapeHtml(t.slice(0,40))}${t.length>40?'…':''}</button>`).join('');
+    wrap.querySelectorAll('.chip').forEach(btn => {
+      btn.addEventListener('click', () => { $('testInput').value = btn.dataset.t; runPredict(); });
+    });
+  }
+
+  function escapeHtml(s){ return s.replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
+  function escapeAttr(s){ return escapeHtml(s); }
+
+  function render(){
+    renderCards();
+    renderLedger();
+  }
+
+  function runPredict(){
+    const text = $('testInput').value.trim();
+    if(!text) return;
+    const result = classify(text);
+    const box = $('resultBox');
+    if(!result){ box.classList.remove('show'); return; }
+
+    const predictedLabel = result.predictA ? state.labelA : state.labelB;
+    const conf = result.predictA ? result.confA : (1 - result.confA);
+    const color = result.predictA ? 'var(--teal)' : 'var(--amber)';
+
+    $('verdictPill').textContent = predictedLabel;
+    $('verdictPill').style.background = color;
+    $('confText').textContent = Math.round(conf*100) + '% confident';
+
+    const unseenCount = result.perWord.filter(p => !p.seen).length;
+    const flag = $('flagNote');
+    if(unseenCount / result.perWord.length > 0.5 && conf > 0.6){
+      flag.style.display = 'inline-block';
+      flag.textContent = 'mostly unseen words — confident anyway';
+    } else {
+      flag.style.display = 'none';
+    }
+
+    const maxPull = Math.max(0.4, ...result.perWord.map(p => Math.abs(p.pull)));
+    $('sentenceRender').innerHTML = result.perWord.map(p => {
+      if(!p.seen) return `<span class="word-chip word-unseen">${escapeHtml(p.word)}</span>`;
+      const intensity = Math.min(1, Math.abs(p.pull) / maxPull);
+      const base = p.pull >= 0 ? [47,111,99] : [201,122,46];
+      const bg = `rgba(${base[0]},${base[1]},${base[2]}, ${0.12 + intensity*0.38})`;
+      return `<span class="word-chip" style="background:${bg};">${escapeHtml(p.word)}</span>`;
+    }).join(' ');
+
+    box.classList.add('show');
+  }
+
+  function applyScenario(key){
+    const scen = scenarios[key];
+    state.labelA = scen.a; state.labelB = scen.b;
+    $('labelA').value = scen.a; $('labelB').value = scen.b;
+    state.examplesA = []; state.examplesB = [];
+    state.wordCountsA = {}; state.wordCountsB = {};
+    state.totalA = 0; state.totalB = 0;
+    $('resultBox').classList.remove('show');
+    $('testInput').value = '';
+    renderTricks();
+    render();
+  }
+
+  // wire up events
+  $('addA').addEventListener('click', () => {
+    const v = $('inputA'); if(v.value.trim()){ addExample(v.value.trim(), 'A'); v.value=''; }
+  });
+  $('addB').addEventListener('click', () => {
+    const v = $('inputB'); if(v.value.trim()){ addExample(v.value.trim(), 'B'); v.value=''; }
+  });
+  $('inputA').addEventListener('keydown', e => { if(e.key==='Enter') $('addA').click(); });
+  $('inputB').addEventListener('keydown', e => { if(e.key==='Enter') $('addB').click(); });
+  $('testInput').addEventListener('keydown', e => { if(e.key==='Enter') runPredict(); });
+  $('predictBtn').addEventListener('click', runPredict);
+
+  $('labelA').addEventListener('input', e => { state.labelA = e.target.value || 'Label A'; renderLedger(); });
+  $('labelB').addEventListener('input', e => { state.labelB = e.target.value || 'Label B'; renderLedger(); });
+
+  $('scenarioSelect').addEventListener('change', e => applyScenario(e.target.value));
+  $('resetBtn').addEventListener('click', () => applyScenario($('scenarioSelect').value));
+
+  applyScenario('urgent');
+})();
+</script>
+</body>
+</html>

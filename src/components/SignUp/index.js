@@ -35,17 +35,20 @@ class NewUserFormBase extends Component {
     if (!isAdmin && !isTeacher) roles[ROLES.STUDENT] = ROLES.STUDENT;
 
     try {
-      const response = await fetch("/api/createUser", {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email: "students+" + username + "@thecodingspace.com",
-          password: passwordOne,
-        }),
-      });
+      const response = await fetch(
+        "https://us-central1-tcslms-staging.cloudfunctions.net/createUser",
+        {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: "students+" + username + "@thecodingspace.com",
+            password: passwordOne,
+          }),
+        }
+      );
 
       const data = await response.json();
 
